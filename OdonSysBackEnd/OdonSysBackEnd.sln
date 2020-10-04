@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main", "OdonSysBackEnd\OdonSys.Api.Main.csproj", "{053227A7-F860-4483-96A8-604E75A25D1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Common", "Common\OdonSys.Common.csproj", "{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Middleware", "OdonSys.Middleware\OdonSys.Middleware.csproj", "{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{19674CD3-FFC8-4BB5-951D-B952CA935FBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{09C5C230-0AC2-43D7-A94A-206D0CDFB491}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Storage.Sql", "OdonSys.Storage.Sql\OdonSys.Storage.Sql.csproj", "{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.Admin", "DomainServices.Admin\DomainServices.Admin.csproj", "{583B9B61-0E66-4BEE-9013-16B0A4CA173A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main.Test", "OdonSys.Api.Main.Test\OdonSys.Api.Main.Test.csproj", "{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{053227A7-F860-4483-96A8-604E75A25D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{053227A7-F860-4483-96A8-604E75A25D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5} = {09C5C230-0AC2-43D7-A94A-206D0CDFB491}
+		{583B9B61-0E66-4BEE-9013-16B0A4CA173A} = {19674CD3-FFC8-4BB5-951D-B952CA935FBD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0F45F6F-20FA-4DD1-9A32-ADB6123B0CB1}
+	EndGlobalSection
+EndGlobal
