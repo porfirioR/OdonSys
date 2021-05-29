@@ -1,23 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
+<<<<<<< Updated upstream
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main", "OdonSysBackEnd\OdonSys.Api.Main.csproj", "{053227A7-F860-4483-96A8-604E75A25D1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Common", "Common\OdonSys.Common.csproj", "{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Middleware", "OdonSys.Middleware\OdonSys.Middleware.csproj", "{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSysBackEnd", "OdonSysBackEnd\OdonSysBackEnd.csproj", "{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{19674CD3-FFC8-4BB5-951D-B952CA935FBD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Access", "Access", "{15528C3F-7D2C-4002-B104-DDD7889F507F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{09C5C230-0AC2-43D7-A94A-206D0CDFB491}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource", "Resource", "{09B40C32-41AF-404F-A496-A59F36459F78}"
+>>>>>>> Stashed changes
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{2C388A67-BEF0-4504-BD41-7630B8D28249}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Admin", "ClassLibrary1\Manager.Admin.csproj", "{D1D2F448-0AC4-4B69-822E-C98001CB1063}"
+EndProject
+<<<<<<< Updated upstream
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Storage.Sql", "OdonSys.Storage.Sql\OdonSys.Storage.Sql.csproj", "{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.Admin", "DomainServices.Admin\DomainServices.Admin.csproj", "{583B9B61-0E66-4BEE-9013-16B0A4CA173A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main.Test", "OdonSys.Api.Main.Test\OdonSys.Api.Main.Test.csproj", "{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources.Contract", "Resources.Contract\Resources.Contract.csproj", "{A510BF51-2825-4E3D-AC7C-5E081275D066}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sql", "Sql\Sql.csproj", "{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access.Admin", "Access.Admin\Access.Admin.csproj", "{537B6004-F9CC-44D7-A464-D424B7B6D2DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}"
+>>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +43,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< Updated upstream
 		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{053227A7-F860-4483-96A8-604E75A25D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,15 +68,49 @@ Global
 		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A510BF51-2825-4E3D-AC7C-5E081275D066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A510BF51-2825-4E3D-AC7C-5E081275D066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A510BF51-2825-4E3D-AC7C-5E081275D066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A510BF51-2825-4E3D-AC7C-5E081275D066}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537B6004-F9CC-44D7-A464-D424B7B6D2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537B6004-F9CC-44D7-A464-D424B7B6D2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537B6004-F9CC-44D7-A464-D424B7B6D2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537B6004-F9CC-44D7-A464-D424B7B6D2DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+<<<<<<< Updated upstream
 		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5} = {09C5C230-0AC2-43D7-A94A-206D0CDFB491}
 		{583B9B61-0E66-4BEE-9013-16B0A4CA173A} = {19674CD3-FFC8-4BB5-951D-B952CA935FBD}
+=======
+		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF} = {2C388A67-BEF0-4504-BD41-7630B8D28249}
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063} = {09B40C32-41AF-404F-A496-A59F36459F78}
+		{A510BF51-2825-4E3D-AC7C-5E081275D066} = {09B40C32-41AF-404F-A496-A59F36459F78}
+		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
+		{537B6004-F9CC-44D7-A464-D424B7B6D2DB} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A0F45F6F-20FA-4DD1-9A32-ADB6123B0CB1}
+		SolutionGuid = {843D313E-18CF-4719-89C6-3525B4DCAA42}
 	EndGlobalSection
 EndGlobal
