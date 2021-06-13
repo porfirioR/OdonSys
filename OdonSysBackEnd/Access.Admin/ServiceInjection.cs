@@ -1,14 +1,15 @@
-﻿using Manager.Admin.Users;
+﻿using Access.Admin.Users;
+using Access.Contract.Users;
 using Microsoft.Extensions.DependencyInjection;
-using Resources.Contract.User;
 
-namespace Manager.Admin
+namespace Access.Admin
 {
     public class ServiceInjection
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IUserDataAccess, UserDataAccess>();
+
         }
     }
 }

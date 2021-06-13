@@ -3,39 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-<<<<<<< Updated upstream
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main", "OdonSysBackEnd\OdonSys.Api.Main.csproj", "{053227A7-F860-4483-96A8-604E75A25D1B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Common", "Common\OdonSys.Common.csproj", "{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Middleware", "OdonSys.Middleware\OdonSys.Middleware.csproj", "{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSysBackEnd", "OdonSysBackEnd\OdonSysBackEnd.csproj", "{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdonSysBackEnd", "OdonSysBackEnd\OdonSysBackEnd.csproj", "{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Access", "Access", "{15528C3F-7D2C-4002-B104-DDD7889F507F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resource", "Resource", "{09B40C32-41AF-404F-A496-A59F36459F78}"
->>>>>>> Stashed changes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Host", "Host", "{2C388A67-BEF0-4504-BD41-7630B8D28249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Admin", "ClassLibrary1\Manager.Admin.csproj", "{D1D2F448-0AC4-4B69-822E-C98001CB1063}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Admin", "ClassLibrary1\Manager.Admin.csproj", "{D1D2F448-0AC4-4B69-822E-C98001CB1063}"
 EndProject
-<<<<<<< Updated upstream
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Storage.Sql", "OdonSys.Storage.Sql\OdonSys.Storage.Sql.csproj", "{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Resources.Contract", "Resources.Contract\Resources.Contract.csproj", "{A510BF51-2825-4E3D-AC7C-5E081275D066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainServices.Admin", "DomainServices.Admin\DomainServices.Admin.csproj", "{583B9B61-0E66-4BEE-9013-16B0A4CA173A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sql", "Sql\Sql.csproj", "{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OdonSys.Api.Main.Test", "OdonSys.Api.Main.Test\OdonSys.Api.Main.Test.csproj", "{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources.Contract", "Resources.Contract\Resources.Contract.csproj", "{A510BF51-2825-4E3D-AC7C-5E081275D066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access.Admin", "Access.Admin\Access.Admin.csproj", "{537B6004-F9CC-44D7-A464-D424B7B6D2DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sql", "Sql\Sql.csproj", "{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Utilities.csproj", "{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access.Admin", "Access.Admin\Access.Admin.csproj", "{537B6004-F9CC-44D7-A464-D424B7B6D2DB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manager", "Manager", "{789D73DB-E7E3-4B50-BC4F-9FE202A79DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}"
->>>>>>> Stashed changes
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contract", "Contract", "{5F279DC7-BA7B-49FA-9603-F794E41933AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access.Contract", "Access.Contract\Access.Contract.csproj", "{F14BF329-FF13-4D11-887E-57DDF67B3B0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,32 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-<<<<<<< Updated upstream
-		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{053227A7-F860-4483-96A8-604E75A25D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{053227A7-F860-4483-96A8-604E75A25D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{053227A7-F860-4483-96A8-604E75A25D1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6078BE9-457D-4185-A7A7-D9E55E76BCF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{736C5A0E-E9D8-4BE8-9F39-CFC558F58A0B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{583B9B61-0E66-4BEE-9013-16B0A4CA173A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0ABD4138-1C8C-4D06-A05A-528DB5BAD35A}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
 		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,22 +57,23 @@ Global
 		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9059BE82-AFBC-4C2F-A1D3-08D08FFE4996}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> Stashed changes
+		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-<<<<<<< Updated upstream
-		{2CEEC478-0F5D-44BC-98E5-85839D1DD4F5} = {09C5C230-0AC2-43D7-A94A-206D0CDFB491}
-		{583B9B61-0E66-4BEE-9013-16B0A4CA173A} = {19674CD3-FFC8-4BB5-951D-B952CA935FBD}
-=======
 		{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF} = {2C388A67-BEF0-4504-BD41-7630B8D28249}
-		{D1D2F448-0AC4-4B69-822E-C98001CB1063} = {09B40C32-41AF-404F-A496-A59F36459F78}
-		{A510BF51-2825-4E3D-AC7C-5E081275D066} = {09B40C32-41AF-404F-A496-A59F36459F78}
+		{D1D2F448-0AC4-4B69-822E-C98001CB1063} = {789D73DB-E7E3-4B50-BC4F-9FE202A79DDA}
+		{A510BF51-2825-4E3D-AC7C-5E081275D066} = {5F279DC7-BA7B-49FA-9603-F794E41933AB}
 		{D1355E7B-925A-473B-9AFF-7EEF34A0C0BE} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
 		{537B6004-F9CC-44D7-A464-D424B7B6D2DB} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
->>>>>>> Stashed changes
+		{789D73DB-E7E3-4B50-BC4F-9FE202A79DDA} = {09B40C32-41AF-404F-A496-A59F36459F78}
+		{5F279DC7-BA7B-49FA-9603-F794E41933AB} = {09B40C32-41AF-404F-A496-A59F36459F78}
+		{F14BF329-FF13-4D11-887E-57DDF67B3B0D} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {843D313E-18CF-4719-89C6-3525B4DCAA42}
