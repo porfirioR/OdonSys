@@ -2,7 +2,7 @@
 
 namespace Sql.Entities
 {
-    public class DoctorRoles : BaseEntity
+    public class DoctorRoles
     {
         public Guid DoctorId { get; set; }
         public virtual Doctor Doctor { get; set; }

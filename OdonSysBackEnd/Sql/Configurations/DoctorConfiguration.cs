@@ -33,6 +33,10 @@ namespace Sql.Configurations
             builder
                 .HasIndex(d => d.Document)
                 .IsUnique();
+
+            builder.HasOne(x => x.User)
+                .WithOne(x => x.Doctor)
+                .HasForeignKey<User>(x => x.DoctorId);
         }
     }
 }

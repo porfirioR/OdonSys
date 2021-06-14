@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access.Admin\Access.Admin.csproj" />
-    <ProjectReference Include="..\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\Resources.Contract\Resources.Contract.csproj" />
   </ItemGroup>
 

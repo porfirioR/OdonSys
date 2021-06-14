@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OdonSysBackEnd.Middleware;
 using Sql;
 
 namespace OdonSysBackEnd
@@ -23,7 +24,7 @@ namespace OdonSysBackEnd
 
             services.AddCors(options =>
             {
-                options.AddPolicy(name: "MyAllowSpecificOrigins",
+                options.AddPolicy(name: "origins",
                                   builder =>
                                   {
                                       builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
@@ -40,15 +41,15 @@ namespace OdonSysBackEnd
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseCors("MyAllowSpecificOrigins");
+            app.UseCors("origins");
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
