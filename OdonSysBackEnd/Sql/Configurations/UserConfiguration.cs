@@ -12,7 +12,7 @@ namespace Sql.Configurations
                 .HasKey(x => x.DoctorId);
 
             builder
-                .Property(x => x.Email)
+                .Property(x => x.UserName)
                 .HasMaxLength(20);
         }
     }

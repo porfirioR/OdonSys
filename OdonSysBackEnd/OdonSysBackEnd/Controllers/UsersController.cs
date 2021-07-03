@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OdonSysBackEnd.Models.Auth;
 using OdonSysBackEnd.Models.Users;
+using Resources.Contract.Auth;
 using Resources.Contract.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,6 +27,14 @@ namespace OdonSysBackEnd.Controllers
             var user = _mapper.Map<CreateUserRequest>(apiRequest);
             var model = await _userManager.Create(user);
             return Ok(model);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserModel>> Login([FromBody] LoginApiRequest loginApiRequest)
+        {
+            var login = _mapper.Map<LoginRequest>(loginApiRequest);
+            var model = await _userManager.Login(login);
+            return model;
         }
 
         [HttpDelete("{id}")]

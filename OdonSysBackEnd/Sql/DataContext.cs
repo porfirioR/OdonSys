@@ -9,6 +9,8 @@ namespace Sql
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+
+        public DbSet<User> Users { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<DoctorRoles> DoctorRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }

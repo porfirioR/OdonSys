@@ -7,6 +7,8 @@ using Sql.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Access.Admin.Users
@@ -24,6 +26,14 @@ namespace Access.Admin.Users
         public async Task<UserDataAccessModel> CreateAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _mapper.Map<Doctor>(dataAccess);
+            var entityUser = new User();
+
+            var password = "contraseñaInicial";
+            using var hmac = new HMACSHA512();
+            entityUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            entityUser.PasswordSalt = hmac.Key;
+            entityUser.UserName = @$"{entity.Name.Substring(0, 1)}{entity.LastName}";
+            entity.User = entityUser;
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {

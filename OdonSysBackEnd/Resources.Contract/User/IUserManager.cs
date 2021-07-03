@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Resources.Contract.Auth;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Resources.Contract.User
@@ -10,5 +11,6 @@ namespace Resources.Contract.User
         Task<IEnumerable<UserModel>> GetAll();
         Task<UserModel> GetById(string id);
         Task<UserModel> Update(UpdateUserRequest updateUserRequest);
+        Task<UserModel> Login(LoginRequest login);
     }
 }
