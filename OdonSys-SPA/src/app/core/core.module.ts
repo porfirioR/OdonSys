@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { CoreRoutes } from './core.routing';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { PrincipalPageComponent } from './components/principal-page/principal-page.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [
@@ -10,6 +13,11 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule.forChild(CoreRoutes),
     SharedModule
   ],
-  declarations: []
+  declarations: [
+    PrincipalPageComponent,
+    SidebarComponent,
+    HeaderComponent,
+    
+  ]
 })
 export class CoreModule { }
