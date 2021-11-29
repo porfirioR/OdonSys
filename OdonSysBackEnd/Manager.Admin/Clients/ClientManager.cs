@@ -1,4 +1,6 @@
-﻿using Resources.Contract.Clients;
+﻿using Access.Contract.Clients;
+using AutoMapper;
+using Resources.Contract.Clients;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,10 +8,14 @@ namespace Manager.Admin.Clients
 {
     internal class ClientManager : IClientManager
     {
-        public ClientManager()
+        private readonly IClientAccess _clientAccess;
+        private readonly IMapper _mapper;
+        public ClientManager(IClientAccess clientAccess, IMapper mapper)
         {
-
+            _clientAccess = clientAccess;
+            _mapper = mapper;
         }
+
         public Task<ClientAdminModel> Create(CreateClientRequest user)
         {
             throw new System.NotImplementedException();

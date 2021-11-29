@@ -1,8 +1,8 @@
 ﻿using Utilities.Enums;
 
-namespace Sql.Entities
+namespace Access.Contract.Clients
 {
-    public class Client : BaseEntity
+    public class CreateClientAccessRequest
     {
         public string Name { get; set; }
         public string SecondName { get; set; }

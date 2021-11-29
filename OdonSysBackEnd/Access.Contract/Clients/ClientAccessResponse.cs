@@ -1,9 +1,14 @@
-﻿using Utilities.Enums;
+﻿using System;
+using Utilities.Enums;
 
-namespace Sql.Entities
+namespace Access.Contract.Clients
 {
-    public class Client : BaseEntity
+    public class ClientAccessResponse
     {
+        public string Id { get; set; }
+        public bool Active { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
         public string Name { get; set; }
         public string SecondName { get; set; }
         public string LastName { get; set; }

@@ -1,5 +1,7 @@
-﻿using Access.Admin.Users;
-using Access.Contract;
+﻿using Access.Admin.Clients;
+using Access.Admin.Users;
+using Access.Contract.Auth;
+using Access.Contract.Clients;
 using Access.Contract.Users;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +13,7 @@ namespace Access.Admin
         {
             services.AddTransient<IUserDataAccess, UserDataAccess>();
             services.AddTransient<IAuthDataAccess, AuthDataAccess>();
+            services.AddTransient<IClientAccess, ClientAccess>();
 
         }
     }
