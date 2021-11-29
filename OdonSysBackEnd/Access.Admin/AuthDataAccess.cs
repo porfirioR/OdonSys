@@ -1,5 +1,4 @@
-﻿using Access.Contract;
-using Access.Contract.Auth;
+﻿using Access.Contract.Auth;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
