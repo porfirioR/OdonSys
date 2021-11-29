@@ -5,7 +5,7 @@ namespace Sql.Entities
 {
     public class HeaderBill : BaseEntity
     {
-        public int BillNumber { get; set; }
+        public int billNumber { get; set; }
         public int ClientId { get; set; }
         public int Iva10 { get; set; }
         public int TotalIva { get; set; }

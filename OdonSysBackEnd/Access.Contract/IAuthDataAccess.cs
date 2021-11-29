@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Access.Contract.Auth;
+using System.Threading.Tasks;
 
-namespace Access.Contract.Auth
+namespace Access.Contract
 {
     public interface IAuthDataAccess
     {

@@ -11,6 +11,5 @@ namespace Sql.Entities
         public string Document { get; set; }
         public string Ruc { get; set; }
         public Country Country { get; set; }
-        public bool Debts { get; set; }
     }
 }

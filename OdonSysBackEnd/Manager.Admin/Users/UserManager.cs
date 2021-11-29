@@ -1,4 +1,5 @@
-﻿using Access.Contract.Auth;
+﻿using Access.Contract;
+using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
 using Resources.Contract.Auth;
