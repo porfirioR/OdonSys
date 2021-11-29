@@ -1,8 +1,8 @@
 ﻿using Utilities.Enums;
 
-namespace Resources.Contract.Clients
+namespace OdonSysBackEnd.Models.Clients
 {
-    public class CreateClientRequest
+    public class CreateClientApiRequest
     {
         public string Name { get; set; }
         public string LastName { get; set; }
