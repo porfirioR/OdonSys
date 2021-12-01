@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Access.Contract.Clients
 {
@@ -6,7 +7,8 @@ namespace Access.Contract.Clients
     {
         Task<ClientAccessResponse> CreateClientAsync(CreateClientAccessRequest accessRequest);
         Task<ClientAccessResponse> UpadateClientAsync(UpdateClientAccessRequest accessRequest);
-        Task<ClientAccessResponse> GetAllAsync();
-        Task<ClientAccessResponse> GetByIdAsync(int id);
+        Task<IEnumerable<ClientAccessResponse>> GetAllAsync();
+        Task<ClientAccessResponse> GetByIdAsync(string id);
+        Task DeleteAsync(string id);
     }
 }

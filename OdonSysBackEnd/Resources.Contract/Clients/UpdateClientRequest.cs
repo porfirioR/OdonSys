@@ -1,6 +1,6 @@
-﻿namespace Access.Contract.Clients
+﻿namespace Resources.Contract.Clients
 {
-    public class UpdateClientAccessRequest
+    public class UpdateClientRequest
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -5,9 +5,10 @@ namespace Resources.Contract.Clients
 {
     public interface IClientManager
     {
-        Task<ClientAdminModel> Create(CreateClientRequest request);
-        Task Delete(string id);
-        Task<IEnumerable<ClientAdminModel>> GetAll();
-        Task<ClientAdminModel> GetById(string id);
+        Task<ClientModel> CreateAsync(CreateClientRequest request);
+        Task<ClientModel> UpdateAsync(UpdateClientRequest request);
+        Task DeleteAsync(string id);
+        Task<IEnumerable<ClientModel>> GetAllAsync();
+        Task<ClientModel> GetByIdAsync(string id);
     }
 }

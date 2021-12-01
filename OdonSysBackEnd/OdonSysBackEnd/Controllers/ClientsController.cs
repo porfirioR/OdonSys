@@ -21,39 +21,39 @@ namespace OdonSysBackEnd.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClientAdminModel>> Create([FromBody] CreateClientApiRequest apiRequest)
+        public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var user = _mapper.Map<CreateClientRequest>(apiRequest);
-            var model = await _clientManager.Create(user);
-            return Ok(model);
+            var model = await _clientManager.CreateAsync(user);
+            return model;
         }
 
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await _clientManager.Delete(id);
+            await _clientManager.DeleteAsync(id);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClientAdminModel>>> GetAll()
+        public async Task<IEnumerable<ClientModel>> GetAll()
         {
-            var response = await _clientManager.GetAll();
-            return Ok(response);
+            var response = await _clientManager.GetAllAsync();
+            return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ClientAdminModel>> GetById(string id)
+        public async Task<ClientModel> GetById(string id)
         {
-            var response = await _clientManager.GetById(id);
-            return Ok(response);
+            var response = await _clientManager.GetByIdAsync(id);
+            return response;
         }
 
-        //[HttpPut]
-        //public async Task<ActionResult<ClientAdminModel>> Update([FromBody] UpdateClientApiRequest userDTO)
-        //{
-        //    var user = _mapper.Map<UpdateClientRequest>(userDTO);
-        //    var response = await _clientManager.Update(user);
-        //    return Ok(response);
-        //}
+        [HttpPut]
+        public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
+        {
+            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var response = await _clientManager.UpdateAsync(user);
+            return response;
+        }
     }
 }
