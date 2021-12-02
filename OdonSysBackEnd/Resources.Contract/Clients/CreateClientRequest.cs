@@ -11,5 +11,6 @@ namespace Resources.Contract.Clients
         public string Document { get; set; }
         public string Ruc { get; set; }
         public Country Country { get; set; }
+        public string Phone { get; set; }
     }
 }

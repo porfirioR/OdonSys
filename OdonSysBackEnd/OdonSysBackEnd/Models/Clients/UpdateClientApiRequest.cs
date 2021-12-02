@@ -10,6 +10,7 @@ namespace OdonSysBackEnd.Models.Clients
         public string SecondName { get; set; }
         public string LastName { get; set; }
         public string SecondLastName { get; set; }
+        public string Phone { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

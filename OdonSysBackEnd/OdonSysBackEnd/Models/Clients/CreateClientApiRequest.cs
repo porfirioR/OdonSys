@@ -13,6 +13,7 @@ namespace OdonSysBackEnd.Models.Clients
         public string Document { get; set; }
         public string Ruc { get; set; }
         public Country Country { get; set; }
+        public string Phone { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

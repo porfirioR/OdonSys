@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Access.Admin.Users
+namespace Access.Admin.Access
 {
     public class UserDataAccess : IUserDataAccess
     {

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Access.Admin.Clients
+namespace Access.Admin.Access
 {
     internal class ClientAccess : IClientAccess
     {
