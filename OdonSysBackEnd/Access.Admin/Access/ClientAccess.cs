@@ -15,9 +15,10 @@ namespace Access.Admin.Access
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public ClientAccess(IMapper mapper)
+        public ClientAccess(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ClientAccessResponse> CreateClientAsync(CreateClientAccessRequest accessRequest)

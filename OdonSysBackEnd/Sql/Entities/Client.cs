@@ -1,4 +1,5 @@
-﻿using Utilities.Enums;
+﻿using System.Collections.Generic;
+using Utilities.Enums;
 
 namespace Sql.Entities
 {
@@ -13,5 +14,6 @@ namespace Sql.Entities
         public string Phone { get; set; }
         public Country Country { get; set; }
         public bool Debts { get; set; }
+        public virtual IEnumerable<DoctorClient> DoctorsClients { get; set; }
     }
 }

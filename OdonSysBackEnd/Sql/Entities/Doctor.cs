@@ -10,6 +10,7 @@ namespace Sql.Entities
         public string Document { get; set; }
         public Country Country { get; set; }
         public virtual IEnumerable<DoctorRoles> DoctorRoles { get; set; }
+        public virtual IEnumerable<DoctorClient> DoctorsClients { get; set; }
         public virtual User User { get; set; }
     }
 }
