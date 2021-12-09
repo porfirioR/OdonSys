@@ -16,10 +16,11 @@ namespace Manager.Admin.Users
         private readonly IUserDataAccess _userDataAccess;
         private readonly IAuthDataAccess _authDataAccess;
 
-        public UserManager(IMapper mapper, IUserDataAccess userDataAccess)
+        public UserManager(IMapper mapper, IUserDataAccess userDataAccess, IAuthDataAccess authDataAccess)
         {
             _mapper = mapper;
             _userDataAccess = userDataAccess;
+            _authDataAccess = authDataAccess;
         }
 
         public async Task<UserModel> Create(CreateUserRequest createUserRequest)

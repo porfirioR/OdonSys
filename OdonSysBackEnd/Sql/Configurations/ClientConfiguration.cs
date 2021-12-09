@@ -20,6 +20,7 @@ namespace Sql.Configurations
 
             builder
                 .Property(x => x.Name)
+                .IsRequired()
                 .HasMaxLength(25);
 
             builder
@@ -28,6 +29,7 @@ namespace Sql.Configurations
 
             builder
                 .Property(x => x.LastName)
+                .IsRequired()
                 .HasMaxLength(25);
 
             builder
@@ -40,6 +42,7 @@ namespace Sql.Configurations
 
             builder
                 .Property(x => x.Document)
+                .IsRequired()
                 .HasMaxLength(15);
 
             builder
@@ -48,7 +51,16 @@ namespace Sql.Configurations
 
             builder
                 .Property(x => x.Phone)
+                .IsRequired()
                 .HasMaxLength(10);
+
+            builder
+                .Property(x => x.Country)
+                .IsRequired();
+
+            builder
+                .Property(x => x.Email)
+                .HasMaxLength(25);
         }
     }
 }

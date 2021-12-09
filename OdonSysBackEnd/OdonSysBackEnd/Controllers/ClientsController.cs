@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OdonSysBackEnd.Models.Clients;
+using OdonSysBackEnd.Models.Error;
 using Resources.Contract.Clients;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +17,7 @@ namespace OdonSysBackEnd.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
-       
+
         public ClientsController(IMapper mapper, IClientManager userManager)
         {
             _mapper = mapper;
@@ -28,10 +32,12 @@ namespace OdonSysBackEnd.Controllers
             return model;
         }
 
-        [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        [HttpPut]
+        public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            await _clientManager.DeleteAsync(id);
+            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var response = await _clientManager.UpdateAsync(user);
+            return response;
         }
 
         [HttpGet]
@@ -48,12 +54,25 @@ namespace OdonSysBackEnd.Controllers
             return response;
         }
 
-        [HttpPut]
-        public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
+        [HttpDelete("{id}")]
+        public async Task Delete(string id)
         {
-            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
-            var response = await _clientManager.UpdateAsync(user);
+            await _clientManager.DeleteAsync(id);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument patchDocument)
+        {
+            if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            var clientModel = await _clientManager.GetByIdAsync(id, false);
+            patchDocument.ApplyTo(clientModel);
+            if (!ModelState.IsValid)
+            {
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
+            }
+            var response = await _clientManager.UpdateAsync(clientModel);
             return response;
         }
+
     }
 }

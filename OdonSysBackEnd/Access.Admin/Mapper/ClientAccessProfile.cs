@@ -8,9 +8,15 @@ namespace Access.Admin.Mapper
     {
         public ClientAccessProfile()
         {
-            CreateMap<CreateClientAccessRequest, Client>();
+            CreateMap<CreateClientAccessRequest, Client>()
+                .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true));
+
             CreateMap<UpdateClientAccessRequest, Client>();
-            CreateMap<Client, ClientAccessResponse>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+
+            CreateMap<PatchClientAccessRequest, Client>();
+
+            CreateMap<Client, ClientAccessResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
 
         }
     }

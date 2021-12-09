@@ -23,9 +23,18 @@ namespace Manager.Admin.Clients
             return _mapper.Map<ClientModel>(accessResponse);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<ClientModel> UpdateAsync(UpdateClientRequest request)
         {
-            await _clientAccess.DeleteAsync(id);
+            var accessRequest = _mapper.Map<UpdateClientAccessRequest>(request);
+            var accessResponse = await _clientAccess.UpdateClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessResponse);
+        }
+        public async Task<ClientModel> UpdateAsync(ClientModel request)
+        {
+            var accessRequest = _mapper.Map<PatchClientAccessRequest>(request);
+            var accessResponse = await _clientAccess.PatchClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessResponse);
+
         }
 
         public async Task<IEnumerable<ClientModel>> GetAllAsync()
@@ -34,17 +43,16 @@ namespace Manager.Admin.Clients
             return _mapper.Map<IEnumerable<ClientModel>>(accessResponse);
         }
 
-        public async Task<ClientModel> GetByIdAsync(string id)
+        public async Task<ClientModel> GetByIdAsync(string id, bool active)
         {
-            var accessResponse = await _clientAccess.GetByIdAsync(id);
+            var accessResponse = await _clientAccess.GetByIdAsync(id, active);
             return _mapper.Map<ClientModel>(accessResponse);
         }
 
-        public async Task<ClientModel> UpdateAsync(UpdateClientRequest request)
+        public async Task DeleteAsync(string id)
         {
-            var accessRequest = _mapper.Map<UpdateClientAccessRequest>(request);
-            var accessResponse = await _clientAccess.UpadateClientAsync(accessRequest);
-            return _mapper.Map<ClientModel>(accessResponse);
+            await _clientAccess.DeleteAsync(id);
         }
+
     }
 }

@@ -13,5 +13,6 @@ namespace Access.Contract.Clients
         public Country Country { get; set; }
         public bool Debts { get; set; }
         public string Phone { get; set; }
+        public string Email { get; set; }
     }
 }

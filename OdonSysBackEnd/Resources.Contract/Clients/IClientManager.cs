@@ -7,8 +7,9 @@ namespace Resources.Contract.Clients
     {
         Task<ClientModel> CreateAsync(CreateClientRequest request);
         Task<ClientModel> UpdateAsync(UpdateClientRequest request);
-        Task DeleteAsync(string id);
+        Task<ClientModel> UpdateAsync(ClientModel request);
         Task<IEnumerable<ClientModel>> GetAllAsync();
-        Task<ClientModel> GetByIdAsync(string id);
+        Task<ClientModel> GetByIdAsync(string id, bool active = true);
+        Task DeleteAsync(string id);
     }
 }
