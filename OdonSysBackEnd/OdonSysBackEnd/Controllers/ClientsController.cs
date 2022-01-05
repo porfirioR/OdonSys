@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OdonSysBackEnd.Models.Clients;
+using OdonSysBackEnd.Models.Error;
 using Resources.Contract.Clients;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,7 +17,7 @@ namespace OdonSysBackEnd.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
-       
+
         public ClientsController(IMapper mapper, IClientManager userManager)
         {
             _mapper = mapper;
@@ -21,39 +25,54 @@ namespace OdonSysBackEnd.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClientAdminModel>> Create([FromBody] CreateClientApiRequest apiRequest)
+        public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var user = _mapper.Map<CreateClientRequest>(apiRequest);
-            var model = await _clientManager.Create(user);
-            return Ok(model);
+            var model = await _clientManager.CreateAsync(user);
+            return model;
+        }
+
+        [HttpPut]
+        public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
+        {
+            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var response = await _clientManager.UpdateAsync(user);
+            return response;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<ClientModel>> GetAll()
+        {
+            var response = await _clientManager.GetAllAsync();
+            return response;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ClientModel> GetById(string id)
+        {
+            var response = await _clientManager.GetByIdAsync(id);
+            return response;
         }
 
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
-            await _clientManager.Delete(id);
+            await _clientManager.DeleteAsync(id);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClientAdminModel>>> GetAll()
+        [HttpPatch("{id}")]
+        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument patchDocument)
         {
-            var response = await _clientManager.GetAll();
-            return Ok(response);
+            if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            var clientModel = await _clientManager.GetByIdAsync(id, false);
+            patchDocument.ApplyTo(clientModel);
+            if (!ModelState.IsValid)
+            {
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
+            }
+            var response = await _clientManager.UpdateAsync(clientModel);
+            return response;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ClientAdminModel>> GetById(string id)
-        {
-            var response = await _clientManager.GetById(id);
-            return Ok(response);
-        }
-
-        //[HttpPut]
-        //public async Task<ActionResult<ClientAdminModel>> Update([FromBody] UpdateClientApiRequest userDTO)
-        //{
-        //    var user = _mapper.Map<UpdateClientRequest>(userDTO);
-        //    var response = await _clientManager.Update(user);
-        //    return Ok(response);
-        //}
     }
 }

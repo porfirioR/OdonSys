@@ -16,24 +16,43 @@ namespace Manager.Admin.Clients
             _mapper = mapper;
         }
 
-        public Task<ClientAdminModel> Create(CreateClientRequest user)
+        public async Task<ClientModel> CreateAsync(CreateClientRequest request)
         {
-            throw new System.NotImplementedException();
+            var accessRequest = _mapper.Map<CreateClientAccessRequest>(request);
+            var accessResponse = await _clientAccess.CreateClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessResponse);
         }
 
-        public Task Delete(string id)
+        public async Task<ClientModel> UpdateAsync(UpdateClientRequest request)
         {
-            throw new System.NotImplementedException();
+            var accessRequest = _mapper.Map<UpdateClientAccessRequest>(request);
+            var accessResponse = await _clientAccess.UpdateClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessResponse);
+        }
+        public async Task<ClientModel> UpdateAsync(ClientModel request)
+        {
+            var accessRequest = _mapper.Map<PatchClientAccessRequest>(request);
+            var accessResponse = await _clientAccess.PatchClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessResponse);
+
         }
 
-        public Task<IEnumerable<ClientAdminModel>> GetAll()
+        public async Task<IEnumerable<ClientModel>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            var accessResponse = await _clientAccess.GetAllAsync();
+            return _mapper.Map<IEnumerable<ClientModel>>(accessResponse);
         }
 
-        public Task<ClientAdminModel> GetById(string id)
+        public async Task<ClientModel> GetByIdAsync(string id, bool active)
         {
-            throw new System.NotImplementedException();
+            var accessResponse = await _clientAccess.GetByIdAsync(id, active);
+            return _mapper.Map<ClientModel>(accessResponse);
         }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _clientAccess.DeleteAsync(id);
+        }
+
     }
 }

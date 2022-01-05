@@ -1,4 +1,4 @@
-﻿using Access.Admin.Users;
+﻿using Access.Admin.Access;
 using Access.Contract.Users;
 using AutoMapper;
 using Resources.Contract.User;
