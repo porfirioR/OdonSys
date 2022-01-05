@@ -17,6 +17,9 @@ namespace Sql
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Procedure> Procedures { get; set; }
+        public DbSet<Tooth> Teeth { get; set; }
+        public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -28,6 +31,9 @@ namespace Sql
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new DoctorClientConfiguration());
+            modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
+            modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
+            modelBuilder.ApplyConfiguration(new ToothConfiguration());
         }
     }
 }
