@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OdonSysBackEnd", "OdonSysBackEnd\OdonSysBackEnd.csproj", "{A281C1E4-CD7B-4085-9596-EE0DB84B9CCF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{36235C6D-C687-40DE-B212-CDEB912838B1} = {36235C6D-C687-40DE-B212-CDEB912838B1}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Access", "Access", "{15528C3F-7D2C-4002-B104-DDD7889F507F}"
 EndProject
@@ -25,7 +28,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contract", "Contract", "{5F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access.Contract", "Access.Contract\Access.Contract.csproj", "{F14BF329-FF13-4D11-887E-57DDF67B3B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Admin", "Manager.Admin\Manager.Admin.csproj", "{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Procedure", "Manager\Manager.Procedure\Manager.Procedure\Manager.Procedure.csproj", "{36235C6D-C687-40DE-B212-CDEB912838B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Admin", "Manager\Manager.Admin\Manager.Admin.csproj", "{C9F37D91-8233-406E-B480-8E0EFF4CE703}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contract.Procedure", "Contract\Contract.Procedure\Contract.Procedure.csproj", "{9AF40410-C9FF-4871-9995-C1C91EAACF9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +64,18 @@ Global
 		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F14BF329-FF13-4D11-887E-57DDF67B3B0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36235C6D-C687-40DE-B212-CDEB912838B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36235C6D-C687-40DE-B212-CDEB912838B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36235C6D-C687-40DE-B212-CDEB912838B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36235C6D-C687-40DE-B212-CDEB912838B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F37D91-8233-406E-B480-8E0EFF4CE703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F37D91-8233-406E-B480-8E0EFF4CE703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F37D91-8233-406E-B480-8E0EFF4CE703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F37D91-8233-406E-B480-8E0EFF4CE703}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AF40410-C9FF-4871-9995-C1C91EAACF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AF40410-C9FF-4871-9995-C1C91EAACF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AF40410-C9FF-4871-9995-C1C91EAACF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AF40410-C9FF-4871-9995-C1C91EAACF9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,7 +88,9 @@ Global
 		{789D73DB-E7E3-4B50-BC4F-9FE202A79DDA} = {09B40C32-41AF-404F-A496-A59F36459F78}
 		{5F279DC7-BA7B-49FA-9603-F794E41933AB} = {09B40C32-41AF-404F-A496-A59F36459F78}
 		{F14BF329-FF13-4D11-887E-57DDF67B3B0D} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
-		{15ED59CB-A6E2-4DB6-BD89-ED8F7E9C7C6C} = {789D73DB-E7E3-4B50-BC4F-9FE202A79DDA}
+		{36235C6D-C687-40DE-B212-CDEB912838B1} = {789D73DB-E7E3-4B50-BC4F-9FE202A79DDA}
+		{C9F37D91-8233-406E-B480-8E0EFF4CE703} = {789D73DB-E7E3-4B50-BC4F-9FE202A79DDA}
+		{9AF40410-C9FF-4871-9995-C1C91EAACF9D} = {5F279DC7-BA7B-49FA-9603-F794E41933AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {843D313E-18CF-4719-89C6-3525B4DCAA42}

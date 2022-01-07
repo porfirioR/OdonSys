@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Access.Admin\Access.Admin.csproj" />
+    <ProjectReference Include="..\..\Access.Contract\Access.Contract.csproj" />
+    <ProjectReference Include="..\..\Resources.Contract\Resources.Contract.csproj" />
+  </ItemGroup>
+
+</Project>
