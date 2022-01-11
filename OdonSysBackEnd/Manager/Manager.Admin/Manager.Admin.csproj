@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Access.Admin\Access.Admin.csproj" />
-    <ProjectReference Include="..\..\Access.Contract\Access.Contract.csproj" />
+    <ProjectReference Include="..\..\Access\Access.Contract\Access.Contract.csproj" />
+    <ProjectReference Include="..\..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\..\Resources.Contract\Resources.Contract.csproj" />
   </ItemGroup>
 

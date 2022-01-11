@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Access.Admin\Access.Admin.csproj" />
+    <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Manager\Manager.Admin\Manager.Admin.csproj" />
     <ProjectReference Include="..\Resources.Contract\Resources.Contract.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
