@@ -1,6 +1,6 @@
 ﻿using Access.Contract.Clients;
 using AutoMapper;
-using Resources.Contract.Clients;
+using Contract.Admin.Clients;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

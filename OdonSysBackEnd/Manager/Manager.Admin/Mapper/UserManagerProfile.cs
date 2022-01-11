@@ -1,7 +1,7 @@
 ﻿using Access.Admin.Access;
 using Access.Contract.Users;
 using AutoMapper;
-using Resources.Contract.User;
+using Contract.Admin.User;
 
 namespace Manager.Admin.Mapper
 {

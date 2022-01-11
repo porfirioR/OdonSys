@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Access\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\..\Access\Access.Data\Access.Data.csproj" />
-    <ProjectReference Include="..\..\Resources.Contract\Resources.Contract.csproj" />
+    <ProjectReference Include="..\..\Contract\Contract.Admin\Contract.Admin.csproj" />
   </ItemGroup>
 
 </Project>

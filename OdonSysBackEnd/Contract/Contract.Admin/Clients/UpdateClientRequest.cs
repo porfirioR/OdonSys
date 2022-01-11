@@ -1,4 +1,4 @@
-﻿namespace Resources.Contract.Clients
+﻿namespace Contract.Admin.Clients
 {
     public class UpdateClientRequest
     {

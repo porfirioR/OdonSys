@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Resources.Contract.User
+namespace Contract.Admin.User
 {
     public class UpdateUserRequest
     {
@@ -8,6 +8,6 @@ namespace Resources.Contract.User
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Document { get; set; }
-        public Country Country { get; set; } 
+        public Country Country { get; set; }
     }
 }

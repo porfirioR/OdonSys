@@ -1,8 +1,8 @@
 ﻿using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
-using Resources.Contract.Auth;
-using Resources.Contract.User;
+using Contract.Admin.Auth;
+using Contract.Admin.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

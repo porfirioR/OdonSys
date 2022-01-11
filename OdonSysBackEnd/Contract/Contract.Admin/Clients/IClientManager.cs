@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Resources.Contract.Clients
+namespace Contract.Admin.Clients
 {
     public interface IClientManager
     {

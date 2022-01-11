@@ -1,8 +1,8 @@
-﻿using Resources.Contract.Auth;
+﻿using Contract.Admin.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Resources.Contract.User
+namespace Contract.Admin.User
 {
     public interface IUserManager
     {

@@ -1,8 +1,8 @@
-﻿using Manager.Admin.Clients;
+﻿using Contract.Admin.Clients;
+using Contract.Admin.User;
+using Manager.Admin.Clients;
 using Manager.Admin.Users;
 using Microsoft.Extensions.DependencyInjection;
-using Resources.Contract.Clients;
-using Resources.Contract.User;
 
 namespace Manager.Admin
 {
