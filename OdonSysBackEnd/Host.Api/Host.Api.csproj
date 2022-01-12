@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Contract\Contract.Procedure\Contract.Procedure.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
@@ -30,10 +31,6 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Procedure\" />
   </ItemGroup>
 
 

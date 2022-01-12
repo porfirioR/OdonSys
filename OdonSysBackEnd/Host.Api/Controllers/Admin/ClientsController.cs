@@ -18,10 +18,10 @@ namespace Host.Api.Controllers.Admin
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
 
-        public ClientsController(IMapper mapper, IClientManager userManager)
+        public ClientsController(IMapper mapper, IClientManager clientManager)
         {
             _mapper = mapper;
-            _clientManager = userManager;
+            _clientManager = clientManager;
         }
 
         [HttpPost]
