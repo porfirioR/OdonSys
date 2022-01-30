@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Access\Access.Contract\Access.Contract.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -31,7 +31,7 @@ namespace Sql.Configurations
                 .Property(x => x.Group)
                 .IsRequired();
 
-            builder.HasKey(x => new { x.Group, x.Name, x.Number });
+            //builder.HasKey(x => new { x.Group, x.Name, x.Number });
         }
     }
 }

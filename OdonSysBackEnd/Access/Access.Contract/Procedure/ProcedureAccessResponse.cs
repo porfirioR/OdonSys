@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Access.Contract.Procedure
 {
@@ -11,5 +12,6 @@ namespace Access.Contract.Procedure
         public string Name { get; set; }
         public string Description { get; set; }
         public string EstimatedSessions { get; set; }
+        public IEnumerable<string> ProcedureTeeth { get; set; }
     }
 }

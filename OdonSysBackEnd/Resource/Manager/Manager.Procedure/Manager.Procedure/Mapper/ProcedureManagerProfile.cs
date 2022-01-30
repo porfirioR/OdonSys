@@ -1,10 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Access.Contract.Procedure;
+using AutoMapper;
+using Contract.Procedure.Procedures;
 
 namespace Manager.Procedure.Mapper
 {
-    class ProcedureManagerProfile
+    public class ProcedureManagerProfile : Profile
     {
+        public ProcedureManagerProfile()
+        {
+            CreateMap<CreateProcedureRequest, CreateProcedureAccessRequest>();
+
+            CreateMap<UpdateProcedureRequest, UpdateProcedureAccessRequest>();
+
+            CreateMap<ProcedureAccessResponse, ProcedureModel>();
+        }
     }
 }
