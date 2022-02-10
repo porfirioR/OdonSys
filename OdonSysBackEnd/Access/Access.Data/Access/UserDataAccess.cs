@@ -1,8 +1,8 @@
 ﻿using Access.Contract.Users;
+using Access.Sql;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Sql;
 using Sql.Entities;
 using System;
 using System.Collections.Generic;

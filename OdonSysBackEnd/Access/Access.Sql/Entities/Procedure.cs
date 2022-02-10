@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Access.Sql;
+using System.Collections.Generic;
 
 namespace Sql.Entities
 {

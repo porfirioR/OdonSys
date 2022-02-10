@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Access.Sql;
+using System;
 
 namespace Sql.Entities
 {

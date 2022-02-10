@@ -1,9 +1,9 @@
 ﻿using Access.Contract.Auth;
+using Access.Sql;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Sql;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

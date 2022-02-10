@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Models.Procedures
 {
-    public class CreateProcedureApiRequest
+    public class CreateProcedureApiRequest : IValidatableObject
     {
         [Required]
         public string Name { get; set; }
@@ -13,5 +13,10 @@ namespace Host.Api.Models.Procedures
         public string EstimatedSessions { get; set; }
         [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            return results;
+        }
     }
 }

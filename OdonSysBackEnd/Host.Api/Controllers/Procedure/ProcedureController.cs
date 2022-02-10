@@ -12,7 +12,7 @@ namespace Host.Api.Controllers.Procedure
     public class ProcedureController : ControllerBase
     {
         private readonly IMapper _mapper;
-        IProcedureManager _procedureManager;
+        private readonly IProcedureManager _procedureManager;
         public ProcedureController(IMapper mapper, IProcedureManager procedureManager)
         {
             _mapper = mapper;

@@ -1,11 +1,12 @@
-﻿using Access.Admin.Access;
+﻿using Access.Admin;
+using Access.Admin.Access;
 using Access.Contract.Auth;
 using Access.Contract.Clients;
 using Access.Contract.Procedure;
 using Access.Contract.Users;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Access.Admin
+namespace Access.Data
 {
     public class ServiceInjection
     {

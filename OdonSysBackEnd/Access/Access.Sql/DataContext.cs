@@ -2,7 +2,7 @@
 using Sql.Configurations;
 using Sql.Entities;
 
-namespace Sql
+namespace Access.Sql
 {
     public class DataContext : DbContext
     {
