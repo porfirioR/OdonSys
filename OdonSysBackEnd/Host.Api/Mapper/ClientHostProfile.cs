@@ -12,6 +12,8 @@ namespace Host.Api.Mapper
 
             CreateMap<UpdateClientApiRequest, UpdateClientRequest>();
 
+            CreateMap<AssignClientApiRequest, AssignClientRequest>();
+
         }
     }
 }

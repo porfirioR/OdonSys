@@ -91,3 +91,9 @@
 1174286 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown column property autoIncrementSequenceName changed while monitoring pkTable
 1174287 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown column property autoIncrementSequenceName changed while monitoring pkTable
 1174287 [AWT-EventQueue-0] WARN  ca.sqlpower.sqlobject.ForeignKeyColumnUpdaterPoolingSPListener  - Warning: unknown column property autoIncrementSequenceName changed while monitoring pkTable
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+660  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+726  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+727  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+758  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+1451 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
