@@ -165,16 +165,16 @@
     </index>
    </folder>
   </table>
-  <table id="TAB44" populated="true" UUID="b6a353dd-061d-4474-9609-e3407ecdc109" name="processings" objectType="TABLE" physicalName="processings" >
+  <table id="TAB44" populated="true" UUID="b6a353dd-061d-4474-9609-e3407ecdc109" name="procedure" objectType="TABLE" physicalName="procedure" >
    <remarks></remarks>
    <folder id="FOLTAB441" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL45" populated="true" UUID="685d7715-36c5-4986-b4ad-205c90c80e25" autoIncrement="false" autoIncrementSequenceName="processings_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL45" populated="true" UUID="685d7715-36c5-4986-b4ad-205c90c80e25" autoIncrement="false" autoIncrementSequenceName="procedure_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL46" populated="true" UUID="4d3d2631-a384-4a12-aab3-cd7e174d2503" autoIncrement="false" autoIncrementSequenceName="processings_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL46" populated="true" UUID="4d3d2631-a384-4a12-aab3-cd7e174d2503" autoIncrement="false" autoIncrementSequenceName="procedure_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL47" populated="true" UUID="92427017-6ee9-43de-b1e2-cfe6b89533dc" autoIncrement="false" autoIncrementSequenceName="processings_description_seq" defaultValue="" name="description" nullable="0" physicalName="description" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL47" populated="true" UUID="92427017-6ee9-43de-b1e2-cfe6b89533dc" autoIncrement="false" autoIncrementSequenceName="procedure_description_seq" defaultValue="" name="description" nullable="0" physicalName="description" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     </folder>
@@ -183,21 +183,21 @@
     <folder id="FOLTAB442" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
     </folder>
     <folder id="FOLTAB444" populated="true" name="Indices" physicalName="Indices" type="4">
-    <index id="IDX48" populated="true" UUID="34126e68-7756-49f3-b261-4d396fc63eba" clustered="false" name="processings" physicalName="processing" primaryKeyIndex="true" unique="false" >
+    <index id="IDX48" populated="true" UUID="34126e68-7756-49f3-b261-4d396fc63eba" clustered="false" name="procedure" physicalName="processing" primaryKeyIndex="true" unique="false" >
      <index-column id="IDC49" populated="true" UUID="5d78d3bb-0b94-405f-adf2-2838a18e4c70" ascendingOrDescending="UNSPECIFIED" column-ref="COL45" name="id" physicalName="id" />
     </index>
    </folder>
   </table>
-  <table id="TAB50" populated="true" UUID="7b3b4525-ca5e-4aee-be39-c8244d64bd86" name="doctorProcessings" objectType="TABLE" physicalName="doctorProcessings" >
+  <table id="TAB50" populated="true" UUID="7b3b4525-ca5e-4aee-be39-c8244d64bd86" name="doctorProcedure" objectType="TABLE" physicalName="doctorProcedures" >
    <remarks></remarks>
    <folder id="FOLTAB501" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL51" populated="true" UUID="3964206b-643b-4566-ace1-0814b21a45fe" autoIncrement="false" autoIncrementSequenceName="doctorProcessings_doctorId_seq" defaultValue="" name="doctorId" nullable="0" physicalName="doctorId" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL51" populated="true" UUID="3964206b-643b-4566-ace1-0814b21a45fe" autoIncrement="false" autoIncrementSequenceName="doctorProcedures_doctorId_seq" defaultValue="" name="doctorId" nullable="0" physicalName="doctorId" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL52" populated="true" UUID="0e68e0f1-8b1c-4fa2-ad90-3ebec255bc19" autoIncrement="false" autoIncrementSequenceName="doctorProcessings_processingId_seq" defaultValue="" name="processingId" nullable="0" physicalName="processingId" precision="0" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL52" populated="true" UUID="0e68e0f1-8b1c-4fa2-ad90-3ebec255bc19" autoIncrement="false" autoIncrementSequenceName="doctorProcedures_procedureId_seq" defaultValue="" name="procedureId" nullable="0" physicalName="procedureId" precision="0" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL53" populated="true" UUID="7ad1d595-2a22-4c23-b2dc-62dd9ca5ecae" autoIncrement="false" autoIncrementSequenceName="doctorProcessings_price_seq" defaultValue="" name="price" nullable="0" physicalName="price" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL53" populated="true" UUID="7ad1d595-2a22-4c23-b2dc-62dd9ca5ecae" autoIncrement="false" autoIncrementSequenceName="doctorProcedures_price_seq" defaultValue="" name="price" nullable="0" physicalName="price" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     </folder>
@@ -206,9 +206,9 @@
     <folder id="FOLTAB502" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
     </folder>
     <folder id="FOLTAB504" populated="true" name="Indices" physicalName="Indices" type="4">
-    <index id="IDX54" populated="true" UUID="898de707-f763-471e-a50e-abc7952b2bc7" clustered="false" name="doctorProcessings" physicalName="doctorProcessing" primaryKeyIndex="true" unique="false" >
+    <index id="IDX54" populated="true" UUID="898de707-f763-471e-a50e-abc7952b2bc7" clustered="false" name="doctorProcedure" physicalName="doctorProcessing" primaryKeyIndex="true" unique="false" >
      <index-column id="IDC55" populated="true" UUID="2d0a2b2b-2806-4a3c-9fab-d53c2ab153ec" ascendingOrDescending="UNSPECIFIED" column-ref="COL51" name="doctorId" physicalName="doctorId" />
-     <index-column id="IDC56" populated="true" UUID="97d970bd-f9a6-4430-aa04-74a690d24f44" ascendingOrDescending="UNSPECIFIED" column-ref="COL52" name="processingId" physicalName="processingId" />
+     <index-column id="IDC56" populated="true" UUID="97d970bd-f9a6-4430-aa04-74a690d24f44" ascendingOrDescending="UNSPECIFIED" column-ref="COL52" name="procedureId" physicalName="procedureId" />
     </index>
    </folder>
   </table>
@@ -350,16 +350,16 @@
     </index>
    </folder>
   </table>
-  <table id="TAB96" populated="true" UUID="b5c1218e-8f39-488e-a698-8e7fb160390a" name="processingTheet" objectType="TABLE" physicalName="processingTheet" >
+  <table id="TAB96" populated="true" UUID="b5c1218e-8f39-488e-a698-8e7fb160390a" name="procedureTheet" objectType="TABLE" physicalName="procedureTheet" >
    <remarks></remarks>
    <folder id="FOLTAB961" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL97" populated="true" UUID="634287d8-adbd-41d6-8cc8-066ac7979cb0" autoIncrement="false" autoIncrementSequenceName="processingTheet_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL97" populated="true" UUID="634287d8-adbd-41d6-8cc8-066ac7979cb0" autoIncrement="false" autoIncrementSequenceName="procedureTheet_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL98" populated="true" UUID="165ed70b-6bee-4b48-a6f7-5e26dea7a805" autoIncrement="false" autoIncrementSequenceName="processingTheet_theetId_seq" defaultValue="" name="theetId" nullable="0" physicalName="theetId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL98" populated="true" UUID="165ed70b-6bee-4b48-a6f7-5e26dea7a805" autoIncrement="false" autoIncrementSequenceName="procedureTheet_theetId_seq" defaultValue="" name="theetId" nullable="0" physicalName="theetId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL99" populated="true" UUID="c0090152-504e-44c4-8f8d-9e764c15b58e" autoIncrement="false" autoIncrementSequenceName="processings_id_seq" defaultValue="" name="processingId" nullable="0" physicalName="processingId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL99" populated="true" UUID="c0090152-504e-44c4-8f8d-9e764c15b58e" autoIncrement="false" autoIncrementSequenceName="processings_id_seq" defaultValue="" name="procedureId" nullable="0" physicalName="procedureId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     </folder>
@@ -368,7 +368,7 @@
     <folder id="FOLTAB962" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
     </folder>
     <folder id="FOLTAB964" populated="true" name="Indices" physicalName="Indices" type="4">
-    <index id="IDX100" populated="true" UUID="3d9f5ff0-0f44-4a90-a2e2-fe472f81c9a8" clustered="false" name="processingTheet" physicalName="processingTheet" primaryKeyIndex="true" unique="false" >
+    <index id="IDX100" populated="true" UUID="3d9f5ff0-0f44-4a90-a2e2-fe472f81c9a8" clustered="false" name="procedureTheet" physicalName="processingTheet" primaryKeyIndex="true" unique="false" >
      <index-column id="IDC101" populated="true" UUID="9afad3d8-dae9-42f3-8612-758be193ace0" ascendingOrDescending="UNSPECIFIED" column-ref="COL97" name="id" physicalName="id" />
     </index>
    </folder>
@@ -482,7 +482,7 @@
  <ddl-generator type="ca.sqlpower.architect.ddl.GenericDDLGenerator" allow-connection="true"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
- <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+ <play-pen zoom="1.0" viewportX="102" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
   <table-pane table-ref="TAB1" x="544" y="261" bgColor="0xbfd6ff" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB9" x="1030" y="196" bgColor="0xbfd6ff" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB14" x="730" y="192" bgColor="0xbfd6ff" fgColor="0x000000" rounded="false" dashed="false"/>
