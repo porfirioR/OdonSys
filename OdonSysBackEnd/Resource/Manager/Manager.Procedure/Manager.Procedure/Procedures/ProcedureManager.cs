@@ -17,6 +17,7 @@ namespace Manager.Procedure.Procedures
             _mapper = mapper;
 
         }
+
         public async Task<ProcedureModel> CreateAsync(CreateProcedureRequest request)
         {
             var accessRequest = _mapper.Map<CreateProcedureAccessRequest>(request);
@@ -53,6 +54,11 @@ namespace Manager.Procedure.Procedures
             var accessRequest = _mapper.Map<UpdateProcedureAccessRequest>(request);
             var accessResponse = await _procedureAccess.UpdateAsync(accessRequest);
             return _mapper.Map<ProcedureModel>(accessResponse);
+        }
+
+        public async Task<bool> ValidateIdNameAsync(string name)
+        {
+            return await _procedureAccess.ValidateIdNameAsync(name);
         }
     }
 }

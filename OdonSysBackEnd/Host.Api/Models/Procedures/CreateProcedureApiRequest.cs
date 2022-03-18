@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Contract.Procedure.Procedures;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Host.Api.Models.Procedures
 {
@@ -16,6 +18,20 @@ namespace Host.Api.Models.Procedures
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
+            var procedureManager = (IProcedureManager)validationContext.GetService(typeof(IProcedureManager));
+            var validName = procedureManager.ValidateIdNameAsync(Name).GetAwaiter().GetResult();
+            if (!validName)
+            {
+                results.Add(new ValidationResult($"Nombre {Name} ya esta en uso."));
+            }
+            var invalidTeeth = procedureManager.ValidateProcedureTeethAsync(ProcedureTeeth).GetAwaiter().GetResult();
+            if (invalidTeeth.Any())
+            {
+                foreach (var id in invalidTeeth)
+                {
+                    results.Add(new ValidationResult($"El identificaor {id} no existe."));
+                }
+            }
             return results;
         }
     }

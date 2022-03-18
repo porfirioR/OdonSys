@@ -1,6 +1,7 @@
 ﻿using Access.Admin.Mapper;
 using Host.Api.Mapper;
 using Manager.Admin.Mapper;
+using Manager.Procedure.Mapper;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Host.Api
@@ -12,7 +13,10 @@ namespace Host.Api
             services.AddAutoMapper(
                 typeof(UserHostProfile),
                 typeof(UserManagerProfile),
-                typeof(UserDataAccessProfile)
+                typeof(UserDataAccessProfile),
+                typeof(ProcedureHostProfile),
+                typeof(ProcedureManagerProfile),
+                typeof(ProcedureAccessProfile)
             );
         }
     }

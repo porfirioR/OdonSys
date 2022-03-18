@@ -67,13 +67,26 @@ namespace Access.Admin.Access
             var entity = await _context.Procedures
                             .Include(x => x.ProcedureTeeth)
                             .SingleOrDefaultAsync(x => x.Active && x.Id == new Guid(accessRequest.Id));
-            
+
             entity = _mapper.Map(accessRequest, entity);
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x) });
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);
             return respose;
+        }
+
+        public async Task<bool> ValidateIdNameAsync(string value)
+        {
+            var existProcedure = await _context.Procedures.SingleOrDefaultAsync(x => x.Name.Equals(value) || x.Id.Equals(value));
+            return existProcedure is null;
+        }
+
+        public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
+        {
+            var procedureTeeth = (await _context.ProcedureTeeth.ToListAsync()).Select(x => x.Id.ToString());
+            var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
+            return invalidIds;
         }
     }
 }
