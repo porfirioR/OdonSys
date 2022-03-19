@@ -1,2 +1,2 @@
 # OdonSys
- Sistema Odontologico
+ Sistema Odontológico
