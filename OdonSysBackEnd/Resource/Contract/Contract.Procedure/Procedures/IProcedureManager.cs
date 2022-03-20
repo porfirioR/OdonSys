@@ -12,6 +12,6 @@ namespace Contract.Procedure.Procedures
         Task<ProcedureModel> RestoreAsync(string id);
         Task<ProcedureModel> DeleteAsync(string id);
         Task<bool> ValidateIdNameAsync(string name);
-        Task<string> ValidateProcedureTeethAsync(IEnumerable<string> ids);
+        Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids);
     }
 }
