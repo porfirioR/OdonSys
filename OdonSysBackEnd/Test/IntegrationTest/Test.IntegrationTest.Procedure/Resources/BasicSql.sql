@@ -34,3 +34,4 @@ insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(ne
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 46, 'Primer Molar', 2, 1, 4, 4);
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 47, 'Segundo Molar', 2, 1, 4, 4);
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 48, 'Tercer Molar', 2, 1, 4, 4);
+SELECT * from Teeth;

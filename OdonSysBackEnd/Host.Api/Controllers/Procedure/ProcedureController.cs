@@ -42,8 +42,8 @@ namespace Host.Api.Controllers.Procedure
             return response;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ProcedureModel> GetById(string id, bool active = false)
+        [HttpGet("{id}/{active}")]
+        public async Task<ProcedureModel> GetById(string id, bool active = true)
         {
             var response = await _procedureManager.GetByIdAsync(id, active);
             return response;

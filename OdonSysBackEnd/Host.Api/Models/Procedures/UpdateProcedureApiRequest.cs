@@ -13,6 +13,7 @@ namespace Host.Api.Models.Procedures
         public string Description { get; set; }
         [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
