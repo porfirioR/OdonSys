@@ -19,7 +19,7 @@ namespace Host.Api.Models.Procedures
             var results = new List<ValidationResult>();
             var procedureManager = (IProcedureManager)validationContext.GetService(typeof(IProcedureManager));
             var validId = procedureManager.ValidateIdNameAsync(Id).GetAwaiter().GetResult();
-            if (validId)
+            if (!validId)
             {
                 results.Add(new ValidationResult($"Identificador {Id} no existe."));
             }

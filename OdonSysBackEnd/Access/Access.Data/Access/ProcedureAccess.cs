@@ -25,7 +25,7 @@ namespace Access.Admin.Access
         {
             var entity = _mapper.Map<Procedure>(accessRequest);
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
-            _context.Entry(entity).State = EntityState.Added;
+            _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<ProcedureAccessResponse>(entity);
         }
@@ -48,7 +48,8 @@ namespace Access.Admin.Access
 
         public async Task<ProcedureAccessResponse> GetByIdAsync(string id, bool active)
         {
-            var entity = await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id));
+            var entity = active ? await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
+                await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Id == new Guid(id));
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);
             return respose;
         }

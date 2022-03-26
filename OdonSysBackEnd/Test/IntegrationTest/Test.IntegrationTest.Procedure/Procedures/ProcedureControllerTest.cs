@@ -113,7 +113,7 @@ namespace AcceptanceTest.Host.Api.Procedures
             Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
             Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
             Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
-            Assert.That(deleteModel.Active, Is.EqualTo(model.Active));
+            Assert.AreNotEqual(deleteModel.Active, model.Active);
         }
     }
 }
