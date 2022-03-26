@@ -12,11 +12,11 @@ namespace Sql.Configurations
 
             builder
                 .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("GetDate()");
 
             builder
                 .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("GetDate()");
 
             builder
                 .Property(d => d.Name)
