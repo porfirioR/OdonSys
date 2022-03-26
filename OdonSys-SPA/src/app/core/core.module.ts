@@ -7,6 +7,7 @@ import { AgGridModule } from 'ag-grid-angular';
 // Components
 import { PrincipalPageComponent } from './components/principal-page/principal-page.component';
 import { HeaderComponent } from './components/header/header.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   imports: [
@@ -17,9 +18,13 @@ import { HeaderComponent } from './components/header/header.component';
   declarations: [
     PrincipalPageComponent,
     HeaderComponent,
+    NotFoundComponent
   ],
   exports: [
-    AgGridModule
+    AgGridModule,
+    PrincipalPageComponent,
+    HeaderComponent,
+    NotFoundComponent
   ]
 })
 export class CoreModule { }

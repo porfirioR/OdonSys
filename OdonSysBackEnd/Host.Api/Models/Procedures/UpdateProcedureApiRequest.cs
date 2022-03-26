@@ -13,12 +13,13 @@ namespace Host.Api.Models.Procedures
         public string Description { get; set; }
         [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
             var procedureManager = (IProcedureManager)validationContext.GetService(typeof(IProcedureManager));
             var validId = procedureManager.ValidateIdNameAsync(Id).GetAwaiter().GetResult();
-            if (validId)
+            if (!validId)
             {
                 results.Add(new ValidationResult($"Identificador {Id} no existe."));
             }

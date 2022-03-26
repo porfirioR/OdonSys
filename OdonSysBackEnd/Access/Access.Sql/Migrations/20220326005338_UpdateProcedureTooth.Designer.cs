@@ -4,14 +4,16 @@ using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220326005338_UpdateProcedureTooth")]
+    partial class UpdateProcedureTooth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,12 +36,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<bool>("Debts")
                         .HasColumnType("bit");
@@ -103,12 +105,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<string>("Document")
                         .HasMaxLength(15)
@@ -186,12 +188,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<string>("Name")
                         .HasMaxLength(25)
@@ -214,12 +216,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -251,14 +253,10 @@ namespace Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("ProcedureId")
                         .HasColumnType("uniqueidentifier");
@@ -287,12 +285,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<string>("Name")
                         .HasMaxLength(25)
@@ -330,12 +328,12 @@ namespace Sql.Migrations
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<DateTime>("DateModified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasDefaultValueSql("GetUtcDate()");
 
                     b.Property<int>("Group")
                         .HasColumnType("int");

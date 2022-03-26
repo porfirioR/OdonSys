@@ -12,11 +12,11 @@ namespace Sql.Configurations
 
             builder
                 .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("GetDate()");
 
             builder
                 .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetUtcDate()");
+                .HasDefaultValueSql("GetDate()");
 
             builder
                 .Property(x => x.Name)
@@ -30,8 +30,6 @@ namespace Sql.Configurations
             builder
                 .Property(x => x.Group)
                 .IsRequired();
-
-            //builder.HasKey(x => new { x.Group, x.Name, x.Number });
         }
     }
 }

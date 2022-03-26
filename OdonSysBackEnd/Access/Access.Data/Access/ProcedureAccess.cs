@@ -24,8 +24,8 @@ namespace Access.Admin.Access
         public async Task<ProcedureAccessResponse> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Procedure>(accessRequest);
-            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x) });
-            _context.Entry(entity).State = EntityState.Added;
+            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
+            _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<ProcedureAccessResponse>(entity);
         }
@@ -48,7 +48,8 @@ namespace Access.Admin.Access
 
         public async Task<ProcedureAccessResponse> GetByIdAsync(string id, bool active)
         {
-            var entity = await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id));
+            var entity = active ? await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
+                await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Id == new Guid(id));
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);
             return respose;
         }
@@ -68,8 +69,8 @@ namespace Access.Admin.Access
                             .Include(x => x.ProcedureTeeth)
                             .SingleOrDefaultAsync(x => x.Active && x.Id == new Guid(accessRequest.Id));
 
-            entity = _mapper.Map(accessRequest, entity);
-            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x) });
+            entity.Description = accessRequest.Description;
+            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x) }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);
@@ -84,7 +85,7 @@ namespace Access.Admin.Access
 
         public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
         {
-            var procedureTeeth = (await _context.ProcedureTeeth.ToListAsync()).Select(x => x.Id.ToString());
+            var procedureTeeth = (await _context.Teeth.ToListAsync()).Select(x => x.Id.ToString());
             var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
             return invalidIds;
         }
