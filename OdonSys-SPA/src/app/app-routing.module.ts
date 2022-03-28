@@ -5,6 +5,7 @@ import { PrincipalPageComponent } from './core/components/principal-page/princip
 export const AppRoutes: Routes = [
   {
     path: '',
+    component: PrincipalPageComponent,
     children: [
       {
         path: 'admin',

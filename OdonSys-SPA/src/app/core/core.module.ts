@@ -5,9 +5,9 @@ import { CoreRoutes } from './core.routing';
 import { AgGridModule } from 'ag-grid-angular';
 
 // Components
-import { PrincipalPageComponent } from './components/principal-page/principal-page.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { PrincipalPageComponent } from './components/principal-page/principal-page.component';
 
 @NgModule({
   imports: [
@@ -16,14 +16,14 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     AgGridModule.withComponents([]),
   ],
   declarations: [
-    PrincipalPageComponent,
     HeaderComponent,
+    PrincipalPageComponent,
     NotFoundComponent
   ],
   exports: [
     AgGridModule,
-    PrincipalPageComponent,
     HeaderComponent,
+    PrincipalPageComponent,
     NotFoundComponent
   ]
 })

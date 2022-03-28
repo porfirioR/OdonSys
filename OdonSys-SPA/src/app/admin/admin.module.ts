@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminComponent } from './admin.component';
 import { RouterModule } from '@angular/router';
 import { AdminRoutes } from './admin.routing';
 import { AdminProcedureComponent } from './components/admin-procedure/admin-procedure.component';
@@ -15,7 +14,6 @@ import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert
     RouterModule.forChild(AdminRoutes)
   ],
   declarations: [
-    AdminComponent,
     AdminProcedureComponent,
     DoctorsComponent,
     UpsertDoctorComponent
