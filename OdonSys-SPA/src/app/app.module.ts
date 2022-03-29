@@ -11,9 +11,9 @@ import { CoreModule } from './core/core.module';
     AppComponent
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
-    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,11 +5,14 @@
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 
-
-
 .mr-5 {
-    margin-right: 5px !important;
+  margin-right: 5px !important;
 }
 .ml-5 {
-    margin-left: 5px !important;
+  margin-left: 5px !important;
+}
+.centerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

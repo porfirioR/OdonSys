@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { CoreRoutes } from './core.routing';
 
 // Components
-import { HeaderComponent } from './components/header/header.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { PrincipalPageComponent } from './components/principal-page/principal-page.component';
+import { HeaderComponent } from '../layout/header/header.component';
 import { RouterModule } from '@angular/router';
-import { AgGridModule } from 'ag-grid-angular/public-api';
+import { NotFoundComponent } from '../layout/not-found/not-found.component';
+import { PrincipalPageComponent } from '../layout/principal-page/principal-page.component';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   imports: [
