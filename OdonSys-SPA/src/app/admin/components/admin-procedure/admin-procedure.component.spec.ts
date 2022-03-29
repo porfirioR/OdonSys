@@ -11,8 +11,9 @@ describe('AdminProcedureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminProcedureComponent ]
-    })
+    declarations: [AdminProcedureComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

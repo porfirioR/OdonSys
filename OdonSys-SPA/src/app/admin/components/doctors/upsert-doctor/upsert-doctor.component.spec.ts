@@ -11,8 +11,9 @@ describe('UpsertDoctorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpsertDoctorComponent ]
-    })
+    declarations: [UpsertDoctorComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 
