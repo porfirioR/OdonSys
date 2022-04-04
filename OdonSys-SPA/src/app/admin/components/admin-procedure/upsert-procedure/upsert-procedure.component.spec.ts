@@ -3,22 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminProcedureComponent } from './admin-procedure.component';
+import { UpsertProcedureComponent } from './upsert-procedure.component';
 
-describe('AdminProcedureComponent', () => {
-  let component: AdminProcedureComponent;
-  let fixture: ComponentFixture<AdminProcedureComponent>;
+describe('UpsertProcedureComponent', () => {
+  let component: UpsertProcedureComponent;
+  let fixture: ComponentFixture<UpsertProcedureComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-    declarations: [AdminProcedureComponent],
-    teardown: { destroyAfterEach: false }
-})
+      declarations: [ UpsertProcedureComponent ]
+    })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminProcedureComponent);
+    fixture = TestBed.createComponent(UpsertProcedureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, RowNode } from 'ag-grid-community';
+import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,26 @@ export class AgGridService {
   private columnDef: ColDef[] = [
     { headerName: 'Id', field: 'id', sortable: true, filter: true, resizable: true, width: 500 }
   ];
+  private greenColor = '#1DC9B7';
+  private redColor = '#FF6565';
+
+  private procedureColumnDef: ColDef[] = [
+  { headerName: 'Name', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+  { headerName: 'Code', field: 'code', filter: 'agTextColumnFilter', resizable: true },
+  { headerName: 'Type', field: 'documentType', filter: 'agTextColumnFilter', resizable: true },
+  { headerName: 'Active', field: 'active', filter: false, resizable: true, maxWidth: 200,
+    cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+  },
+  { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 250, maxWidth: 300, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
 
   constructor() { }
 
   public getGridOptions = (): GridOptions => {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Porfavor espere mientras cargue las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Porfavor espere mientras carga las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,
@@ -36,5 +50,24 @@ export class AgGridService {
       },
     };
     return gridOptions;
+  }
+  
+  // Configuration
+  public getProcedureGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
+    return grid;
+  }
+  
+  public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
+    const gridApi = gridOptions.api as GridApi;
+    const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number;
+    const renderSelectedColumnIndex = selectedColumnIndex > gridApi.getRenderedNodes().length ?
+                                      selectedColumnIndex - gridApi.getFirstDisplayedRow() : selectedColumnIndex;
+    return gridApi.getRenderedNodes()[renderSelectedColumnIndex];
+  }
+  
+  private activeFormatter(cell: { value: any; }): string {
+    return cell.value ? 'Yes' : 'No';
   }
 }
