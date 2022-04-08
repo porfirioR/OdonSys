@@ -1,36 +1,40 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { ProcedureApiService } from 'src/app/admin/service/procedure-admin-api.service';
-import { catchError, first, tap } from 'rxjs/operators';
-import { AgGridService } from 'src/app/core/services/shared/ag-grid.service';
-import { GridActionModel } from 'src/app/core/models/view/grid-action-model';
-import { ButtonGridActionType } from 'src/app/core/enums/button-grid-action-type.enum';
-import { BasicComponent } from 'src/app/core/components/basic/basic.component';
-import { ProcedureModel } from 'src/app/core/models/procedure/procedure-model';
+import { first, tap } from 'rxjs/operators';
+import { ProcedureApiService } from '../../../admin/service/procedure-admin-api.service';
+import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
+import { AlertService } from '../../../core/services/shared/alert.service';
 
 @Component({
   selector: 'app-admin-procedure',
   templateUrl: './admin-procedure.component.html',
   styleUrls: ['./admin-procedure.component.scss']
 })
-export class AdminProcedureComponent extends BasicComponent implements OnInit {
+export class AdminProcedureComponent implements OnInit {
   public gridOptions: GridOptions = {};
-  public documentList: ProcedureModel[] = [];
+  public procedureList: ProcedureModel[] = [];
 
-  constructor(private readonly procedureApiService: ProcedureApiService,
+  constructor(
+    private readonly router: Router,
+    private readonly alertService: AlertService,
+    private readonly procedureApiService: ProcedureApiService,
     private readonly agGridService: AgGridService) {
-    super();
   }
 
   ngOnInit() {
     this.setupAgGrid();
+    this.getList();
   }
 
   private getList = () => {
     this.procedureApiService.getAll().pipe(
       tap(response => {
-        this.documentList = Object.assign(Array<ProcedureModel>(), response);
-        this.gridOptions.api?.setRowData(this.documentList);
+        this.procedureList = Object.assign(Array<ProcedureModel>(), response);
+        this.gridOptions.api?.setRowData(this.procedureList);
         this.gridOptions.api?.sizeColumnsToFit();
       })
     ).subscribe();

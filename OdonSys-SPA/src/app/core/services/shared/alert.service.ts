@@ -6,7 +6,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 })
 export class AlertService {
 
-constructor() { }
+  constructor() { }
 
   public showQuestionModal = async (title: string, text: string): Promise<SweetAlertResult<unknown>> => {
     const result = await Swal.fire({

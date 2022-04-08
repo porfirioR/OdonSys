@@ -14,7 +14,7 @@ export const AppRoutes: Routes = [
       // { path: 'login', component: LoginComponent },
       { path: 'página-no-encontrada', component: NotFoundComponent },
       { path: '**', redirectTo: '/página-no-encontrada' },
-      { path: '', component: PrincipalPageComponent },
+      { path: 'home', component: PrincipalPageComponent },
     ]
   }
 ];
