@@ -10,7 +10,7 @@ import { UpdateProcedureRequest } from '../models/procedure/api/update-procedure
   providedIn: 'root'
 })
 export class ProcedureApiService {
-  private baseUrl = `${environment.apiUrl}/admin/procedure`;
+  private baseUrl = `${environment.apiUrl}/procedure`;
 
   constructor(private http: HttpClient) { }
 

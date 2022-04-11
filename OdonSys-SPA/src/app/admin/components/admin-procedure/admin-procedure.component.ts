@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { first, tap } from 'rxjs/operators';
+import { catchError, first, tap } from 'rxjs/operators';
 import { ProcedureApiService } from '../../../admin/service/procedure-admin-api.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-admin-procedure',
@@ -15,6 +16,7 @@ import { AlertService } from '../../../core/services/shared/alert.service';
   styleUrls: ['./admin-procedure.component.scss']
 })
 export class AdminProcedureComponent implements OnInit {
+  public load: boolean = false;
   public gridOptions: GridOptions = {};
   public procedureList: ProcedureModel[] = [];
 
@@ -27,6 +29,7 @@ export class AdminProcedureComponent implements OnInit {
 
   ngOnInit() {
     this.setupAgGrid();
+    this.load = true;
     this.getList();
   }
 
@@ -36,6 +39,12 @@ export class AdminProcedureComponent implements OnInit {
         this.procedureList = Object.assign(Array<ProcedureModel>(), response);
         this.gridOptions.api?.setRowData(this.procedureList);
         this.gridOptions.api?.sizeColumnsToFit();
+        if (this.procedureList.length === 0) {
+          this.gridOptions.api?.showNoRowsOverlay();
+        }
+      }), catchError(err => {
+        this.gridOptions.api?.showNoRowsOverlay();
+        return throwError(err);
       })
     ).subscribe();
   }

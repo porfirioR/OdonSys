@@ -7,7 +7,7 @@ import { GridActionsComponent } from '../../components/grid-actions/grid-actions
 })
 export class AgGridService {
   private columnDef: ColDef[] = [
-    { headerName: 'Id', field: 'id', sortable: true, filter: true, resizable: true, width: 500 }
+    { headerName: 'Id', field: 'id', sortable: true, filter: true, resizable: true, minWidth: 200 }
   ];
   private greenColor = '#1DC9B7';
   private redColor = '#FF6565';

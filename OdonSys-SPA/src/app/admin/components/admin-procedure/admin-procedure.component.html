@@ -1,12 +1,19 @@
-<div>
-  <p>
-    Procedimientos
-  </p>
-</div>
-<div>
-  <ng-container *ngIf="gridOptions">
-    <ag-grid-angular class="ag-grid-angular"
-      [gridOptions]="gridOptions">
-    </ag-grid-angular>
-  </ng-container>
+<app-progress *ngIf="!load"></app-progress>
+<div *ngIf="load" class="container">
+  <div class="header-top">
+    <div>
+      <h3>Procedimientos</h3>
+    </div>
+      <button type="button" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+        Agregar
+      </button>
+  </div>
+  <div class="p-t-16">
+    <ng-container *ngIf="gridOptions">
+      <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </ng-container>
+  </div>
 </div>

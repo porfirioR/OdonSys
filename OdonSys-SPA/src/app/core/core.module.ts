@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
+import { RouterModule } from '@angular/router';
 
 // Components
 import { HeaderComponent } from '../layout/header/header.component';
 import { NotFoundComponent } from '../layout/not-found/not-found.component';
 import { PrincipalPageComponent } from '../layout/principal-page/principal-page.component';
+import { ProgressComponent } from './components/progress/progress.component';
 
 @NgModule({
   imports: [
@@ -17,13 +18,15 @@ import { PrincipalPageComponent } from '../layout/principal-page/principal-page.
   declarations: [
     HeaderComponent,
     PrincipalPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ProgressComponent
   ],
   exports: [
     AgGridModule,
     HeaderComponent,
     PrincipalPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ProgressComponent
   ]
 })
 export class CoreModule { }
