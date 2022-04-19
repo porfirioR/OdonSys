@@ -1,10 +1,14 @@
-export interface ProcedureApiModel {
-    id: string;
-    active: boolean;
-    dateCreate: Date;
-    dateModified: Date;
-    name: string;
-    description: string;
-    estimatedSessions: string;
-    procedureTeeth: string[];
+export class ProcedureApiModel {
+    id!: string;
+    active: boolean = false;
+    dateCreate!: Date;
+    dateModified!: Date;
+    name!: string;
+    description!: string;
+    estimatedSessions!: string;
+    procedureTeeth: string[] = [];
+
+    constructor() {
+        
+    }
 }

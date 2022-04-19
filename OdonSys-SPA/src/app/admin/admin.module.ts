@@ -7,6 +7,7 @@ import { AdminProcedureComponent } from './components/admin-procedure/admin-proc
 import { CoreModule } from '../core/core.module';
 import { DoctorsComponent } from './components/doctors/doctors.component';
 import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert-doctor.component';
+import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert
   ],
   declarations: [
     AdminProcedureComponent,
+    UpsertProcedureComponent,
     DoctorsComponent,
     UpsertDoctorComponent,
     DoctorsComponent

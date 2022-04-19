@@ -61,3 +61,10 @@ $blue: #d1f2ff;
 .p-t-16 {
   padding-top: 16px;
 }
+
+.header-top {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 1rem;
+  border-bottom: 1px solid blue;
+}

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProcedureApiModel } from 'src/app/core/models/procedure/procedure-api-model';
 import { environment } from 'src/environments/environment';
 import { CreateProcedureRequest } from '../models/procedure/api/create-procedure-request';
-import { ProcedureApiModel } from '../models/procedure/api/procedure-api-model';
 import { UpdateProcedureRequest } from '../models/procedure/api/update-procedure-request';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class ProcedureApiService {
     return this.http.get<ProcedureApiModel[]>(`${this.baseUrl}`);
   }
 
-  public getByCode = (code: string): Observable<ProcedureApiModel> => {
+  public getById = (code: string): Observable<ProcedureApiModel> => {
     return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${code}`);
   }
 

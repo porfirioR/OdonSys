@@ -1,3 +1,6 @@
-<p>
-  upsert-procedure works!
-</p>
+<app-progress *ngIf="!load"></app-progress>
+<div *ngIf="load" class="container">
+  <div class="header-top">
+    <h3>Procedimientos {{title}}</h3>
+  </div>
+</div>
