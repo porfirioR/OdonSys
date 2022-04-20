@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';
 import { ProcedureApiService } from '../../../../admin/service/procedure-admin-api.service';
@@ -20,6 +20,7 @@ export class UpsertProcedureComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly alertService: AlertService,
     private readonly procedureApiService: ProcedureApiService,
 
@@ -27,6 +28,14 @@ export class UpsertProcedureComponent implements OnInit {
 
   ngOnInit() {
     this.loadValues();
+  }
+
+  public save = () => {
+
+  }
+
+  public close = () => {
+    this.router.navigate(['admin/procedimentos']);
   }
 
   private loadValues = () => {

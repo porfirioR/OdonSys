@@ -3,16 +3,20 @@
   <div class="header-top">
     <h3>Procedimientos {{title}}</h3>
   </div>
-  <div>
-    <form [formGroup]="formGroup">
+  <div class="b-t-16">
+    <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row">
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Name'" formControlName="name" class="col-lg-6"></app-text-number-input>
+          <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Description'" formControlName="description" class="col-lg-6"></app-text-number-input>
+          <app-text-number-input [label]="'Descripción'" formControlName="description"></app-text-number-input>
         </div>
       </div>
     </form>
+    <div class="form-group text-center">
+      <button class="btn btn-success" type="submit" [disabled]="!formGroup.valid">Guardar</button>
+      <button class="btn btn-default" type="button" (click)="close()">Cancelar</button>
+    </div>
   </div>
 </div>
