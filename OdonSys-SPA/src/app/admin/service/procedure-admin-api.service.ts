@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProcedureApiModel } from 'src/app/core/models/procedure/procedure-api-model';
-import { environment } from 'src/environments/environment';
+import { ProcedureApiModel } from '../../core/models/procedure/procedure-api-model';
+import { environment } from '../../../environments/environment';
 import { CreateProcedureRequest } from '../models/procedure/api/create-procedure-request';
 import { UpdateProcedureRequest } from '../models/procedure/api/update-procedure-request';
 

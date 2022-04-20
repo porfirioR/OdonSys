@@ -3,4 +3,16 @@
   <div class="header-top">
     <h3>Procedimientos {{title}}</h3>
   </div>
+  <div>
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Name'" formControlName="name" class="col-lg-6"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Description'" formControlName="description" class="col-lg-6"></app-text-number-input>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

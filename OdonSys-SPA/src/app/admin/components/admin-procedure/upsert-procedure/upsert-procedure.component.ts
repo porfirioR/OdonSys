@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';
-import { ProcedureApiService } from 'src/app/admin/service/procedure-admin-api.service';
-import { ProcedureApiModel } from 'src/app/core/models/procedure/procedure-api-model';
-import { AlertService } from 'src/app/core/services/shared/alert.service';
+import { ProcedureApiService } from '../../../../admin/service/procedure-admin-api.service';
+import { ProcedureApiModel } from '../../../../core/models/procedure/procedure-api-model';
+import { AlertService } from '../../../../core/services/shared/alert.service';
 
 @Component({
   selector: 'app-upsert-procedure',
@@ -15,6 +16,7 @@ export class UpsertProcedureComponent implements OnInit {
   public load: boolean = false;
   public title = 'crear';
   private id = '';
+  public formGroup: FormGroup = new FormGroup({});
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -34,7 +36,11 @@ export class UpsertProcedureComponent implements OnInit {
       return procedure$.pipe(
         first(),
         tap(x => {
-          alert('hi');
+          this.formGroup = new FormGroup( {
+            name : new FormControl(this.id ? x.name: '', [Validators.required, Validators.maxLength(30)]),
+            description : new FormControl(this.id ? x.description: '', [Validators.required, Validators.maxLength(50)]),
+            estimatedSessions : new FormControl(this.id ? x.estimatedSessions: '', [Validators.required, Validators.maxLength(50)])
+          })
           this.load = true;
         }),
         catchError(e => {
