@@ -7,23 +7,33 @@
 @import "ag-grid-community/dist/styles/ag-grid.css";
 @import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 @import "./assets/scss/ag-grid.scss";
+@import "./assets/scss/padding&margin.scss";
 
 $white: #fff;
 $primary: #1548cd;
 $redColor: red;
 $blue: #d1f2ff;
-.mr-5 {
-  margin-right: 5px !important;
-}
-.ml-5 {
-  margin-left: 5px !important;
-}
 .centerDiv {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.header-title {
+  padding: 1rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: 0.2rem;
+  padding-left: 0 !important;
+  border-bottom: 1px solid blue;
+}
+
+.header-top {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 1rem;
+  border-bottom: 1px solid blue;
+}
 .swal2-styled.swal2-confirm {
   background-color: $primary !important;
 }
@@ -39,32 +49,4 @@ $blue: #d1f2ff;
 .swal2-icon.swal2-warning {
   border-color: $redColor !important;
   color: $redColor !important;
-}
-
-.header-title {
-  padding: 1rem;
-  margin-right: 0;
-  margin-left: 0;
-  border-width: 0.2rem;
-  padding-left: 0 !important;
-  border-bottom: 1px solid blue;
-}
-
-.p-l-16 {
-  padding-left: 16px;
-}
-
-.p-r-16 {
-  padding-right: 16px;
-}
-
-.p-t-16 {
-  padding-top: 16px;
-}
-
-.header-top {
-  display: flex !important;
-  justify-content: space-between !important;
-  padding: 1rem;
-  border-bottom: 1px solid blue;
 }

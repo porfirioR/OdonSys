@@ -48,8 +48,12 @@ export class UpsertProcedureComponent implements OnInit {
           this.formGroup = new FormGroup( {
             name : new FormControl(this.id ? x.name: '', [Validators.required, Validators.maxLength(30)]),
             description : new FormControl(this.id ? x.description: '', [Validators.required, Validators.maxLength(50)]),
-            estimatedSessions : new FormControl(this.id ? x.estimatedSessions: '', [Validators.required, Validators.maxLength(50)])
+            estimatedSessions : new FormControl(this.id ? x.estimatedSessions: '', [Validators.required, Validators.maxLength(50)]),
+            active : new FormControl(this.id ? x.active: true, [Validators.required])
           })
+          if (!this.id) {
+            this.formGroup.controls.active.disable();
+          }
           this.load = true;
         }),
         catchError(e => {
