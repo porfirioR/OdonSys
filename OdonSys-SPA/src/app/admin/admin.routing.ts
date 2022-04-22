@@ -7,9 +7,9 @@ export const AdminRoutes: Routes = [
   { 
     path: '',
     children: [
-      { path: 'procedimiento', component: AdminProcedureComponent },
-      { path: 'procedimiento/crear', component: UpsertProcedureComponent },
-      { path: 'procedimiento/actualizar', component: UpsertProcedureComponent },
+      { path: 'procedimientos', component: AdminProcedureComponent },
+      { path: 'procedimientos/crear', component: UpsertProcedureComponent },
+      { path: 'procedimientos/actualizar', component: UpsertProcedureComponent },
       { path: 'doctores', component: DoctorsComponent },
     ]
   },

@@ -16,12 +16,11 @@
           <app-text-number-input [label]="'Cantidad de sesiones'" formControlName="estimatedSessions"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <div class="form-group">
-            <label class="col-form-label col-lg-12">Activo</label>
-            <input type="checkbox"  formControlName="active">
-          </div>
+          <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
         </div>
-
+      </div>
+      <div class="col-lg m-t-16">
+        <h2>Dientes</h2>
       </div>
     </form>
     <div class="form-group text-center btn-footer">

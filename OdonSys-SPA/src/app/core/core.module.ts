@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AgGridModule } from 'ag-grid-angular';
 import { RouterModule } from '@angular/router';
+import { AgGridModule } from 'ag-grid-angular';
 
 // Components
 import { HeaderComponent } from '../layout/header/header.component';
@@ -10,21 +10,23 @@ import { PrincipalPageComponent } from '../layout/principal-page/principal-page.
 import { ProgressComponent } from './components/progress/progress.component';
 import { TextNumberComponent } from './components/inputs/text-number-input/text-number-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckInputComponent } from './components/inputs/check-input/check-input.component';
 
 @NgModule({
   imports: [
+    ReactiveFormsModule,
     CommonModule,
+    FormsModule,
     RouterModule,
     AgGridModule.withComponents([]),
-    FormsModule,
-    ReactiveFormsModule
   ],
   declarations: [
     HeaderComponent,
     PrincipalPageComponent,
     NotFoundComponent,
     ProgressComponent,
-    TextNumberComponent
+    TextNumberComponent,
+    CheckInputComponent
   ],
   exports: [
     FormsModule,
@@ -34,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     PrincipalPageComponent,
     NotFoundComponent,
     ProgressComponent,
-    TextNumberComponent
+    TextNumberComponent,
+    CheckInputComponent
   ]
 })
 export class CoreModule { }

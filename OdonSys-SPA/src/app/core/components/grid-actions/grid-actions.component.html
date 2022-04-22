@@ -1,3 +1,20 @@
-<p>
-  grid-actions works!
-</p>
+<span class="btn btn-bold btn-sm btn-font-sm btn-label-brand m-r-8" *ngIf="canShowView">
+  <span class=" d-flex-center cursor-pointer" (click)="viewItem()">
+    <i class="fa fa-eye"></i>Ver
+  </span>
+</span>
+<span class="btn btn-bold btn-sm btn-font-sm btn-label m-r-10" *ngIf="canShowEdit">
+  <span class="d-flex-center cursor-pointer" (click)="editItem()">
+    <i class="flaticon2-edit"></i>Editar
+  </span>
+</span>
+<span class="btn btn-bold btn-sm btn-font-sm btn-label-danger" (click)="deleteItem()" *ngIf="canShowDelete">
+  <span class="d-flex-center cursor-pointer">
+    <i class="flaticon2-trash"></i>Borrar
+  </span>
+</span>
+<span class="btn btn-bold btn-sm btn-font-sm btn-label" (click)="downloadItem()" *ngIf="canShowDownload">
+  <span class="d-flex-center cursor-pointer">
+    <i class="flaticon2-download"></i>Download
+  </span>
+</span>

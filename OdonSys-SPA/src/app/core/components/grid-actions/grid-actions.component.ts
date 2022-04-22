@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../models/view/grid-action-model';
@@ -8,30 +9,18 @@ import { GridActionModel } from '../../models/view/grid-action-model';
   templateUrl: './grid-actions.component.html',
   styleUrls: ['./grid-actions.component.scss']
 })
-export class GridActionsComponent implements OnInit {
-  public params: GridActionModel = {
-    buttonShow: [],
-    clicked: function (action: ButtonGridActionType): void {
-      throw new Error('Function not implemented.');
-    }
-  };
+export class GridActionsComponent implements AgRendererComponent {
+  public params!: GridActionModel;
   public canShowView = false;
   public canShowEdit = false;
   public canShowDelete = false;
   public canShowDownload = false;
-  public canShowPost = false;
-  public canShowUnlock = false;
-  public canSearchRecent = false;
-  public canShowViewDetails = false;
 
   constructor() {
   }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   public agInit = (params: ICellRendererParams): void => {
-    this.params =  params as unknown as GridActionModel;
+    this.params = Object.assign(new GridActionModel(), params);
     this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
     this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
     this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);

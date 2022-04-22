@@ -13,13 +13,16 @@ export class AgGridService {
   private redColor = '#FF6565';
 
   private procedureColumnDef: ColDef[] = [
-  { headerName: 'Name', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-  { headerName: 'Code', field: 'code', filter: 'agTextColumnFilter', resizable: true },
-  { headerName: 'Type', field: 'documentType', filter: 'agTextColumnFilter', resizable: true },
-  { headerName: 'Active', field: 'active', filter: false, resizable: true, maxWidth: 200,
-    cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
-  },
-  { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 250, maxWidth: 300, resizable: true,
+    { headerName: 'Id', field: 'id', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'EstimatedSessions', field: 'estimatedSessions', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Active', field: 'active', filter: false, resizable: true, maxWidth: 200,
+      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 200, resizable: true },
+    { headerName: 'Fecha Actualizada', field: 'dateModified', filter: 'agDateColumnFilter', minWidth: 200, resizable: true },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 250, maxWidth: 300, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ];
 
@@ -68,6 +71,6 @@ export class AgGridService {
   }
   
   private activeFormatter(cell: { value: any; }): string {
-    return cell.value ? 'Yes' : 'No';
+    return cell.value ? 'Si' : 'No';
   }
 }

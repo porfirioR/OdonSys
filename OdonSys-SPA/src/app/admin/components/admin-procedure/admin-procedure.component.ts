@@ -51,7 +51,7 @@ export class AdminProcedureComponent implements OnInit {
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getProcedureGridOptions();
-    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action' ) as ColDef;
+    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Borrar, ButtonGridActionType.Editar],
       clicked: this.actionColumnClicked
@@ -59,7 +59,6 @@ export class AdminProcedureComponent implements OnInit {
     columnAction.cellRendererParams = params;
   }
 
-  
   private actionColumnClicked = (action: ButtonGridActionType): void => {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
     switch (action) {
