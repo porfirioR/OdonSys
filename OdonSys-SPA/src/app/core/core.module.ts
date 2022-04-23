@@ -11,12 +11,13 @@ import { ProgressComponent } from './components/progress/progress.component';
 import { TextNumberComponent } from './components/inputs/text-number-input/text-number-input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckInputComponent } from './components/inputs/check-input/check-input.component';
+import { GridActionsComponent } from './components/grid-actions/grid-actions.component';
 
 @NgModule({
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    FormsModule,
     RouterModule,
     AgGridModule.withComponents([]),
   ],
@@ -26,18 +27,21 @@ import { CheckInputComponent } from './components/inputs/check-input/check-input
     NotFoundComponent,
     ProgressComponent,
     TextNumberComponent,
-    CheckInputComponent
+    CheckInputComponent,
+    GridActionsComponent
   ],
   exports: [
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
     AgGridModule,
     HeaderComponent,
     PrincipalPageComponent,
     NotFoundComponent,
     ProgressComponent,
     TextNumberComponent,
-    CheckInputComponent
+    CheckInputComponent,
+    GridActionsComponent
   ]
 })
 export class CoreModule { }

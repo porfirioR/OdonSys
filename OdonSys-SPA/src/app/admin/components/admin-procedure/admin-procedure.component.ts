@@ -17,7 +17,7 @@ import { throwError } from 'rxjs';
 })
 export class AdminProcedureComponent implements OnInit {
   public load: boolean = false;
-  public gridOptions: GridOptions = {};
+  public gridOptions!: GridOptions;
   public procedureList: ProcedureModel[] = [];
 
   constructor(
@@ -63,10 +63,10 @@ export class AdminProcedureComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
     switch (action) {
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/edit/${currentRowNode.data.code}`]);
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}/${currentRowNode.data.active}`]);
         break;
       case ButtonGridActionType.Borrar:
-        this.deleteSelectedItem(currentRowNode.data.code);
+        this.deleteSelectedItem(currentRowNode.data.id);
         break;
       default:
         break;

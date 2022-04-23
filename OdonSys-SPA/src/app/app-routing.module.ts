@@ -6,9 +6,8 @@ import { PrincipalPageComponent } from './layout/principal-page/principal-page.c
 export const AppRoutes: Routes = [
   {
     path: '',
-    component: AppComponent,
+    component: PrincipalPageComponent,
     children: [
-      { path: '', component: PrincipalPageComponent },
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule)
@@ -17,5 +16,6 @@ export const AppRoutes: Routes = [
   },
   // { path: 'login', component: LoginComponent },
   { path: 'página-no-encontrada', component: NotFoundComponent },
-  { path: '**', redirectTo: '/página-no-encontrada' }
+  { path: '**', redirectTo: '/página-no-encontrada' },
+  
 ];

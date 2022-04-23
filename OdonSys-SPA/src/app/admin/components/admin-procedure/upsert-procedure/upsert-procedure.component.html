@@ -1,4 +1,4 @@
-<app-progress *ngIf="!load"></app-progress>
+<app-progress *ngIf="!load || saving"></app-progress>
 <div *ngIf="load" class="container">
   <div class="header-top">
     <h3>Procedimientos {{title}}</h3>
@@ -20,12 +20,22 @@
         </div>
       </div>
       <div class="col-lg m-t-16">
-        <h2>Dientes</h2>
+        <h3>Dientes</h3>
+        
+        <div *ngFor="let tooth of teethList" class="row">
+          <ng-container *ngIf="tooth.jaw === jaw.Upper">
+              <span class="col-lg-4" *ngIf="tooth.quadrant === quadrant.First">{{tooth.name}}{{tooth.number}}</span>
+              <span class="col-lg-4" *ngIf="tooth.quadrant === quadrant.Second">{{tooth.name}}{{tooth.number}}</span>
+          </ng-container>
+          <div class="col-lg-12" *ngIf="tooth.jaw === jaw.Lower">
+            <span>{{tooth.name}}111</span>
+          </div>
+        </div>
       </div>
     </form>
     <div class="form-group text-center btn-footer">
-      <button class="btn btn-secondary m-r-4" type="button" (click)="close()">Cancelar</button>
-      <button class="btn btn-primary" type="submit" [disabled]="!formGroup.valid">Guardar</button>
+      <button class="btn btn-outline-secondary m-r-8" type="button" (click)="close()" [disabled]="saving">Cancelar</button>
+      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
     </div>
   </div>
 </div>

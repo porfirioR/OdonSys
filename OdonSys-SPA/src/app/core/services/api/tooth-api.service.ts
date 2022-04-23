@@ -8,7 +8,7 @@ import { ToothApiModel } from '../../models/tooth/tooth-api-model';
   providedIn: 'root'
 })
 export class ToothApiService {
-  private baseUrl = `${environment.apiUrl}/procedure`;
+  private baseUrl = `${environment.apiUrl}/teeth`;
 
   constructor(private http: HttpClient) { }
 

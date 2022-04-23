@@ -18,12 +18,12 @@ export class ProcedureApiService {
     return this.http.get<ProcedureApiModel[]>(`${this.baseUrl}`);
   }
 
-  public getById = (code: string): Observable<ProcedureApiModel> => {
-    return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${code}`);
+  public getById = (id: string, active: boolean): Observable<ProcedureApiModel> => {
+    return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${id}/${active}`);
   }
 
-  public delete = (code: string): Observable<object> => {
-    return this.http.delete(`${this.baseUrl}/${code}`);
+  public delete = (id: string): Observable<object> => {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
   public create = (model: CreateProcedureRequest): Observable<ProcedureApiModel> => {
