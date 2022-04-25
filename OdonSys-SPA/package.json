@@ -22,8 +22,8 @@
     "ag-grid-angular": "^25.3.0",
     "ag-grid-community": "^25.3.0",
     "bootstrap": "^5.0.2",
-    "ngx-bootstrap": "^8.0.0",
     "rxjs": "~6.6.0",
+    "sweetalert2": "^11.4.9",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

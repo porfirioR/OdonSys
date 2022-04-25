@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AgGridModule } from 'ag-grid-angular';
@@ -12,6 +12,7 @@ import { TextNumberComponent } from './components/inputs/text-number-input/text-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckInputComponent } from './components/inputs/check-input/check-input.component';
 import { GridActionsComponent } from './components/grid-actions/grid-actions.component';
+import { CustomErrorHandler } from './helpers/custom-error-handler';
 
 @NgModule({
   imports: [
@@ -42,6 +43,9 @@ import { GridActionsComponent } from './components/grid-actions/grid-actions.com
     TextNumberComponent,
     CheckInputComponent,
     GridActionsComponent
+  ],
+  providers: [
+    {provide: ErrorHandler, useClass: CustomErrorHandler}
   ]
 })
 export class CoreModule { }

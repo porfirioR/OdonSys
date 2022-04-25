@@ -32,6 +32,9 @@ namespace Host.Api.Models.Procedures
                 {
                     results.Add(new ValidationResult($"El identificador del diente {id} no existe."));
                 }
+            } else
+            {
+                results.Add(new ValidationResult($"No se ha seleccionado ningún diente."));
             }
             return results;
         }

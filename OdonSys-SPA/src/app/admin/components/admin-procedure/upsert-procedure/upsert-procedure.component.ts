@@ -141,7 +141,7 @@ export class UpsertProcedureComponent implements OnInit {
   }
 
   private saved = (): void => {
-    this.alertService.showSuccess('Import Job Saved');
+    this.alertService.showSuccess('Procedimiento guardado.');
     this.close();
   }
 }

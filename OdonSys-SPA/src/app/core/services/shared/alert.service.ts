@@ -14,24 +14,34 @@ export class AlertService {
       text,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes',
+      confirmButtonText: 'Si',
       cancelButtonText: 'No'
     });
     return result;
   }
 
-  
-  public showSuccess = (text: string = ''): void => {
-    // this.zone.run(() => {
-    //   this.snackBar.open(
-    //     text,
-    //     'Dismiss',
-    //     {
-    //       duration: 5000,
-    //       horizontalPosition: 'end',
-    //       verticalPosition: 'bottom',
-    //       panelClass: ['success-snackbar']
-    //     });
-    // });
+
+  public showSuccess = (title: string = 'Operación exitosa'): void => {
+    Swal.mixin({
+      title,
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      icon: 'success',
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    }).fire();
+  }
+
+  public showError = (text: string = ''): void => {
+    Swal.fire({
+      title: 'Operación fallida',
+      text,
+      icon: 'error',
+    });
   }
 }
