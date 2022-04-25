@@ -1,3 +1,4 @@
 export class CreateProcedureRequest {
-    constructor() { }
+    constructor(public name: string, public description: string, public estimatedSessions: string, public procedureTeeth: string[]) {
+    }
 }

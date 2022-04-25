@@ -30,7 +30,7 @@ export class ProcedureApiService {
     return this.http.post<ProcedureApiModel>(this.baseUrl, model);
   }
 
-  public update = (documentList: UpdateProcedureRequest, code: string): Observable<ProcedureApiModel> => {
-    return this.http.put<ProcedureApiModel>(`${this.baseUrl}/${code}`, documentList);
+  public update = (model: UpdateProcedureRequest): Observable<ProcedureApiModel> => {
+    return this.http.put<ProcedureApiModel>(`${this.baseUrl}`, model);
   }
 }

@@ -15,27 +15,28 @@
         <div class="col-lg-6">
           <app-text-number-input [label]="'Cantidad de sesiones'" formControlName="estimatedSessions"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 m-t-18">
           <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
         </div>
       </div>
-      <div class="col-lg m-t-16">
+      <div class="col-lg-12 row m-t-16" formArrayName="teeth">
         <h3>Dientes</h3>
-        
-        <div *ngFor="let tooth of teethList" class="row">
-          <ng-container *ngIf="tooth.jaw === jaw.Upper">
-              <span class="col-lg-4" *ngIf="tooth.quadrant === quadrant.First">{{tooth.name}}{{tooth.number}}</span>
-              <span class="col-lg-4" *ngIf="tooth.quadrant === quadrant.Second">{{tooth.name}}{{tooth.number}}</span>
+        <ng-container *ngFor="let tooth of teethFormArray.controls; let i = index">
+          <h5 *ngIf="i === 0">Maxilar Superior</h5>
+          <ng-container *ngIf="i === 16">
+            <br>
+            <h5>Maxilar Inferior</h5>
           </ng-container>
-          <div class="col-lg-12" *ngIf="tooth.jaw === jaw.Lower">
-            <span>{{tooth.name}}111</span>
+          <div class="form-check col-lg-6">
+            <input class="form-check-input" type="checkbox" [formControl]="$any(tooth).controls.value">
+            <label class="form-check-label m-r-2">{{tooth.get('name')?.value}} ({{tooth.get('number')?.value}})</label>
           </div>
-        </div>
-      </div>
-    </form>
+      </ng-container>
+    </div>
     <div class="form-group text-center btn-footer">
       <button class="btn btn-outline-secondary m-r-8" type="button" (click)="close()" [disabled]="saving">Cancelar</button>
       <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
     </div>
+    </form>
   </div>
 </div>

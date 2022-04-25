@@ -12,6 +12,8 @@ namespace Host.Api.Models.Procedures
         [Required]
         public string Description { get; set; }
         [Required]
+        public bool Active { get; set; }
+        [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

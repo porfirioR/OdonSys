@@ -1,4 +1,4 @@
 export class UpdateProcedureRequest {
-    constructor() {
+    constructor(public id: string, public description: string, public procedureTeeth: string[]) {
     }
 }
