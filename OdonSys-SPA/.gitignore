@@ -12,7 +12,6 @@
 
 # profiling files
 chrome-profiler-events*.json
-
 # IDEs and editors
 /.idea
 .project
@@ -31,6 +30,7 @@ chrome-profiler-events*.json
 .history/*
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

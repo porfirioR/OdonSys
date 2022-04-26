@@ -1,11 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminComponent } from './admin.component';
+import { RouterModule } from '@angular/router';
+import { AdminRoutes } from './admin.routing';
+
+import { AdminProcedureComponent } from './components/admin-procedure/admin-procedure.component';
+import { CoreModule } from '../core/core.module';
+import { DoctorsComponent } from './components/doctors/doctors.component';
+import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert-doctor.component';
+import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    CoreModule,
+    RouterModule.forChild(AdminRoutes)
   ],
-  declarations: [AdminComponent]
+  declarations: [
+    AdminProcedureComponent,
+    UpsertProcedureComponent,
+    DoctorsComponent,
+    UpsertDoctorComponent,
+    DoctorsComponent
+  ],
+
 })
 export class AdminModule { }

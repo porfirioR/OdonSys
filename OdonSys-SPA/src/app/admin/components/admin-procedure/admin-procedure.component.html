@@ -1,0 +1,17 @@
+<app-progress *ngIf="!load"></app-progress>
+<div *ngIf="load" class="container">
+  <div class="header-top">
+    <h3>Procedimientos</h3>
+    <button type="button" class="btn btn-outline-primary" routerLink="crear" >
+      <i class="fas fa-plus"></i>
+      Agregar
+    </button>
+  </div>
+  <div class="p-t-16">
+    <ng-container *ngIf="gridOptions">
+      <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </ng-container>
+  </div>
+</div>
