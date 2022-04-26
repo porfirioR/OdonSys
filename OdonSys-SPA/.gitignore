@@ -9,10 +9,10 @@
 
 # dependencies
 /node_modules
+/node_modules/sweetalert2/
 
 # profiling files
 chrome-profiler-events*.json
-
 # IDEs and editors
 /.idea
 .project
