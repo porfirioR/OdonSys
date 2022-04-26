@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -66,7 +66,6 @@ export class UpsertProcedureComponent implements OnInit {
       const procedure$ = this.id ? this.procedureApiService.getById(this.id, params.active) : of(new ProcedureApiModel());
       return forkJoin([procedure$, this.toothApiService.getAll()]).pipe(
         tap(([procedure, teethList]) => {
-          
           teethList.sort((a, b) => a.number - b.number);
           const teethForQuadrant = 8;
           const totalTeeth = teethList.length;
@@ -91,6 +90,7 @@ export class UpsertProcedureComponent implements OnInit {
               })
             );
           });
+          this.teethFormArray.addValidators(this.minimumOneSelectedValidator);
           this.formGroup = new FormGroup( {
             name : new FormControl(this.id ? procedure.name : '', [Validators.required, Validators.maxLength(30)]),
             description : new FormControl(this.id ? procedure.description: '', [Validators.required, Validators.maxLength(50)]),
@@ -143,5 +143,11 @@ export class UpsertProcedureComponent implements OnInit {
   private saved = (): void => {
     this.alertService.showSuccess('Procedimiento guardado.');
     this.close();
+  }
+  
+  private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
+    const tooth = abstractControl as FormArray;
+    const teethValues = tooth.controls.map(x => (x as FormGroup).get('value')?.value as boolean);
+    return teethValues.some(x => x) ? null : { noneSelected : true };
   }
 }

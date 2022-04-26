@@ -31,8 +31,11 @@
             <input class="form-check-input" type="checkbox" [formControl]="$any(tooth).controls.value">
             <label class="form-check-label m-r-2">{{tooth.get('name')?.value}} ({{tooth.get('number')?.value}})</label>
           </div>
-      </ng-container>
-    </div>
+        </ng-container>
+        <div class="invalid-feedback-check-box" *ngIf="formGroup.get('teeth')?.hasError('noneSelected')">
+          Debe seleccionar almenos un diente.
+        </div>
+      </div>
     <div class="form-group text-center btn-footer">
       <button class="btn btn-outline-secondary m-r-8" type="button" (click)="close()" [disabled]="saving">Cancelar</button>
       <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>

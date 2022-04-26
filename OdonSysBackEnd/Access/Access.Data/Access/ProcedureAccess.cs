@@ -48,8 +48,14 @@ namespace Access.Admin.Access
 
         public async Task<ProcedureAccessResponse> GetByIdAsync(string id, bool active)
         {
-            var entity = active ? await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
-                await _context.Procedures.AsNoTracking().SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            var entity = active ? await _context.Procedures
+                                        .Include(x => x.ProcedureTeeth)
+                                        .AsNoTracking()
+                                        .SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
+                await _context.Procedures
+                            .Include(x => x.ProcedureTeeth)
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);
             return respose;
         }
@@ -71,7 +77,7 @@ namespace Access.Admin.Access
 
             entity.Description = accessRequest.Description;
             entity.Active = accessRequest.Active;
-            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x) }).ToList();
+            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<ProcedureAccessResponse>(entity);

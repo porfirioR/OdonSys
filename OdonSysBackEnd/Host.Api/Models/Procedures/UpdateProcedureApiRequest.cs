@@ -25,16 +25,21 @@ namespace Host.Api.Models.Procedures
             {
                 results.Add(new ValidationResult($"Identificador {Id} no existe."));
             }
-            var invalidTeeth = procedureManager.ValidateProcedureTeethAsync(ProcedureTeeth).GetAwaiter().GetResult();
-            if (invalidTeeth.Any())
-            {
-                foreach (var id in invalidTeeth)
-                {
-                    results.Add(new ValidationResult($"El identificador del diente {id} no existe."));
-                }
-            } else
+            if (!ProcedureTeeth.Any())
             {
                 results.Add(new ValidationResult($"No se ha seleccionado ningún diente."));
+            }
+            else
+
+            {
+                var invalidTeeth = procedureManager.ValidateProcedureTeethAsync(ProcedureTeeth).GetAwaiter().GetResult();
+                if (invalidTeeth.Any())
+                {
+                    foreach (var id in invalidTeeth)
+                    {
+                        results.Add(new ValidationResult($"El identificador del diente {id} no existe."));
+                    }
+                }
             }
             return results;
         }
