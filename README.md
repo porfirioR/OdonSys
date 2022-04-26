@@ -9,3 +9,6 @@ Para agregar una nueva migración, escribir:
  Add-Migration "nombre de la migracion"
 Si no hay errores, escribir:
  update-database
+
+
+Para crear los registros basicos en la base de datos necesarios para iniciar el proyecto debe agregarlos en OdonSys\OdonSysBackEnd\Test\IntegrationTest\Test.IntegrationTest.Procedure\Resources.BasicSql.sql y ejecutar algun test.

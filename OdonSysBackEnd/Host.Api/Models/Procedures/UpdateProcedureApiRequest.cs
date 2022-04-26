@@ -12,6 +12,8 @@ namespace Host.Api.Models.Procedures
         [Required]
         public string Description { get; set; }
         [Required]
+        public bool Active { get; set; }
+        [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -23,12 +25,20 @@ namespace Host.Api.Models.Procedures
             {
                 results.Add(new ValidationResult($"Identificador {Id} no existe."));
             }
-            var invalidTeeth = procedureManager.ValidateProcedureTeethAsync(ProcedureTeeth).GetAwaiter().GetResult();
-            if (invalidTeeth.Any())
+            if (!ProcedureTeeth.Any())
             {
-                foreach (var id in invalidTeeth)
+                results.Add(new ValidationResult($"No se ha seleccionado ningún diente."));
+            }
+            else
+
+            {
+                var invalidTeeth = procedureManager.ValidateProcedureTeethAsync(ProcedureTeeth).GetAwaiter().GetResult();
+                if (invalidTeeth.Any())
                 {
-                    results.Add(new ValidationResult($"El identificador del diente {id} no existe."));
+                    foreach (var id in invalidTeeth)
+                    {
+                        results.Add(new ValidationResult($"El identificador del diente {id} no existe."));
+                    }
                 }
             }
             return results;

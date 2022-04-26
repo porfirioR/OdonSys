@@ -2,7 +2,7 @@
 using AutoMapper;
 using Contract.Procedure.Procedures;
 
-namespace Manager.Procedure.Mapper
+namespace Manager.Procedure.Procedures
 {
     public class ProcedureManagerProfile : Profile
     {

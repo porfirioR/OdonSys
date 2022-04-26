@@ -3,7 +3,9 @@ using Access.Admin.Access;
 using Access.Contract.Auth;
 using Access.Contract.Clients;
 using Access.Contract.Procedure;
+using Access.Contract.Teeth;
 using Access.Contract.Users;
+using Access.Data.Access;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Access.Data
@@ -16,7 +18,7 @@ namespace Access.Data
             services.AddTransient<IAuthDataAccess, AuthDataAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
-
+            services.AddTransient<IToothAccess, ToothAccess>();
         }
     }
 }
