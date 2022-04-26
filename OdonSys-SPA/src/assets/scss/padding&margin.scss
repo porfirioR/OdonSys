@@ -1,0 +1,24 @@
+$lengths: (2, 4, 6, 8, 12, 16, 18, 24, 32, 36, 44, 48, 56, 0);
+$properties: (top, bottom, left, right);
+
+@each $length in $lengths {
+  @each $property in $properties {
+    .m-#{str-slice($property, 0, 1)}-#{$length} {
+      margin-#{$property}: #{$length}px !important;
+    }
+
+    .p-#{str-slice($property, 0, 1)}-#{$length} {
+      padding-#{$property}: #{$length}px !important;
+    }
+  }
+}
+
+@each $length in $lengths {
+  .m-#{$length} {
+    margin: #{$length}px !important;
+  }
+
+  .p-#{$length} {
+    padding: #{$length}px !important;
+  }
+}

@@ -1,7 +1,7 @@
 ﻿using Access.Admin.Mapper;
 using Host.Api.Mapper;
 using Manager.Admin.Mapper;
-using Manager.Procedure.Mapper;
+using Manager.Procedure.Procedures;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Host.Api

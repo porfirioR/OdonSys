@@ -18,7 +18,7 @@ namespace Access.Admin.Mapper
 
             CreateMap<Procedure, ProcedureAccessResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.ProcedureTeeth, opt => opt.MapFrom(src => src.ProcedureTeeth.Select(x => x.ProcedureId.ToString())));
+                .ForMember(dest => dest.ProcedureTeeth, opt => opt.MapFrom(src => src.ProcedureTeeth.Select(x => x.ToothId.ToString())));
         }
     }
 }

@@ -3,16 +3,16 @@ using Host.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using Utilities.Enums;
 
 namespace AcceptanceTest.Host.Api
 {
     public class HostApiFactory : WebApplicationFactory<Startup>
     {
 
-        private readonly string connectionString = "Server=(local);Database=OdonSysDataBase;Integrated Security=True;MultipleActiveResultSets=False";
+        private readonly string connectionString = $"Server=(local);Database={Configuration.DataBase};Integrated Security=True;MultipleActiveResultSets=False";
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

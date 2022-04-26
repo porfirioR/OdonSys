@@ -1,15 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 
+@import "ag-grid-community/dist/styles/ag-grid.css";
+@import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import "./assets/scss/ag-grid.scss";
+@import "./assets/scss/padding&margin.scss";
 
-
-.mr-5 {
-    margin-right: 5px !important;
+$white: #fff;
+$primary: #1548cd;
+$redColor: red;
+$blue: #d1f2ff;
+.centerDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.ml-5 {
-    margin-left: 5px !important;
+
+.header-title {
+  padding: 1rem;
+  margin-right: 0;
+  margin-left: 0;
+  border-width: 0.2rem;
+  padding-left: 0 !important;
+  border-bottom: 1px solid blue;
+}
+
+.header-top {
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 1rem;
+  border-bottom: 1px solid blue;
+}
+.swal2-styled.swal2-confirm {
+  background-color: $primary !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: $redColor !important;
+}
+
+.swal2-styled.swal2-cancel {
+  background-color: $primary !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: $redColor !important;
+  color: $redColor !important;
 }

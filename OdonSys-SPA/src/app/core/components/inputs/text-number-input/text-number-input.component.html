@@ -1,0 +1,17 @@
+<div class="form-group" [ngClass]="colClass">
+  <label class="col-form-label">{{label}}</label>
+  <input class="form-control"
+    type={{type}}
+    [class.is-invalid]="ngControl.touched && ngControl.invalid"
+    [formControl]="$any(ngControl).control" placeholder={{label}}>
+
+  <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor ingresar {{label}}</div>
+  <div *ngIf="ngControl.control?.errors?.minLength" class="invalid-feedback">
+    {{label}} debe ser menor que {{ngControl.control?.errors?.minlength['requiredLength']}}
+  </div>
+  <div *ngIf="ngControl.control?.errors?.maxLength" class="invalid-feedback">
+    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength['requiredLength']}}
+  </div>
+  <div *ngIf="ngControl.control?.errors?.isMatching" class="invalid-feedback">
+    La contraseña no coincide</div>
+</div>
