@@ -33,9 +33,16 @@ ul {
     display: flex;
     & li {
         padding: 15px;
-        & a {
+        & a.nav-link {
             padding: 2px;
             &:hover {
+                border-bottom: 2px solid blue;
+                color: blue;
+            }
+            &:focus {
+                color: blue;
+            }
+            &.active {
                 border-bottom: 2px solid blue;
             }
         }
