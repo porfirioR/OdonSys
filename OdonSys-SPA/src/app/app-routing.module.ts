@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { NotFoundComponent } from './layout/not-found/not-found.component';
-import { PrincipalPageComponent } from './layout/principal-page/principal-page.component';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
+import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 
 export const AppRoutes: Routes = [
   {

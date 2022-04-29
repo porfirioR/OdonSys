@@ -1,0 +1,28 @@
+<app-progress *ngIf="!load || saving"></app-progress>
+<div *ngIf="load" class="container">
+  <div class="header-top">
+    <h3>Configuración</h3>
+  </div>
+  <div class="m-16 p-16">
+    <form [formGroup]="formGroup" (ngSubmit)="save()">
+      <div class="row">
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Descripción'" formControlName="description"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Cantidad de sesiones'" formControlName="estimatedSessions"></app-text-number-input>
+        </div>
+        <div class="col-lg-6 m-t-18">
+          <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
+        </div>
+      </div>
+    <div class="form-group text-center btn-footer">
+      <button class="btn btn-outline-secondary m-r-8" type="button" (click)="close()" [disabled]="saving">Cancelar</button>
+      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
+    </div>
+    </form>
+  </div>
+</div>
