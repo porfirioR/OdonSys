@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using Contract.Admin.Auth;
-using Contract.Admin.User;
+using Contract.Authentication.User;
 using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Mvc;
-using OdonSysBackEnd.Models.Auth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Host.Api.Controllers.Admin
+namespace Host.Api.Controllers.Authentication
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -22,48 +20,40 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserModel>> Create([FromBody] CreateUserApiRequest apiRequest)
+        public async Task<UserModel> Create([FromBody] CreateUserApiRequest apiRequest)
         {
             var user = _mapper.Map<CreateUserRequest>(apiRequest);
             var model = await _userManager.Create(user);
-            return Ok(model);
-        }
-
-        [HttpPost("login")]
-        public async Task<ActionResult<UserModel>> Login([FromBody] LoginApiRequest loginApiRequest)
-        {
-            var login = _mapper.Map<LoginRequest>(loginApiRequest);
-            var model = await _userManager.Login(login);
             return model;
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserModel>> Delete(string id)
+        public async Task<UserModel> Delete(string id)
         {
             var response = await _userManager.Delete(id);
-            return Ok(response);
+            return response;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserModel>>> GetAll()
+        public async Task<IEnumerable<UserModel>> GetAll()
         {
             var response = await _userManager.GetAll();
-            return Ok(response);
+            return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetById(string id)
+        public async Task<UserModel> GetById(string id)
         {
             var response = await _userManager.GetById(id);
-            return Ok(response);
+            return response;
         }
 
         [HttpPut]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UpdateUserApiRequest userDTO)
+        public async Task<UserModel> Update([FromBody] UpdateUserApiRequest userDTO)
         {
             var user = _mapper.Map<UpdateUserRequest>(userDTO);
             var response = await _userManager.Update(user);
-            return Ok(response);
+            return response;
         }
 
     }

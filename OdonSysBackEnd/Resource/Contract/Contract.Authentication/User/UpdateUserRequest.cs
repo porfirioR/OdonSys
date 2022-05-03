@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Contract.Admin.User
+namespace Contract.Authentication.User
 {
     public class UpdateUserRequest
     {

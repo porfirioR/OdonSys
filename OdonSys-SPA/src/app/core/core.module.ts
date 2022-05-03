@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckInputComponent } from './components/inputs/check-input/check-input.component';
 import { GridActionsComponent } from './components/grid-actions/grid-actions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SelectInputComponent } from './components/inputs/select-input/select-input.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProgressComponent,
     TextNumberComponent,
     CheckInputComponent,
+    SelectInputComponent,
     GridActionsComponent
   ],
   exports: [
@@ -44,6 +46,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProgressComponent,
     TextNumberComponent,
     CheckInputComponent,
+    SelectInputComponent,
     GridActionsComponent,
   ]
 })

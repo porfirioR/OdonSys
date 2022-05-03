@@ -1,14 +1,14 @@
-﻿using Contract.Admin.Clients;
-using Manager.Admin.Clients;
+﻿using Contract.Authentication.User;
+using Manager.Authentication.Users;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Manager.Admin
+namespace Manager.Authentication
 {
     public class ServiceInjection
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IClientManager, ClientManager>();
+            services.AddTransient<IUserManager, UserManager>();
         }
     }
 }

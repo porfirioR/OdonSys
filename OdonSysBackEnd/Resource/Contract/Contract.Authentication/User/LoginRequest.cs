@@ -1,4 +1,4 @@
-﻿namespace Contract.Admin.Auth
+﻿namespace Contract.Authentication.User
 {
     public class LoginRequest
     {

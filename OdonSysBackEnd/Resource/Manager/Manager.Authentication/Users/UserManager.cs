@@ -1,14 +1,9 @@
 ﻿using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
-using Contract.Admin.Auth;
-using Contract.Admin.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Contract.Authentication.User;
 
-namespace Manager.Admin.Users
+namespace Manager.Authentication.Users
 {
     internal class UserManager : IUserManager
     {
@@ -27,7 +22,7 @@ namespace Manager.Admin.Users
         {
             if (await CheckUserExistsAsync(createUserRequest))
             {
-                new Exception("Ya existe un usuario con ese mismo documento.");
+                new Exception("Ya existe un usuario con ese mismo número de documento.");
             }
             var dataAccess = _mapper.Map<UserDataAccessRequest>(createUserRequest);
             var accessModel = await _userDataAccess.CreateAsync(dataAccess);
