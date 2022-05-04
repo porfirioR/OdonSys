@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 
@@ -11,6 +10,10 @@ export const AppRoutes: Routes = [
       {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule)
+      },
+      {
+        path: 'trabajo',
+        loadChildren: () => import('./workspace/workspace.module').then((m) => m.WorkspaceModule)
       }
     ]
   },

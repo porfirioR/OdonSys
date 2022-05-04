@@ -1,7 +1,11 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
+import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 
-const routes: Routes = [
-  {  },
+export const WorkspaceRoutes: Routes = [
+  { 
+    path: '',
+    children: [
+      { path: 'configuración/datos', component: MyConfigurationComponent },
+    ]
+  },
 ];
-
-export const ModelsRoutes = RouterModule.forChild(routes);
