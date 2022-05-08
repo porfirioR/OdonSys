@@ -1,0 +1,31 @@
+<div class="header-container">
+  <nav class="nav-main">
+    <div class="nav-menu-left">
+      <a class="navbar-brand" routerLink="inicio">OdonSys</a>
+    </div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="admin/doctores" routerLinkActive="active">Doctores</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="roles">Roles</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="admin/procedimientos" routerLinkActive="active">Procedimientos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="pacientes" routerLinkActive="active">Pacientes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="pacientes" routerLinkActive="active">Mis Pacientes</a>
+      </li>
+    </ul>
+    <div class="nav-menu-right m-r-16" ngbDropdown>
+      <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
+      <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+        <button ngbDropdownItem routerLink="trabajo/configuración/datos">Mis datos</button>
+        <button ngbDropdownItem>Salir</button>
+      </div>
+    </div>
+  </nav>
+</div>

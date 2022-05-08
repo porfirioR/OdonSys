@@ -22,14 +22,7 @@ namespace Host.Api
             services.AddControllers()
                     .AddNewtonsoftJson();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "origins",
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
-                                  });
-            });
+            services.AddCors();
 
             // partial startup
             ConfigureMappings(services);
@@ -47,7 +40,7 @@ namespace Host.Api
 
             app.UseRouting();
 
-            app.UseCors("origins");
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseAuthentication();
 

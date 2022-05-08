@@ -3,7 +3,7 @@ using Access.Contract.Users;
 using AutoMapper;
 using Contract.Authentication.User;
 
-namespace Manager.Admin.Mapper
+namespace Manager.Authentication.Mapper
 {
     public class UserManagerProfile : Profile
     {

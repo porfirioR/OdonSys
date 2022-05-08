@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>9567367d-be78-4856-8735-c24bc739c877</UserSecretsId>
+    <StartupObject>Host.Api.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +23,10 @@
     <ProjectReference Include="..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Authentication.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Procedure\Contract.Procedure.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Manager\Manager.Authentication\Manager.Authentication.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Procedure\Manager.Procedure\Manager.Procedure.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
