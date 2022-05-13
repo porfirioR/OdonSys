@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthenticateComponent } from './core/components/authenticate/authenticate.component';
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 
@@ -17,7 +18,7 @@ export const AppRoutes: Routes = [
       }
     ]
   },
-  // { path: 'login', component: LoginComponent },
+  { path: 'login', component: AuthenticateComponent },
   { path: 'página-no-encontrada', component: NotFoundComponent },
   { path: '**', redirectTo: '/página-no-encontrada' },
   

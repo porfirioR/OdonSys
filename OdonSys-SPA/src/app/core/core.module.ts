@@ -14,6 +14,7 @@ import { CheckInputComponent } from './components/inputs/check-input/check-input
 import { GridActionsComponent } from './components/grid-actions/grid-actions.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectInputComponent } from './components/inputs/select-input/select-input.component';
+import { AuthenticateComponent } from './components/authenticate/authenticate.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { SelectInputComponent } from './components/inputs/select-input/select-in
     TextNumberComponent,
     CheckInputComponent,
     SelectInputComponent,
-    GridActionsComponent
+    GridActionsComponent,
+    AuthenticateComponent
   ],
   exports: [
     FormsModule,
@@ -48,6 +50,7 @@ import { SelectInputComponent } from './components/inputs/select-input/select-in
     CheckInputComponent,
     SelectInputComponent,
     GridActionsComponent,
+    AuthenticateComponent
   ]
 })
 export class CoreModule { }
