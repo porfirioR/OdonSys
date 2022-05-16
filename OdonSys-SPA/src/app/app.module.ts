@@ -7,6 +7,7 @@ import { AppRoutes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CustomErrorHandler } from './core/helpers/custom-error-handler';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CustomErrorHandler } from './core/helpers/custom-error-handler';
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(AppRoutes),
+    NgbModule,
   ],
   providers: [
     {provide: ErrorHandler, useClass: CustomErrorHandler}

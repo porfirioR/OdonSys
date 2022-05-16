@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Sql.Configurations;
-using Sql.Entities;
 
 namespace Access.Sql
 {

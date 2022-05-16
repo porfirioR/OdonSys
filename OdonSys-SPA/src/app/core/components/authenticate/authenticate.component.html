@@ -4,8 +4,13 @@
       <div class="col-12 col-md-4 col-lg-3 h-50">
         <div class="card shadow">
           <div class="card-body">
+            <div class="middle-block">
+              <div class="dot center-block">
+                <i class="fas fa-user fa-4x"></i>
+              </div>
+            </div>
             <h3 class="card-title mt-3 text-center">Inicio</h3>
-            <div class="col-lg-12">
+            <div class="col-lg-12" [formGroup]="formGroup">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text" id="basic-addon1">@</span>
@@ -13,18 +18,20 @@
                 <input type="email" class="form-control" placeholder="Correo" aria-label="Correo">
               </div>
               <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <input type="checkbox" aria-label="Checkbox for following text input">
-                  </div>
+                <div class="input-group-text" placement="top" [ngbTooltip]="currentMessage">
+                  <input class="form-check-input mt-0" type="checkbox" formControlName="type">
                 </div>
-                <input type="text" class="form-control" aria-label="Text input with checkbox">
+                <input [type]="currentType" class="form-control" formControlName="type" aria-label="Contraseña">
               </div>
-              <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block">Iniciar</button>
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-primary btn-block" (click)="login()">Iniciar</button>
+                <span class="position-relative">
+                  <a href="#" class="card-link position-absolute bottom-0 end-0">Olvide mi contraseña</a>
+                </span>
               </div>
-              <span class="text-center">
-                No tienes cuenta <a href="#" class="card-link">Registrar</a>
+              <hr>
+              <span class="text-start">
+                ¿No tienes cuenta? <a href="registrar" class="card-link">Registrar</a>
               </span>
             </div>
           </div>

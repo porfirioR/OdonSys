@@ -1,7 +1,7 @@
 ﻿using Access.Sql;
 using System.Collections.Generic;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class Permission : BaseEntity
     {

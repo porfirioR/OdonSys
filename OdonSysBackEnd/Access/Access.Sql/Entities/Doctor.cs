@@ -1,8 +1,7 @@
-﻿using Access.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Utilities.Enums;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class Doctor : BaseEntity
     {

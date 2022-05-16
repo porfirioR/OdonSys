@@ -1,7 +1,6 @@
-﻿using Access.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class Procedure : BaseEntity
     {

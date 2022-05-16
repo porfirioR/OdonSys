@@ -1,6 +1,6 @@
 ﻿using Access.Contract.Users;
+using Access.Sql.Entities;
 using AutoMapper;
-using Sql.Entities;
 using System;
 
 namespace Access.Admin.Mapper

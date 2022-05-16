@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sql.Entities;
 
-namespace Sql.Configurations
+namespace Access.Sql.Configurations
 {
     public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
@@ -17,7 +17,7 @@ namespace Sql.Configurations
             builder
                 .Property(d => d.DateModified)
                 .HasDefaultValueSql("GetDate()");
-            
+
             builder
                 .Property(d => d.Name)
                 .HasMaxLength(25);
