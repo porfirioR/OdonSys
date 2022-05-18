@@ -9,7 +9,7 @@ namespace Manager.Admin.Mapper
     {
         public UserManagerProfile()
         {
-            CreateMap<CreateUserRequest, UserDataAccess>();
+            CreateMap<RegisterUserRequest, UserDataAccess>();
 
             CreateMap<UpdateUserRequest, UserDataAccess>();
 

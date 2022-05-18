@@ -26,13 +26,15 @@ namespace Access.Admin.Access
         public async Task<UserDataAccessModel> CreateAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _mapper.Map<Doctor>(dataAccess);
-            var entityUser = new User();
 
-            var password = "contraseñaInicial";
             using var hmac = new HMACSHA512();
-            entityUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            entityUser.PasswordSalt = hmac.Key;
-            entityUser.UserName = @$"{entity.Name.Substring(0, 1)}{entity.LastName}";
+            var entityUser = new User
+            {
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password)),
+                PasswordSalt = hmac.Key,
+                UserName = @$"{entity.Name[..1].ToUpper()}{entity.LastName}"[..20],
+                Approved = false,
+            };
             entity.User = entityUser;
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
@@ -40,7 +42,7 @@ namespace Access.Admin.Access
                 var user = _mapper.Map<UserDataAccessModel>(entity);
                 return user;
             }
-            return null;
+            throw new Exception("Error al intentar crear usuario.");
         }
 
         public async Task<UserDataAccessModel> DeleteAsync(string id)

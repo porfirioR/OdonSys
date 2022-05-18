@@ -9,7 +9,7 @@ namespace Access.Sql.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder
-                .HasKey(x => x.DoctorId);
+                .HasKey(x => x.Id);
 
             builder
                 .Property(x => x.UserName)

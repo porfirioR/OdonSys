@@ -2,7 +2,7 @@
 
 namespace Contract.Authentication.User
 {
-    public class CreateUserRequest
+    public class RegisterUserRequest
     {
         public string Name { get; set; }
         public string SecondName { get; set; }

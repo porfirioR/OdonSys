@@ -2,7 +2,7 @@
 {
     public interface IUserManager
     {
-        Task<UserModel> Create(CreateUserRequest createUserRequest);
+        Task<UserModel> Create(RegisterUserRequest createUserRequest);
         Task<UserModel> Delete(string id);
         Task<IEnumerable<UserModel>> GetAll();
         Task<UserModel> GetById(string id);

@@ -9,7 +9,7 @@ namespace Manager.Authentication.Mapper
     {
         public UserManagerProfile()
         {
-            CreateMap<CreateUserRequest, UserDataAccess>();
+            CreateMap<RegisterUserRequest, UserDataAccess>();
 
             CreateMap<UpdateUserRequest, UserDataAccess>();
 

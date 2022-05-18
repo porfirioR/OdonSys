@@ -3,7 +3,7 @@ using Utilities.Enums;
 
 namespace Host.Api.Models.Users
 {
-    public class CreateUserApiRequest
+    public class RegisterUserApiRequest
     {
         [Required]
         [MaxLength(25)]
@@ -16,6 +16,18 @@ namespace Host.Api.Models.Users
         [Required]
         [MaxLength(15)]
         public string Document { get; set; }
+
+        [Required]
+        [MaxLength(15)]
+        public string Password { get; set; }
+
+        [Required]
+        [MaxLength(15)]
+        public string Phone { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Email { get; set; }
 
         [Required]
         public Country Country { get; set; }

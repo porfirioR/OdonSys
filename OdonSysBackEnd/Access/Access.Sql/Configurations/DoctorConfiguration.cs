@@ -8,35 +8,35 @@ namespace Access.Sql.Configurations
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
-            builder.HasKey(u => u.Id);
+            builder.HasKey(x => x.Id);
 
             builder
-                .Property(d => d.DateCreated)
+                .Property(x => x.DateCreated)
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(d => d.DateModified)
+                .Property(x => x.DateModified)
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(d => d.Name)
+                .Property(x => x.Name)
                 .HasMaxLength(25);
 
             builder
-                .Property(d => d.LastName)
+                .Property(x => x.LastName)
                 .HasMaxLength(25);
 
             builder
-                .Property(d => d.Document)
+                .Property(x => x.Document)
                 .HasMaxLength(15);
 
             builder
-                .HasIndex(d => d.Document)
+                .HasIndex(x => x.Document)
                 .IsUnique();
 
             builder.HasOne(x => x.User)
                 .WithOne(x => x.Doctor)
-                .HasForeignKey<User>(x => x.DoctorId);
+                .HasForeignKey<User>(x => x.Id);
         }
     }
 }
