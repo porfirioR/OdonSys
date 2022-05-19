@@ -18,11 +18,11 @@ namespace Manager.Authentication.Users
             _authDataAccess = authDataAccess;
         }
 
-        public async Task<UserModel> Create(RegisterUserRequest createUserRequest)
+        public async Task<UserModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
         {
             if (await CheckUserExistsAsync(createUserRequest))
             {
-                throw new Exception("Ya existe un usuario con ese mismo número de documento.");
+                throw new Exception("Ya existe un usuario con ese mismo documento o correo.");
             }
             var dataAccess = _mapper.Map<UserDataAccessRequest>(createUserRequest);
             var accessModel = await _userDataAccess.CreateAsync(dataAccess);
@@ -70,7 +70,7 @@ namespace Manager.Authentication.Users
         private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)
         {
             var users = await _userDataAccess.GetAll();
-            var result = users.Where(x => x.Document == createUser.Document);
+            var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
             return users.Any();
         }
     }

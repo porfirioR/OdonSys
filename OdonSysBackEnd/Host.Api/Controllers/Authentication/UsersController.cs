@@ -20,10 +20,10 @@ namespace Host.Api.Controllers.Authentication
         }
 
         [HttpPost]
-        public async Task<UserModel> Create([FromBody] RegisterUserApiRequest apiRequest)
+        public async Task<UserModel> RegisterUser([FromBody] RegisterUserApiRequest apiRequest)
         {
             var user = _mapper.Map<RegisterUserRequest>(apiRequest);
-            var model = await _userManager.Create(user);
+            var model = await _userManager.RegisterUserAsync(user);
             return model;
         }
 

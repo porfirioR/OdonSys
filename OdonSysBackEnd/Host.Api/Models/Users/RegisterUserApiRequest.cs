@@ -9,16 +9,22 @@ namespace Host.Api.Models.Users
         [MaxLength(25)]
         public string Name { get; set; }
 
+        [MaxLength(25)]
+        public string MiddleName { get; set; }
+
         [Required]
         [MaxLength(25)]
         public string LastName { get; set; }
-
+        
+        [MaxLength(25)]
+        public string MiddleLastName { get; set; }
+        
         [Required]
         [MaxLength(15)]
         public string Document { get; set; }
 
         [Required]
-        [MaxLength(15)]
+        [MaxLength(25)]
         public string Password { get; set; }
 
         [Required]
@@ -26,6 +32,7 @@ namespace Host.Api.Models.Users
         public string Phone { get; set; }
 
         [Required]
+        [EmailAddress]
         [MaxLength(20)]
         public string Email { get; set; }
 
