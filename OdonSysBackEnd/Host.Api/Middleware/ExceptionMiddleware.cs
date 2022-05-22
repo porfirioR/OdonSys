@@ -39,6 +39,16 @@ namespace Host.Api.Middleware
                     context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     response = new ApiException(context.Response.StatusCode, ex.Message);
                 }
+                else if(ex is UnauthorizedAccessException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    response = new ApiException(context.Response.StatusCode, ex.Message);
+                }
+                else if(ex is AggregateException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response = new ApiException(context.Response.StatusCode, ex.Message);
+                }
                 else
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

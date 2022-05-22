@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 
-namespace Host.Api.Models.Users
+namespace Host.Api.Models.Auth
 {
     public class RegisterUserApiRequest
     {
@@ -15,10 +15,10 @@ namespace Host.Api.Models.Users
         [Required]
         [MaxLength(25)]
         public string LastName { get; set; }
-        
+
         [MaxLength(25)]
         public string MiddleLastName { get; set; }
-        
+
         [Required]
         [MaxLength(15)]
         public string Document { get; set; }

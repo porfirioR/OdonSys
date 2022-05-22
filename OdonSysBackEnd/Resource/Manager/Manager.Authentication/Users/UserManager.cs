@@ -2,6 +2,7 @@
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Authentication.User;
+using Contract.Workspace.User;
 
 namespace Manager.Authentication.Users
 {
@@ -22,22 +23,22 @@ namespace Manager.Authentication.Users
         {
             if (await CheckUserExistsAsync(createUserRequest))
             {
-                throw new Exception("Ya existe un usuario con ese mismo documento o correo.");
+                throw new AggregateException("Ya existe un usuario con ese mismo documento o correo.");
             }
             var dataAccess = _mapper.Map<UserDataAccessRequest>(createUserRequest);
-            var accessModel = await _userDataAccess.CreateAsync(dataAccess);
+            var accessModel = await _authDataAccess.RegisterUserAsync(dataAccess);
             var response = _mapper.Map<UserModel>(accessModel);
             return response;
         }
 
-        public async Task<UserModel> Delete(string id)
+        public async Task<UserModel> DeactivateAsync(string id)
         {
             var accessModel = await _userDataAccess.DeleteAsync(id);
             var response = _mapper.Map<UserModel>(accessModel);
             return response;
         }
 
-        public async Task<UserModel> Login(LoginRequest login)
+        public async Task<UserModel> LoginAsync(LoginRequest login)
         {
             var loginAccess = _mapper.Map<LoginDataAccess>(login);
             var accessModel = await _authDataAccess.Login(loginAccess);
@@ -45,21 +46,21 @@ namespace Manager.Authentication.Users
             return response;
         }
 
-        public async Task<IEnumerable<UserModel>> GetAll()
+        public async Task<IEnumerable<UserModel>> GetAllAsync()
         {
             var accessModel = await _userDataAccess.GetAll();
             var response = _mapper.Map<IEnumerable<UserModel>>(accessModel);
             return response;
         }
 
-        public async Task<UserModel> GetById(string id)
+        public async Task<UserModel> GetByIdAsync(string id)
         {
-            var accessModel = await _userDataAccess.GetById(id);
+            var accessModel = await _userDataAccess.GetByIdAsync(id);
             var response = _mapper.Map<UserModel>(accessModel);
             return response;
         }
 
-        public async Task<UserModel> Update(UpdateUserRequest updateUserRequest)
+        public async Task<UserModel> UpdateAsync(UpdateUserRequest updateUserRequest)
         {
             var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
@@ -72,6 +73,13 @@ namespace Manager.Authentication.Users
             var users = await _userDataAccess.GetAll();
             var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
             return users.Any();
+        }
+
+        public async Task<UserModel> ApproveNewUserAsync(string id)
+        {
+            var accessModel = await _userDataAccess.ApproveNewUserAsync(id);
+            var response = _mapper.Map<UserModel>(accessModel);
+            return response;
         }
     }
 }

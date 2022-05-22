@@ -11,5 +11,7 @@ namespace Contract.Authentication.User
         public string Email { get; set; }
         public string Phone { get; set; }
         public Country Country { get; set; }
+        public bool Active { get; set; }
+        public bool Approved { get; set; }
     }
 }

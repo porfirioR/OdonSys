@@ -32,7 +32,7 @@ export class DoctorApiService {
   }
 
   public approve = (id: string): Observable<DoctorApiModel> => {
-    return this.http.put<DoctorApiModel>(`${this.baseUrl}/${id}`, null);
+    return this.http.post<DoctorApiModel>(`${this.baseUrl}/approve/${id}`, null);
   }
 
 }

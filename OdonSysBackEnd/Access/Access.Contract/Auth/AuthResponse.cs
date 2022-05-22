@@ -6,6 +6,5 @@ namespace Access.Contract.Auth
     {
         public UserDataAccessModel User { get; set; }
         public string Token { get; set; }
-        public bool DefaultPassword { get; set; }
     }
 }

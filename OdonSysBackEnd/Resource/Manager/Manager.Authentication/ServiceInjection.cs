@@ -1,4 +1,4 @@
-﻿using Contract.Authentication.User;
+﻿using Contract.Workspace.User;
 using Manager.Authentication.Users;
 using Microsoft.Extensions.DependencyInjection;
 

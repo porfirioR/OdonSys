@@ -1,5 +1,7 @@
 ﻿using Access.Contract.Auth;
+using Access.Contract.Users;
 using Access.Sql;
+using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -49,12 +51,19 @@ namespace Access.Admin
 
         public async Task<AuthResponse> Login(LoginDataAccess loginAccess)
         {
-            var user = await _context.Users.Include(y => y.Doctor).FirstOrDefaultAsync(x => x.UserName == loginAccess.Email);
+            var user = await _context.Users.Include(y => y.Doctor).FirstOrDefaultAsync(x => x.Doctor.Email == loginAccess.Email);
             if (user is null)
             {
                 throw new KeyNotFoundException("Correo o contraseña es incorrecta");
             }
-
+            if (!user.Approved)
+            {
+                throw new UnauthorizedAccessException("Cuenta aún no ha sido aprobada, contacte con el administrador e intente devuelta.");
+            }
+            if (!user.Doctor.Active)
+            {
+                throw new UnauthorizedAccessException("Su cuenta fue suspendida, contacte con el administrador del sistema.");
+            }
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginAccess.Password));
 
@@ -65,29 +74,34 @@ namespace Access.Admin
                     throw new KeyNotFoundException("Correo o contraseña es incorrecta");
                 }
             }
-            var isDefaultPassword = CheckDefautltPassword(computedHash);
             var token = CreateToken(user.Doctor.Name);
             var userResponse = _mapper.Map<AuthResponse>(user);
             userResponse.Token = token;
-            userResponse.DefaultPassword = isDefaultPassword;
             return userResponse;
         }
 
-        private bool CheckDefautltPassword(byte[] computedHash)
+
+        public async Task<UserDataAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
-            var isDefaultPassword = true;
-            var defaultPassword = "contraseñaInicial";
+            var entity = _mapper.Map<Doctor>(dataAccess);
+            var userName = @$"{entity.Name[..1].ToUpper()}{entity.LastName}";
+            userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
-            var defaultHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(defaultPassword));
-            for (int i = 0; i < computedHash.Length; i++)
+            var entityUser = new User
             {
-                if (computedHash[i] != defaultHash[i])
-                {
-                    isDefaultPassword = false;
-                    break;
-                }
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password)),
+                PasswordSalt = hmac.Key,
+                UserName = userName,
+                Approved = false,
+            };
+            entity.User = entityUser;
+            await _context.AddAsync(entity);
+            if (await _context.SaveChangesAsync() > 0)
+            {
+                var user = _mapper.Map<UserDataAccessModel>(entity);
+                return user;
             }
-            return isDefaultPassword;
+            throw new Exception("Error al intentar crear usuario.");
         }
     }
 }

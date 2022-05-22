@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -14,7 +14,7 @@
     <ProjectReference Include="..\..\..\Access\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\..\..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\..\Contract\Contract.Admin\Contract.Admin.csproj" />
-    <ProjectReference Include="..\..\Contract\Contract.Authentication\Contract.Authentication.csproj" />
+    <ProjectReference Include="..\..\Contract\Contract.Authentication\Contract.Workspace.csproj" />
   </ItemGroup>
 
 </Project>

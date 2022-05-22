@@ -2,6 +2,7 @@
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Authentication.User;
+using Contract.Workspace.User;
 
 namespace Manager.Authentication.Mapper
 {
