@@ -22,7 +22,6 @@ export class DoctorApiService {
     return this.http.put<UpdateUserApiModel>(`${this.baseUrl}`, model);
   }
 
-  
   public getAll = (reference: boolean = false): Observable<DoctorApiModel[]> => {
     return this.http.get<DoctorApiModel[]>(`${this.baseUrl}/${reference}`);
   }

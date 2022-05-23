@@ -22,7 +22,7 @@ namespace Host.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<UserModel> Login([FromBody] LoginApiRequest loginApiRequest)
+        public async Task<AuthModel> Login([FromBody] LoginApiRequest loginApiRequest)
         {
             var login = _mapper.Map<LoginRequest>(loginApiRequest);
             var model = await _userManager.LoginAsync(login);

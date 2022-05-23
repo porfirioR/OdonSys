@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { LoginRequest } from '../../models/users/api/login-request';
+import { AuthApiService } from '../../services/api/auth-api.service';
+import { AlertService } from '../../services/shared/alert.service';
 
 @Component({
   selector: 'app-authenticate',
@@ -12,7 +18,11 @@ export class AuthenticateComponent implements OnInit {
   public currentType = this.typeValue.text;
   public currentMessage = this.typeValue.textMessage;
 
-  constructor() {}
+  constructor(
+    private readonly router: Router,
+    private readonly authApiService: AuthApiService,
+    private readonly alertService: AlertService,
+  ) {}
 
   ngOnInit() {
     this.formGroup = new FormGroup({
@@ -26,5 +36,16 @@ export class AuthenticateComponent implements OnInit {
     });
   }
 
-  public login = () => {};
+  public login = () => {
+    const request = this.formGroup.getRawValue() as LoginRequest;
+    this.formGroup.disable();
+    this.authApiService.login(request).pipe(tap(x => {
+      this.formGroup.enable();
+      this.alertService.showSuccess('Bienvenido');
+      this.router.navigate(['']);
+    }), catchError(err => {
+      this.formGroup.enable();
+      return throwError(err);
+    })).subscribe()
+  };
 }

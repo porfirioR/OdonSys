@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { throwError } from 'rxjs';
 import { catchError, first, tap } from 'rxjs/operators';
-import { ButtonGridActionType } from 'src/app/core/enums/button-grid-action-type.enum';
-import { GridActionModel } from 'src/app/core/models/view/grid-action-model';
-import { DoctorApiService } from 'src/app/core/services/api/doctor-api.service';
-import { AgGridService } from 'src/app/core/services/shared/ag-grid.service';
-import { AlertService } from 'src/app/core/services/shared/alert.service';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
+import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
+import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { AlertService } from '../../../core/services/shared/alert.service';
 import { DoctorModel } from '../../models/doctors/doctor-model';
 
 @Component({

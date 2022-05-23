@@ -12,11 +12,14 @@ namespace Manager.Admin.Mapper
         public UserManagerProfile()
         {
             CreateMap<LoginRequest, LoginDataAccess>();
+
             CreateMap<RegisterUserRequest, UserDataAccess>();
 
             CreateMap<UpdateUserRequest, UserDataAccess>();
 
             CreateMap<UserDataAccessModel, UserModel>();
+
+            CreateMap<AuthAccessModel, AuthModel>();
         }
     }
 }

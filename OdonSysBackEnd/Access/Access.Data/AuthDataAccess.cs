@@ -29,29 +29,12 @@ namespace Access.Admin
             _context = context;
         }
 
-        public string CreateToken(string name)
+        public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
         {
-            var claims = new List<Claim>()
-            {
-                new Claim(JwtRegisteredClaimNames.NameId, name)
-            };
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var user = await _context.Users
+                            .Include(y => y.Doctor)
+                            .FirstOrDefaultAsync(x => x.Doctor.Email == loginAccess.Email);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        public async Task<AuthResponse> Login(LoginDataAccess loginAccess)
-        {
-            var user = await _context.Users.Include(y => y.Doctor).FirstOrDefaultAsync(x => x.Doctor.Email == loginAccess.Email);
             if (user is null)
             {
                 throw new KeyNotFoundException("Correo o contraseña es incorrecta");
@@ -74,8 +57,13 @@ namespace Access.Admin
                     throw new KeyNotFoundException("Correo o contraseña es incorrecta");
                 }
             }
-            var token = CreateToken(user.Doctor.Name);
-            var userResponse = _mapper.Map<AuthResponse>(user);
+            var token = CreateToken(user.UserName);
+            var userAccessModel = _mapper.Map<UserDataAccessModel>(user.Doctor);
+            var userResponse = new AuthAccessModel
+            {
+                Token = token,
+                User = userAccessModel
+            };
             userResponse.Token = token;
             return userResponse;
         }
@@ -102,6 +90,26 @@ namespace Access.Admin
                 return user;
             }
             throw new Exception("Error al intentar crear usuario.");
+        }
+
+        private string CreateToken(string userName)
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(JwtRegisteredClaimNames.NameId, userName)
+            };
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(20),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

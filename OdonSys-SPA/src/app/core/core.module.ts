@@ -15,6 +15,7 @@ import { GridActionsComponent } from './components/grid-actions/grid-actions.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SelectInputComponent } from './components/inputs/select-input/select-input.component';
 import { AuthenticateComponent } from './components/authenticate/authenticate.component';
+import { RegisterUserComponent } from './components/register-user/register-user.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
     CheckInputComponent,
     SelectInputComponent,
     GridActionsComponent,
-    AuthenticateComponent
+    AuthenticateComponent,
+    RegisterUserComponent
   ],
   exports: [
     FormsModule,

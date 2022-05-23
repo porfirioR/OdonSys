@@ -38,12 +38,12 @@ namespace Manager.Authentication.Users
             return response;
         }
 
-        public async Task<UserModel> LoginAsync(LoginRequest login)
+        public async Task<AuthModel> LoginAsync(LoginRequest login)
         {
             var loginAccess = _mapper.Map<LoginDataAccess>(login);
-            var accessModel = await _authDataAccess.Login(loginAccess);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
+            var accessModel = await _authDataAccess.LoginAsync(loginAccess);
+            var model = _mapper.Map<AuthModel>(accessModel);
+            return model;
         }
 
         public async Task<IEnumerable<UserModel>> GetAllAsync()

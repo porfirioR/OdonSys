@@ -9,7 +9,7 @@ namespace Contract.Workspace.User
         Task<IEnumerable<UserModel>> GetAllAsync();
         Task<UserModel> GetByIdAsync(string id);
         Task<UserModel> UpdateAsync(UpdateUserRequest updateUserRequest);
-        Task<UserModel> LoginAsync(LoginRequest login);
+        Task<AuthModel> LoginAsync(LoginRequest login);
         Task<UserModel> ApproveNewUserAsync(string id);
     }
 }
