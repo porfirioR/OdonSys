@@ -43,6 +43,7 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.userToken);
     this.localStorageService.setData(this.userToken, auth.token);
     this.localStorageService.setData(this.userKey, JSON.stringify(auth.user));
+    //nextStep add this.userDataApiService.getUserData() for roles, and other things
   }
 
   private getUserData = (): UserDataApiModel => {

@@ -37,7 +37,7 @@ namespace Access.Admin
 
             if (user is null)
             {
-                throw new KeyNotFoundException("Correo o contraseña es incorrecta");
+                throw new KeyNotFoundException("Correo y/o contraseña es incorrecta");
             }
             if (!user.Approved)
             {
