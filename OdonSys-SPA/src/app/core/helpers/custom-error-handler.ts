@@ -14,9 +14,13 @@ export class CustomErrorHandler implements ErrorHandler {
     if (typeof error === 'object' && error.error) {
       const errors = error.error;
       let message = '';
-      for (const key in errors.errors) {
-        const element = error.error.errors[key];
-        message = message.concat(`${element}\n`)
+      if (errors.errors) {
+        for (const key in errors.errors) {
+          const element = error.error.errors[key];
+          message = message.concat(`${element}\n`)
+        }
+      } else if (errors.statusCode) {
+        message = errors.message;
       }
       this.alertService.showError(message);
       return;

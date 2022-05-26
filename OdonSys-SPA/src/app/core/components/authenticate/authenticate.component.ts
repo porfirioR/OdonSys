@@ -15,8 +15,8 @@ import { AlertService } from '../../services/shared/alert.service';
 export class AuthenticateComponent implements OnInit {
   public formGroup: FormGroup = new FormGroup({});
   public typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
-  public currentType = this.typeValue.text;
-  public currentMessage = this.typeValue.textMessage;
+  public currentType = this.typeValue.password;
+  public currentMessage = this.typeValue.passwordMessage;
 
   constructor(
     private readonly router: Router,
@@ -28,7 +28,7 @@ export class AuthenticateComponent implements OnInit {
     this.formGroup = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      type: new FormControl(this.typeValue.text),
+      type: new FormControl(false),
     });
     this.formGroup.controls.type.valueChanges.subscribe((x: Boolean) => {
       this.currentType = x ? this.typeValue.text : this.typeValue.password;
