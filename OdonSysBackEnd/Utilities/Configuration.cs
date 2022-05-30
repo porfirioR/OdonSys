@@ -1,7 +1,7 @@
-﻿namespace Utilities.Enums
+namespace Utilities.Enums
 {
     public static class Configuration
     {
-        public static string DataBase { get; } = "OdonSys";
+        public static string DataBase { get; } = "OdonSysDataBase";
     }
 }
