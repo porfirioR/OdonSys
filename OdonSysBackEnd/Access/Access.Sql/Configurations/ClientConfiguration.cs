@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sql.Entities;
 
-namespace Sql.Configurations
+namespace Access.Sql.Configurations
 {
     public class ClientConfiguration : IEntityTypeConfiguration<Client>
     {

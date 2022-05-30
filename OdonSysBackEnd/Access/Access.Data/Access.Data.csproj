@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
     <ProjectReference Include="..\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\Access.Sql\Access.Sql.csproj" />
   </ItemGroup>

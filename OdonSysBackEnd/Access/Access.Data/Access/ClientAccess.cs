@@ -1,8 +1,8 @@
 ﻿using Access.Contract.Clients;
 using Access.Sql;
+using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Sql.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

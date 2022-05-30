@@ -1,14 +1,11 @@
 ﻿using Access.Contract.Users;
 using Access.Sql;
+using Access.Sql.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Sql.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Access.Admin.Access
@@ -23,64 +20,53 @@ namespace Access.Admin.Access
             _context = context;
         }
 
-        public async Task<UserDataAccessModel> CreateAsync(UserDataAccessRequest dataAccess)
+        public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
         {
-            var entity = _mapper.Map<Doctor>(dataAccess);
-            var entityUser = new User();
-
-            var password = "contraseñaInicial";
-            using var hmac = new HMACSHA512();
-            entityUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-            entityUser.PasswordSalt = hmac.Key;
-            entityUser.UserName = @$"{entity.Name.Substring(0, 1)}{entity.LastName}";
-            entity.User = entityUser;
-            await _context.AddAsync(entity);
-            if (await _context.SaveChangesAsync() > 0)
-            {
-                var user = _mapper.Map<UserDataAccessModel>(entity);
-                return user;
-            }
-            return null;
-        }
-
-        public async Task<UserDataAccessModel> DeleteAsync(string id)
-        {
-            var model = _context.Set<Doctor>().SingleOrDefault(x => x.Id == new Guid(id));
-            if (model is null)
-            {
-                throw new KeyNotFoundException($"id {id}");
-            }
-            model.Active = false;
-            _context.Update(model);
+            var entity = await GetDoctorByIdAsync(id);
+            entity.User.Approved = true;
             await _context.SaveChangesAsync();
-            return _mapper.Map<UserDataAccessModel>(model);
+            return _mapper.Map<UserDataAccessModel>(entity);
         }
 
-        public async Task<IEnumerable<UserDataAccessModel>> GetAll()
+        public async Task<DoctorDataAccessModel> DeleteAsync(string id)
         {
-            var response = await _context.Set<Doctor>().Where(u => u.Active).ProjectTo<UserDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
+            var entity = await GetDoctorByIdAsync(id);
+            entity.Active = false;
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<DoctorDataAccessModel>(entity);
+        }
+
+        public async Task<IEnumerable<DoctorDataAccessModel>> GetAll()
+        {
+            var response = await _context.Set<Doctor>()
+                                .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
             return response;
         }
 
-        public async Task<UserDataAccessModel> GetById(string id)
+        public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
-            var entity = await _context.Set<Doctor>().SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            var response = _mapper.Map<UserDataAccessModel>(entity);
-            return response ?? throw new KeyNotFoundException($"id {id}"); ;
+            var entity = await GetDoctorByIdAsync(id);
+            var response = _mapper.Map<DoctorDataAccessModel>(entity);
+            return response;
         }
 
-        public async Task<UserDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
+        public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = await _context.Set<Doctor>().SingleOrDefaultAsync(x => x.Id == new Guid(dataAccess.Id));
-            if (entity is null)
-            {
-                throw new KeyNotFoundException($"id {entity.Id}");
-            }
+            var entity = GetDoctorByIdAsync(dataAccess.Id);
             entity = _mapper.Map(dataAccess, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var model = _mapper.Map<UserDataAccessModel>(entity);
+            var model = _mapper.Map<DoctorDataAccessModel>(entity);
             return model;
+        }
+
+        private async Task<Doctor> GetDoctorByIdAsync(string id)
+        {
+            var entity = await _context.Set<Doctor>()
+                            .Include(x => x.User)
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            return entity ?? throw new KeyNotFoundException($"id {entity.Id}");
         }
     }
 }

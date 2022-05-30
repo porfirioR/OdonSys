@@ -13,6 +13,7 @@ namespace Host.Api
             //Manager
             Manager.Admin.ServiceInjection.ConfigureServices(services);
             Manager.Procedure.ServiceInjection.ConfigureServices(services);
+            Manager.Authentication.ServiceInjection.ConfigureServices(services);    
         }
     }
 }

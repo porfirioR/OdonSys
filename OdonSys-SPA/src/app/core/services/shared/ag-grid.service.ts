@@ -29,6 +29,24 @@ export class AgGridService {
     cellRendererFramework: GridActionsComponent }
   ];
 
+  private doctorColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'telefono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 150,
+      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 150,
+      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 145, resizable: true,
+      valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
+      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
   constructor() { }
 
   public getGridOptions = (): GridOptions => {
@@ -63,6 +81,13 @@ export class AgGridService {
   public getProcedureGridOptions = (): GridOptions => {
     const grid = this.getGridOptions();
     grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
+    return grid;
+  }
+
+  // Configuration
+  public getDoctorGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.doctorColumnDef);
     return grid;
   }
   
