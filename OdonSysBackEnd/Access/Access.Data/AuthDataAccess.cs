@@ -64,12 +64,10 @@ namespace Access.Admin
                 Token = token,
                 User = userAccessModel
             };
-            userResponse.Token = token;
             return userResponse;
         }
 
-
-        public async Task<UserDataAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
+        public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _mapper.Map<Doctor>(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.LastName}";
@@ -86,8 +84,14 @@ namespace Access.Admin
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {
-                var user = _mapper.Map<UserDataAccessModel>(entity);
-                return user;
+                var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
+                var token = CreateToken(userAccessModel.UserName);
+                var userResponse = new AuthAccessModel
+                {
+                    Token = token,
+                    User = userAccessModel
+                };
+                return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");
         }

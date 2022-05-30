@@ -21,9 +21,13 @@ namespace Access.Admin.Mapper
             CreateMap<User, AuthAccessModel>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src));
 
+            CreateMap<Doctor, DoctorDataAccessModel>()
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.User.Approved));
+
             CreateMap<Doctor, UserDataAccessModel>()
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.User.Approved))
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.User.Approved));
         }
     }
 }

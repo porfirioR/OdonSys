@@ -19,7 +19,7 @@ namespace Manager.Authentication.Users
             _authDataAccess = authDataAccess;
         }
 
-        public async Task<UserModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
+        public async Task<AuthModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
         {
             if (await CheckUserExistsAsync(createUserRequest))
             {
@@ -27,14 +27,7 @@ namespace Manager.Authentication.Users
             }
             var dataAccess = _mapper.Map<UserDataAccessRequest>(createUserRequest);
             var accessModel = await _authDataAccess.RegisterUserAsync(dataAccess);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
-        }
-
-        public async Task<UserModel> DeactivateAsync(string id)
-        {
-            var accessModel = await _userDataAccess.DeleteAsync(id);
-            var response = _mapper.Map<UserModel>(accessModel);
+            var response = _mapper.Map<AuthModel>(accessModel);
             return response;
         }
 
@@ -44,6 +37,13 @@ namespace Manager.Authentication.Users
             var accessModel = await _authDataAccess.LoginAsync(loginAccess);
             var model = _mapper.Map<AuthModel>(accessModel);
             return model;
+        }
+
+        public async Task<UserModel> DeactivateAsync(string id)
+        {
+            var accessModel = await _userDataAccess.DeleteAsync(id);
+            var response = _mapper.Map<UserModel>(accessModel);
+            return response;
         }
 
         public async Task<IEnumerable<UserModel>> GetAllAsync()

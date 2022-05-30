@@ -2,12 +2,7 @@ import { Country } from "../../../../core/enums/country.enum";
 
 export interface UserApiModel {
     id: string;
-    name: string;
-    lastName: string;
-    document: string;
-    email: string;
-    phone: string;
-    country: Country;
+    userName: string;
     active: boolean;
     approved: boolean;
 }

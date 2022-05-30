@@ -2,6 +2,7 @@
 using Contract.Authentication.User;
 using Contract.Workspace.User;
 using Host.Api.Models.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OdonSysBackEnd.Models.Auth;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Host.Api.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<AuthModel> Login([FromBody] LoginApiRequest loginApiRequest)
         {
@@ -29,8 +31,9 @@ namespace Host.Api.Controllers
             return model;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<UserModel> Register([FromBody] RegisterUserApiRequest apiRequest)
+        public async Task<AuthModel> Register([FromBody] RegisterUserApiRequest apiRequest)
         {
             var register = _mapper.Map<RegisterUserRequest>(apiRequest);
             var model = await _userManager.RegisterUserAsync(register);

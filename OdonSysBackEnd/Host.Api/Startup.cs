@@ -29,7 +29,8 @@ namespace Host.Api
             // partial startup
             ConfigureMappings(services);
             InjectServices(services);
-            
+            ConfigureAuthentication(services, Configuration);
+
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 

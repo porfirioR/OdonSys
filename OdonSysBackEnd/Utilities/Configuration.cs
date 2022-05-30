@@ -2,6 +2,6 @@
 {
     public static class Configuration
     {
-        public static string DataBase { get; } = "OdonSysDataBase";
+        public static string DataBase { get; } = "OdonSys";
     }
 }

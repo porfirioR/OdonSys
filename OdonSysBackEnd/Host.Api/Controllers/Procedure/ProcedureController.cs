@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Contract.Procedure.Procedures;
 using Host.Api.Models.Procedures;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Procedure
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProcedureController : ControllerBase
@@ -34,7 +36,6 @@ namespace Host.Api.Controllers.Procedure
             var response = await _procedureManager.UpdateAsync(request);
             return response;
         }
-
         [HttpGet]
         public async Task<IEnumerable<ProcedureModel>> GetAll()
         {

@@ -28,36 +28,36 @@ namespace Access.Admin.Access
             return _mapper.Map<UserDataAccessModel>(entity);
         }
 
-        public async Task<UserDataAccessModel> DeleteAsync(string id)
+        public async Task<DoctorDataAccessModel> DeleteAsync(string id)
         {
             var entity = await GetDoctorByIdAsync(id);
             entity.Active = false;
             _context.Update(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<UserDataAccessModel>(entity);
+            return _mapper.Map<DoctorDataAccessModel>(entity);
         }
 
-        public async Task<IEnumerable<UserDataAccessModel>> GetAll()
+        public async Task<IEnumerable<DoctorDataAccessModel>> GetAll()
         {
             var response = await _context.Set<Doctor>()
-                                .ProjectTo<UserDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
+                                .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
             return response;
         }
 
-        public async Task<UserDataAccessModel> GetByIdAsync(string id)
+        public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetDoctorByIdAsync(id);
-            var response = _mapper.Map<UserDataAccessModel>(entity);
+            var response = _mapper.Map<DoctorDataAccessModel>(entity);
             return response;
         }
 
-        public async Task<UserDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
+        public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
             var entity = GetDoctorByIdAsync(dataAccess.Id);
             entity = _mapper.Map(dataAccess, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var model = _mapper.Map<UserDataAccessModel>(entity);
+            var model = _mapper.Map<DoctorDataAccessModel>(entity);
             return model;
         }
 

@@ -29,7 +29,12 @@ export class AuthApiService {
     ));
   }
 
-  public register = (request: RegisterUserRequest): Observable<UserApiModel> => {
-    return this.http.post<UserApiModel>(`${this.baseUrl}/register`, request);
+  public register = (request: RegisterUserRequest): Observable<AuthApiModel> => {
+    return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request).pipe(
+      switchMap(x => {
+        this.userInfoService.setUserLogin(x);
+        return of(x);
+      }
+    ));
   }
 }

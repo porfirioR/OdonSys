@@ -6,6 +6,6 @@ namespace Access.Contract.Auth
     public interface IAuthDataAccess
     {
         Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess);
-        Task<UserDataAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess);
+        Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess);
     }
 }

@@ -3,11 +3,14 @@ import { AuthenticateComponent } from './core/components/authenticate/authentica
 import { NotFoundComponent } from './core/components/not-found/not-found.component';
 import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 import { RegisterUserComponent } from './core/components/register-user/register-user.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const AppRoutes: Routes = [
   {
     path: '',
     component: PrincipalPageComponent,
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'admin',

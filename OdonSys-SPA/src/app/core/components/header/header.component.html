@@ -24,7 +24,7 @@
       <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
       <div ngbDropdownMenu aria-labelledby="dropdownConfig">
         <button ngbDropdownItem routerLink="trabajo/configuración/datos">Mis datos</button>
-        <button ngbDropdownItem>Salir</button>
+        <button ngbDropdownItem (click)="logOut()">Salir</button>
       </div>
     </div>
   </nav>
