@@ -1,4 +1,5 @@
 @import "~bootstrap/dist/css/bootstrap.css";
+@import '~bootstrap/scss/bootstrap';
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
@@ -13,10 +14,16 @@ $white: #fff;
 $primary: #1548cd;
 $redColor: red;
 $blue: #d1f2ff;
-.centerDiv {
+
+.center-block {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.middle-block {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .header-title {

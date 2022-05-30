@@ -2,5 +2,6 @@ export enum ButtonGridActionType {
     Editar = 'Editar',
     Borrar = 'Borrar',
     Ver = 'Ver',
-    Descargar = 'Descargar'
+    Descargar = 'Descargar',
+    Desactivar = 'Desactivar'
 }

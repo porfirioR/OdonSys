@@ -1,7 +1,6 @@
-﻿using Access.Sql;
-using System;
+﻿using System;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class ProcedureTooth : BaseEntity
     {

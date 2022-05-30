@@ -5,10 +5,10 @@ namespace Access.Contract.Users
 {
     public interface IUserDataAccess
     {
-        Task<UserDataAccessModel> CreateAsync(UserDataAccessRequest dataAccess);
-        Task<UserDataAccessModel> DeleteAsync(string id);
-        Task<IEnumerable<UserDataAccessModel>> GetAll();
-        Task<UserDataAccessModel> GetById(string id);
-        Task<UserDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess);
+        Task<DoctorDataAccessModel> DeleteAsync(string id);
+        Task<IEnumerable<DoctorDataAccessModel>> GetAll();
+        Task<DoctorDataAccessModel> GetByIdAsync(string id);
+        Task<UserDataAccessModel> ApproveNewUserAsync(string id);
+        Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess);
     }
 }

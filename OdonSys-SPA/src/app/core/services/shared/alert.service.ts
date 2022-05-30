@@ -30,7 +30,7 @@ export class AlertService {
       timer: 3000,
       timerProgressBar: true,
       icon: 'success',
-      didOpen: (toast) => {
+      didOpen: (toast: any) => {
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
       }

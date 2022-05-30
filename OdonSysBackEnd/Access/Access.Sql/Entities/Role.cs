@@ -1,9 +1,8 @@
-﻿using Access.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
-    public class Role: BaseEntity
+    public class Role : BaseEntity
     {
         public string Name { get; set; }
         public virtual IEnumerable<RolePermission> RolePermissions { get; set; }

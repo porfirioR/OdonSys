@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using Contract.Admin.User;
+using Contract.Workspace.User;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Users;
+using OdonSysBackEnd.Models.Auth;
 
 namespace Host.Api.Mapper
 {
@@ -8,7 +10,8 @@ namespace Host.Api.Mapper
     {
         public UserHostProfile()
         {
-            CreateMap<CreateUserApiRequest, CreateUserRequest>().ReverseMap();
+            CreateMap<LoginApiRequest, LoginRequest>();
+            CreateMap<RegisterUserApiRequest, RegisterUserRequest>();
             CreateMap<UpdateUserApiRequest, UpdateUserRequest>().ReverseMap();
         }
     }

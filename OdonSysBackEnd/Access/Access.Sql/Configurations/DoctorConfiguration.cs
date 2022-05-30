@@ -1,42 +1,68 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sql.Entities;
 
-namespace Sql.Configurations
+namespace Access.Sql.Configurations
 {
     public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
     {
         public void Configure(EntityTypeBuilder<Doctor> builder)
         {
-            builder.HasKey(u => u.Id);
+            builder.HasKey(x => x.Id);
 
             builder
-                .Property(d => d.DateCreated)
+                .Property(x => x.DateCreated)
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(d => d.DateModified)
+                .Property(x => x.DateModified)
                 .HasDefaultValueSql("GetDate()");
             
+            // custom Properties
             builder
-                .Property(d => d.Name)
+                .Property(x => x.Name)
+                .HasMaxLength(25)
+                .IsRequired();
+
+            builder
+                .Property(x => x.MiddleName)
                 .HasMaxLength(25);
 
             builder
-                .Property(d => d.LastName)
+                .Property(x => x.LastName)
+                .HasMaxLength(25)
+                .IsRequired();
+
+            builder
+                .Property(x => x.MiddleLastName)
                 .HasMaxLength(25);
 
             builder
-                .Property(d => d.Document)
-                .HasMaxLength(15);
+                .Property(x => x.Document)
+                .HasMaxLength(15)
+                .IsRequired();
 
             builder
-                .HasIndex(d => d.Document)
+                .Property(x => x.Phone)
+                .HasMaxLength(15)
+                .IsRequired();
+
+            builder
+                .Property(x => x.Email)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            builder
+                .HasIndex(x => x.Document)
+                .IsUnique();
+
+            builder
+                .HasIndex(x => x.Email)
                 .IsUnique();
 
             builder.HasOne(x => x.User)
                 .WithOne(x => x.Doctor)
-                .HasForeignKey<User>(x => x.DoctorId);
+                .HasForeignKey<User>(x => x.Id);
         }
     }
 }
