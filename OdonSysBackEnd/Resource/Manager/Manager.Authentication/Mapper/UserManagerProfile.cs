@@ -4,7 +4,7 @@ using AutoMapper;
 using Contract.Authentication.User;
 using Contract.Workspace.User;
 
-namespace Manager.Authentication.Mapper
+namespace Manager.Workspace.Mapper
 {
     public class UserManagerProfile : Profile
     {
@@ -15,6 +15,8 @@ namespace Manager.Authentication.Mapper
             CreateMap<UpdateUserRequest, UserDataAccess>();
 
             CreateMap<UserDataAccessModel, UserModel>();
+
+            CreateMap<DoctorDataAccessModel, DoctorModel>();
         }
     }
 }

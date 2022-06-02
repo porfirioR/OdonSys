@@ -14,46 +14,47 @@ namespace Host.Api.Controllers.Workspace
     {
         private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
+
         public UsersController(IMapper mapper, IUserManager userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
         }
 
+        [HttpPost("approve/{id}")]
+        public async Task<DoctorModel> ApproveNewUser([FromRoute] string id)
+        {
+            var model = await _userManager.ApproveNewUserAsync(id);
+            return model;
+        }
+
         [HttpDelete("{id}")]
-        public async Task<UserModel> Deactivate(string id)
+        public async Task<UserModel> Deactivate([FromRoute] string id)
         {
             var response = await _userManager.DeactivateAsync(id);
             return response;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UserModel>> GetAll()
+        public async Task<IEnumerable<DoctorModel>> GetAll()
         {
             var response = await _userManager.GetAllAsync();
             return response;
         }
 
         [HttpGet("{id}")]
-        public async Task<UserModel> GetById(string id)
+        public async Task<DoctorModel> GetById([FromRoute] string id)
         {
             var response = await _userManager.GetByIdAsync(id);
             return response;
         }
 
         [HttpPut]
-        public async Task<UserModel> Update([FromBody] UpdateUserApiRequest userDTO)
+        public async Task<DoctorModel> Update([FromBody] UpdateUserApiRequest apiRequest)
         {
-            var user = _mapper.Map<UpdateUserRequest>(userDTO);
+            var user = _mapper.Map<UpdateUserRequest>(apiRequest);
             var response = await _userManager.UpdateAsync(user);
             return response;
-        }
-
-        [HttpPost("approve/{id}")]
-        public async Task<UserModel> ApproveNewUser([FromRoute] string id)
-        {
-            var model = await _userManager.ApproveNewUserAsync(id);
-            return model;
         }
 
     }

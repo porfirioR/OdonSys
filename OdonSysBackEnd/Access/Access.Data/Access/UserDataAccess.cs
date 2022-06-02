@@ -37,7 +37,7 @@ namespace Access.Admin.Access
             return _mapper.Map<DoctorDataAccessModel>(entity);
         }
 
-        public async Task<IEnumerable<DoctorDataAccessModel>> GetAll()
+        public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
             var response = await _context.Set<Doctor>()
                                 .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();

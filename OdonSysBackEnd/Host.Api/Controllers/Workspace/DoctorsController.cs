@@ -25,5 +25,6 @@ namespace Host.Api.Controllers.Workspace
             var model = await _clientManager.CreateAsync(user);
             return model;
         }
+
     }
 }
