@@ -12,7 +12,7 @@ namespace Manager.Workspace.Mapper
         {
             CreateMap<RegisterUserRequest, UserDataAccess>();
 
-            CreateMap<UpdateUserRequest, UserDataAccess>();
+            CreateMap<UpdateDoctorRequest, UserDataAccess>();
 
             CreateMap<UserDataAccessModel, UserModel>();
 

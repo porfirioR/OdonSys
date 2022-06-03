@@ -60,7 +60,7 @@ namespace Manager.Workspace.Users
             return response;
         }
 
-        public async Task<DoctorModel> UpdateAsync(UpdateUserRequest updateUserRequest)
+        public async Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest)
         {
             var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);

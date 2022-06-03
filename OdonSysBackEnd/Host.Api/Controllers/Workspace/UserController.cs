@@ -10,12 +10,12 @@ namespace Host.Api.Controllers.Workspace
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
 
-        public UsersController(IMapper mapper, IUserManager userManager)
+        public UserController(IMapper mapper, IUserManager userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -50,9 +50,9 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPut]
-        public async Task<DoctorModel> Update([FromBody] UpdateUserApiRequest apiRequest)
+        public async Task<DoctorModel> Update([FromBody] UpdateDoctorApiRequest apiRequest)
         {
-            var user = _mapper.Map<UpdateUserRequest>(apiRequest);
+            var user = _mapper.Map<UpdateDoctorRequest>(apiRequest);
             var response = await _userManager.UpdateAsync(user);
             return response;
         }

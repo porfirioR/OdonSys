@@ -15,7 +15,7 @@ namespace Manager.Admin.Mapper
 
             CreateMap<RegisterUserRequest, UserDataAccess>();
 
-            CreateMap<UpdateUserRequest, UserDataAccess>();
+            CreateMap<UpdateDoctorRequest, UserDataAccess>();
 
             CreateMap<UserDataAccessModel, UserModel>();
 

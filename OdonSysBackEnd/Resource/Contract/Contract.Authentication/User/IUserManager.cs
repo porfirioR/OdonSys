@@ -10,7 +10,7 @@ namespace Contract.Workspace.User
 
         Task<IEnumerable<DoctorModel>> GetAllAsync();
         Task<DoctorModel> GetByIdAsync(string id);
-        Task<DoctorModel> UpdateAsync(UpdateUserRequest updateUserRequest);
+        Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);
         Task<DoctorModel> ApproveNewUserAsync(string id);
     }
 }
