@@ -2,7 +2,6 @@
 using Access.Contract.Users;
 using Access.Sql.Entities;
 using AutoMapper;
-using Contract.Workspace.User;
 using System;
 
 namespace Access.Admin.Mapper
@@ -11,8 +10,6 @@ namespace Access.Admin.Mapper
     {
         public UserDataAccessProfile()
         {
-            CreateMap<RegisterUserRequest, UserDataAccessRequest>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<UserDataAccessRequest, Doctor>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))

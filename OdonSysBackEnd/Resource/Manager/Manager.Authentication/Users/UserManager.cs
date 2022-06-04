@@ -39,9 +39,9 @@ namespace Manager.Workspace.Users
             return model;
         }
 
-        public async Task<UserModel> DeactivateAsync(string id)
+        public async Task<UserModel> ApproveNewUserAsync(string id)
         {
-            var accessModel = await _userDataAccess.DeleteAsync(id);
+            var accessModel = await _userDataAccess.ApproveNewUserAsync(id);
             var response = _mapper.Map<UserModel>(accessModel);
             return response;
         }
@@ -64,13 +64,6 @@ namespace Manager.Workspace.Users
         {
             var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
-            var response = _mapper.Map<DoctorModel>(accessModel);
-            return response;
-        }
-
-        public async Task<DoctorModel> ApproveNewUserAsync(string id)
-        {
-            var accessModel = await _userDataAccess.ApproveNewUserAsync(id);
             var response = _mapper.Map<DoctorModel>(accessModel);
             return response;
         }

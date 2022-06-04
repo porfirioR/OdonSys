@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Contract.Admin.Clients;
 using Host.Api.Models.Clients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class DoctorsController : ControllerBase
     {

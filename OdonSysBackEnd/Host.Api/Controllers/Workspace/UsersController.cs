@@ -2,6 +2,7 @@
 using Contract.Authentication.User;
 using Contract.Workspace.User;
 using Host.Api.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,30 +10,24 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Workspace
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
 
-        public UserController(IMapper mapper, IUserManager userManager)
+        public UsersController(IMapper mapper, IUserManager userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
         }
 
         [HttpPost("approve/{id}")]
-        public async Task<DoctorModel> ApproveNewUser([FromRoute] string id)
+        public async Task<UserModel> ApproveNewUser([FromRoute] string id)
         {
             var model = await _userManager.ApproveNewUserAsync(id);
             return model;
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<UserModel> Deactivate([FromRoute] string id)
-        {
-            var response = await _userManager.DeactivateAsync(id);
-            return response;
         }
 
         [HttpGet]
@@ -56,6 +51,6 @@ namespace Host.Api.Controllers.Workspace
             var response = await _userManager.UpdateAsync(user);
             return response;
         }
-
+        // TODO hard delete if not associated with patients and other references
     }
 }

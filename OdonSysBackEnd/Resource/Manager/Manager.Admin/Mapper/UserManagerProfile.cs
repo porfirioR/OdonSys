@@ -1,5 +1,4 @@
-﻿using Access.Admin.Access;
-using Access.Contract.Auth;
+﻿using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Authentication.User;
@@ -13,13 +12,17 @@ namespace Manager.Admin.Mapper
         {
             CreateMap<LoginRequest, LoginDataAccess>();
 
-            CreateMap<RegisterUserRequest, UserDataAccess>();
+            CreateMap<RegisterUserRequest, UserDataAccessRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
-            CreateMap<UpdateDoctorRequest, UserDataAccess>();
+            CreateMap<AuthAccessModel, AuthModel>();
+
+            CreateMap<UpdateDoctorRequest, UserDataAccessRequest>();
 
             CreateMap<UserDataAccessModel, UserModel>();
 
-            CreateMap<AuthAccessModel, AuthModel>();
+            CreateMap<DoctorDataAccessModel, DoctorModel>();
+
         }
     }
 }
