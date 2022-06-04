@@ -28,16 +28,7 @@ namespace Access.Admin.Access
             return _mapper.Map<UserDataAccessModel>(entity);
         }
 
-        public async Task<DoctorDataAccessModel> DeleteAsync(string id)
-        {
-            var entity = await GetDoctorByIdAsync(id);
-            entity.Active = false;
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<DoctorDataAccessModel>(entity);
-        }
-
-        public async Task<IEnumerable<DoctorDataAccessModel>> GetAll()
+        public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
             var response = await _context.Set<Doctor>()
                                 .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
@@ -53,8 +44,10 @@ namespace Access.Admin.Access
 
         public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = GetDoctorByIdAsync(dataAccess.Id);
+            var entity = await GetDoctorByIdAsync(dataAccess.Id);
+            var email = entity.Email;
             entity = _mapper.Map(dataAccess, entity);
+            entity.Email = email;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var model = _mapper.Map<DoctorDataAccessModel>(entity);

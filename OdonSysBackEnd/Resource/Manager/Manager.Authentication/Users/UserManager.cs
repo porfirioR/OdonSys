@@ -4,7 +4,7 @@ using AutoMapper;
 using Contract.Authentication.User;
 using Contract.Workspace.User;
 
-namespace Manager.Authentication.Users
+namespace Manager.Workspace.Users
 {
     internal class UserManager : IUserManager
     {
@@ -39,47 +39,40 @@ namespace Manager.Authentication.Users
             return model;
         }
 
-        public async Task<UserModel> DeactivateAsync(string id)
-        {
-            var accessModel = await _userDataAccess.DeleteAsync(id);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
-        }
-
-        public async Task<IEnumerable<UserModel>> GetAllAsync()
-        {
-            var accessModel = await _userDataAccess.GetAll();
-            var response = _mapper.Map<IEnumerable<UserModel>>(accessModel);
-            return response;
-        }
-
-        public async Task<UserModel> GetByIdAsync(string id)
-        {
-            var accessModel = await _userDataAccess.GetByIdAsync(id);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
-        }
-
-        public async Task<UserModel> UpdateAsync(UpdateUserRequest updateUserRequest)
-        {
-            var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
-            var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
-        }
-
-        private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)
-        {
-            var users = await _userDataAccess.GetAll();
-            var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
-            return users.Any();
-        }
-
         public async Task<UserModel> ApproveNewUserAsync(string id)
         {
             var accessModel = await _userDataAccess.ApproveNewUserAsync(id);
             var response = _mapper.Map<UserModel>(accessModel);
             return response;
+        }
+
+        public async Task<IEnumerable<DoctorModel>> GetAllAsync()
+        {
+            var accessModel = await _userDataAccess.GetAllAsync();
+            var response = _mapper.Map<IEnumerable<DoctorModel>>(accessModel);
+            return response;
+        }
+
+        public async Task<DoctorModel> GetByIdAsync(string id)
+        {
+            var accessModel = await _userDataAccess.GetByIdAsync(id);
+            var response = _mapper.Map<DoctorModel>(accessModel);
+            return response;
+        }
+
+        public async Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest)
+        {
+            var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
+            var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
+            var response = _mapper.Map<DoctorModel>(accessModel);
+            return response;
+        }
+
+        private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)
+        {
+            var users = await _userDataAccess.GetAllAsync();
+            var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
+            return users.Any();
         }
     }
 }

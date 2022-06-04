@@ -6,10 +6,10 @@ namespace Contract.Workspace.User
     {
         Task<AuthModel> RegisterUserAsync(RegisterUserRequest createUserRequest);
         Task<AuthModel> LoginAsync(LoginRequest login);
-        Task<UserModel> DeactivateAsync(string id);
-        Task<IEnumerable<UserModel>> GetAllAsync();
-        Task<UserModel> GetByIdAsync(string id);
-        Task<UserModel> UpdateAsync(UpdateUserRequest updateUserRequest);
         Task<UserModel> ApproveNewUserAsync(string id);
+
+        Task<IEnumerable<DoctorModel>> GetAllAsync();
+        Task<DoctorModel> GetByIdAsync(string id);
+        Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Utilities.Enums;
 
-namespace Access.Contract.Users
+namespace Contract.Workspace.User
 {
-    public class UserDataAccessRequest
+    public class DoctorModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
@@ -10,10 +10,10 @@ namespace Access.Contract.Users
         public string LastName { get; set; }
         public string MiddleLastName { get; set; }
         public string Document { get; set; }
-        public string Password { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
         public Country Country { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
         public bool Active { get; set; }
+        public bool Approved { get; set; }
     }
 }
