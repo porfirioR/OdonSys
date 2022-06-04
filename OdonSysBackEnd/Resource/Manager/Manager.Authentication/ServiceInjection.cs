@@ -1,8 +1,8 @@
 ﻿using Contract.Workspace.User;
-using Manager.Authentication.Users;
+using Manager.Workspace.Users;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Manager.Authentication
+namespace Manager.Workspace
 {
     public class ServiceInjection
     {

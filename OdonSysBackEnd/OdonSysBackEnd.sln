@@ -42,7 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AcceptanceTest", "Acceptanc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptanceTest.Host.Api", "Test\IntegrationTest\Test.IntegrationTest.Procedure\AcceptanceTest.Host.Api.csproj", "{0F81C0F3-86E4-40B8-A76D-581FEC886464}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Authentication", "Resource\Manager\Manager.Authentication\Manager.Authentication.csproj", "{ABEA9B4F-59FE-40D1-82E9-4C6C80007FA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Workspace", "Resource\Manager\Manager.Authentication\Manager.Workspace.csproj", "{ABEA9B4F-59FE-40D1-82E9-4C6C80007FA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract.Workspace", "Resource\Contract\Contract.Authentication\Contract.Workspace.csproj", "{1E5870C0-4A74-44B9-95CD-E7528EE5285B}"
 EndProject

@@ -1,4 +1,5 @@
 ﻿using Contract.Procedure.Teeth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Workspace
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TeethController : ControllerBase
     {
