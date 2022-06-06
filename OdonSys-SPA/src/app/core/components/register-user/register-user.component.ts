@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { AlertService } from '../../services/shared/alert.service';
 })
 export class RegisterUserComponent implements OnInit {
   public saving: boolean = false;
-  public formGroup: FormGroup = new FormGroup({});
+  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
   public countries: Map<string, string> = new Map<string, string>();
 
   constructor(
@@ -55,23 +55,23 @@ export class RegisterUserComponent implements OnInit {
   };
 
   private loadConfiguration = () => {
-    this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      middleName: new FormControl('', [Validators.maxLength(25)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      middleLastName: new FormControl('', [Validators.maxLength(25)]),
-      document: new FormControl('', [Validators.required, Validators.maxLength(15)]),
-      password: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      repeatPassword: new FormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
-      phone: new FormControl('', [Validators.required, Validators.maxLength(15)]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
-      country: new FormControl('', [Validators.required]),
+    this.formGroup = new UntypedFormGroup({
+      name: new UntypedFormControl('', [Validators.required, Validators.maxLength(25)]),
+      middleName: new UntypedFormControl('', [Validators.maxLength(25)]),
+      lastName: new UntypedFormControl('', [Validators.required, Validators.maxLength(25)]),
+      middleLastName: new UntypedFormControl('', [Validators.maxLength(25)]),
+      document: new UntypedFormControl('', [Validators.required, Validators.maxLength(15)]),
+      password: new UntypedFormControl('', [Validators.required, Validators.maxLength(25)]),
+      repeatPassword: new UntypedFormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
+      phone: new UntypedFormControl('', [Validators.required, Validators.maxLength(15)]),
+      email: new UntypedFormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+      country: new UntypedFormControl('', [Validators.required]),
     });
   }
 
   private checkRepeatPassword = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const repeatPassword = (control as FormControl).value;
+      const repeatPassword = (control as UntypedFormControl).value;
       const isInvalid = !repeatPassword || this.formGroup.controls.password.value !== repeatPassword;
       return isInvalid ? { invalidRepeatPassword: isInvalid } : null;
     }

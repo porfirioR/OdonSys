@@ -10,9 +10,7 @@ import { WorkspaceRoutes } from './workspace.routing';
   imports: [
     CoreModule,
     CommonModule,
-    CoreModule,
     RouterModule.forChild(WorkspaceRoutes)
-
   ],
   declarations: [
     MyConfigurationComponent,

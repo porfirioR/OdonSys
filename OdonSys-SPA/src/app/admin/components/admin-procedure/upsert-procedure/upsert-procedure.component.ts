@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormControl, UntypedFormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -25,11 +25,11 @@ export class UpsertProcedureComponent implements OnInit {
   public saving: boolean = false;
   public title = 'crear';
   private id = '';
-  public formGroup: FormGroup = new FormGroup({});
+  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
   public teethList: ToothModel[] = [];
   public jaw = Jaw;
   public quadrant = Quadrant;
-  public teethFormArray: FormArray;
+  public teethFormArray: UntypedFormArray;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -38,7 +38,7 @@ export class UpsertProcedureComponent implements OnInit {
     private readonly procedureApiService: ProcedureApiService,
     private readonly toothApiService: ToothApiService,
   ) {
-    this.teethFormArray = new FormArray([]);
+    this.teethFormArray = new UntypedFormArray([]);
   }
 
   ngOnInit() {
@@ -82,20 +82,20 @@ export class UpsertProcedureComponent implements OnInit {
           this.teethList = Object.assign([], teethUpper.concat(teethLower));
           this.teethList.forEach(item => {
             this.teethFormArray.push(
-              new FormGroup({
-                id: new FormControl(item.id),
-                name: new FormControl(item.name),
-                number: new FormControl(item.number),
-                value: new FormControl(this.id ? procedure.procedureTeeth.find(x => x === item.id) : false),
+              new UntypedFormGroup({
+                id: new UntypedFormControl(item.id),
+                name: new UntypedFormControl(item.name),
+                number: new UntypedFormControl(item.number),
+                value: new UntypedFormControl(this.id ? procedure.procedureTeeth.find(x => x === item.id) : false),
               })
             );
           });
           this.teethFormArray.addValidators(this.minimumOneSelectedValidator);
-          this.formGroup = new FormGroup( {
-            name : new FormControl(this.id ? procedure.name : '', [Validators.required, Validators.maxLength(30)]),
-            description : new FormControl(this.id ? procedure.description: '', [Validators.required, Validators.maxLength(50)]),
-            estimatedSessions : new FormControl(this.id ? procedure.estimatedSessions: '', [Validators.required, Validators.maxLength(50)]),
-            active : new FormControl(this.id ? procedure.active: true, [Validators.required]),
+          this.formGroup = new UntypedFormGroup( {
+            name : new UntypedFormControl(this.id ? procedure.name : '', [Validators.required, Validators.maxLength(30)]),
+            description : new UntypedFormControl(this.id ? procedure.description: '', [Validators.required, Validators.maxLength(50)]),
+            estimatedSessions : new UntypedFormControl(this.id ? procedure.estimatedSessions: '', [Validators.required, Validators.maxLength(50)]),
+            active : new UntypedFormControl(this.id ? procedure.active: true, [Validators.required]),
             teeth: this.teethFormArray
           });
 
@@ -118,7 +118,7 @@ export class UpsertProcedureComponent implements OnInit {
   private update = (): void => {
     const request =  this.formGroup.getRawValue() as UpdateProcedureRequest;
     request.id = this.id;
-    request.procedureTeeth = (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
+    request.procedureTeeth = (this.teethFormArray.controls as UntypedFormGroup[]).filter((x: UntypedFormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
     this.procedureApiService.update(request).pipe(
       tap(() => this.saved()),
       catchError(e => {
@@ -130,7 +130,7 @@ export class UpsertProcedureComponent implements OnInit {
 
   private create = () => {
     const request =  this.formGroup.getRawValue() as CreateProcedureRequest;
-    request.procedureTeeth = (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
+    request.procedureTeeth = (this.teethFormArray.controls as UntypedFormGroup[]).filter((x: UntypedFormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
     this.procedureApiService.create(request).pipe(
       tap(() => this.saved()),
       catchError(e => {
@@ -146,8 +146,8 @@ export class UpsertProcedureComponent implements OnInit {
   }
   
   private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
-    const tooth = abstractControl as FormArray;
-    const teethValues = tooth.controls.map(x => (x as FormGroup).get('value')?.value as boolean);
+    const tooth = abstractControl as UntypedFormArray;
+    const teethValues = tooth.controls.map(x => (x as UntypedFormGroup).get('value')?.value as boolean);
     return teethValues.some(x => x) ? null : { noneSelected : true };
   }
 }
