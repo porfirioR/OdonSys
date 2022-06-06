@@ -1,7 +1,7 @@
 <div class="form-group" [ngClass]="colClass">
   <label class="col-form-label">{{label}}</label>
   <input class="form-control"
-    type={{type}}
+    [type]="type"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
     [formControl]="$any(ngControl).control" placeholder={{label}}>
 

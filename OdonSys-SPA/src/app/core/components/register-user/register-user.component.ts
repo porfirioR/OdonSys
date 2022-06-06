@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs/internal/observable/throwError';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { tap } from 'rxjs/internal/operators/tap';
+import { throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+
 import { Country } from '../../enums/country.enum';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
@@ -51,7 +51,7 @@ export class RegisterUserComponent implements OnInit {
   };
 
   public close = () => {
-    this.router.navigate(['']);
+    this.router.navigate(['login']);
   };
 
   private loadConfiguration = () => {
@@ -72,7 +72,7 @@ export class RegisterUserComponent implements OnInit {
   private checkRepeatPassword = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
       const repeatPassword = (control as FormControl).value;
-      const isInvalid = this.formGroup.controls.password.value !== repeatPassword;
+      const isInvalid = !repeatPassword || this.formGroup.controls.password.value !== repeatPassword;
       return isInvalid ? { invalidRepeatPassword: isInvalid } : null;
     }
   }
