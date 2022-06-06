@@ -7,11 +7,18 @@
 
   <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor ingresar {{label}}</div>
   <div *ngIf="ngControl.control?.errors?.minLength" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.minlength['requiredLength']}}
+    {{label}} debe ser menor que {{ngControl.control?.errors?.minlength?.requiredLength}}
   </div>
-  <div *ngIf="ngControl.control?.errors?.maxLength" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength['requiredLength']}}
+  <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
+    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength?.requiredLength}}
   </div>
   <div *ngIf="ngControl.control?.errors?.invalidRepeatPassword" class="invalid-feedback">
-    La contraseña no coincide</div>
+    La contraseña no coincide
+  </div>
+  <div *ngIf="ngControl.control?.errors?.email" class="invalid-feedback">
+    Correo inválido
+  </div>
+  <div *ngIf="ngControl.control?.errors?.min" class="invalid-feedback">
+    {{label}} debe ser mayor que {{ngControl.control?.errors?.min?.min}}
+  </div>
 </div>

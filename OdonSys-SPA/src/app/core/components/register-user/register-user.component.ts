@@ -42,7 +42,7 @@ export class RegisterUserComponent implements OnInit {
           this.alertService.showSuccess('Datos guardados.');
           this.close();
         }),
-        catchError((e) => {
+        catchError((e: any) => {
           this.saving = false;
           return throwError(e);
         })
@@ -60,7 +60,7 @@ export class RegisterUserComponent implements OnInit {
       middleName: new UntypedFormControl('', [Validators.maxLength(25)]),
       lastName: new UntypedFormControl('', [Validators.required, Validators.maxLength(25)]),
       middleLastName: new UntypedFormControl('', [Validators.maxLength(25)]),
-      document: new UntypedFormControl('', [Validators.required, Validators.maxLength(15)]),
+      document: new UntypedFormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
       password: new UntypedFormControl('', [Validators.required, Validators.maxLength(25)]),
       repeatPassword: new UntypedFormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
       phone: new UntypedFormControl('', [Validators.required, Validators.maxLength(15)]),
