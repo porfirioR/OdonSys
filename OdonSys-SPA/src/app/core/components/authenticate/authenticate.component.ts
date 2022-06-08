@@ -6,6 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
+import { UserInfoService } from '../../services/shared/user-info.service';
 
 @Component({
   selector: 'app-authenticate',
@@ -22,9 +23,11 @@ export class AuthenticateComponent implements OnInit {
     private readonly router: Router,
     private readonly authApiService: AuthApiService,
     private readonly alertService: AlertService,
+    private readonly userInfoService: UserInfoService
   ) {}
 
   ngOnInit() {
+    this.userInfoService.clearAll();
     this.formGroup = new UntypedFormGroup({
       email: new UntypedFormControl('', [Validators.required, Validators.email]),
       password: new UntypedFormControl('', [Validators.required]),
@@ -36,7 +39,7 @@ export class AuthenticateComponent implements OnInit {
     });
   }
 
-  public login = () => {
+  public login = (): void => {
     const request = this.formGroup.getRawValue() as LoginRequest;
     this.formGroup.disable();
     this.authApiService.login(request).pipe(tap(x => {
