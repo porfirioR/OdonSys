@@ -1,7 +1,7 @@
 <app-progress *ngIf="saving"></app-progress>
 <div class="container">
   <div class="header-top">
-    <h3>Configuración</h3>
+    <h3>Registrar usuario</h3>
   </div>
   <div class="m-16 p-16">
     <form [formGroup]="formGroup" (ngSubmit)="register()">
@@ -22,12 +22,6 @@
           <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Contraseña'" formControlName="password"></app-text-number-input>
-        </div>
-        <div class="col-lg-6">
-          <app-text-number-input [label]="'Repetir Contraseña'" formControlName="repeatPassword"></app-text-number-input>
-        </div>
-        <div class="col-lg-6">
           <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"></app-text-number-input>
         </div>
         <div class="col-lg-6">
@@ -36,11 +30,17 @@
         <div class="col-lg-6">
           <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
         </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Contraseña'" formControlName="password" [type]="'password'"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Repetir Contraseña'" formControlName="repeatPassword" [type]="'password'"></app-text-number-input>
+        </div>
       </div>
-      <div class="form-group text-center btn-footer">
+      <div class="form-group text-center btn-footer m-t-16">
         <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()"
           [disabled]="saving">Cancelar</button>
-        <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
+        <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving" (keydown.enter)="register()">Guardar</button>
       </div>
     </form>
   </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { UpdateUserRequest } from '../../../core/models/users/update-user-reques
 export class MyConfigurationComponent implements OnInit {
   public load: boolean = false;
   public saving: boolean = false;
-  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
+  public formGroup: FormGroup = new FormGroup({});
   public id!: string;
   public countries: Map<string, string> = new Map<string, string>();
 

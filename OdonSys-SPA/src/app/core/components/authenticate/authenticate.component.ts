@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./authenticate.component.scss'],
 })
 export class AuthenticateComponent implements OnInit {
-  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
+  public formGroup: FormGroup = new FormGroup({});
   public typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
   public currentType = this.typeValue.password;
   public currentMessage = this.typeValue.passwordMessage;
@@ -28,10 +28,10 @@ export class AuthenticateComponent implements OnInit {
 
   ngOnInit() {
     this.userInfoService.clearAll();
-    this.formGroup = new UntypedFormGroup({
-      email: new UntypedFormControl('', [Validators.required, Validators.email]),
-      password: new UntypedFormControl('', [Validators.required]),
-      type: new UntypedFormControl(false),
+    this.formGroup = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
+      type: new FormControl(false),
     });
     this.formGroup.controls.type.valueChanges.subscribe((x: Boolean) => {
       this.currentType = x ? this.typeValue.text : this.typeValue.password;
@@ -40,6 +40,7 @@ export class AuthenticateComponent implements OnInit {
   }
 
   public login = (): void => {
+    if (this.formGroup.invalid) { return; }
     const request = this.formGroup.getRawValue() as LoginRequest;
     this.formGroup.disable();
     this.authApiService.login(request).pipe(tap(x => {

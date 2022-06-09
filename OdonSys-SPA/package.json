@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.10.2",
     "ag-grid-angular": "^25.3.0",
     "ag-grid-community": "^25.3.0",
+    "autoprefixer": "^10.4.7",
     "bootstrap": "^5.0.2",
     "minimist": "^1.2.6",
     "rxjs": "~7.5.5",

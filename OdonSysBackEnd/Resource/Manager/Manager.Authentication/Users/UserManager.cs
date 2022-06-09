@@ -71,8 +71,8 @@ namespace Manager.Workspace.Users
         private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)
         {
             var users = await _userDataAccess.GetAllAsync();
-            var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
-            return users.Any();
+            var sameUserData = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
+            return sameUserData.Any();
         }
     }
 }
