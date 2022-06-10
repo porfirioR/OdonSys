@@ -26,8 +26,8 @@ export class DoctorApiService {
     return this.http.get<DoctorApiModel[]>(`${this.baseUrl}/${reference}`);
   }
 
-  public getById = (id: string): Observable<DoctorApiModel[]> => {
-    return this.http.get<DoctorApiModel[]>(`${this.baseUrl}/${id}`);
+  public getById = (id: string): Observable<DoctorApiModel> => {
+    return this.http.get<DoctorApiModel>(`${this.baseUrl}/${id}`);
   }
 
   public delete = (id: string): Observable<object> => {
