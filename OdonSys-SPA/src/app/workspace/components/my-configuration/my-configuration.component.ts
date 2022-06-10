@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
 import { Country } from '../../../core/enums/country.enum';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UpdateUserRequest } from '../../../core/models/users/update-user-request';
+import { CustomValidators } from '../../../core/helpers/custom-validators';
 
 @Component({
   selector: 'app-my-configuration',
@@ -35,19 +34,15 @@ export class MyConfigurationComponent implements OnInit {
   public save = () => {
     this.saving = true;
     const request = this.formGroup.getRawValue() as UpdateUserRequest;
-    this.doctorApiService
-      .updateConfiguration(this.id, request)
-      .pipe(
-        tap(() => {
-          this.alertService.showSuccess('Datos guardados.');
-          this.close();
-        }),
-        catchError((e) => {
-          this.saving = false;
-          return throwError(e);
-        })
-      )
-      .subscribe();
+    this.doctorApiService.updateConfiguration(this.id, request).subscribe({
+      next: () => {
+        this.alertService.showSuccess('Datos guardados.');
+        this.close();
+      }, error: (e) => {
+        this.saving = false;
+        throw new Error(e);
+      }
+    });
   };
 
   public close = () => {
@@ -55,6 +50,15 @@ export class MyConfigurationComponent implements OnInit {
   };
 
   private loadConfiguration = () => {
-    
+    this.formGroup = new FormGroup({
+      name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+      middleName: new FormControl('', [Validators.maxLength(25)]),
+      lastName: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+      middleLastName: new FormControl('', [Validators.maxLength(25)]),
+      document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+      phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+      country: new FormControl('', [Validators.required])
+    });
   }
 }

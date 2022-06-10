@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { throwError } from 'rxjs';
-import { catchError, first, tap } from 'rxjs/operators';
+import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
@@ -46,19 +45,19 @@ export class DoctorsComponent implements OnInit {
 
 
   private getList = () => {
-    this.doctorApiService.getAll().pipe(
-      tap(response => {
+    this.doctorApiService.getAll().subscribe({
+      next: (response: DoctorApiModel[]) => {
         this.procedureList = Object.assign(Array<DoctorModel>(), response);
         this.gridOptions.api?.setRowData(this.procedureList);
         this.gridOptions.api?.sizeColumnsToFit();
         if (this.procedureList.length === 0) {
           this.gridOptions.api?.showNoRowsOverlay();
         }
-      }), catchError(err => {
+      }, error: (e) => {
         this.gridOptions.api?.showNoRowsOverlay();
-        return throwError(err);
-      })
-    ).subscribe();
+        throw new Error(e);
+      }
+    });
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
@@ -76,28 +75,25 @@ export class DoctorsComponent implements OnInit {
   }
 
   private deleteSelectedItem = (id: string): void => {
-    this.alertService.showQuestionModal('Estas seguro de eliminar el procedimiento?', 'Los cambios son permanentes.')
-    .then((result) => {
+    this.alertService.showQuestionModal('¿Está seguro de deshabilitar al doctor?', 'El doctor no podrá ingresar al sistema.').then((result) => {
       if (result.value) {
-        this.doctorApiService.delete(id).pipe(
-          first(),
-          tap(() => {
-            this.alertService.showSuccess('El procedimiento ha sido eliminado');
+        this.doctorApiService.delete(id).subscribe({
+          next: () => {
+            this.alertService.showSuccess('El doctor ha sido deshabilitado.');
             this.getList();
-          })
-        ).subscribe();
+          }
+        });
       }
     });
   }
 
   public approve = () => {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
-    this.doctorApiService.approve(currentRowNode.data.id).pipe(
-      first(),
-      tap(() => {
+    this.doctorApiService.approve(currentRowNode.data.id).subscribe({
+      next: () => {
         this.alertService.showSuccess('El doctor ha sido habilitado para ingresar al sistema.');
         this.getList();
-      })
-    ).subscribe();
+      }
+    });
   }
 }

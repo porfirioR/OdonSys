@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-
 import { Country } from '../../enums/country.enum';
+import { CustomValidators } from '../../helpers/custom-validators';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
@@ -36,21 +34,18 @@ export class RegisterUserComponent implements OnInit {
     this.saving = true;
     const request = this.formGroup.getRawValue() as RegisterUserRequest;
     this.formGroup.disable();
-    this.authApiService
-      .register(request)
-      .pipe(
-        tap(() => {
-          this.formGroup.enable();
-          this.alertService.showSuccess('Datos guardados.');
-          this.router.navigate(['login']);
-        }),
-        catchError((e: any) => {
-          this.formGroup.enable();
-          this.saving = false;
-          return throwError(e);
-        })
-      )
-      .subscribe();
+    this.authApiService.register(request).subscribe({
+      next: () => {
+        this.formGroup.enable();
+        this.alertService.showSuccess('Datos guardados.');
+        this.router.navigate(['login']);
+      },
+      error: (error) => {
+        this.formGroup.enable();
+        this.saving = false;
+        throw new Error(error);
+      }
+    });
   };
 
   public close = (): void => {
@@ -66,11 +61,11 @@ export class RegisterUserComponent implements OnInit {
       document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
       password: new FormControl('', [Validators.required, Validators.maxLength(25)]),
       repeatPassword: new FormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
-      phone: new FormControl('', [Validators.required, Validators.maxLength(15), this.checkPhoneValue()]),
+      phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
       email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
-      country: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required])
     });
-    this.formGroup.controls.password.valueChanges.subscribe({ next: (value) => {this.formGroup.controls.repeatPassword.updateValueAndValidity()}});
+    this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
   }
 
   private checkRepeatPassword = (): ValidatorFn => {
@@ -82,14 +77,5 @@ export class RegisterUserComponent implements OnInit {
     }
   }
 
-  private checkPhoneValue = (): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const phone = (control as FormControl).value;
-      if (!phone) { return null; }
-      const reg = new RegExp(/^[+]{0,1}[0-9]+$/g);
-      const isInvalid = !reg.test(phone);
-      return isInvalid ? { invalidPhone: isInvalid } : null;
-    }
-  }
 
 }
