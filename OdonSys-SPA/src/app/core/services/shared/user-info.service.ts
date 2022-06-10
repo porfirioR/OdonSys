@@ -45,9 +45,6 @@ export class UserInfoService {
 
   public getUserData = (): UserApiModel => {
     const userData = JSON.parse(this.localStorageService.getByKey(this.userKey)) as UserApiModel;
-    // if (!userData) {
-    //   throw new Error('Unable to get UserInfo');
-    // }
     return userData;
   }
 
