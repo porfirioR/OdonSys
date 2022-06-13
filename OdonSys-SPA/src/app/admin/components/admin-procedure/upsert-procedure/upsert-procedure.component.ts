@@ -46,8 +46,6 @@ export class UpsertProcedureComponent implements OnInit {
 
   public save = () => {
     this.saving = true;
-    
-    this.saving = true;
     if (this.id) {
       this.update();
     } else {

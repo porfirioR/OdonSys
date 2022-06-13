@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Country } from '../../../core/enums/country.enum';
+import { Router } from '@angular/router';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UpdateUserRequest } from '../../../core/models/users/update-user-request';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
+import { EnumToMap } from '../../../core/helpers/enumToMap';
 
 @Component({
   selector: 'app-my-configuration',
@@ -27,7 +27,7 @@ export class MyConfigurationComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService
   ) {
-    Object.keys(Country).map((key) => this.countries.set(key as string, Country[key as keyof typeof Country]));
+    this.countries = EnumToMap.getCountries();
   }
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class MyConfigurationComponent implements OnInit {
     this.doctorApiService.getById(user.id).subscribe({
       next: (user: DoctorApiModel) => {
         this.formGroup = new FormGroup({
-          id: new FormControl<string>({ value: user.id, disabled: true }),
+          id: new FormControl({ value: user.id, disabled: true }),
           name: new FormControl(user.name, [Validators.required, Validators.maxLength(25)]),
           middleName: new FormControl(user.middleName, [Validators.maxLength(25)]),
           lastName: new FormControl(user.lastName, [Validators.required, Validators.maxLength(25)]),
@@ -70,9 +70,6 @@ export class MyConfigurationComponent implements OnInit {
           active: new FormControl(user.active, [Validators.required]),
         });
         this.load = true;
-      }, error: (e) => {
-        this.load = true;
-        throw new Error(e);
       }
     });
   }

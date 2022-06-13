@@ -1,11 +1,11 @@
-<app-progress *ngIf="!load"></app-progress>
-<div *ngIf="load" class="container">
+<app-progress *ngIf="!ready || loading"></app-progress>
+<div *ngIf="ready" class="container">
   <div class="header-top">
     <h3>Doctores</h3>
-    <button type="button" class="btn btn-outline-primary" (click)="approve()">
+    <!-- <button type="button" class="btn btn-outline-primary" (click)="approve()">
       <i class="fas fa-plus"></i>
       Agregar
-    </button>
+    </button> -->
   </div>
   <div class="p-t-16">
     <ng-container *ngIf="gridOptions">

@@ -28,7 +28,7 @@ export class CustomErrorHandler implements ErrorHandler {
       }
       this.alertService.showError(message);
       return;
-    } else if (error.status === 401) {
+    } else if (error?.status === 401) {
       this.router.navigate(['login']);
     }
   }

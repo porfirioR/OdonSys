@@ -33,7 +33,7 @@ export class AgGridService {
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'telefono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 150,
       cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
     },
@@ -53,7 +53,7 @@ export class AgGridService {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Porfavor espere mientras carga las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras carga las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,

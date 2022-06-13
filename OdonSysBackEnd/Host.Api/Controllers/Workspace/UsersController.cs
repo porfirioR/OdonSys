@@ -14,12 +14,10 @@ namespace Host.Api.Controllers.Workspace
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
 
-        public UsersController(IMapper mapper, IUserManager userManager)
+        public UsersController(IUserManager userManager)
         {
-            _mapper = mapper;
             _userManager = userManager;
         }
 
@@ -34,21 +32,6 @@ namespace Host.Api.Controllers.Workspace
         public async Task<IEnumerable<DoctorModel>> GetAll()
         {
             var response = await _userManager.GetAllAsync();
-            return response;
-        }
-
-        [HttpGet("{id}")]
-        public async Task<DoctorModel> GetById([FromRoute] string id)
-        {
-            var response = await _userManager.GetByIdAsync(id);
-            return response;
-        }
-
-        [HttpPut]
-        public async Task<DoctorModel> Update([FromBody] UpdateDoctorApiRequest apiRequest)
-        {
-            var user = _mapper.Map<UpdateDoctorRequest>(apiRequest);
-            var response = await _userManager.UpdateAsync(user);
             return response;
         }
         // TODO hard delete if not associated with patients and other references

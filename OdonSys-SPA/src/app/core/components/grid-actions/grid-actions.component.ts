@@ -11,6 +11,7 @@ import { GridActionModel } from '../../models/view/grid-action-model';
 })
 export class GridActionsComponent implements AgRendererComponent {
   public params!: GridActionModel;
+  public canApprove = false;
   public canShowView = false;
   public canShowEdit = false;
   public canShowDelete = false;
@@ -21,11 +22,14 @@ export class GridActionsComponent implements AgRendererComponent {
 
   public agInit = (params: ICellRendererParams): void => {
     this.params = Object.assign(new GridActionModel(), params);
+    this.canApprove = this.params.buttonShow.includes(ButtonGridActionType.Aprobar);
     this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
     this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
     this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
     this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
   }
+
+  public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar);
 
   public viewItem = () => this.params.clicked(ButtonGridActionType.Ver);
 

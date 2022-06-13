@@ -14,6 +14,7 @@ namespace Access.Admin.Access
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
+
         public UserDataAccess(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
@@ -31,7 +32,8 @@ namespace Access.Admin.Access
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
             var response = await _context.Set<Doctor>()
-                                .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider).ToListAsync();
+                                .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider)
+                                .ToListAsync();
             return response;
         }
 

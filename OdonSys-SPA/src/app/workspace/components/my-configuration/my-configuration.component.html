@@ -31,8 +31,8 @@
           <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
         </div>
       </div>
-      <div class="form-group text-center btn-footer">
-        <button class="btn btn-outline-secondary m-r-8" type="button" (click)="close()"
+      <div class="form-group text-center btn-footer m-t-16">
+        <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()"
           [disabled]="saving">Cancelar</button>
         <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
       </div>
