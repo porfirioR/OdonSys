@@ -15,7 +15,7 @@ namespace Access.Admin.Mapper
 
             CreateMap<PatchClientAccessRequest, Client>();
 
-            CreateMap<Client, ClientAccessResponse>()
+            CreateMap<Client, ClientAccessModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
 
         }

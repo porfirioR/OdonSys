@@ -2,6 +2,7 @@
 using Contract.Admin.Clients;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Admin
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ClientsController : ControllerBase
     {

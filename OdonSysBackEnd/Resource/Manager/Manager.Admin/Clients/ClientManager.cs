@@ -19,34 +19,34 @@ namespace Manager.Admin.Clients
         public async Task<ClientModel> CreateAsync(CreateClientRequest request)
         {
             var accessRequest = _mapper.Map<CreateClientAccessRequest>(request);
-            var accessResponse = await _clientAccess.CreateClientAsync(accessRequest);
-            return _mapper.Map<ClientModel>(accessResponse);
+            var accessModel = await _clientAccess.CreateClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessModel);
         }
 
         public async Task<ClientModel> UpdateAsync(UpdateClientRequest request)
         {
             var accessRequest = _mapper.Map<UpdateClientAccessRequest>(request);
-            var accessResponse = await _clientAccess.UpdateClientAsync(accessRequest);
-            return _mapper.Map<ClientModel>(accessResponse);
+            var accessModel = await _clientAccess.UpdateClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessModel);
         }
+
         public async Task<ClientModel> UpdateAsync(ClientModel request)
         {
             var accessRequest = _mapper.Map<PatchClientAccessRequest>(request);
-            var accessResponse = await _clientAccess.PatchClientAsync(accessRequest);
-            return _mapper.Map<ClientModel>(accessResponse);
-
+            var accessModel = await _clientAccess.PatchClientAsync(accessRequest);
+            return _mapper.Map<ClientModel>(accessModel);
         }
 
         public async Task<IEnumerable<ClientModel>> GetAllAsync()
         {
-            var accessResponse = await _clientAccess.GetAllAsync();
-            return _mapper.Map<IEnumerable<ClientModel>>(accessResponse);
+            var accessModel = await _clientAccess.GetAllAsync();
+            return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
 
         public async Task<ClientModel> GetByIdAsync(string id, bool active)
         {
-            var accessResponse = await _clientAccess.GetByIdAsync(id, active);
-            return _mapper.Map<ClientModel>(accessResponse);
+            var accessModel = await _clientAccess.GetByIdAsync(id, active);
+            return _mapper.Map<ClientModel>(accessModel);
         }
 
         public async Task DeleteAsync(string id)

@@ -10,9 +10,9 @@ namespace Contract.Admin.Clients
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         public string Document { get; set; }
         public string Ruc { get; set; }
         public Country Country { get; set; }

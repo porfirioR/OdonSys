@@ -10,10 +10,10 @@ namespace Host.Api.Models.Clients
         public string Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         [Required]
         public string Phone { get; set; }
         public string Email { get; set; }

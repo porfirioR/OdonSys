@@ -24,7 +24,7 @@ namespace Access.Sql.Configurations
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.SecondName)
+                .Property(x => x.MiddleName)
                 .HasMaxLength(25);
 
             builder
@@ -33,7 +33,7 @@ namespace Access.Sql.Configurations
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.SecondLastName)
+                .Property(x => x.MiddleLastName)
                 .HasMaxLength(25);
 
             builder
