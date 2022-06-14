@@ -15,6 +15,7 @@ export class GridActionsComponent implements AgRendererComponent {
   public canShowView = false;
   public canShowEdit = false;
   public canShowDelete = false;
+  public canShowDeactivate = false;
   public canShowDownload = false;
 
   constructor() {
@@ -26,6 +27,7 @@ export class GridActionsComponent implements AgRendererComponent {
     this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
     this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
     this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
+    this.canShowDeactivate = this.params.buttonShow.includes(ButtonGridActionType.Desactivar);
     this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
   }
 
@@ -36,6 +38,8 @@ export class GridActionsComponent implements AgRendererComponent {
   public editItem = () => this.params.clicked(ButtonGridActionType.Editar);
 
   public deleteItem = () => this.params.clicked(ButtonGridActionType.Borrar);
+
+  public deactivateItem = () => this.params.clicked(ButtonGridActionType.Desactivar);
 
   public downloadItem = () => this.params.clicked(ButtonGridActionType.Descargar);
   

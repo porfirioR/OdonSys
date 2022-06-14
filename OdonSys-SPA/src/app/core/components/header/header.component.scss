@@ -1,3 +1,4 @@
+@import "../../../../assets/scss/colors.scss";
 
 .header-container {
     width: 100%;
@@ -34,7 +35,7 @@ ul {
     & li {
         padding: 15px;
         & a.nav-link {
-            padding: 2px;
+            padding: 1px;
             &:hover {
                 border-bottom: 2px solid blue;
                 color: blue;

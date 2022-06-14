@@ -43,7 +43,7 @@ export class MyConfigurationComponent implements OnInit {
         this.close();
       }, error: (e) => {
         this.saving = false;
-        throw new Error(e);
+        throw e;
       }
     });
   };

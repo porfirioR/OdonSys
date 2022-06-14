@@ -1,5 +1,5 @@
-<span class="btn btn-sm btn-outline-primary m-r-8" *ngIf="canShowView">
-  <span class=" d-flex-center" (click)="viewItem()">
+<span class="btn btn-sm btn-outline-primary m-r-8" *ngIf="canApprove">
+  <span class=" d-flex-center" (click)="approveItem()">
     <i class="fas fa-eye m-r-2"></i>Aprobar
   </span>
 </span>
@@ -16,6 +16,11 @@
 <span class="btn btn-sm btn-outline-danger m-r-8" (click)="deleteItem()" *ngIf="canShowDelete">
   <span class="d-flex-center">
     <i class="fas fa-trash m-r-2"></i>Borrar
+  </span>
+</span>
+<span class="btn btn-sm btn-outline-danger m-r-8" (click)="deactivateItem()" *ngIf="canShowDeactivate">
+  <span class="d-flex-center">
+    <i class="fas fa-trash m-r-2"></i>Desactivar
   </span>
 </span>
 <span class="btn btn-sm btn-outline-info" (click)="downloadItem()" *ngIf="canShowDownload">

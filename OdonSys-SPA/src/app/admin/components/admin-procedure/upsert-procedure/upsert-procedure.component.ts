@@ -108,7 +108,7 @@ export class UpsertProcedureComponent implements OnInit {
         this.load = true;
       }, error: (e) => {
         this.load = true;
-        throw new Error(e);
+        throw e;
       }
     });
   }
@@ -121,7 +121,7 @@ export class UpsertProcedureComponent implements OnInit {
       next: () => this.saved(),
       error: (e) => {
         this.saving = false;
-        throw new Error(e);
+        throw e;
       }
     });
   }
@@ -133,7 +133,7 @@ export class UpsertProcedureComponent implements OnInit {
       next: () => this.saved(),
       error: (e) => {
         this.saving = false;
-        throw new Error(e);
+        throw e;
       }
     });
   }

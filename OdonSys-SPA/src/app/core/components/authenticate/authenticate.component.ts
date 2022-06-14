@@ -50,7 +50,7 @@ export class AuthenticateComponent implements OnInit {
         this.router.navigate(['']);
       }, error: (e) => {
         this.formGroup.enable();
-        throw new Error(e);
+        throw e;
       }
     })
   };

@@ -6,8 +6,8 @@ import { ButtonGridActionType } from '../../../core/enums/button-grid-action-typ
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { DoctorModel } from '../../models/doctors/doctor-model';
 import { UserApiService } from '../../service/doctor-api.service';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
 
 @Component({
   selector: 'app-doctors',
@@ -18,13 +18,12 @@ export class DoctorsComponent implements OnInit {
   public loading: boolean = false;
   public ready: boolean = false;
   public gridOptions!: GridOptions;
-  private doctorList: DoctorModel[] = [];
 
   constructor(
-    private readonly router: Router,
     private readonly alertService: AlertService,
     private readonly userApiService: UserApiService,
-    private readonly agGridService: AgGridService
+    private readonly agGridService: AgGridService,
+    private readonly userInfo: UserInfoService
 
   ) { }
 
@@ -48,16 +47,15 @@ export class DoctorsComponent implements OnInit {
     this.loading = true;
     this.userApiService.getAll().subscribe({
       next: (response: DoctorApiModel[]) => {
-        this.doctorList = response;
-        this.gridOptions.api?.setRowData(this.doctorList);
+        this.gridOptions.api?.setRowData(response);
         this.gridOptions.api?.sizeColumnsToFit();
-        if (this.doctorList.length === 0) {
+        if (response.length === 0) {
           this.gridOptions.api?.showNoRowsOverlay();
         }
         this.loading = false;
       }, error: (e) => {
-        this.loading = false;
         this.gridOptions.api?.showNoRowsOverlay();
+        this.loading = false;
         throw e;
       }
     });
@@ -69,6 +67,8 @@ export class DoctorsComponent implements OnInit {
       case ButtonGridActionType.Aprobar:
         if (!currentRowNode.data.approved) {
           this.approve();
+        } else {
+          this.alertService.showInfo('El usuario ya está habilitado para usar el sistema.');
         }
         break;
       // case ButtonGridActionType.Ver:
@@ -76,7 +76,11 @@ export class DoctorsComponent implements OnInit {
       //   this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`]);
       //   break;
       case ButtonGridActionType.Desactivar:
-        this.deactivateSelectedItem(currentRowNode.data.id);
+        if (currentRowNode.data.id === this.userInfo.getUserData().id.toLocaleUpperCase()) {
+          this.alertService.showInfo('Usted no puede deshabilitar su cuenta.');
+        } else {
+          this.deactivateSelectedItem(currentRowNode.data.id);
+        }
         break;
       default:
         break;
@@ -101,7 +105,7 @@ export class DoctorsComponent implements OnInit {
     });
   }
 
-  public approve = (): void => {
+  private approve = (): void => {
     this.loading = true;
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
     this.userApiService.approve(currentRowNode.data.id).subscribe({

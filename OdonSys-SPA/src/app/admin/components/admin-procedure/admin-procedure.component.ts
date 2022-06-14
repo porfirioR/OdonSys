@@ -41,9 +41,9 @@ export class AdminProcedureComponent implements OnInit {
           this.gridOptions.api?.showNoRowsOverlay();
         }
       },
-      error: (error) => {
+      error: (e) => {
         this.gridOptions.api?.showNoRowsOverlay();
-        throw new Error(error);
+        throw e;
       }
     });
   }
