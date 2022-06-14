@@ -110,7 +110,7 @@ export class DoctorsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
     this.userApiService.approve(currentRowNode.data.id).subscribe({
       next: (response: DoctorApiModel) => {
-        currentRowNode.data.approve = response.approved;
+        currentRowNode.data.approved = response.approved;
         this.alertService.showSuccess('El doctor ha sido habilitado para ingresar al sistema.');
         this.getList();
       }, error: (e) => {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<architect-project version="1.0" appversion="1.0.9">
+<architect-project version="1.0" appversion="1.0.8">
  <project-name>struct</project-name>
  <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
  <project-data-sources>
@@ -130,13 +130,13 @@
     <column id="COL33" populated="true" UUID="e1f80d04-083f-4636-8722-ace89b366a06" autoIncrement="false" autoIncrementSequenceName="clients_name_seq" defaultValue="" name="name" nullable="0" physicalName="name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL34" populated="true" UUID="dd6c326d-20c5-443b-86f3-04906d799caf" autoIncrement="false" autoIncrementSequenceName="clients_second_name_seq" defaultValue="" name="second_name" nullable="0" physicalName="second_name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL34" populated="true" UUID="dd6c326d-20c5-443b-86f3-04906d799caf" autoIncrement="false" autoIncrementSequenceName="clients_middle_name_seq" defaultValue="" name="middle_name" nullable="0" physicalName="middle_name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     <column id="COL35" populated="true" UUID="bdb7f0d8-2a07-44c6-ae3f-b3e7e7fabaad" autoIncrement="false" autoIncrementSequenceName="clients_last_name_seq" defaultValue="" name="last_name" nullable="0" physicalName="last_name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL36" populated="true" UUID="5e6d02b5-21c0-435e-94d9-15216f67548c" autoIncrement="false" autoIncrementSequenceName="clients_second_last_name_seq" defaultValue="" name="second_last_name" nullable="0" physicalName="second_last_name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL36" populated="true" UUID="5e6d02b5-21c0-435e-94d9-15216f67548c" autoIncrement="false" autoIncrementSequenceName="clients_second_last_name_seq" defaultValue="" name="middle_last_name" nullable="0" physicalName="middle_last_name" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     <column id="COL37" populated="true" UUID="508c1a3c-5f28-4177-8217-580276b74ac8" autoIncrement="false" autoIncrementSequenceName="clients_document_seq" defaultValue="" name="document" nullable="0" physicalName="document" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
