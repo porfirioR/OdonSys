@@ -11,5 +11,6 @@ namespace Contract.Workspace.User
         Task<IEnumerable<DoctorModel>> GetAllAsync();
         Task<DoctorModel> GetByIdAsync(string id);
         Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);
+        Task<DoctorModel> DeactivateRestoreAsync(string id);
     }
 }

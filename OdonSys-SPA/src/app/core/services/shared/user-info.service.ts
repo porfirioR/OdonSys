@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserDataApiModel } from '../../models/api/user-data-api-model';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
+import { UserApiModel } from '../../models/users/api/user-api-model';
 import { UserDataApiService } from '../api/user-data-api.service';
 import { LocalStorageService } from './local-storage.service';
 
@@ -42,11 +43,8 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.userToken);
   }
 
-  public getUserData = (): UserDataApiModel => {
-    const userData = this.localStorageService.getByKey(this.userKey);
-    // if (!userData) {
-    //   throw new Error('Unable to get UserInfo');
-    // }
+  public getUserData = (): UserApiModel => {
+    const userData = JSON.parse(this.localStorageService.getByKey(this.userKey)) as UserApiModel;
     return userData;
   }
 

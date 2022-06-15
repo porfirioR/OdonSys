@@ -44,4 +44,12 @@ export class AlertService {
       icon: 'error',
     });
   }
+
+  public showInfo = (text: string = ''): void => {
+    Swal.fire({
+      title: 'Información',
+      text,
+      icon: 'info',
+    });
+  }
 }
