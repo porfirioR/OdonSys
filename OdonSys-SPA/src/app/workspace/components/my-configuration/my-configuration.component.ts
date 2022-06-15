@@ -37,7 +37,7 @@ export class MyConfigurationComponent implements OnInit {
   public save = () => {
     this.saving = true;
     const request = this.getDoctorRequest();
-    this.doctorApiService.updateConfiguration(this.id, request).subscribe({
+    this.doctorApiService.update(this.id, request).subscribe({
       next: () => {
         this.alertService.showSuccess('Datos guardados.');
         this.close();

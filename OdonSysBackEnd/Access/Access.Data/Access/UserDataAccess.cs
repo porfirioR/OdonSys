@@ -29,6 +29,14 @@ namespace Access.Admin.Access
             return _mapper.Map<UserDataAccessModel>(entity);
         }
 
+        public async Task<DoctorDataAccessModel> DeactivateRestoreAsync(string id, bool active)
+        {
+            var entity = await GetDoctorByIdAsync(id);
+            entity.Active = active;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<DoctorDataAccessModel>(entity);
+        }
+
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
             var response = await _context.Set<Doctor>()

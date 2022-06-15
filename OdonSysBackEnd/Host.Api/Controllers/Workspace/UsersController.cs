@@ -34,6 +34,18 @@ namespace Host.Api.Controllers.Workspace
             var response = await _userManager.GetAllAsync();
             return response;
         }
+
+        [HttpPut("deactivate/{id}")]
+        public async Task<DoctorModel> Deactivate([FromRoute] string id)
+        {
+            return await _userManager.DeactivateRestoreAsync(id);
+        }
+
+        [HttpPut("activate/{id}")]
+        public async Task<DoctorModel> Activate([FromRoute] string id)
+        {
+            return await _userManager.DeactivateRestoreAsync(id);
+        }
         // TODO hard delete if not associated with patients and other references
     }
 }

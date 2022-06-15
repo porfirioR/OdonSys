@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { UserApiService } from '../../service/doctor-api.service';
+import { UserApiService } from '../../service/user-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 
 @Component({
@@ -79,7 +78,7 @@ export class DoctorsComponent implements OnInit {
         if (currentRowNode.data.id === this.userInfo.getUserData().id.toLocaleUpperCase()) {
           this.alertService.showInfo('Usted no puede deshabilitar su cuenta.');
         } else {
-          this.deactivateSelectedItem(currentRowNode.data.id);
+          this.deactivateSelectedItem(currentRowNode.data);
         }
         break;
       default:
@@ -87,13 +86,15 @@ export class DoctorsComponent implements OnInit {
     }
   }
 
-  private deactivateSelectedItem = (id: string): void => {
+  private deactivateSelectedItem = (data: DoctorApiModel): void => {
     this.alertService.showQuestionModal('¿Está seguro de deshabilitar al doctor?', 'El doctor no podrá ingresar al sistema.').then((result) => {
       if (result.value) {
         this.loading = true;
-        this.userApiService.delete(id).subscribe({
-          next: () => {
+
+        this.userApiService.deactivate(data.id).subscribe({
+          next: (response) => {
             this.loading = false;
+            data.active = response.active;
             this.alertService.showSuccess('El doctor ha sido deshabilitado.');
             this.getList();
           }, error: (e) => {

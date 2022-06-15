@@ -20,7 +20,11 @@ export class UserApiService {
     return this.http.get<DoctorApiModel[]>(`${this.baseUrl}`);
   };
 
-  public delete = (id: string): Observable<object> => {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+  public deactivate = (id: string): Observable<DoctorApiModel> => {
+    return this.http.put<DoctorApiModel>(`${this.baseUrl}/deactivate/${id}`, null);
+  };
+
+  public activate = (id: string): Observable<DoctorApiModel> => {
+    return this.http.put<DoctorApiModel>(`${this.baseUrl}/activate/${id}`, null);
   };
 }
