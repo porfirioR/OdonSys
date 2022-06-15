@@ -17,7 +17,7 @@ export class AgGridService {
     { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 150,
-      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
     { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 145, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
@@ -33,17 +33,14 @@ export class AgGridService {
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'telefono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 150,
-      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
+    { headerName: 'teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
     },
-    { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 150,
-      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 95,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
-    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 145, resizable: true,
-      valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
-      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 235, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ];
 
@@ -53,7 +50,7 @@ export class AgGridService {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Porfavor espere mientras carga las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras carga las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,
@@ -99,7 +96,7 @@ export class AgGridService {
     return gridApi.getRenderedNodes()[renderSelectedColumnIndex];
   }
   
-  private activeFormatter(cell: { value: any; }): string {
+  private booleanFormatter(cell: { value: any; }): string {
     return cell.value ? 'Si' : 'No';
   }
   

@@ -10,7 +10,7 @@
               </div>
             </div>
             <h3 class="card-title mt-3 text-center">Inicio</h3>
-            <div class="col-lg-12" [formGroup]="formGroup">
+            <form class="col-lg-12" [formGroup]="formGroup"  (keydown.enter)="login()">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
@@ -26,14 +26,14 @@
               <div class="d-flex justify-content-between">
                 <button type="button" class="btn btn-primary btn-block" (click)="login()" [disabled]="formGroup.invalid">Iniciar</button>
                 <!-- <span class="position-relative">
-                  <a href="#" class="card-link position-absolute bottom-0 end-0">Olvide mi contraseña</a>
+                  <a href="#" class="card-link position-absolute bottom-0 end-0">Olvidé mi contraseña</a>
                 </span> -->
               </div>
               <hr>
               <span class="text-start">
                 ¿No tienes cuenta? <a href="registrar" class="card-link">Regístrate</a>
               </span>
-            </div>
+            </form>
           </div>
         </div>
       </div>

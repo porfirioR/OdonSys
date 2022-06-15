@@ -14,24 +14,11 @@ export class DoctorApiService {
 
   constructor(private readonly http: HttpClient) { }
 
-  // public getById = (id: string, active: boolean): Observable<ProcedureApiModel> => {
-  //   return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${id}/${active}`);
-  // }
-
-  public updateConfiguration = (id: string, model: UpdateUserRequest): Observable<UpdateUserApiModel> => {
+  public update = (id: string, model: UpdateUserRequest): Observable<UpdateUserApiModel> => {
     return this.http.put<UpdateUserApiModel>(`${this.baseUrl}`, model);
   }
 
-  public getAll = (reference: boolean = false): Observable<DoctorApiModel[]> => {
-    return this.http.get<DoctorApiModel[]>(`${this.baseUrl}/${reference}`);
+  public getById = (id: string): Observable<DoctorApiModel> => {
+    return this.http.get<DoctorApiModel>(`${this.baseUrl}/${id}`);
   }
-
-  public delete = (id: string): Observable<object> => {
-    return this.http.delete(`${this.baseUrl}/${id}`);
-  }
-
-  public approve = (id: string): Observable<DoctorApiModel> => {
-    return this.http.post<DoctorApiModel>(`${this.baseUrl}/approve/${id}`, null);
-  }
-
 }

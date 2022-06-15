@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { catchError, first, tap } from 'rxjs/operators';
 import { ProcedureApiService } from '../../../admin/service/procedure-admin-api.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-admin-procedure',
@@ -34,19 +32,20 @@ export class AdminProcedureComponent implements OnInit {
   }
 
   private getList = () => {
-    this.procedureApiService.getAll().pipe(
-      tap(response => {
+    this.procedureApiService.getAll().subscribe({
+      next: (response) => {
         this.procedureList = Object.assign(Array<ProcedureModel>(), response);
         this.gridOptions.api?.setRowData(this.procedureList);
         this.gridOptions.api?.sizeColumnsToFit();
         if (this.procedureList.length === 0) {
           this.gridOptions.api?.showNoRowsOverlay();
         }
-      }), catchError(err => {
+      },
+      error: (e) => {
         this.gridOptions.api?.showNoRowsOverlay();
-        return throwError(err);
-      })
-    ).subscribe();
+        throw e;
+      }
+    });
   }
 
   private setupAgGrid = (): void => {
@@ -74,16 +73,14 @@ export class AdminProcedureComponent implements OnInit {
   }
 
   public deleteSelectedItem = (code: string): void => {
-    this.alertService.showQuestionModal('Estas seguro de eliminar el procedimiento?', 'Los cambios son permanentes.')
-    .then((result) => {
+    this.alertService.showQuestionModal('¿Está seguro de eliminar el procedimiento?', 'Los cambios son permanentes.').then((result) => {
       if (result.value) {
-        this.procedureApiService.delete(code).pipe(
-          first(),
-          tap(() => {
+        this.procedureApiService.delete(code).subscribe({
+          next: () => {
             this.alertService.showSuccess('El procedimiento ha sido eliminado');
             this.getList();
-          })
-        ).subscribe();
+          }
+        });
       }
     });
   }

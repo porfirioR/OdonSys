@@ -56,23 +56,31 @@ namespace Manager.Workspace.Users
         public async Task<DoctorModel> GetByIdAsync(string id)
         {
             var accessModel = await _userDataAccess.GetByIdAsync(id);
-            var response = _mapper.Map<DoctorModel>(accessModel);
-            return response;
+            var model = _mapper.Map<DoctorModel>(accessModel);
+            return model;
         }
 
         public async Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest)
         {
             var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
-            var response = _mapper.Map<DoctorModel>(accessModel);
-            return response;
+            var model = _mapper.Map<DoctorModel>(accessModel);
+            return model;
         }
 
         private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)
         {
             var users = await _userDataAccess.GetAllAsync();
-            var result = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
-            return users.Any();
+            var sameUserData = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
+            return sameUserData.Any();
+        }
+
+        public async Task<DoctorModel> DeactivateRestoreAsync(string id)
+        {
+            var user = await _userDataAccess.GetByIdAsync(id);
+            var accessModel = await _userDataAccess.DeactivateRestoreAsync(id, !user.Active);
+            var model = _mapper.Map<DoctorModel>(accessModel);
+            return model;
         }
     }
 }

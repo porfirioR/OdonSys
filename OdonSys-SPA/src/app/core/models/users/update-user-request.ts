@@ -1,10 +1,15 @@
-import { Country } from "../../enums/country.enum";
+import { Country } from '../../enums/country.enum';
 
 export class UpdateUserRequest {
-    name!: string;
-    secondName!: string;
-    lastName!: string;
-    secondLastName!: string;
-    phone!: string;
-    country!: Country
+  constructor(
+    public id: string,
+    public name: string,
+    public middleName: string,
+    public lastName: string,
+    public middleLastName: string,
+    public document: string,
+    public country: Country,
+    public phone: string,
+    public active: boolean
+  ) {}
 }
