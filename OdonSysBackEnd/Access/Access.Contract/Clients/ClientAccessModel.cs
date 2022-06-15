@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Access.Contract.Users;
+using System;
+using System.Collections.Generic;
 using Utilities.Enums;
 
 namespace Access.Contract.Clients
@@ -19,5 +21,6 @@ namespace Access.Contract.Clients
         public bool Debts { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public IEnumerable<DoctorDataAccessModel> Doctors { get; set; }
     }
 }

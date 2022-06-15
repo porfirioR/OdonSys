@@ -22,10 +22,10 @@ namespace Host.Api.Models.Clients
         {
             var results = new List<ValidationResult>();
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
-            var client = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
-            if (client is null)
+            var clientModel = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
+            if (!clientModel.Active)
             {
-                results.Add(new ValidationResult($"Ciente con Id {Id} no existe o esta inactivo."));
+                results.Add(new ValidationResult($"Ciente con Id {Id} esta inactivo."));
             }
             return results;
         }

@@ -1,6 +1,7 @@
 ﻿using Access.Contract.Clients;
 using Access.Sql.Entities;
 using AutoMapper;
+using System.Linq;
 
 namespace Access.Admin.Mapper
 {
@@ -16,7 +17,8 @@ namespace Access.Admin.Mapper
             CreateMap<PatchClientAccessRequest, Client>();
 
             CreateMap<Client, ClientAccessModel>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Doctors, opt => opt.MapFrom(src => src.DoctorsClients.Select(x => x.Doctor)));
 
         }
     }

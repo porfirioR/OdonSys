@@ -10,6 +10,7 @@ namespace Manager.Admin.Clients
     {
         private readonly IClientAccess _clientAccess;
         private readonly IMapper _mapper;
+
         public ClientManager(IClientAccess clientAccess, IMapper mapper)
         {
             _clientAccess = clientAccess;
@@ -43,9 +44,9 @@ namespace Manager.Admin.Clients
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
 
-        public async Task<ClientModel> GetByIdAsync(string id, bool active)
+        public async Task<ClientModel> GetByIdAsync(string id)
         {
-            var accessModel = await _clientAccess.GetByIdAsync(id, active);
+            var accessModel = await _clientAccess.GetByIdAsync(id);
             return _mapper.Map<ClientModel>(accessModel);
         }
 
@@ -54,5 +55,10 @@ namespace Manager.Admin.Clients
             await _clientAccess.DeleteAsync(id);
         }
 
+        public async Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id)
+        {
+            var accessModel = await _clientAccess.GetClientsByDoctorIdAsync(id);
+            return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
+        }
     }
 }

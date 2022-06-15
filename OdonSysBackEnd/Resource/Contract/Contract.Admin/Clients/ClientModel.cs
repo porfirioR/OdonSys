@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Contract.Workspace.User;
+using System;
+using System.Collections.Generic;
 using Utilities.Enums;
 
 namespace Contract.Admin.Clients
@@ -19,5 +21,6 @@ namespace Contract.Admin.Clients
         public bool Debts { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public IEnumerable<DoctorModel> Doctors { get; set; }
     }
 }

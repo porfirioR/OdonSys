@@ -66,7 +66,7 @@ namespace Host.Api.Controllers.Admin
         public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument patchDocument)
         {
             if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
-            var clientModel = await _clientManager.GetByIdAsync(id, false);
+            var clientModel = await _clientManager.GetByIdAsync(id);
             patchDocument.ApplyTo(clientModel);
             if (!ModelState.IsValid)
             {
