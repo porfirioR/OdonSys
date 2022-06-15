@@ -6,7 +6,6 @@ import { environment } from '../../../../environments/environment';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
-import { UserApiModel } from '../../models/users/api/user-api-model';
 import { UserInfoService } from '../shared/user-info.service';
 
 @Injectable({
