@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Contract.Workspace.User;
+using System;
+using System.Collections.Generic;
 using Utilities.Enums;
 
 namespace Contract.Admin.Clients
@@ -10,14 +12,15 @@ namespace Contract.Admin.Clients
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         public string Document { get; set; }
         public string Ruc { get; set; }
         public Country Country { get; set; }
         public bool Debts { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public IEnumerable<DoctorModel> Doctors { get; set; }
     }
 }

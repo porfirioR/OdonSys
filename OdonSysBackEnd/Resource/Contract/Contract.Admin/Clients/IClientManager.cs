@@ -9,7 +9,9 @@ namespace Contract.Admin.Clients
         Task<ClientModel> UpdateAsync(UpdateClientRequest request);
         Task<ClientModel> UpdateAsync(ClientModel request);
         Task<IEnumerable<ClientModel>> GetAllAsync();
-        Task<ClientModel> GetByIdAsync(string id, bool active = true);
+        Task<ClientModel> GetByIdAsync(string id);
+        Task<ClientModel> GetByDocumentAsync(string documentId);
+        Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id);
         Task DeleteAsync(string id);
     }
 }

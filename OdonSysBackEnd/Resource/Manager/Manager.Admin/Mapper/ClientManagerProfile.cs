@@ -13,10 +13,9 @@ namespace Manager.Admin.Mapper
 
             CreateMap<UpdateClientRequest, UpdateClientAccessRequest>();
 
-            CreateMap<ClientAccessResponse, ClientModel>();
+            CreateMap<ClientAccessModel, ClientModel>();
 
-            CreateMap<ClientModel, PatchClientAccessRequest>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
+            CreateMap<ClientModel, PatchClientAccessRequest>();
 
         }
     }
