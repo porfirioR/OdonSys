@@ -2,6 +2,7 @@
 using Contract.Admin.Clients;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Admin
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ClientsController : ControllerBase
     {
@@ -54,6 +56,13 @@ namespace Host.Api.Controllers.Admin
             return response;
         }
 
+        [HttpGet("document/{documentId}")]
+        public async Task<ClientModel> GetByDocumentAsync(string documentId)
+        {
+            var response = await _clientManager.GetByDocumentAsync(documentId);
+            return response;
+        }
+
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
@@ -64,7 +73,7 @@ namespace Host.Api.Controllers.Admin
         public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument patchDocument)
         {
             if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
-            var clientModel = await _clientManager.GetByIdAsync(id, false);
+            var clientModel = await _clientManager.GetByIdAsync(id);
             patchDocument.ApplyTo(clientModel);
             if (!ModelState.IsValid)
             {

@@ -1,6 +1,7 @@
 ﻿using Contract.Admin.Clients;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Utilities.Enums;
 
 namespace Host.Api.Models.Clients
 {
@@ -10,22 +11,24 @@ namespace Host.Api.Models.Clients
         public string Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         [Required]
         public string Phone { get; set; }
+        [Required]
+        public Country Country { get; set; }
         public string Email { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
-            var client = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
-            if (client is null)
+            var clientModel = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
+            if (!clientModel.Active)
             {
-                results.Add(new ValidationResult($"Ciente con Id {Id} no existe o esta inactivo."));
+                results.Add(new ValidationResult($"Ciente con Id {Id} esta inactivo."));
             }
             return results;
         }

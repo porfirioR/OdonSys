@@ -6,9 +6,9 @@ namespace Access.Sql.Entities
     public class Client : BaseEntity
     {
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         public string Document { get; set; }
         public string Ruc { get; set; }
         public string Phone { get; set; }

@@ -5,6 +5,7 @@ using Host.Api.Models.Clients;
 using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
@@ -48,6 +49,14 @@ namespace Host.Api.Controllers.Workspace
         public async Task<DoctorModel> GetById([FromRoute] string id)
         {
             var response = await _userManager.GetByIdAsync(id);
+            return response;
+        }
+
+        [HttpGet("patients")]
+        public async Task<IEnumerable<ClientModel>> GetMyPatients()
+        {
+            var id = string.Empty;
+            var response = await _clientManager.GetClientsByDoctorIdAsync(id);
             return response;
         }
 
