@@ -56,6 +56,13 @@ namespace Host.Api.Controllers.Admin
             return response;
         }
 
+        [HttpGet("document/{documentId}")]
+        public async Task<ClientModel> GetByDocumentAsync(string documentId)
+        {
+            var response = await _clientManager.GetByDocumentAsync(documentId);
+            return response;
+        }
+
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {

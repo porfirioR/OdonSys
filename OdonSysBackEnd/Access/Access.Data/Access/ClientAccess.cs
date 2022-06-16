@@ -88,5 +88,13 @@ namespace Access.Admin.Access
             return entity ?? throw new KeyNotFoundException($"id {entity.Id}");
         }
 
+        public async Task<ClientAccessModel> GetByDocumentAsync(string document)
+        {
+            var entity = await _context.Set<Client>()
+                            .SingleOrDefaultAsync(x => x.Document == document);
+            var respose = _mapper.Map<ClientAccessModel>(entity);
+            return respose;
+        }
+
     }
 }

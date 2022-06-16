@@ -8,10 +8,10 @@ namespace Host.Api.Models.Clients
     {
         [Required]
         public string Name { get; set; }
-        public string SecondName { get; set; }
+        public string MiddleName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string SecondLastName { get; set; }
+        public string MiddleLastName { get; set; }
         [Required]
         public string Document { get; set; }
         public string Ruc { get; set; }

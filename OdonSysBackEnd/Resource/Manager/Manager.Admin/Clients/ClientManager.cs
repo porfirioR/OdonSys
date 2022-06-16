@@ -50,6 +50,12 @@ namespace Manager.Admin.Clients
             return _mapper.Map<ClientModel>(accessModel);
         }
 
+        public async Task<ClientModel> GetByDocumentAsync(string documentId)
+        {
+            var accessModel = await _clientAccess.GetByDocumentAsync(documentId);
+            return _mapper.Map<ClientModel>(accessModel);
+        }
+
         public async Task DeleteAsync(string id)
         {
             await _clientAccess.DeleteAsync(id);

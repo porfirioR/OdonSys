@@ -10,6 +10,7 @@ namespace Access.Contract.Clients
         Task<ClientAccessModel> PatchClientAsync(PatchClientAccessRequest accessRequest);
         Task<IEnumerable<ClientAccessModel>> GetAllAsync();
         Task<ClientAccessModel> GetByIdAsync(string id);
+        Task<ClientAccessModel> GetByDocumentAsync(string document);
         Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id);
         Task DeleteAsync(string id);
     }

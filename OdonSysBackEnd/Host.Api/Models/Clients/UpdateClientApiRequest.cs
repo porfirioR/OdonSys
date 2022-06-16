@@ -1,6 +1,7 @@
 ﻿using Contract.Admin.Clients;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Utilities.Enums;
 
 namespace Host.Api.Models.Clients
 {
@@ -16,6 +17,8 @@ namespace Host.Api.Models.Clients
         public string MiddleLastName { get; set; }
         [Required]
         public string Phone { get; set; }
+        [Required]
+        public Country Country { get; set; }
         public string Email { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
