@@ -31,6 +31,7 @@ namespace Access.Admin.Access
 
         public async Task DeleteAsync(string id)
         {
+            // TODO: CHANGE TO HARD DELETE, SOFT DELETE IS ON UPDATE CLIENT
             var entity = await _context.Clients.SingleOrDefaultAsync(x => x.Id == new Guid(id));
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;

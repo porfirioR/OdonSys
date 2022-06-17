@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DoctorApiModel } from '../../core/models/api/doctor/doctor-api-model';
 import { environment } from '../../../environments/environment';
+import { AdminModule } from '../admin.module';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: AdminModule,
 })
 export class UserApiService {
   private baseUrl = `${environment.apiUrl}/users`;

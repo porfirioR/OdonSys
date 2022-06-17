@@ -8,6 +8,9 @@ import { CoreModule } from '../core/core.module';
 import { DoctorsComponent } from './components/doctors/doctors.component';
 import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert-doctor.component';
 import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
+import { ClientAdminApiService } from './service/client-admin-api.service';
+import { ProcedureApiService } from './service/procedure-admin-api.service';
+import { UserApiService } from './service/user-api.service';
 
 @NgModule({
   imports: [
@@ -22,6 +25,11 @@ import { UpsertProcedureComponent } from './components/admin-procedure/upsert-pr
     UpsertDoctorComponent,
     DoctorsComponent
   ],
+  providers:[
+    ClientAdminApiService,
+    ProcedureApiService,
+    UserApiService
+  ]
 
 })
 export class AdminModule { }
