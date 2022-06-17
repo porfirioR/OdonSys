@@ -29,13 +29,14 @@ namespace Access.Admin.Access
             return _mapper.Map<ClientAccessModel>(entity);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<ClientAccessModel> DeleteAsync(string id)
         {
             // TODO: CHANGE TO HARD DELETE, SOFT DELETE IS ON UPDATE CLIENT
             var entity = await _context.Clients.SingleOrDefaultAsync(x => x.Id == new Guid(id));
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return _mapper.Map<ClientAccessModel>(entity);
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetAllAsync()

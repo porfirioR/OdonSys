@@ -38,35 +38,36 @@ namespace Host.Api.Controllers.Admin
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
             var user = _mapper.Map<UpdateClientRequest>(apiRequest);
-            var response = await _clientManager.UpdateAsync(user);
-            return response;
+            var model = await _clientManager.UpdateAsync(user);
+            return model;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ClientModel>> GetAll()
         {
-            var response = await _clientManager.GetAllAsync();
-            return response;
+            var model = await _clientManager.GetAllAsync();
+            return model;
         }
 
         [HttpGet("{id}")]
         public async Task<ClientModel> GetById(string id)
         {
-            var response = await _clientManager.GetByIdAsync(id);
-            return response;
+            var model = await _clientManager.GetByIdAsync(id);
+            return model;
         }
 
         [HttpGet("document/{documentId}")]
         public async Task<ClientModel> GetByDocumentAsync(string documentId)
         {
-            var response = await _clientManager.GetByDocumentAsync(documentId);
-            return response;
+            var model = await _clientManager.GetByDocumentAsync(documentId);
+            return model;
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        public async Task<ClientModel> Delete(string id)
         {
-            await _clientManager.DeleteAsync(id);
+            var model = await _clientManager.DeleteAsync(id);
+            return model;
         }
 
         [HttpPatch("{id}")]
@@ -79,8 +80,17 @@ namespace Host.Api.Controllers.Admin
             {
                 throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
             }
-            var response = await _clientManager.UpdateAsync(clientModel);
-            return response;
+            var model = await _clientManager.UpdateAsync(clientModel);
+            return model;
+        }
+
+        [HttpGet("patients")]
+        public async Task<IEnumerable<ClientModel>> GetPatientsByDoctorId()
+        {
+            // TODO: Get Claims Doctor id
+            var id = string.Empty;
+            var model = await _clientManager.GetClientsByDoctorIdAsync(id);
+            return model;
         }
 
     }

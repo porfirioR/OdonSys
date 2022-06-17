@@ -17,10 +17,18 @@ export class ClientAdminApiService extends ClientApiService {
 
   public softDelete = (id: string, request: ClientSoftDeleteRequest): Observable<ClientApiModel> => {
     return this.http.patch<ClientApiModel>(`${this.baseUrl}/${id}`, request);
-  };
+  }
 
-  public delete = (id: string): Observable<ClientApiModel> => {
+  public hardDelete = (id: string): Observable<ClientApiModel> => {
     return this.http.delete<ClientApiModel>(`${this.baseUrl}/${id}`);
-  };
+  }
+
+  public getById = (id: string): Observable<ClientApiModel> => {
+    return this.http.get<ClientApiModel>(`${this.baseUrl}/${id}`);
+  }
+
+  public getAll = (): Observable<ClientApiModel[]> => {
+    return this.http.get<ClientApiModel[]>(`${this.baseUrl}`);
+  }
 
 }

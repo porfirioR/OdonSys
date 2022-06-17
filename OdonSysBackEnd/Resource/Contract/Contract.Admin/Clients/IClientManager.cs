@@ -12,6 +12,6 @@ namespace Contract.Admin.Clients
         Task<ClientModel> GetByIdAsync(string id);
         Task<ClientModel> GetByDocumentAsync(string documentId);
         Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id);
-        Task DeleteAsync(string id);
+        Task<ClientModel> DeleteAsync(string id);
     }
 }
