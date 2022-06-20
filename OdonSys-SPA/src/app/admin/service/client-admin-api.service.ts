@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BasicServiceModule } from '../../basic-service.module';
 import { ClientApiModel } from '../../core/models/api/clients/client-api-model';
-import { ClientSoftDeleteRequest } from '../../core/models/api/clients/client-soft-delete-request';
+import { ClientPatchRequest } from '../../core/models/api/clients/client-patch-request';
 import { ClientApiService } from '../../core/services/api/client-api.service';
-import { AdminModule } from '../admin.module';
 
 @Injectable({
-  providedIn: AdminModule
+  providedIn: BasicServiceModule
 })
 export class ClientAdminApiService extends ClientApiService {
 
@@ -15,7 +15,7 @@ export class ClientAdminApiService extends ClientApiService {
     super(http);
   }
 
-  public softDelete = (id: string, request: ClientSoftDeleteRequest): Observable<ClientApiModel> => {
+  public clientVisibility = (id: string, request: ClientPatchRequest): Observable<ClientApiModel> => {
     return this.http.patch<ClientApiModel>(`${this.baseUrl}/${id}`, request);
   }
 

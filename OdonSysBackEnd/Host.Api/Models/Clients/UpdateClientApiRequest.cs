@@ -25,11 +25,7 @@ namespace Host.Api.Models.Clients
         {
             var results = new List<ValidationResult>();
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
-            var clientModel = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
-            if (!clientModel.Active)
-            {
-                results.Add(new ValidationResult($"Ciente con Id {Id} esta inactivo."));
-            }
+            _ = clientManager.GetByIdAsync(Id).GetAwaiter().GetResult();
             return results;
         }
     }

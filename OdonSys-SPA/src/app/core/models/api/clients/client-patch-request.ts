@@ -1,3 +1,3 @@
-export class ClientSoftDeleteRequest {
+export class ClientPatchRequest {
   constructor( public active: boolean) {}
 }

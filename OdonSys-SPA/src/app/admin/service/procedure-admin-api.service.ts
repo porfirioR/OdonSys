@@ -5,10 +5,10 @@ import { ProcedureApiModel } from '../../core/models/procedure/procedure-api-mod
 import { environment } from '../../../environments/environment';
 import { CreateProcedureRequest } from '../models/procedure/api/create-procedure-request';
 import { UpdateProcedureRequest } from '../models/procedure/api/update-procedure-request';
-import { AdminModule } from '../admin.module';
+import { BasicServiceModule } from 'src/app/basic-service.module';
 
 @Injectable({
-  providedIn: AdminModule
+  providedIn: BasicServiceModule
 })
 export class ProcedureApiService {
   private baseUrl = `${environment.apiUrl}/procedure`;
