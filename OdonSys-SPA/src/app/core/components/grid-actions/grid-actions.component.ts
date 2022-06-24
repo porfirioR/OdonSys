@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
+import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
 
 @Component({
@@ -21,14 +22,23 @@ export class GridActionsComponent implements AgRendererComponent {
   constructor() {
   }
 
-  public agInit = (params: ICellRendererParams): void => {
-    this.params = Object.assign(new GridActionModel(), params);
-    this.canApprove = this.params.buttonShow.includes(ButtonGridActionType.Aprobar);
-    this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
-    this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
-    this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
-    this.canShowDeactivate = this.params.buttonShow.includes(ButtonGridActionType.Desactivar);
-    this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
+  public agInit = (params: ICellRendererParams & GridActionModel): void => {
+    this.params = params;
+    console.log(params.data);
+    if(this.params.conditionalButtons && this.params.conditionalButtons.length > 0) {
+      this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
+        const attributeValue = params.data[x.attributeAffected];
+        if (attributeValue === x.attributeValue) {
+        }
+      });
+    } else {
+      this.canApprove = this.params.buttonShow.includes(ButtonGridActionType.Aprobar);
+      this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
+      this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
+      this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
+      this.canShowDeactivate = this.params.buttonShow.includes(ButtonGridActionType.Desactivar);
+      this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
+    }
   }
 
   public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar);

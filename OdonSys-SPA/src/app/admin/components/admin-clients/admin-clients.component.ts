@@ -54,7 +54,7 @@ export class AdminClientsComponent implements OnInit {
     this.gridOptions = this.agGridService.getAdminClientGridOptions();
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
     const params: GridActionModel = {
-      buttonShow: [ButtonGridActionType.Desactivar, ButtonGridActionType.Aprobar, ButtonGridActionType.Editar],
+      buttonShow: [ButtonGridActionType.Desactivar, ButtonGridActionType.Aprobar, ButtonGridActionType.Editar, ButtonGridActionType.Ver],
       clicked: this.actionColumnClicked
     };
     columnAction.cellRendererParams = params;

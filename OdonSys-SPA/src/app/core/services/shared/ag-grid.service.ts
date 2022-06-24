@@ -52,7 +52,7 @@ export class AgGridService {
     { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 95,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 235, maxWidth: 650, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 375, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ];
 

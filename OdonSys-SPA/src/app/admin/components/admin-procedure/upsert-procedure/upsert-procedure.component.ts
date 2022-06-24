@@ -79,7 +79,7 @@ export class UpsertProcedureComponent implements OnInit {
           teethUpper = teethUpper.concat(firstQuadrant, secondQuadrant);
           teethLower = teethLower.concat(fourthQuadrant, thirdQuadrant);
         }
-        this.teethList = Object.assign([], teethUpper.concat(teethLower));
+        this.teethList = teethUpper.concat(teethLower);
         this.teethList.forEach(item => {
           this.teethFormArray.push(
             new FormGroup({
@@ -98,10 +98,9 @@ export class UpsertProcedureComponent implements OnInit {
           active : new FormControl(this.id ? procedure.active : true, [Validators.required]),
           teeth: this.teethFormArray
         });
-        if (!this.id) {
+        if (this.id) {
           this.formGroup.controls.active.disable();
           this.title = 'actualizar';
-        } else {
           this.formGroup.controls.estimatedSessions.disable();
           this.formGroup.controls.name.disable();
         }
