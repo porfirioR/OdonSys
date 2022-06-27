@@ -29,16 +29,16 @@ namespace Host.Api.Controllers.Admin
         [HttpPost]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
-            var user = _mapper.Map<CreateClientRequest>(apiRequest);
-            var model = await _clientManager.CreateAsync(user);
+            var request = _mapper.Map<CreateClientRequest>(apiRequest);
+            var model = await _clientManager.CreateAsync(request);
             return model;
         }
 
         [HttpPut]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
-            var model = await _clientManager.UpdateAsync(user);
+            var request = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var model = await _clientManager.UpdateAsync(request);
             return model;
         }
 
