@@ -15,7 +15,7 @@ namespace Host.Api.Controllers.Admin
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class ClientsController : OdonSysBaseController
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
@@ -87,8 +87,7 @@ namespace Host.Api.Controllers.Admin
         [HttpGet("patients")]
         public async Task<IEnumerable<ClientModel>> GetPatientsByDoctorId()
         {
-            // TODO: Get Claims Doctor id
-            var id = string.Empty;
+            var id = UserId;
             var model = await _clientManager.GetClientsByDoctorIdAsync(id);
             return model;
         }

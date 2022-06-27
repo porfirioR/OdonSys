@@ -106,6 +106,12 @@ export class AgGridService {
     return grid;
   }
 
+  public getClientGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.clientColumnDef);
+    return grid;
+  }
+
   public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
     const gridApi = gridOptions.api as GridApi;
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number;

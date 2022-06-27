@@ -29,16 +29,11 @@ export class GridActionsComponent implements AgRendererComponent {
       this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
         const attributeValue = params.data[x.attributeAffected];
         if (attributeValue === x.attributeValue) {
+          this.verifyButtons(x.buttonType);
         }
       });
-    } else {
-      this.canApprove = this.params.buttonShow.includes(ButtonGridActionType.Aprobar);
-      this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
-      this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
-      this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
-      this.canShowDeactivate = this.params.buttonShow.includes(ButtonGridActionType.Desactivar);
-      this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
     }
+    this.params.buttonShow.forEach(x => this.verifyButtons(x));
   }
 
   public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar);
@@ -55,6 +50,31 @@ export class GridActionsComponent implements AgRendererComponent {
   
   public refresh = (params: any): boolean => {
     return true;
+  }
+
+  private verifyButtons = (action: ButtonGridActionType) => {
+    switch (action) {
+      case ButtonGridActionType.Aprobar:
+        this.canApprove = true;
+        break;
+      case ButtonGridActionType.Editar:
+        this.canShowEdit = true;
+        break;
+      case ButtonGridActionType.Ver:
+        this.canShowView = true;
+        break;
+      case ButtonGridActionType.Borrar:
+        this.canShowDelete = true;
+        break;
+      case ButtonGridActionType.Descargar:
+        this.canShowDownload = true;
+        break;
+      case ButtonGridActionType.Desactivar:
+        this.canShowDeactivate = true;
+        break;
+      default:
+        break;
+    }
   }
 }
 

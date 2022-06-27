@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { AbstractControl, UntypedFormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ToothApiService } from '../../../../core/services/api/tooth-api.service';
@@ -32,10 +33,10 @@ export class UpsertProcedureComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
     private readonly alertService: AlertService,
     private readonly procedureApiService: ProcedureApiService,
     private readonly toothApiService: ToothApiService,
+    private readonly location: Location
   ) {
     this.teethFormArray = new UntypedFormArray([]);
   }
@@ -44,7 +45,7 @@ export class UpsertProcedureComponent implements OnInit {
     this.loadValues();
   }
 
-  public save = () => {
+  protected save = () => {
     this.saving = true;
     if (this.id) {
       this.update();
@@ -53,8 +54,8 @@ export class UpsertProcedureComponent implements OnInit {
     }
   }
 
-  public close = () => {
-    this.router.navigate(['admin/procedimientos']);
+  protected close = () => {
+    this.location.back();
   }
 
   private loadValues = () => {

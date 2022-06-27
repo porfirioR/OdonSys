@@ -69,7 +69,7 @@ namespace Access.Admin.Access
             var entity = await _context.Set<Doctor>()
                             .Include(x => x.User)
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity ?? throw new KeyNotFoundException($"id {entity.Id}");
+            return entity ?? throw new KeyNotFoundException($"id {id}");
         }
     }
 }

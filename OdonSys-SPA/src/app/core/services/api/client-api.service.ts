@@ -23,11 +23,11 @@ export class ClientApiService {
   }
 
   public createClient = (request: CreateClientRequest): Observable<ClientApiModel> => {
-    return this.http.get<ClientApiModel>(`${this.baseUrl}`, request);
+    return this.http.post<ClientApiModel>(`${this.baseUrl}`, request);
   }
 
   public updateClient = (request: UpdateClientRequest): Observable<ClientApiModel> => {
-    return this.http.get<ClientApiModel>(`${this.baseUrl}`, request);
+    return this.http.put<ClientApiModel>(`${this.baseUrl}`, request);
   }
 
   public getDoctorPatients = (): Observable<ClientApiModel[]> => {

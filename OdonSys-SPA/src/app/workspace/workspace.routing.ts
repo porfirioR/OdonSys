@@ -9,7 +9,8 @@ export const WorkspaceRoutes: Routes = [
     children: [
       { path: 'configuración/datos', component: MyConfigurationComponent },
       { path: 'misPacientes', component: ClientsComponent },
-      { path: 'misPacientes/crear', component: UpsertClientComponent },
+      { path: 'misPacientes/registrar', component: UpsertClientComponent },
+      { path: 'misPacientes/actualizar/:id', component: UpsertClientComponent },
     ]
   },
 ];

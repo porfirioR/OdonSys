@@ -87,7 +87,7 @@ namespace Access.Admin.Access
         {
             var entity = await _context.Set<Client>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity ?? throw new KeyNotFoundException($"id {entity.Id}");
+            return entity ?? throw new KeyNotFoundException($"id {id}");
         }
 
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)

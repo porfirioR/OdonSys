@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { ClientApiModel } from '../../../core/models/api/clients/client-api-model';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
@@ -7,7 +8,10 @@ import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { ClientAdminApiService } from '../../service/client-admin-api.service';
 import { ClientPatchRequest } from '../../../core/models/api/clients/client-patch-request';
-import { Router } from '@angular/router';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
+import { environment } from '../../../../environments/environment';
+import { FieldId } from '../../../core/enums/field-id.enum';
 
 @Component({
   selector: 'app-admin-clients',
@@ -18,6 +22,7 @@ export class AdminClientsComponent implements OnInit {
   public loading: boolean = false;
   public ready: boolean = false;
   public gridOptions!: GridOptions;
+  private attributeActive!: string;
 
   constructor(
     private readonly alertService: AlertService,
@@ -27,6 +32,7 @@ export class AdminClientsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!;
     this.setupAgGrid();
     this.ready = true;
     this.getList();
@@ -55,7 +61,11 @@ export class AdminClientsComponent implements OnInit {
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Desactivar, ButtonGridActionType.Aprobar, ButtonGridActionType.Editar, ButtonGridActionType.Ver],
-      clicked: this.actionColumnClicked
+      clicked: this.actionColumnClicked,
+      conditionalButtons: [
+        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Aprobar),
+        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Aprobar)
+      ]
     };
     columnAction.cellRendererParams = params;
   }

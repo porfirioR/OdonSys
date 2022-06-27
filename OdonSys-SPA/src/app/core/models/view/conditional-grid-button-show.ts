@@ -4,6 +4,6 @@ export class ConditionalGridButtonShow {
   constructor(
     public attributeAffected: string,
     public attributeValue: string,
-    public buttonShow: ButtonGridActionType) {
+    public buttonType: ButtonGridActionType) {
   }
 }

@@ -1,3 +1,17 @@
-<p>
-  clients works!
-</p>
+<app-progress *ngIf="!ready || loading"></app-progress>
+<div *ngIf="ready" class="container">
+  <div class="header-top">
+    <h3>Mis Pacientes</h3>
+    <button type="button" class="btn btn-outline-primary" routerLink="registrar">
+      <i class="fas fa-plus"></i>
+      Agregar
+    </button>
+  </div>
+  <div class="p-t-16">
+    <ng-container *ngIf="gridOptions">
+      <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </ng-container>
+  </div>
+</div>
