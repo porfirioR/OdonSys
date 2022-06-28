@@ -69,15 +69,15 @@ export class UpsertClientComponent implements OnInit {
     ).subscribe({
       next: (client: ClientApiModel ) => {
         this.formGroup = new FormGroup({
-          name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-          middleName: new FormControl('', [Validators.maxLength(25)]),
-          lastName: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-          middleLastName: new FormControl('', [Validators.maxLength(25)]),
-          document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
-          ruc: new FormControl({ value: 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
-          phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-          country: new FormControl('', [Validators.required]),
-          email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+          name: new FormControl(this.id ? client.name : '', [Validators.required, Validators.maxLength(25)]),
+          middleName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
+          lastName: new FormControl(this.id ? client.lastName : '', [Validators.required, Validators.maxLength(25)]),
+          middleLastName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
+          document: new FormControl(this.id ? client.document:'', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+          ruc: new FormControl({ value: this.id && client.ruc ? client.ruc : 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
+          phone: new FormControl(this.id ? client.phone:'', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
+          country: new FormControl(this.id ? client.country:'', [Validators.required]),
+          email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
         });
         // this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
         if (this.id) {
