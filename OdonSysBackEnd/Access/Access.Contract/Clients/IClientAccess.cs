@@ -11,7 +11,7 @@ namespace Access.Contract.Clients
         Task<IEnumerable<ClientAccessModel>> GetAllAsync();
         Task<ClientAccessModel> GetByIdAsync(string id);
         Task<ClientAccessModel> GetByDocumentAsync(string document);
-        Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id);
+        Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id, string userName);
         Task<ClientAccessModel> DeleteAsync(string id);
     }
 }

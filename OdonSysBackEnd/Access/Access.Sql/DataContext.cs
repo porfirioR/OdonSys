@@ -45,21 +45,20 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
             modelBuilder.ApplyConfiguration(new ToothConfiguration());
         }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity &&
                                                         (x.State == EntityState.Added ||
                                                         x.State == EntityState.Modified ||
                                                         x.State == EntityState.Deleted)).ToList();
-            // Need specific list since the change tracker updates the state after save changes.
-            var addedEntites = entities.Where(x => x.Entity is BaseEntity && x.State == EntityState.Added).ToList();
-            var transactionId = Guid.NewGuid();
-            var username = SetUserContext(entities.Where(x => x.State != EntityState.Deleted));
 
+            SetUserAndDateTimeContext(entities.Where(x => x.State != EntityState.Deleted));
             var result = await base.SaveChangesAsync(cancellationToken);
             return result;
         }
-        private string SetUserContext(IEnumerable<EntityEntry> entities)
+
+        private void SetUserAndDateTimeContext(IEnumerable<EntityEntry> entities)
         {
             var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(Claims.UserName)?.Value ?? "api";
             foreach (var entity in entities)
@@ -78,7 +77,6 @@ namespace Access.Sql
                 ((BaseEntity)entity.Entity).UserUpdated = username;
                 ((BaseEntity)entity.Entity).DateModified = DateTime.Now;
             }
-            return username;
         }
     }
 }

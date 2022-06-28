@@ -88,7 +88,8 @@ namespace Host.Api.Controllers.Admin
         public async Task<IEnumerable<ClientModel>> GetPatientsByDoctorId()
         {
             var id = UserId;
-            var model = await _clientManager.GetClientsByDoctorIdAsync(id);
+            var userName = UserName;
+            var model = await _clientManager.GetClientsByDoctorIdAsync(id, userName);
             return model;
         }
 

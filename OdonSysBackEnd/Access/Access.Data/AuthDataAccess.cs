@@ -101,7 +101,7 @@ namespace Access.Admin
         {
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, userName),
+                new Claim(Claims.UserName, userName),
                 new Claim(Claims.UserId, userId)
             };
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

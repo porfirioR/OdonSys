@@ -53,12 +53,12 @@ namespace Access.Admin.Access
             return respose;
         }
 
-        public async Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id)
+        public async Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id, string userName)
         {
             var entities = await _context.Clients
                                 .Include(x => x.DoctorsClients)
                                 .ThenInclude(x => x.Doctor)
-                                .Where(x => x.DoctorsClients.Any(y => y.DoctorId == new Guid(id))).ToListAsync();
+                                .Where(x => x.DoctorsClients.Any(y => y.DoctorId == new Guid(id)) || x.UserCreated == userName).ToListAsync();
             var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
             return respose;
         }
