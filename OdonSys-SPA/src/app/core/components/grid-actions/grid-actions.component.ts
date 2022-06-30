@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
+import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
 
 @Component({
@@ -21,14 +22,18 @@ export class GridActionsComponent implements AgRendererComponent {
   constructor() {
   }
 
-  public agInit = (params: ICellRendererParams): void => {
-    this.params = Object.assign(new GridActionModel(), params);
-    this.canApprove = this.params.buttonShow.includes(ButtonGridActionType.Aprobar);
-    this.canShowView = this.params.buttonShow.includes(ButtonGridActionType.Ver);
-    this.canShowEdit = this.params.buttonShow.includes(ButtonGridActionType.Editar);
-    this.canShowDelete = this.params.buttonShow.includes(ButtonGridActionType.Borrar);
-    this.canShowDeactivate = this.params.buttonShow.includes(ButtonGridActionType.Desactivar);
-    this.canShowDownload = this.params.buttonShow.includes(ButtonGridActionType.Descargar);
+  public agInit = (params: ICellRendererParams & GridActionModel): void => {
+    this.params = params;
+    console.log(params.data);
+    if(this.params.conditionalButtons && this.params.conditionalButtons.length > 0) {
+      this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
+        const attributeValue = params.data[x.attributeAffected];
+        if (attributeValue === x.attributeValue) {
+          this.verifyButtons(x.buttonType);
+        }
+      });
+    }
+    this.params.buttonShow.forEach(x => this.verifyButtons(x));
   }
 
   public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar);
@@ -45,6 +50,31 @@ export class GridActionsComponent implements AgRendererComponent {
   
   public refresh = (params: any): boolean => {
     return true;
+  }
+
+  private verifyButtons = (action: ButtonGridActionType) => {
+    switch (action) {
+      case ButtonGridActionType.Aprobar:
+        this.canApprove = true;
+        break;
+      case ButtonGridActionType.Editar:
+        this.canShowEdit = true;
+        break;
+      case ButtonGridActionType.Ver:
+        this.canShowView = true;
+        break;
+      case ButtonGridActionType.Borrar:
+        this.canShowDelete = true;
+        break;
+      case ButtonGridActionType.Descargar:
+        this.canShowDownload = true;
+        break;
+      case ButtonGridActionType.Desactivar:
+        this.canShowDeactivate = true;
+        break;
+      default:
+        break;
+    }
   }
 }
 

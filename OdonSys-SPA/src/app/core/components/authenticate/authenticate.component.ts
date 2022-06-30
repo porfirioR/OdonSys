@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
@@ -16,6 +17,7 @@ export class AuthenticateComponent implements OnInit {
   public typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
   public currentType = this.typeValue.password;
   public currentMessage = this.typeValue.passwordMessage;
+  public load = false;
 
   constructor(
     private readonly router: Router,
@@ -31,6 +33,7 @@ export class AuthenticateComponent implements OnInit {
       password: new FormControl('', [Validators.required]),
       type: new FormControl(false),
     });
+    this.load = true;
     this.formGroup.controls.type.valueChanges.subscribe({
       next: (x: Boolean) => {
         this.currentType = x ? this.typeValue.text : this.typeValue.password;
@@ -41,14 +44,16 @@ export class AuthenticateComponent implements OnInit {
 
   public login = (): void => {
     if (this.formGroup.invalid) { return; }
+    this.load = false;
     const request = this.formGroup.getRawValue() as LoginRequest;
     this.formGroup.disable();
     this.authApiService.login(request).subscribe({
-      next: () => {
+      next: (response: AuthApiModel) => {
         this.formGroup.enable();
-        this.alertService.showSuccess('Bienvenido');
+        this.alertService.showSuccess(`Bienvenido ${response.user.userName}`);
         this.router.navigate(['']);
       }, error: (e) => {
+        this.load = true;
         this.formGroup.enable();
         throw e;
       }

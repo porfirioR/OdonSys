@@ -43,10 +43,10 @@ export class RegisterUserComponent implements OnInit {
       error: (error) => {
         this.formGroup.enable();
         this.saving = false;
-        throw new Error(error);
+        throw error;
       }
     });
-  };
+  }
 
   public close = (): void => {
     this.router.navigate(['login']);

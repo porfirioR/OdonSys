@@ -19,6 +19,7 @@ namespace Access.Data
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IToothAccess, ToothAccess>();
+            services.AddHttpContextAccessor();
         }
     }
 }

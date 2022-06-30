@@ -29,12 +29,14 @@ namespace Access.Admin.Access
             return _mapper.Map<ClientAccessModel>(entity);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<ClientAccessModel> DeleteAsync(string id)
         {
+            // TODO: CHANGE TO HARD DELETE, SOFT DELETE IS ON UPDATE CLIENT
             var entity = await _context.Clients.SingleOrDefaultAsync(x => x.Id == new Guid(id));
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+            return _mapper.Map<ClientAccessModel>(entity);
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetAllAsync()
@@ -51,12 +53,12 @@ namespace Access.Admin.Access
             return respose;
         }
 
-        public async Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id)
+        public async Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id, string userName)
         {
             var entities = await _context.Clients
                                 .Include(x => x.DoctorsClients)
                                 .ThenInclude(x => x.Doctor)
-                                .Where(x => x.DoctorsClients.Any(y => y.DoctorId == new Guid(id))).ToListAsync();
+                                .Where(x => x.DoctorsClients.Any(y => y.DoctorId == new Guid(id)) || x.UserCreated == userName).ToListAsync();
             var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
             return respose;
         }
@@ -85,7 +87,7 @@ namespace Access.Admin.Access
         {
             var entity = await _context.Set<Client>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity ?? throw new KeyNotFoundException($"id {entity.Id}");
+            return entity ?? throw new KeyNotFoundException($"id {id}");
         }
 
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)

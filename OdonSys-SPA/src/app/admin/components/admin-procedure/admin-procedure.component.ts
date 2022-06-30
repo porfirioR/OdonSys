@@ -34,7 +34,7 @@ export class AdminProcedureComponent implements OnInit {
   private getList = () => {
     this.procedureApiService.getAll().subscribe({
       next: (response) => {
-        this.procedureList = Object.assign(Array<ProcedureModel>(), response);
+        this.procedureList =  response.map(x => new ProcedureModel(x.id, x.active, x.dateCreate, x.dateModified, x.name, x.description, x.estimatedSessions, x.procedureTeeth));
         this.gridOptions.api?.setRowData(this.procedureList);
         this.gridOptions.api?.sizeColumnsToFit();
         if (this.procedureList.length === 0) {

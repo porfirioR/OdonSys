@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
@@ -15,9 +17,10 @@ namespace Sql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Access.Sql.Entities.Client", b =>
                 {
@@ -79,6 +82,12 @@ namespace Sql.Migrations
                     b.Property<string>("Ruc")
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -143,6 +152,12 @@ namespace Sql.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Document")
@@ -174,6 +189,12 @@ namespace Sql.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("DoctorId", "ClientId");
 
@@ -220,6 +241,12 @@ namespace Sql.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
@@ -259,6 +286,12 @@ namespace Sql.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Procedures");
@@ -288,6 +321,12 @@ namespace Sql.Migrations
 
                     b.Property<Guid>("ToothId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -320,6 +359,12 @@ namespace Sql.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -376,6 +421,12 @@ namespace Sql.Migrations
 
                     b.Property<int>("Quadrant")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

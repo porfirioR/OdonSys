@@ -52,13 +52,5 @@ namespace Host.Api.Controllers.Workspace
             return response;
         }
 
-        [HttpGet("patients")]
-        public async Task<IEnumerable<ClientModel>> GetMyPatients()
-        {
-            var id = string.Empty;
-            var response = await _clientManager.GetClientsByDoctorIdAsync(id);
-            return response;
-        }
-
     }
 }

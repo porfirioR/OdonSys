@@ -21,4 +21,5 @@ export class DoctorApiService {
   public getById = (id: string): Observable<DoctorApiModel> => {
     return this.http.get<DoctorApiModel>(`${this.baseUrl}/${id}`);
   }
+
 }

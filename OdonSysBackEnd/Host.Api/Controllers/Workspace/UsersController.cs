@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Contract.Authentication.User;
+﻿using Contract.Authentication.User;
 using Contract.Workspace.User;
-using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

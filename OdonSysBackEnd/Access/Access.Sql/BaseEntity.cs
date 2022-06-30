@@ -12,5 +12,7 @@ namespace Access.Sql
         public bool Active { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+        public string UserCreated { get; set; }
+        public string UserUpdated { get; set; }
     }
 }

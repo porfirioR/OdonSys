@@ -8,7 +8,7 @@ export class AlertService {
 
   constructor() { }
 
-  public showQuestionModal = async (title: string, text: string): Promise<SweetAlertResult<unknown>> => {
+  public showQuestionModal = async (title: string, text: string = ''): Promise<SweetAlertResult<any>> => {
     const result = await Swal.fire({
       title,
       text,
