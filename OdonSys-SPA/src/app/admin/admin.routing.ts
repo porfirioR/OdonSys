@@ -9,13 +9,13 @@ export const AdminRoutes: Routes = [
   { 
     path: '',
     children: [
-      { path: 'procedimientos', component: AdminProcedureComponent, },
-      { path: 'procedimientos/crear', component: UpsertProcedureComponent },
-      { path: 'procedimientos/actualizar/:id/:active', component: UpsertProcedureComponent },
-      { path: 'doctores', component: DoctorsComponent },
-      { path: 'pacientes', component: AdminClientsComponent },
-      { path: 'pacientes/ver/:id', component: AdminClientsComponent },
-      { path: 'pacientes/actualizar/:id', component: UpsertClientComponent },
+      { path: 'procedimientos', component: AdminProcedureComponent, title: 'Procedimientos' },
+      { path: 'procedimientos/crear', component: UpsertProcedureComponent, title: 'Crear Procedimientos' },
+      { path: 'procedimientos/actualizar/:id/:active', component: UpsertProcedureComponent, title: 'Actualizar Procedimientos' },
+      { path: 'doctores', component: DoctorsComponent, title: 'Doctores' },
+      { path: 'pacientes', component: AdminClientsComponent, title: 'Pacientes' },
+      { path: 'pacientes/ver/:id', component: AdminClientsComponent, title: 'Ver pacientes' },
+      { path: 'pacientes/actualizar/:id', component: UpsertClientComponent, title: 'Actualizar pacientes' },
     ]
   },
 ];

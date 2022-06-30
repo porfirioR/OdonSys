@@ -1,3 +1,5 @@
 export class ClientPatchRequest {
-  constructor( public active: boolean) {}
+  private op: string = 'replace'
+
+  constructor(public value: boolean, public path: string = 'active') {}
 }

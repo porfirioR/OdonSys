@@ -100,7 +100,7 @@ export class AdminClientsComponent implements OnInit {
           next: (response) => {
             this.loading = false;
             client.active = response.active;
-            this.alertService.showSuccess('El paciente ha sido actualizado.');
+            this.alertService.showSuccess('Visibilidad del paciente ha sido actualizado.');
             this.getList();
           }, error: (e) => {
             this.loading = false;

@@ -24,6 +24,7 @@ export class UpsertClientComponent implements OnInit {
   public formGroup: FormGroup = new FormGroup({});
   public countries: Map<string, string> = new Map<string, string>();
   private id = '';
+  private fullEdit = false;
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly location: Location,
@@ -32,7 +33,6 @@ export class UpsertClientComponent implements OnInit {
 
   ) {
     this.countries = EnumToMap.getCountries();
-
   }
 
   ngOnInit() {
@@ -82,9 +82,11 @@ export class UpsertClientComponent implements OnInit {
         // this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
         if (this.id) {
           this.title = 'Actualizar ';
-          // this.formGroup.controls.active.disable();
-          // this.formGroup.controls.estimatedSessions.disable();
-          // this.formGroup.controls.name.disable();
+          if (!this.fullEdit) {
+            this.formGroup.controls.document.disable();
+            this.formGroup.controls.country.disable();
+            this.formGroup.controls.email.disable();
+          }
         }
         this.load = true;
       }, error: (e) => {
@@ -97,7 +99,7 @@ export class UpsertClientComponent implements OnInit {
   private clientRequest = (): Observable<ClientApiModel> => {
     if (this.id) {
       const updateClient = new UpdateClientRequest(
-        this.formGroup.controls.id.value,
+        this.id,
         this.formGroup.controls.name.value,
         this.formGroup.controls.middleName.value,
         this.formGroup.controls.lastName.value,

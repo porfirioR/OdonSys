@@ -16,7 +16,7 @@ export class ClientAdminApiService extends ClientApiService {
   }
 
   public clientVisibility = (id: string, request: ClientPatchRequest): Observable<ClientApiModel> => {
-    return this.http.patch<ClientApiModel>(`${this.baseUrl}/${id}`, request);
+    return this.http.patch<ClientApiModel>(`${this.baseUrl}/${id}`, [request]);
   }
 
   public hardDelete = (id: string): Observable<ClientApiModel> => {
