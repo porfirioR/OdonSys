@@ -9,6 +9,5 @@ export class ProcedureApiModel {
     procedureTeeth: string[] = [];
 
     constructor() {
-        
     }
 }

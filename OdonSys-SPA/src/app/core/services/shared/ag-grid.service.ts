@@ -33,7 +33,7 @@ export class AgGridService {
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
     },
@@ -41,6 +41,30 @@ export class AgGridService {
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 235, maxWidth: 650, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
+  private clientColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
+  private adminClientColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 95,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 375, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ];
 
@@ -87,7 +111,19 @@ export class AgGridService {
     grid.columnDefs = this.columnDef.concat(this.doctorColumnDef);
     return grid;
   }
-  
+
+  public getAdminClientGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.adminClientColumnDef);
+    return grid;
+  }
+
+  public getClientGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.clientColumnDef);
+    return grid;
+  }
+
   public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
     const gridApi = gridOptions.api as GridApi;
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number;

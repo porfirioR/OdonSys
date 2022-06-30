@@ -56,14 +56,15 @@ namespace Manager.Admin.Clients
             return _mapper.Map<ClientModel>(accessModel);
         }
 
-        public async Task DeleteAsync(string id)
+        public async Task<ClientModel> DeleteAsync(string id)
         {
-            await _clientAccess.DeleteAsync(id);
+            var accessModel = await _clientAccess.DeleteAsync(id);
+            return _mapper.Map<ClientModel>(accessModel);
         }
 
-        public async Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id)
+        public async Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id, string userName)
         {
-            var accessModel = await _clientAccess.GetClientsByDoctorIdAsync(id);
+            var accessModel = await _clientAccess.GetClientsByDoctorIdAsync(id, userName);
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
     }

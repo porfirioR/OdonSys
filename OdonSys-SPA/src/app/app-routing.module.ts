@@ -19,12 +19,13 @@ export const AppRoutes: Routes = [
       {
         path: 'trabajo',
         loadChildren: () => import('./workspace/workspace.module').then((m) => m.WorkspaceModule)
-      }
+      },
+      { path: 'inicio', redirectTo: '' }
     ]
   },
-  { path: 'login', component: AuthenticateComponent },
-  { path: 'registrar', component: RegisterUserComponent },
-  { path: 'página-no-encontrada', component: NotFoundComponent },
+  { path: 'login', component: AuthenticateComponent, title: 'Autenticación' },
+  { path: 'registrar', component: RegisterUserComponent, title: 'Registro' },
+  { path: 'página-no-encontrada', component: NotFoundComponent, title: 'página no encontrada' },
   { path: '**', redirectTo: '/página-no-encontrada' },
   
 ];

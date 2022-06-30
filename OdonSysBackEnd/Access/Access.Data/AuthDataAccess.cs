@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace Access.Admin
 {
@@ -57,7 +58,7 @@ namespace Access.Admin
                     throw new KeyNotFoundException("Correo o contraseña es incorrecta");
                 }
             }
-            var token = CreateToken(user.UserName);
+            var token = CreateToken(user.UserName, user.Id.ToString());
             var userAccessModel = _mapper.Map<UserDataAccessModel>(user.Doctor);
             var userResponse = new AuthAccessModel
             {
@@ -85,7 +86,7 @@ namespace Access.Admin
             if (await _context.SaveChangesAsync() > 0)
             {
                 var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
-                var token = CreateToken(userAccessModel.UserName);
+                var token = CreateToken(userAccessModel.UserName, userAccessModel.Id);
                 var userResponse = new AuthAccessModel
                 {
                     Token = token,
@@ -96,11 +97,12 @@ namespace Access.Admin
             throw new Exception("Error al intentar crear usuario.");
         }
 
-        private string CreateToken(string userName)
+        private string CreateToken(string userName, string userId)
         {
             var claims = new List<Claim>()
             {
-                new Claim(JwtRegisteredClaimNames.NameId, userName)
+                new Claim(Claims.UserName, userName),
+                new Claim(Claims.UserId, userId)
             };
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
