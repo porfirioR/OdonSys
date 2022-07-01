@@ -86,14 +86,14 @@ export class DoctorsComponent implements OnInit {
         break;
       case ButtonGridActionType.Ver:
       case ButtonGridActionType.Desactivar:
-        this.changeSelectedClientVisibility(currentRowNode.data);
+        this.changeSelectedDoctorVisibility(currentRowNode.data);
         break;
       default:
         break;
     }
   }
 
-  private changeSelectedClientVisibility = (doctor: DoctorApiModel): void => {
+  private changeSelectedDoctorVisibility = (doctor: DoctorApiModel): void => {
     const message = doctor.active ?
                     '¿Está seguro de deshabilitar al doctor?, no será visible y no podra acceder al sistema' :
                     '¿Está seguro de habilitar al doctor?, será visible para los doctores y podra acceder al sistema';
@@ -102,9 +102,8 @@ export class DoctorsComponent implements OnInit {
         this.loading = true;
         const request = new PatchRequest(!doctor.active);
         this.userApiService.doctorVisibility(doctor.id, request).subscribe({
-          next: (response) => {
+          next: () => {
             this.loading = false;
-            doctor.active = response.active;
             this.alertService.showSuccess('Visibilidad del doctor ha sido actualizado.');
             this.getList();
           }, error: (e) => {

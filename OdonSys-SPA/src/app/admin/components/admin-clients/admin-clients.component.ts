@@ -98,9 +98,8 @@ export class AdminClientsComponent implements OnInit {
         this.loading = true;
         const request = new PatchRequest(!client.active);
         this.clientAdminApiService.clientVisibility(client.id, request).subscribe({
-          next: (response) => {
+          next: () => {
             this.loading = false;
-            client.active = response.active;
             this.alertService.showSuccess('Visibilidad del paciente ha sido actualizado.');
             this.getList();
           }, error: (e) => {
