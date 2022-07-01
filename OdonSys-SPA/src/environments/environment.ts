@@ -8,7 +8,9 @@ export const environment = {
   production: false,
   apiUrl: 'https://localhost:44310/api',
   systemAttributeModel: [
-    { id: FieldId.Active, value: 'active' }
+    { id: FieldId.Active, value: 'active' },
+    { id: FieldId.Approved, value: 'approved' },
+    { id: FieldId.Id, value: 'id' },
   ]
 };
 
