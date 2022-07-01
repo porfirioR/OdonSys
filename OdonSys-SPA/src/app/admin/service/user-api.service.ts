@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DoctorApiModel } from '../../core/models/api/doctor/doctor-api-model';
 import { environment } from '../../../environments/environment';
 import { BasicServiceModule } from 'src/app/basic-service.module';
+import { PatchRequest } from 'src/app/core/models/api/patch-request';
 
 @Injectable({
   providedIn: BasicServiceModule
@@ -21,11 +22,8 @@ export class UserApiService {
     return this.http.get<DoctorApiModel[]>(`${this.baseUrl}`);
   };
 
-  public deactivate = (id: string): Observable<DoctorApiModel> => {
-    return this.http.put<DoctorApiModel>(`${this.baseUrl}/deactivate/${id}`, null);
+  public doctorVisibility = (id: string, request: PatchRequest): Observable<DoctorApiModel> => {
+    return this.http.put<DoctorApiModel>(`${this.baseUrl}/${id}`, [request]);
   };
 
-  public activate = (id: string): Observable<DoctorApiModel> => {
-    return this.http.put<DoctorApiModel>(`${this.baseUrl}/activate/${id}`, null);
-  };
 }

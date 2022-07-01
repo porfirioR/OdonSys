@@ -7,7 +7,7 @@ import { ButtonGridActionType } from '../../../core/enums/button-grid-action-typ
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { ClientAdminApiService } from '../../service/client-admin-api.service';
-import { ClientPatchRequest } from '../../../core/models/api/clients/client-patch-request';
+import { PatchRequest } from '../../../core/models/api/patch-request';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
 import { environment } from '../../../../environments/environment';
@@ -59,11 +59,12 @@ export class AdminClientsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getAdminClientGridOptions();
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
+    columnAction.minWidth = 300;
     const params: GridActionModel = {
-      buttonShow: [ButtonGridActionType.Desactivar, ButtonGridActionType.Aprobar, ButtonGridActionType.Editar, ButtonGridActionType.Ver],
+      buttonShow: [ButtonGridActionType.Editar, ButtonGridActionType.Ver],
       clicked: this.actionColumnClicked,
       conditionalButtons: [
-        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Aprobar),
+        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar),
         new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Aprobar)
       ]
     };
@@ -95,7 +96,7 @@ export class AdminClientsComponent implements OnInit {
     this.alertService.showQuestionModal(message).then((result) => {
       if (result.value) {
         this.loading = true;
-        const request = new ClientPatchRequest(!client.active);
+        const request = new PatchRequest(!client.active);
         this.clientAdminApiService.clientVisibility(client.id, request).subscribe({
           next: (response) => {
             this.loading = false;
