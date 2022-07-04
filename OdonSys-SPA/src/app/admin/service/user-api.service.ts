@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DoctorApiModel } from '../../core/models/api/doctor/doctor-api-model';
 import { environment } from '../../../environments/environment';
-import { BasicServiceModule } from 'src/app/basic-service.module';
-import { PatchRequest } from 'src/app/core/models/api/patch-request';
+import { BasicServiceModule } from '../../../app/basic-service.module';
+import { PatchRequest } from '../../core/models/api/patch-request';
 
 @Injectable({
   providedIn: BasicServiceModule
@@ -23,7 +23,7 @@ export class UserApiService {
   };
 
   public doctorVisibility = (id: string, request: PatchRequest): Observable<DoctorApiModel> => {
-    return this.http.put<DoctorApiModel>(`${this.baseUrl}/${id}`, [request]);
+    return this.http.patch<DoctorApiModel>(`${this.baseUrl}/${id}`, [request]);
   };
 
 }

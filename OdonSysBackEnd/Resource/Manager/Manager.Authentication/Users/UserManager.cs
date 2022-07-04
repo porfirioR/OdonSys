@@ -74,13 +74,5 @@ namespace Manager.Workspace.Users
             var sameUserData = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
             return sameUserData.Any();
         }
-
-        public async Task<DoctorModel> DeactivateRestoreAsync(string id)
-        {
-            var user = await _userDataAccess.GetByIdAsync(id);
-            var accessModel = await _userDataAccess.DeactivateRestoreAsync(id, !user.Active);
-            var model = _mapper.Map<DoctorModel>(accessModel);
-            return model;
-        }
     }
 }

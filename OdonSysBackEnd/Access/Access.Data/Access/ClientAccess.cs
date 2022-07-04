@@ -63,16 +63,6 @@ namespace Access.Admin.Access
             return respose;
         }
 
-        public async Task<ClientAccessModel> PatchClientAsync(PatchClientAccessRequest accessRequest)
-        {
-            var entity = await GetClientByIdAsync(accessRequest.Id);
-            entity = _mapper.Map(accessRequest, entity);
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ClientAccessModel>(entity);
-            return respose;
-        }
-
         public async Task<ClientAccessModel> UpdateClientAsync(UpdateClientAccessRequest accessRequest)
         {
             var entity = await GetClientByIdAsync(accessRequest.Id);
