@@ -15,6 +15,8 @@ namespace Host.Api.Mapper
             CreateMap<RegisterUserApiRequest, RegisterUserRequest>();
 
             CreateMap<UpdateDoctorApiRequest, UpdateDoctorRequest>().ReverseMap();
+
+            CreateMap<DoctorModel, UpdateDoctorRequest>();
         }
     }
 }

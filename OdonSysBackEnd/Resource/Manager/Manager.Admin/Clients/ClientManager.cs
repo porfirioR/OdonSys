@@ -31,13 +31,6 @@ namespace Manager.Admin.Clients
             return _mapper.Map<ClientModel>(accessModel);
         }
 
-        public async Task<ClientModel> UpdateAsync(ClientModel request)
-        {
-            var accessRequest = _mapper.Map<PatchClientAccessRequest>(request);
-            var accessModel = await _clientAccess.PatchClientAsync(accessRequest);
-            return _mapper.Map<ClientModel>(accessModel);
-        }
-
         public async Task<IEnumerable<ClientModel>> GetAllAsync()
         {
             var accessModel = await _clientAccess.GetAllAsync();
