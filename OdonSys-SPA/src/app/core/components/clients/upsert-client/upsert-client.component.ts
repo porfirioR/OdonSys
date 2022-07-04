@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
@@ -73,13 +73,22 @@ export class UpsertClientComponent implements OnInit {
           middleName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
           lastName: new FormControl(this.id ? client.lastName : '', [Validators.required, Validators.maxLength(25)]),
           middleLastName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
-          document: new FormControl(this.id ? client.document:'', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+          document: new FormControl(this.id ? client.document: '', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
           ruc: new FormControl({ value: this.id && client.ruc ? client.ruc : 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
           phone: new FormControl(this.id ? client.phone:'', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
           country: new FormControl(this.id ? client.country:'', [Validators.required]),
           email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
         });
-        // this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
+        this.formGroup.controls.document.valueChanges.pipe(filter(val => val && val.length >= 6)).subscribe({
+          next: (x: string) => {
+            if(isNaN(+x)) {
+              let multiplier = 2;
+              const module = 11;
+              const reverseDocument = x.split('').reverse();
+              
+            }
+          }
+        });
         if (this.id) {
           this.title = 'Actualizar ';
           if (!this.fullEdit) {
