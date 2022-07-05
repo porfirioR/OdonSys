@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { debounce, filter, switchMap } from 'rxjs/operators';
 import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
@@ -79,13 +79,25 @@ export class UpsertClientComponent implements OnInit {
           country: new FormControl(this.id ? client.country:'', [Validators.required]),
           email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
         });
-        this.formGroup.controls.document.valueChanges.pipe(filter(val => val && val.length >= 6)).subscribe({
-          next: (x: string) => {
-            if(isNaN(+x)) {
+        this.formGroup.controls.document.valueChanges.pipe().subscribe({
+          next: (document: string) => {
+            let checkDigit = 0;
+            if(document && document.length >= 6 && isNaN(+document)) {
               let multiplier = 2;
               const module = 11;
-              const reverseDocument = x.split('').reverse();
-              
+              const reverseDocument = document.split('').reverse();
+              let result = 0;
+              reverseDocument.forEach(value => {
+                result += multiplier * +value;
+                multiplier++;
+                if (multiplier > 11) {
+                  multiplier = 2;
+                }
+              });
+              const rest = result % module;
+              checkDigit = rest > 1 ? module - rest : 0;
+            } else {
+              this.formGroup.controls.ruc.setValue(checkDigit);
             }
           }
         });
