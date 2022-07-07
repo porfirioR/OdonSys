@@ -3,14 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { debounce, filter, switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap, take } from 'rxjs/operators';
 import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
-import { EnumToMap } from '../../../../core/helpers/enumToMap';
 import { ClientApiService } from '../../../../core/services/api/client-api.service';
 import { AlertService } from '../../../../core/services/shared/alert.service';
+import { MethodHandler } from '../../../../core/helpers/method-handler';
+import { EnumHandler } from '../../../../core/helpers/enum-handler';
 
 @Component({
   selector: 'app-upsert-client',
@@ -21,7 +22,7 @@ export class UpsertClientComponent implements OnInit {
   public title: string = 'Registrar ';
   public load: boolean = false;
   public saving: boolean = false;
-  public formGroup: FormGroup = new FormGroup({});
+  public formGroup!: FormGroup;
   public countries: Map<string, string> = new Map<string, string>();
   private id = '';
   private fullEdit = false;
@@ -32,7 +33,7 @@ export class UpsertClientComponent implements OnInit {
     private readonly alertService: AlertService,
 
   ) {
-    this.countries = EnumToMap.getCountries();
+    this.countries = EnumHandler.getCountries();
   }
 
   ngOnInit() {
@@ -79,28 +80,19 @@ export class UpsertClientComponent implements OnInit {
           country: new FormControl(this.id ? client.country:'', [Validators.required]),
           email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
         });
-        this.formGroup.controls.document.valueChanges.pipe().subscribe({
+        this.formGroup.controls.document.valueChanges.pipe(
+          debounceTime(500),
+          // distinctUntilChanged(),
+        ).subscribe({
           next: (document: string) => {
-            let checkDigit = 0;
-            if(document && document.length >= 6 && isNaN(+document)) {
-              let multiplier = 2;
-              const module = 11;
-              const reverseDocument = document.split('').reverse();
-              let result = 0;
-              reverseDocument.forEach(value => {
-                result += multiplier * +value;
-                multiplier++;
-                if (multiplier > 11) {
-                  multiplier = 2;
-                }
-              });
-              const rest = result % module;
-              checkDigit = rest > 1 ? module - rest : 0;
-            } else {
-              this.formGroup.controls.ruc.setValue(checkDigit);
-            }
+            const checkDigit = MethodHandler.calculateCheckDigit(document, +this.formGroup.controls.country.value);
+            this.formGroup.controls.ruc.setValue(checkDigit);
           }
         });
+        this.formGroup.controls.country.valueChanges.pipe(take(1)).subscribe({
+          next: () => this.formGroup.controls.document.updateValueAndValidity()
+        });
+
         if (this.id) {
           this.title = 'Actualizar ';
           if (!this.fullEdit) {

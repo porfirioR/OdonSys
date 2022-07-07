@@ -19,19 +19,19 @@
           <app-text-number-input [label]="'Segundo Apellido'" formControlName="middleLastName"></app-text-number-input>
         </div>
         <div class="col-lg-6">
+          <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
+        </div>
+        <div class="col-lg-6">
           <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"></app-text-number-input>
         </div>
         <div class="col-lg-6">
           <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"></app-text-number-input>
-        </div>
-        <div class="col-lg-6">
           <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6">
-          <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
         </div>
       </div>
       <div class="form-group text-center btn-footer m-t-16">

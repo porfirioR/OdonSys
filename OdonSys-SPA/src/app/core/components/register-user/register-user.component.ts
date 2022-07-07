@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../helpers/custom-validators';
-import { EnumToMap } from '../../helpers/enumToMap';
+import { EnumHandler } from '../../helpers/enum-handler';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
@@ -22,7 +22,7 @@ export class RegisterUserComponent implements OnInit {
     private readonly alertService: AlertService,
     private readonly authApiService: AuthApiService
   ) {
-    this.countries = EnumToMap.getCountries();
+    this.countries = EnumHandler.getCountries();
   }
 
   ngOnInit() {
