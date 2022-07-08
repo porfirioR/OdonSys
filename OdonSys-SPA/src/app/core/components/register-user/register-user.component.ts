@@ -13,9 +13,9 @@ import { AlertService } from '../../services/shared/alert.service';
   styleUrls: ['./register-user.component.scss']
 })
 export class RegisterUserComponent implements OnInit {
-  public saving: boolean = false;
-  public formGroup: FormGroup = new FormGroup({});
-  public countries: Map<string, string> = new Map<string, string>();
+  protected saving: boolean = false;
+  protected formGroup: FormGroup = new FormGroup({});
+  protected countries: Map<string, string> = new Map<string, string>();
 
   constructor(
     private readonly router: Router,
@@ -29,7 +29,7 @@ export class RegisterUserComponent implements OnInit {
     this.loadConfiguration();
   }
 
-  public register = (): void => {
+  protected register = (): void => {
     if (this.formGroup.invalid) { return; }
     this.saving = true;
     const request = this.formGroup.getRawValue() as RegisterUserRequest;
@@ -48,7 +48,7 @@ export class RegisterUserComponent implements OnInit {
     });
   }
 
-  public close = (): void => {
+  protected close = (): void => {
     this.router.navigate(['login']);
   };
 

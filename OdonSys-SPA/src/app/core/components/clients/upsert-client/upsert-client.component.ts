@@ -19,11 +19,11 @@ import { EnumHandler } from '../../../../core/helpers/enum-handler';
   styleUrls: ['./upsert-client.component.scss']
 })
 export class UpsertClientComponent implements OnInit {
-  public title: string = 'Registrar ';
-  public load: boolean = false;
-  public saving: boolean = false;
-  public formGroup!: FormGroup;
-  public countries: Map<string, string> = new Map<string, string>();
+  protected title: string = 'Registrar ';
+  protected load: boolean = false;
+  protected saving: boolean = false;
+  protected formGroup!: FormGroup;
+  protected countries: Map<string, string> = new Map<string, string>();
   private id = '';
   private fullEdit = false;
   constructor(
@@ -82,14 +82,13 @@ export class UpsertClientComponent implements OnInit {
         });
         this.formGroup.controls.document.valueChanges.pipe(
           debounceTime(500),
-          // distinctUntilChanged(),
         ).subscribe({
           next: (document: string) => {
             const checkDigit = MethodHandler.calculateCheckDigit(document, +this.formGroup.controls.country.value);
             this.formGroup.controls.ruc.setValue(checkDigit);
           }
         });
-        this.formGroup.controls.country.valueChanges.pipe(take(1)).subscribe({
+        this.formGroup.controls.country.valueChanges.subscribe({
           next: () => this.formGroup.controls.document.updateValueAndValidity()
         });
 
