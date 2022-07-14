@@ -11,7 +11,7 @@ export class MethodHandler {
       reverseDocument.forEach(value => {
         result += multiplier * +value;
         multiplier++;
-        if (multiplier > 11) {
+        if (multiplier > module) {
           multiplier = 2;
         }
       });
