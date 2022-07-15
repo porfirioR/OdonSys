@@ -15,7 +15,7 @@ namespace Host.Api.Models.Clients
         public string LastName { get; set; }
         public string MiddleLastName { get; set; }
         [Required]
-        [MinLength(5)]
+        [StringLength(10, MinimumLength = 5, ErrorMessage = "Longitud mínima de documento es 5.")]
         public string Document { get; set; }
         public string Ruc { get; set; }
         [Required]
@@ -47,14 +47,14 @@ namespace Host.Api.Models.Clients
 
         private int CalculateParaguayanCheckDigit()
         {
-            var multiplier = 0;
+            var multiplier = 2;
             var module = 11;
             var documentReverse = Document.ToCharArray();
             Array.Reverse(documentReverse);
             var result = 0;
             foreach (var value in documentReverse)
             {
-                result += multiplier * value;
+                result += multiplier * (int)Char.GetNumericValue(value);
                 multiplier++;
                 if (multiplier > module)
                 {
