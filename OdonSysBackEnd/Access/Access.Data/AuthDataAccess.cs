@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -22,12 +23,14 @@ namespace Access.Admin
         private readonly IMapper _mapper;
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
+        private readonly string _roleCode;
 
         public AuthDataAccess(IMapper mapper, IConfiguration configuration, DataContext context)
         {
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
+            _roleCode = configuration["Role"];
         }
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -58,7 +61,8 @@ namespace Access.Admin
                     throw new KeyNotFoundException("Correo o contraseña es incorrecta");
                 }
             }
-            var token = CreateToken(user.UserName, user.Id.ToString());
+            var roleCodes = await RoleCodesAsync(user.Id);
+            var token = CreateToken(user.UserName, user.Id.ToString(), roleCodes);
             var userAccessModel = _mapper.Map<UserDataAccessModel>(user.Doctor);
             var userResponse = new AuthAccessModel
             {
@@ -82,11 +86,22 @@ namespace Access.Admin
                 Approved = false,
             };
             entity.User = entityUser;
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
+            entity.DoctorRoles = new List<DoctorRoles>
+            {
+                new DoctorRoles
+                {
+                    Doctor = entity,
+                    Role = role
+                }
+            };
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {
                 var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
-                var token = CreateToken(userAccessModel.UserName, userAccessModel.Id);
+                var roleCodes = await RoleCodesAsync(entityUser.Id);
+                var token = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
+                userAccessModel.Roles = roleCodes;
                 var userResponse = new AuthAccessModel
                 {
                     Token = token,
@@ -97,13 +112,17 @@ namespace Access.Admin
             throw new Exception("Error al intentar crear usuario.");
         }
 
-        private string CreateToken(string userName, string userId)
+        private string CreateToken(string userName, string userId, IEnumerable<string> roles)
         {
             var claims = new List<Claim>()
             {
                 new Claim(Claims.UserName, userName),
                 new Claim(Claims.UserId, userId)
             };
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(Claims.Roles, role));
+            }
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -116,6 +135,16 @@ namespace Access.Admin
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)
+        {
+            var codes = await _context.DoctorRoles
+                                .Include(x => x.Role)
+                                .Where(x => x.RoleId == userId)
+                                .Select(x => x.Role.Code)
+                                .ToListAsync();
+            return codes;
         }
     }
 }

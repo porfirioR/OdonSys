@@ -16,9 +16,9 @@ namespace Access.Sql.Configurations
             builder
                 .HasOne(x => x.Role)
                 .WithMany(x => x.DoctorRoles)
-                .HasForeignKey(x => x.RolId);
+                .HasForeignKey(x => x.RoleId);
 
-            builder.HasKey(x => new { x.DoctorId, x.RolId });
+            builder.HasKey(x => new { x.DoctorId, x.RoleId });
         }
     }
 }
