@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contract.Admin.Clients;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanAccessClients)]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateClientRequest>(apiRequest);
@@ -35,6 +37,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanManageClients)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<UpdateClientRequest>(apiRequest);
@@ -64,6 +67,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = Policy.CanDeleteClients)]
         public async Task<ClientModel> Delete(string id)
         {
             var model = await _clientManager.DeleteAsync(id);

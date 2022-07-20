@@ -1,4 +1,4 @@
-﻿namespace Access.Contract.Auth
+﻿namespace Access.Contract.Roles
 {
     public class PermissionAccessModel
     {
