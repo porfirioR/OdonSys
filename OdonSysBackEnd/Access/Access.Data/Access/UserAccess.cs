@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Access.Admin.Access
 {
-    public class UserDataAccess : IUserDataAccess
+    public class UserAccess : IUserDataAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
-        public UserDataAccess(IMapper mapper, DataContext context)
+        public UserAccess(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
             _context = context;

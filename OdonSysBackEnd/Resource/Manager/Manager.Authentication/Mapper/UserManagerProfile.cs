@@ -10,9 +10,9 @@ namespace Manager.Workspace.Mapper
     {
         public UserManagerProfile()
         {
-            CreateMap<RegisterUserRequest, UserDataAccess>();
+            CreateMap<RegisterUserRequest, UserAccess>();
 
-            CreateMap<UpdateDoctorRequest, UserDataAccess>();
+            CreateMap<UpdateDoctorRequest, UserAccess>();
 
             CreateMap<UserDataAccessModel, UserModel>();
 

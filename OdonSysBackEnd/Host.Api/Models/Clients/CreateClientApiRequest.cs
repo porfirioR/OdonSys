@@ -32,7 +32,6 @@ namespace Host.Api.Models.Clients
             {
                 results.Add(new ValidationResult($"Paciente con el document: {Document} ya existe."));
             }
-            // TODO: Validate Ruc if country is Paraguay
             if (Country != Country.Paraguay && !string.IsNullOrEmpty(Ruc))
             {
                 results.Add(new ValidationResult($"Valor ingresado en ruc: {Ruc} es inválido."));
