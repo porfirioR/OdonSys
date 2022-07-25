@@ -1,8 +1,8 @@
 ﻿using Access.Contract;
 using AutoMapper;
-using Contract.Procedure.Teeth;
+using Contract.Workspace.Teeth;
 
-namespace Manager.Procedure.Teeth
+namespace Manager.Workspace.Teeth
 {
     public class ToothManagerProfile : Profile
     {

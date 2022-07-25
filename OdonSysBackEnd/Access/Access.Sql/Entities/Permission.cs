@@ -2,11 +2,9 @@
 
 namespace Access.Sql.Entities
 {
-    public class Permission : BaseEntity
+    public class Permission
     {
-        public string Name { get; set; }
         public string Code { get; set; }
-        public string Group { get; set; }
         public Guid RoleId { get; set; }
         public virtual Role Role { get; set; }
     }

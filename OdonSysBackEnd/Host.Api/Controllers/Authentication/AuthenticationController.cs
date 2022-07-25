@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Contract.Authentication.User;
-using Contract.Workspace.User;
+using Contract.Admin.Auth;
+using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

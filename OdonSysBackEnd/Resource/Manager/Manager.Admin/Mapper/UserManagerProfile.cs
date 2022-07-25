@@ -1,8 +1,10 @@
-﻿using Access.Contract.Auth;
+﻿using Access.Admin.Access;
+using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
-using Contract.Authentication.User;
-using Contract.Workspace.User;
+using Contract.Admin.Auth;
+using Contract.Admin.User;
+using Contract.Admin.Users;
 
 namespace Manager.Admin.Mapper
 {

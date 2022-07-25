@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Access.Contract.Roles
+namespace Contract.Admin.Roles
 {
-    public class CreateRoleAccessRequest
+    public class CreateRoleRequest
     {
         public string Name { get; set; }
         public string Code { get; set; }

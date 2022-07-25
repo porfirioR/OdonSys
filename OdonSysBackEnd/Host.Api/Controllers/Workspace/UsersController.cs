@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using Contract.Authentication.User;
-using Contract.Workspace.User;
+using Contract.Admin.User;
+using Contract.Admin.Users;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -27,6 +28,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPost("approve/{id}")]
+        [Authorize(Policy = Policy.CanApproveDoctor)]
         public async Task<UserModel> ApproveNewUser([FromRoute] string id)
         {
             var model = await _userManager.ApproveNewUserAsync(id);
@@ -34,6 +36,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessDoctor)]
         public async Task<IEnumerable<DoctorModel>> GetAll()
         {
             var response = await _userManager.GetAllAsync();
@@ -41,6 +44,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = Policy.CanDeleteDoctor)]
         public async Task<DoctorModel> PatchDoctor([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateDoctorRequest> patchDoctor)
         {
             if (patchDoctor == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));

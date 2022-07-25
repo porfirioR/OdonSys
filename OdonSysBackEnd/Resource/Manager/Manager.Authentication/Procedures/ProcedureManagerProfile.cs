@@ -1,8 +1,8 @@
 ﻿using Access.Contract.Procedure;
 using AutoMapper;
-using Contract.Procedure.Procedures;
+using Contract.Workspace.Procedures;
 
-namespace Manager.Procedure.Procedures
+namespace Manager.Workspace.Procedures
 {
     public class ProcedureManagerProfile : Profile
     {

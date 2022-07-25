@@ -1,6 +1,6 @@
-﻿using Contract.Authentication.User;
+﻿using Contract.Admin.Users;
 
-namespace Contract.Workspace.User
+namespace Contract.Admin.Auth
 {
     public class AuthModel
     {

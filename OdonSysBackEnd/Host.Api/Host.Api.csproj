@@ -24,10 +24,8 @@
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
-    <ProjectReference Include="..\Resource\Contract\Contract.Procedure\Contract.Procedure.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Authentication\Manager.Workspace.csproj" />
-    <ProjectReference Include="..\Resource\Manager\Manager.Procedure\Manager.Procedure\Manager.Procedure.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 

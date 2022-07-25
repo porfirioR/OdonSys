@@ -1,10 +1,15 @@
 ﻿using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
-using Contract.Authentication.User;
-using Contract.Workspace.User;
+using Contract.Admin.Auth;
+using Contract.Admin.User;
+using Contract.Admin.Users;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Manager.Workspace.Users
+namespace Manager.Admin
 {
     internal class UserManager : IUserManager
     {

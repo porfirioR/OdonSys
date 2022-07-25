@@ -1,4 +1,4 @@
-using Contract.Procedure.Procedures;
+using Contract.Workspace.Procedures;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;

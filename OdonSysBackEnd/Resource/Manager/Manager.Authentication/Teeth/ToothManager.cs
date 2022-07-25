@@ -1,10 +1,10 @@
 ﻿using Access.Contract.Teeth;
 using AutoMapper;
-using Contract.Procedure.Teeth;
+using Contract.Workspace.Teeth;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Manager.Procedure.Teeth
+namespace Manager.Workspace.Teeth
 {
     internal class ToothManager : IToothManager
     {

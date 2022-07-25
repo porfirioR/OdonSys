@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Access.Contract.Users;
+using System.Collections.Generic;
 
 namespace Access.Contract.Roles
 {
@@ -7,5 +8,6 @@ namespace Access.Contract.Roles
         public string Name { get; set; }
         public string Code { get; set; }
         public IEnumerable<PermissionAccessModel> RolePermissions { get; set; }
+        public IEnumerable<DoctorDataAccessModel> RoleDoctors { get; set; }
     }
 }

@@ -1,6 +1,9 @@
-﻿using Contract.Authentication.User;
+﻿using Contract.Admin.Auth;
+using Contract.Admin.User;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Contract.Workspace.User
+namespace Contract.Admin.Users
 {
     public interface IUserManager
     {

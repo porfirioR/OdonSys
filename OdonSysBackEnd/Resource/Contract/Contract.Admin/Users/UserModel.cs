@@ -1,4 +1,4 @@
-﻿namespace Contract.Authentication.User
+﻿namespace Contract.Admin.Users
 {
     public class UserModel
     {

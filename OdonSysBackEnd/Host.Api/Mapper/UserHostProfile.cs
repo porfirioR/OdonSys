@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Contract.Workspace.User;
+using Contract.Admin.Auth;
+using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Users;
 using OdonSysBackEnd.Models.Auth;

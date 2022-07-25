@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Access.Contract.Roles
+namespace Contract.Admin.Roles
 {
-    public class CreateRoleAccessRequest
+    public class UpdateRoleRequest
     {
         public string Name { get; set; }
         public string Code { get; set; }
+        public bool Active { get; set; }
         public IEnumerable<string> Permissions { get; set; }
     }
 }

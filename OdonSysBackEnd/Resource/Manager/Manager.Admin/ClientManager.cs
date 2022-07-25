@@ -4,7 +4,7 @@ using Contract.Admin.Clients;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Manager.Admin.Clients
+namespace Manager.Admin
 {
     internal class ClientManager : IClientManager
     {

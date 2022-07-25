@@ -1,10 +1,8 @@
 ﻿using Access.Contract.Procedure;
 using AutoMapper;
-using Contract.Procedure.Procedures;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Contract.Workspace.Procedures;
 
-namespace Manager.Procedure.Procedures
+namespace Manager.Workspace.Procedures
 {
     internal class ProcedureManager : IProcedureManager
     {
@@ -15,7 +13,6 @@ namespace Manager.Procedure.Procedures
         {
             _procedureAccess = procedureAccess;
             _mapper = mapper;
-
         }
 
         public async Task<ProcedureModel> CreateAsync(CreateProcedureRequest request)

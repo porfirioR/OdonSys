@@ -26,7 +26,7 @@ namespace Access.Sql.Configurations
             builder
                 .Property(x => x.Code)
                 .IsRequired()
-                .HasMaxLength(20); 
+                .HasMaxLength(20);
 
             builder
                 .HasIndex(x => x.Name)

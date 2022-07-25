@@ -1,10 +1,9 @@
 ﻿using Access.Contract.Roles;
 using Access.Sql;
+using Access.Sql.Entities;
 using AutoMapper;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Access.Data.Access
@@ -20,24 +19,47 @@ namespace Access.Data.Access
             _context = context;
         }
 
-        public Task<RoleAccessModel> CreateAccessAsync(CreateRoleAccessRequest request)
+        public async Task<RoleAccessModel> CreateAccessAsync(CreateRoleAccessRequest accessRequest)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<Role>(accessRequest);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return _mapper.Map<RoleAccessModel>(entity);
         }
 
-        public Task<IEnumerable<RoleAccessModel>> GetAllAccessAsync()
+        public async Task<IEnumerable<RoleAccessModel>> GetAllAccessAsync()
         {
-            throw new NotImplementedException();
+            var entities = await _context.Roles
+                                        .Include(x => x.RolePermissions)
+                                        .AsNoTracking()
+                                        .ToListAsync();
+            var respose = _mapper.Map<IEnumerable<RoleAccessModel>>(entities);
+            return respose;
         }
 
-        public Task<RoleAccessModel> GetRoleByCodeAccessAsync(string code)
+        public async Task<RoleAccessModel> GetRoleByCodeAccessAsync(string code)
         {
-            throw new NotImplementedException();
+            var entity = await GetRoleByCodeAsync(code);
+            var respose = _mapper.Map<RoleAccessModel>(entity);
+            return respose;
         }
 
-        public Task<RoleAccessModel> UpdateAccessAsync(UpdateRoleAccessModel request)
+        public async Task<RoleAccessModel> UpdateAccessAsync(UpdateRoleAccessRequest accessRequest)
         {
-            throw new NotImplementedException();
+            var entity = await GetRoleByCodeAsync(accessRequest.Code);
+            entity = _mapper.Map(accessRequest, entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            var respose = _mapper.Map<RoleAccessModel>(entity);
+            return respose;
+        }
+
+        private async Task<Role> GetRoleByCodeAsync(string code)
+        {
+            var entity = await _context.Set<Role>()
+                            .Include(x => x.RolePermissions)
+                            .SingleOrDefaultAsync(x => x.Code == code);
+            return entity ?? throw new KeyNotFoundException($"code {code}");
         }
     }
 }

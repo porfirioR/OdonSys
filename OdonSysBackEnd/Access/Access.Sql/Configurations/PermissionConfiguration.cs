@@ -8,19 +8,7 @@ namespace Access.Sql.Configurations
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.HasKey(u => u.Id);
-
-            builder
-                .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(d => d.Name)
-                .HasMaxLength(25);
+            builder.HasKey(x => new { x.Code, x.RoleId });
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPost]
-        [Authorize(Policy = Policy.CanAccessClients)]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateClientRequest>(apiRequest);
@@ -37,7 +37,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPut]
-        [Authorize(Policy = Policy.CanManageClients)]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<UpdateClientRequest>(apiRequest);
@@ -46,6 +46,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<IEnumerable<ClientModel>> GetAll()
         {
             var model = await _clientManager.GetAllAsync();
@@ -53,6 +54,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<ClientModel> GetById(string id)
         {
             var model = await _clientManager.GetByIdAsync(id);
@@ -60,6 +62,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("document/{documentId}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<ClientModel> GetByDocumentAsync(string documentId)
         {
             var model = await _clientManager.GetByDocumentAsync(documentId);
@@ -67,7 +70,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = Policy.CanDeleteClients)]
+        [Authorize(Policy = Policy.CanDeleteClient)]
         public async Task<ClientModel> Delete(string id)
         {
             var model = await _clientManager.DeleteAsync(id);
@@ -75,6 +78,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPatch("{id}")]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<UpdateClientRequest> patchClient)
         {
             if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
@@ -89,6 +93,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("patients")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<IEnumerable<ClientModel>> GetPatientsByDoctorId()
         {
             var id = UserId;
