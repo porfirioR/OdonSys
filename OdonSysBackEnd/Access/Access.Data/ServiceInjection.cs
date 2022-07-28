@@ -1,5 +1,4 @@
-﻿using Access.Admin;
-using Access.Admin.Access;
+﻿using Access.Admin.Access;
 using Access.Contract.Auth;
 using Access.Contract.Clients;
 using Access.Contract.Procedure;
@@ -16,7 +15,7 @@ namespace Access.Data
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserDataAccess, UserAccess>();
-            services.AddTransient<IAuthDataAccess, AuthDataAccess>();
+            services.AddTransient<IAuthAccess, AuthAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IToothAccess, ToothAccess>();

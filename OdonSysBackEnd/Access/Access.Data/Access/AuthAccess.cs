@@ -16,16 +16,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-namespace Access.Admin
+namespace Access.Data.Access
 {
-    internal class AuthDataAccess : IAuthDataAccess
+    internal class AuthAccess : IAuthAccess
     {
         private readonly IMapper _mapper;
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
         private readonly string _roleCode;
 
-        public AuthDataAccess(IMapper mapper, IConfiguration configuration, DataContext context)
+        public AuthAccess(IMapper mapper, IConfiguration configuration, DataContext context)
         {
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));

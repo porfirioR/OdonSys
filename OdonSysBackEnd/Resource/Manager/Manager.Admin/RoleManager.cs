@@ -12,22 +12,22 @@ namespace Manager.Admin
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<RoleModel>> GetAllAccessAsync()
+        public Task<IEnumerable<RoleModel>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<PermissionModel> GetAllPermission()
+        public Task<PermissionModel> GetAllPermissionsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> GetPermissonsByRoles(IEnumerable<string> roles)
+        public Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
         {
             throw new NotImplementedException();
         }
 
-        public Task<RoleModel> GetRoleByCodeAccessAsync(string code)
+        public Task<RoleModel> GetRoleByCodeAsync(string code)
         {
             throw new NotImplementedException();
         }

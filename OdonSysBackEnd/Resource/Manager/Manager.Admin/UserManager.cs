@@ -15,9 +15,9 @@ namespace Manager.Admin
     {
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
-        private readonly IAuthDataAccess _authDataAccess;
+        private readonly IAuthAccess _authDataAccess;
 
-        public UserManager(IMapper mapper, IUserDataAccess userDataAccess, IAuthDataAccess authDataAccess)
+        public UserManager(IMapper mapper, IUserDataAccess userDataAccess, IAuthAccess authDataAccess)
         {
             _mapper = mapper;
             _userDataAccess = userDataAccess;

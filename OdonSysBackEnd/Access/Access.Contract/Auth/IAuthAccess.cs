@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Access.Contract.Auth
 {
-    public interface IAuthDataAccess
+    public interface IAuthAccess
     {
         Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess);
         Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess);
