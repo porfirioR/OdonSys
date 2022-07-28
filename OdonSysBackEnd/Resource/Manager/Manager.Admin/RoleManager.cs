@@ -1,4 +1,6 @@
-﻿using Contract.Admin.Roles;
+﻿using Access.Contract.Roles;
+using AutoMapper;
+using Contract.Admin.Roles;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,6 +9,14 @@ namespace Manager.Admin
 {
     internal class RoleManager : IRoleManager
     {
+        private readonly IMapper _mapper;
+        private readonly IRoleAccess _roleAccess;
+
+        public RoleManager(IMapper mapper, IRoleAccess roleAccess)
+        {
+            _mapper = mapper;
+            _roleAccess = roleAccess;
+        }
         public Task<RoleModel> CreateAsync(CreateRoleRequest accessRequest)
         {
             throw new NotImplementedException();
@@ -17,7 +27,7 @@ namespace Manager.Admin
             throw new NotImplementedException();
         }
 
-        public Task<PermissionModel> GetAllPermissionsAsync()
+        public Task<IEnumerable<PermissionModel>> GetAllPermissionsAsync()
         {
             throw new NotImplementedException();
         }

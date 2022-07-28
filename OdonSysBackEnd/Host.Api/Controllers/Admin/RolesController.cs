@@ -3,7 +3,6 @@ using Contract.Admin.Roles;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Role;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ namespace Host.Api.Controllers.Admin
     [ApiController]
     public class RolesController : OdonSysBaseController
     {
-
         private readonly IMapper _mapper;
         private readonly IRoleManager _roleManager;
 
@@ -57,6 +55,23 @@ namespace Host.Api.Controllers.Admin
         public async Task<RoleModel> GetRoleByCode(string code)
         {
             var model = await _roleManager.GetRoleByCodeAsync(code);
+            return model;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IEnumerable<string>> GetPermissionsByRoles()
+        {
+            var roles = Roles;
+            var model = await _roleManager.GetPermissonsByRolesAsync(roles);
+            return model;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IEnumerable<PermissionModel>> GetPermissions()
+        {
+            var model = await _roleManager.GetAllPermissionsAsync();
             return model;
         }
     }
