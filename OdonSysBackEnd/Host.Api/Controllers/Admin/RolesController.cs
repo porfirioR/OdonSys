@@ -22,10 +22,8 @@ namespace Host.Api.Controllers.Admin
             _roleManager = clientManager;
         }
 
-
-
         [HttpPost]
-        [Authorize(Policy = Policy.CanManageClient)]
+        [Authorize(Policy = Policy.CanManageRole)]
         public async Task<RoleModel> Create([FromBody] CreateRoleApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateRoleRequest>(apiRequest);
@@ -34,7 +32,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPut]
-        [Authorize(Policy = Policy.CanManageClient)]
+        [Authorize(Policy = Policy.CanManageRole)]
         public async Task<RoleModel> Update([FromBody] UpdateRoleApiRequest apiRequest)
         {
             var request = _mapper.Map<UpdateRoleRequest>(apiRequest);
@@ -43,7 +41,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet]
-        [Authorize(Policy = Policy.CanAccessClient)]
+        [Authorize(Policy = Policy.CanAccessRole)]
         public async Task<IEnumerable<RoleModel>> GetAll()
         {
             var model = await _roleManager.GetAllAsync();
@@ -69,9 +67,9 @@ namespace Host.Api.Controllers.Admin
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IEnumerable<PermissionModel>> GetPermissions()
+        public IEnumerable<PermissionModel> GetPermissions()
         {
-            var model = await _roleManager.GetAllPermissionsAsync();
+            var model = _roleManager.GetAllPermissions();
             return model;
         }
     }

@@ -24,6 +24,8 @@ namespace Host.Api
             services.AddControllers()
                     .AddNewtonsoftJson();
 
+            services.AddSwaggerGen();
+
             services.AddCors();
 
             // partial startup
@@ -38,7 +40,10 @@ namespace Host.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
+            
+            app.UseSwagger();
 
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
             app.UseRouting();

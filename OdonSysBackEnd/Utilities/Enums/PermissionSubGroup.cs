@@ -6,6 +6,5 @@
         Doctor,
         Procedure,
         Role,
-
     }
 }
