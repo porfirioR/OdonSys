@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Utilities.Enums;
+using Utilities.Extensions;
 
 namespace AcceptanceTest.Host.Api
 {
@@ -61,30 +63,21 @@ namespace AcceptanceTest.Host.Api
 
         private async Task LoadDataBaseConfigurations()
         {
-            //var sqlStatement =
-            //    @"
-            //        CREATE FULLTEXT CATALOG AccountReplicationCatalog;
-            //        CREATE FULLTEXT INDEX ON AccountReplication
-            //        (
-            //            AccountNumber
-            //            Language 1033,
-            //            LegalName
-            //            Language 1033,
-            //            DisplayName
-            //            Language 1033
-            //        )
-            //        KEY INDEX [PK_AccountReplication] ON AccountReplicationCatalog;
-            //        INSERT INTO StampCustomFieldSetters (CustomFieldId, StampId, Value, StampValidation) VALUES (1, 1, 'New', 2);
-            //        ";
+            var rolId = Guid.NewGuid();
+            var sqlStatement =
+                @"
+                    INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');
+                ";
+            sqlStatement = string.Format(sqlStatement, rolId);
 
-            //var sqlStatementRoleFunctionPoint = "INSERT INTO RoleFunctionPoints (UserCreated, UserUpdated, RoleId, FunctionPoint) VALUES ('test', 'test', 1,'{0}');\n";
-            //var allRolesFunctionPoints = string.Empty;
-            //foreach (var item in (FunctionPointType[])Enum.GetValues(typeof(FunctionPointType)))
-            //{
-            //    allRolesFunctionPoints = string.Concat(allRolesFunctionPoints, string.Format(sqlStatementRoleFunctionPoint, item.GetDescription()));
-            //}
-            //sqlStatement = string.Concat(sqlStatement, allRolesFunctionPoints, "SELECT * from RoleFunctionPoints");
-            //await _context.RoleFunctionPoints.FromSqlRaw(sqlStatement).ToListAsync();
+            var sqlStatementPermitions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, FunctionPoint) VALUES ('test', 'test', 1,'{0}');\n";
+            var permitions = string.Empty;
+            foreach (var item in (PermissionName[])Enum.GetValues(typeof(PermissionName)))
+            {
+                permitions = string.Concat(permitions, string.Format(sqlStatementPermitions, item.GetDescription()));
+            }
+            sqlStatement = string.Concat(sqlStatement, permitions, "SELECT * from Permissions");
+            await _context.Permissions.FromSqlRaw(sqlStatement).ToListAsync();
             TeethIds = (await _context.Teeth.FromSqlRaw(Properties.Resources.BasicSql).ToListAsync()).Select(x => x.Id.ToString());
         }
     }

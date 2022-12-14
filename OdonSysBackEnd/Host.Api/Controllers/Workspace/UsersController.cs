@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Contract.Admin.User;
 using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;

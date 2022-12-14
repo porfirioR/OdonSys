@@ -1,4 +1,4 @@
-﻿using Contract.Admin.User;
+﻿using Contract.Admin.Users;
 using System.Collections.Generic;
 
 namespace Contract.Admin.Roles

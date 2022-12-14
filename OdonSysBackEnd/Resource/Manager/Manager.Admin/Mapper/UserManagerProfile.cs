@@ -3,7 +3,6 @@ using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
-using Contract.Admin.User;
 using Contract.Admin.Users;
 
 namespace Manager.Admin.Mapper

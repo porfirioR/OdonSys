@@ -1,4 +1,4 @@
-﻿using Contract.Workspace.User;
+﻿using Contract.Admin.Users;
 using System;
 using System.Collections.Generic;
 using Utilities.Enums;

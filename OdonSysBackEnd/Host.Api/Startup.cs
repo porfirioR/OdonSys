@@ -46,9 +46,12 @@ namespace Host.Api
             app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
+            app.UseExceptionHandler("/error");
+            app.UseHsts();
+
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseAuthentication();
 

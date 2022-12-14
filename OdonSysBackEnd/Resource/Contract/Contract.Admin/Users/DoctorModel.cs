@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Contract.Admin.User
+namespace Contract.Admin.Users
 {
     public class DoctorModel
     {
