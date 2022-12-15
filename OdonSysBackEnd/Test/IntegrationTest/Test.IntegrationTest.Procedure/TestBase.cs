@@ -65,16 +65,16 @@ namespace AcceptanceTest.Host.Api
         {
             var rolId = Guid.NewGuid();
             var sqlStatement =
-                @"
-                    INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');
-                ";
+            @"
+                INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');
+            ";
             sqlStatement = string.Format(sqlStatement, rolId);
 
-            var sqlStatementPermitions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, FunctionPoint) VALUES ('test', 'test', 1,'{0}');\n";
+            var sqlStatementPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, FunctionPoint) VALUES ('system', 'system', 1,'{0}');\n";
             var permitions = string.Empty;
-            foreach (var item in (PermissionName[])Enum.GetValues(typeof(PermissionName)))
+            foreach (var permissionItem in (PermissionName[])Enum.GetValues(typeof(PermissionName)))
             {
-                permitions = string.Concat(permitions, string.Format(sqlStatementPermitions, item.GetDescription()));
+                permitions = string.Concat(permitions, string.Format(sqlStatementPermissions, permissionItem.GetDescription()));
             }
             sqlStatement = string.Concat(sqlStatement, permitions, "SELECT * from Permissions");
             await _context.Permissions.FromSqlRaw(sqlStatement).ToListAsync();
