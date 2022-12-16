@@ -4,6 +4,7 @@ using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221216190035_UpdateTableRolePermission")]
+    partial class UpdateTableRolePermission
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,7 +226,7 @@ namespace Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
                 {
-                    b.Property<string>("Name")
+                    b.Property<string>("Code")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("RoleId")
@@ -249,7 +251,7 @@ namespace Sql.Migrations
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name", "RoleId");
+                    b.HasKey("Code", "RoleId");
 
                     b.HasIndex("RoleId");
 
@@ -385,6 +387,52 @@ namespace Sql.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PermissionCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PermissionRoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RolId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("PermissionCode", "PermissionRoleId");
+
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
@@ -523,6 +571,23 @@ namespace Sql.Migrations
                     b.Navigation("Procedure");
 
                     b.Navigation("Tooth");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.RolePermission", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId");
+
+                    b.HasOne("Access.Sql.Entities.Permission", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionCode", "PermissionRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.User", b =>

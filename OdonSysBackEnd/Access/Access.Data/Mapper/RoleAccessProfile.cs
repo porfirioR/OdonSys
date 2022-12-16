@@ -12,7 +12,7 @@ namespace Access.Data.Mapper
         {
             CreateMap<CreateRoleAccessRequest, Role>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.RolePermissions, opt => opt.MapFrom(src => src.Permissions.ToList().Select(x => new Permission { Code = x })));
+                .ForMember(dest => dest.RolePermissions, opt => opt.MapFrom(src => src.Permissions.ToList().Select(x => new Permission { Name = x })));
 
             CreateMap<Role, RoleAccessModel>();
 
@@ -22,7 +22,7 @@ namespace Access.Data.Mapper
 
             CreateMap<UpdateRoleAccessRequest, Role>()
                 .ForMember(dest => dest.Code, opt => opt.Ignore())
-                .ForMember(dest => dest.RolePermissions, opt => opt.MapFrom(src => src.Permissions.ToList().Select(x => new Permission { Code = x })));
+                .ForMember(dest => dest.RolePermissions, opt => opt.MapFrom(src => src.Permissions.ToList().Select(x => new Permission { Name = x })));
 
         }
     }

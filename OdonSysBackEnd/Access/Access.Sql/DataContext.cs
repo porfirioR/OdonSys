@@ -25,7 +25,6 @@ namespace Access.Sql
         public DbSet<DoctorRoles> DoctorRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<Tooth> Teeth { get; set; }

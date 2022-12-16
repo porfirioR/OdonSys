@@ -8,7 +8,7 @@ namespace Access.Sql.Configurations
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.HasKey(x => new { x.Code, x.RoleId });
+            builder.HasKey(x => new { x.Name, x.RoleId });
         }
     }
 }

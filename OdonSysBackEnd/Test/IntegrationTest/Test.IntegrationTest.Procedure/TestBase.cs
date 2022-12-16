@@ -64,20 +64,19 @@ namespace AcceptanceTest.Host.Api
         private async Task LoadDataBaseConfigurations()
         {
             var rolId = Guid.NewGuid();
-            var sqlStatement =
-            @"
-                INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');
-            ";
+            var sqlStatement = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');";
             sqlStatement = string.Format(sqlStatement, rolId);
 
-            var sqlStatementPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, FunctionPoint) VALUES ('system', 'system', 1,'{0}');\n";
+            var sqlStatementPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, Name, Id) VALUES ('system', 'system', '{0}','{1}', '{2}');\n";
             var permitions = string.Empty;
             foreach (var permissionItem in (PermissionName[])Enum.GetValues(typeof(PermissionName)))
             {
-                permitions = string.Concat(permitions, string.Format(sqlStatementPermissions, permissionItem.GetDescription()));
+                permitions = string.Concat(permitions, string.Format(sqlStatementPermissions, rolId, permissionItem.GetDescription(), Guid.NewGuid()));
             }
-            sqlStatement = string.Concat(sqlStatement, permitions, "SELECT * from Permissions");
-            await _context.Permissions.FromSqlRaw(sqlStatement).ToListAsync();
+            sqlStatement = string.Concat(sqlStatement, permitions, "SELECT * from Permissions;");
+            var permissions = await _context.Permissions.FromSqlRaw(sqlStatement).ToListAsync();
+
+
             TeethIds = (await _context.Teeth.FromSqlRaw(Properties.Resources.BasicSql).ToListAsync()).Select(x => x.Id.ToString());
         }
     }
