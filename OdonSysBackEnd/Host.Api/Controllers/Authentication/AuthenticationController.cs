@@ -24,10 +24,9 @@ namespace Host.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<AuthModel> Login([FromBody] LoginApiRequest loginApiRequest)
+        public async Task<AuthModel> Login([FromHeader] LoginApiRequest loginApiRequest)
         {
-            var login = _mapper.Map<LoginRequest>(loginApiRequest);
-            var model = await _userManager.LoginAsync(login);
+            var model = await _userManager.LoginAsync(loginApiRequest.Authorization);
             return model;
         }
 

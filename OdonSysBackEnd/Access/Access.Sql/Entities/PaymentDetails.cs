@@ -11,7 +11,7 @@ namespace Access.Sql.Entities
         public DateTime Date { get; set; }
         public string DoctorName { get; set; }
         public virtual HeaderBill HeaderBill { get; set; }
-        public virtual Doctor Doctor { get; set; }
+        public virtual User Doctor { get; set; }
 
         public void SetDoctorName()
         {

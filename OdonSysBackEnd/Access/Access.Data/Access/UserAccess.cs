@@ -24,14 +24,14 @@ namespace Access.Admin.Access
         public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
         {
             var entity = await GetDoctorByIdAsync(id);
-            entity.User.Approved = true;
+            entity.Approved = true;
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDataAccessModel>(entity);
         }
 
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
-            var response = await _context.Set<Doctor>()
+            var response = await _context.Set<User>()
                                 .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider)
                                 .ToListAsync();
             return response;
@@ -54,10 +54,9 @@ namespace Access.Admin.Access
             return model;
         }
 
-        private async Task<Doctor> GetDoctorByIdAsync(string id)
+        private async Task<User> GetDoctorByIdAsync(string id)
         {
-            var entity = await _context.Set<Doctor>()
-                            .Include(x => x.User)
+            var entity = await _context.Set<User>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
             return entity ?? throw new KeyNotFoundException($"id {id}");
         }

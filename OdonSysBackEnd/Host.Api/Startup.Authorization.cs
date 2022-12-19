@@ -27,6 +27,14 @@ namespace Host.Api
                 new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
                 new PolicyModel(Policy.CanAssignClient, new AuthRequirement(PermissionName.AssignClients)),
                 new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),
+                
+                new PolicyModel(Policy.CanDeleteDoctor, new AuthRequirement(PermissionName.DeleteDoctors)),
+                new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(PermissionName.AccessDoctors)),
+                new PolicyModel(Policy.CanManageClient, new AuthRequirement(new List<PermissionName> {
+                        PermissionName.CreateDoctors,
+                        PermissionName.UpdateDoctors,
+                        PermissionName.DeleteDoctors,
+                    })),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(

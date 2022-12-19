@@ -1,10 +1,14 @@
 ﻿using Access.Sql;
+using Contract.Admin.Auth;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Utilities.Enums;
 using Utilities.Extensions;
@@ -31,8 +35,8 @@ namespace AcceptanceTest.Host.Api
 
             _factory = new HostApiFactory();
             _client = _factory.CreateClient();
-            //var jwt = await GetJwtAuthenticationAsync(_client);
-            //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(jwt.TokenType, jwt.AccessToken);
+            var jwt = await GetJwtAuthenticationAsync(_client);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(jwt.Scheme, jwt.Token);
             _context.Dispose();
         }
 
@@ -48,30 +52,34 @@ namespace AcceptanceTest.Host.Api
             return _factory.CreateClient();
         }
 
-        //private async Task<JwtAuthenticationModel> GetJwtAuthenticationAsync(HttpClient httpClient)
-        //{
-        //    var username = "admin";
-        //    var password = "123456";
-        //    var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
-        //    httpClient.DefaultRequestHeaders.Remove("authorization");
-        //    httpClient.DefaultRequestHeaders.Add("authorization", $"Basic {encoded}");
-        //    var response = await httpClient.PostAsync("api/login", null);
-        //    var responseBody = JsonConvert.DeserializeObject<JwtAuthenticationModel>(await response.Content.ReadAsStringAsync());
-        //    httpClient.DefaultRequestHeaders.Remove("authorization");
-        //    return responseBody;
-        //}
+        private static async Task<AuthModel> GetJwtAuthenticationAsync(HttpClient httpClient)
+        {
+            var username = "admin";
+            var password = "123456";
+            var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
+            httpClient.DefaultRequestHeaders.Remove("authorization");
+            httpClient.DefaultRequestHeaders.Add("authorization", $"Basic {encoded}");
+            var response = await httpClient.PostAsync("api/authentication/login", null);
+            var responseBody = JsonConvert.DeserializeObject<AuthModel>(await response.Content.ReadAsStringAsync());
+            httpClient.DefaultRequestHeaders.Remove("authorization");
+            return responseBody;
+        }
 
         private async Task LoadDataBaseConfigurations()
         {
             var rolId = Guid.NewGuid();
-            var sqlStatement = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}');";
-            sqlStatement = string.Format(sqlStatement, rolId);
-
-            var sqlStatementPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, RoleId, Name, Id) VALUES ('system', 'system', '{0}','{1}', '{2}');\n";
+            var doctorRolId = Guid.NewGuid();
+            var date = DateTime.Now;
+            var sqlStatement = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id, DateCreated, DateModified) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}', '{1}', '{2}');";
+            sqlStatement = string.Format(sqlStatement, rolId, date, date.ToString(), date, date.ToString());
+            var sqlStatementDoctor = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id, DateCreated, DateModified) VALUES('system', 'system', 'doctor', 'doctor', 1, '{0}', '{1}', '{2}');";
+            sqlStatementDoctor = string.Format(sqlStatementDoctor, doctorRolId, date, date.ToString(), date, date.ToString());
+            sqlStatement = string.Concat(sqlStatement, sqlStatementDoctor);
+            var insertPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, Active, RoleId, Name, Id, DateCreated, DateModified) VALUES ('system', 'system', 1, '{0}', '{1}', '{2}', '{3}', '{4}');\n";
             var permitions = string.Empty;
             foreach (var permissionItem in (PermissionName[])Enum.GetValues(typeof(PermissionName)))
             {
-                permitions = string.Concat(permitions, string.Format(sqlStatementPermissions, rolId, permissionItem.GetDescription(), Guid.NewGuid()));
+                permitions = string.Concat(permitions, string.Format(insertPermissions, rolId, permissionItem.GetDescription(), Guid.NewGuid(), date.ToString(), date, date.ToString()));
             }
             sqlStatement = string.Concat(sqlStatement, permitions, "SELECT * from Permissions;");
             var permissions = await _context.Permissions.FromSqlRaw(sqlStatement).ToListAsync();

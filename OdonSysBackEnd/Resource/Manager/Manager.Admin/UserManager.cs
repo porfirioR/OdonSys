@@ -6,6 +6,8 @@ using Contract.Admin.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Manager.Admin
@@ -35,9 +37,11 @@ namespace Manager.Admin
             return response;
         }
 
-        public async Task<AuthModel> LoginAsync(LoginRequest login)
+        public async Task<AuthModel> LoginAsync(string authorization)
         {
-            var loginAccess = _mapper.Map<LoginDataAccess>(login);
+            var encodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(authorization["Basic ".Length..]));
+            var credentials = encodedCredentials.Split(":");
+            var loginAccess = new LoginDataAccess(credentials.First(), credentials.Last());
             var accessModel = await _authDataAccess.LoginAsync(loginAccess);
             var model = _mapper.Map<AuthModel>(accessModel);
             return model;

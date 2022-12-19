@@ -21,7 +21,7 @@ namespace Access.Sql
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<User> Doctors { get; set; }
         public DbSet<DoctorRoles> DoctorRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }

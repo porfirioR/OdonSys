@@ -3,6 +3,7 @@ using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -35,9 +36,8 @@ namespace Access.Data.Access
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
         {
-            var user = await _context.Users
-                            .Include(y => y.Doctor)
-                            .FirstOrDefaultAsync(x => x.Doctor.Email == loginAccess.Email);
+            var user = await _context.Doctors
+                            .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email);
 
             if (user is null)
             {
@@ -47,7 +47,7 @@ namespace Access.Data.Access
             {
                 throw new UnauthorizedAccessException("Cuenta aún no ha sido aprobada, contacte con el administrador e intente devuelta.");
             }
-            if (!user.Doctor.Active)
+            if (!user.Active)
             {
                 throw new UnauthorizedAccessException("Su cuenta fue suspendida, contacte con el administrador del sistema.");
             }
@@ -63,29 +63,29 @@ namespace Access.Data.Access
             }
             var roleCodes = await RoleCodesAsync(user.Id);
             var token = CreateToken(user.UserName, user.Id.ToString(), roleCodes);
-            var userAccessModel = _mapper.Map<UserDataAccessModel>(user.Doctor);
+            var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
             var userResponse = new AuthAccessModel
             {
                 Token = token,
-                User = userAccessModel
+                User = userAccessModel,
+                Scheme = JwtBearerDefaults.AuthenticationScheme
             };
             return userResponse;
         }
 
         public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = _mapper.Map<Doctor>(dataAccess);
+            var entity = _mapper.Map<User>(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.LastName}";
             userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
-            var entityUser = new User
-            {
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password)),
-                PasswordSalt = hmac.Key,
-                UserName = userName,
-                Approved = false,
-            };
-            entity.User = entityUser;
+
+            entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
+            entity.PasswordSalt = hmac.Key;
+            entity.UserName = userName;
+            entity.Approved = false;
+            entity.IsDoctor = true;
+
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
             entity.DoctorRoles = new List<DoctorRoles>
             {
@@ -99,7 +99,7 @@ namespace Access.Data.Access
             if (await _context.SaveChangesAsync() > 0)
             {
                 var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
-                var roleCodes = await RoleCodesAsync(entityUser.Id);
+                var roleCodes = await RoleCodesAsync(entity.Id);
                 var token = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
                 var userResponse = new AuthAccessModel

@@ -51,10 +51,10 @@ namespace Manager.Admin
                 new PermissionModel("Actualizar", PermissionName.UpdateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Borrar", PermissionName.DeleteProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
 
-                new PermissionModel("Acceso", PermissionName.AccessProcedures, PermissionGroup.Work, PermissionSubGroup.Doctor),
-                new PermissionModel("Crear", PermissionName.CreateProcedures, PermissionGroup.Admin, PermissionSubGroup.Doctor),
-                new PermissionModel("Actualizar", PermissionName.UpdateProcedures, PermissionGroup.Admin, PermissionSubGroup.Doctor),
-                new PermissionModel("Borrar", PermissionName.DeleteProcedures, PermissionGroup.Admin, PermissionSubGroup.Doctor),
+                new PermissionModel("Acceso", PermissionName.AccessDoctors, PermissionGroup.Work, PermissionSubGroup.Doctor),
+                new PermissionModel("Crear", PermissionName.CreateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
+                new PermissionModel("Actualizar", PermissionName.UpdateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
+                new PermissionModel("Borrar", PermissionName.DeleteDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
             };
         }
 
