@@ -25,13 +25,14 @@ namespace Access.Data.Access
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
         private readonly string _roleCode;
-
+        private readonly string _adminRole;
         public AuthAccess(IMapper mapper, IConfiguration configuration, DataContext context)
         {
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
             _roleCode = configuration["Role"];
+            _adminRole = configuration["RoleAdmin"];
         }
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -85,8 +86,14 @@ namespace Access.Data.Access
             entity.UserName = userName;
             entity.Approved = false;
             entity.IsDoctor = true;
-
+            var existUser = await _context.Users.AsNoTracking().AnyAsync();
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
+            if (!existUser)
+            {
+                entity.Approved = true;
+                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRole);
+            }
+
             entity.DoctorRoles = new List<DoctorRoles>
             {
                 new DoctorRoles

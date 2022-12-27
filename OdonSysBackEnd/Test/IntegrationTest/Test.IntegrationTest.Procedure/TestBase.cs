@@ -18,10 +18,13 @@ namespace AcceptanceTest.Host.Api
     [TestFixture(Category = "Acceptance")]
     internal class TestBase
     {
+        private static string _testPassword = "123456";
+        private static string _testUser = "admin";
         protected HostApiFactory _factory;
         protected HttpClient _client;
         protected DataContext _context;
         public IEnumerable<string> TeethIds;
+
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
@@ -32,9 +35,9 @@ namespace AcceptanceTest.Host.Api
             await _context.Database.EnsureDeletedAsync();
             await _context.Database.EnsureCreatedAsync();
             await LoadDataBaseConfigurations();
-
             _factory = new HostApiFactory();
             _client = _factory.CreateClient();
+            await RegisterTestClient(_client);
             var jwt = await GetJwtAuthenticationAsync(_client);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(jwt.Scheme, jwt.Token);
             _context.Dispose();
@@ -50,19 +53,6 @@ namespace AcceptanceTest.Host.Api
         protected HttpClient GetUnauthorizedClient()
         {
             return _factory.CreateClient();
-        }
-
-        private static async Task<AuthModel> GetJwtAuthenticationAsync(HttpClient httpClient)
-        {
-            var username = "admin";
-            var password = "123456";
-            var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
-            httpClient.DefaultRequestHeaders.Remove("authorization");
-            httpClient.DefaultRequestHeaders.Add("authorization", $"Basic {encoded}");
-            var response = await httpClient.PostAsync("api/authentication/login", null);
-            var responseBody = JsonConvert.DeserializeObject<AuthModel>(await response.Content.ReadAsStringAsync());
-            httpClient.DefaultRequestHeaders.Remove("authorization");
-            return responseBody;
         }
 
         private async Task LoadDataBaseConfigurations()
@@ -86,6 +76,22 @@ namespace AcceptanceTest.Host.Api
 
 
             TeethIds = (await _context.Teeth.FromSqlRaw(Properties.Resources.BasicSql).ToListAsync()).Select(x => x.Id.ToString());
+        }
+
+        private Task RegisterTestClient(HttpClient client)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static async Task<AuthModel> GetJwtAuthenticationAsync(HttpClient httpClient)
+        {
+            var encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_testUser}:{_testPassword}"));
+            httpClient.DefaultRequestHeaders.Remove("authorization");
+            httpClient.DefaultRequestHeaders.Add("authorization", $"Basic {encoded}");
+            var response = await httpClient.PostAsync("api/authentication/login", null);
+            var responseBody = JsonConvert.DeserializeObject<AuthModel>(await response.Content.ReadAsStringAsync());
+            httpClient.DefaultRequestHeaders.Remove("authorization");
+            return responseBody;
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Access.Admin.Mapper
         public UserDataAccessProfile()
         {
             CreateMap<UserDataAccessRequest, User>()
-                .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
 
             CreateMap<User, AuthAccessModel>()
