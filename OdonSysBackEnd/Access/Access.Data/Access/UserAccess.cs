@@ -23,7 +23,7 @@ namespace Access.Admin.Access
 
         public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
         {
-            var entity = await GetDoctorByIdAsync(id);
+            var entity = await GetUserByIdAsync(id);
             entity.Approved = true;
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDataAccessModel>(entity);
@@ -39,14 +39,14 @@ namespace Access.Admin.Access
 
         public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
-            var entity = await GetDoctorByIdAsync(id);
+            var entity = await GetUserByIdAsync(id);
             var response = _mapper.Map<DoctorDataAccessModel>(entity);
             return response;
         }
 
         public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = await GetDoctorByIdAsync(dataAccess.Id);
+            var entity = await GetUserByIdAsync(dataAccess.Id);
             entity = _mapper.Map(dataAccess, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -54,7 +54,7 @@ namespace Access.Admin.Access
             return model;
         }
 
-        private async Task<User> GetDoctorByIdAsync(string id)
+        private async Task<User> GetUserByIdAsync(string id)
         {
             var entity = await _context.Set<User>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));

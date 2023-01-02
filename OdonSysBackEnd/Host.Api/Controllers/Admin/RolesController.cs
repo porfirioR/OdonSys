@@ -56,8 +56,8 @@ namespace Host.Api.Controllers.Admin
             return model;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet("permission-roles")]
+        [Authorize]
         public async Task<IEnumerable<string>> GetPermissionsByRoles()
         {
             var roles = Roles;
@@ -65,8 +65,8 @@ namespace Host.Api.Controllers.Admin
             return model;
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet("permissions")]
+        [Authorize]
         public IEnumerable<PermissionModel> GetPermissions()
         {
             var model = _roleManager.GetAllPermissions();

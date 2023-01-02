@@ -9,7 +9,6 @@ namespace Host.Api.Mapper
     {
         public UserHostProfile()
         {
-
             CreateMap<RegisterUserApiRequest, RegisterUserRequest>();
 
             CreateMap<UpdateDoctorApiRequest, UpdateDoctorRequest>().ReverseMap();

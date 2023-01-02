@@ -21,8 +21,7 @@ namespace Access.Sql
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<User> Doctors { get; set; }
-        public DbSet<DoctorRoles> DoctorRoles { get; set; }
+        public DbSet<UserRole> DoctorRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -33,10 +32,9 @@ namespace Access.Sql
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
-            modelBuilder.ApplyConfiguration(new DoctorRolesConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new DoctorClientConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());

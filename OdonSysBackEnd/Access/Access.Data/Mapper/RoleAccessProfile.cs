@@ -18,7 +18,7 @@ namespace Access.Data.Mapper
 
             CreateMap<Permission, PermissionAccessModel>();
 
-            CreateMap<DoctorRoles, DoctorDataAccessModel>();
+            CreateMap<UserRole, DoctorDataAccessModel>();
 
             CreateMap<UpdateRoleAccessRequest, Role>()
                 .ForMember(dest => dest.Code, opt => opt.Ignore())

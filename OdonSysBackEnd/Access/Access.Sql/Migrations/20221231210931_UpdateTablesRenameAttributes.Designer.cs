@@ -4,6 +4,7 @@ using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221231210931_UpdateTablesRenameAttributes")]
+    partial class UpdateTablesRenameAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,6 +101,55 @@ namespace Sql.Migrations
                         .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.DoctorClient", b =>
+                {
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DoctorId", "ClientId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("DoctorClient");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.DoctorRoles", b =>
+                {
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("DoctorId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("DoctorRoles");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
@@ -384,7 +435,8 @@ namespace Sql.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
@@ -397,56 +449,45 @@ namespace Sql.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
+            modelBuilder.Entity("Access.Sql.Entities.DoctorClient", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Access.Sql.Entities.Client", "Client")
+                        .WithMany("DoctorsClients")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Access.Sql.Entities.User", "Doctor")
+                        .WithMany("DoctorsClients")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
+                    b.Navigation("Client");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "ClientId");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("UserClient");
+                    b.Navigation("Doctor");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
+            modelBuilder.Entity("Access.Sql.Entities.DoctorRoles", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Access.Sql.Entities.User", "Doctor")
+                        .WithMany("DoctorRoles")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasOne("Access.Sql.Entities.Role", "Role")
+                        .WithMany("DoctorRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasKey("UserId", "RoleId");
+                    b.Navigation("Doctor");
 
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("DoctorRoles");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
@@ -479,47 +520,9 @@ namespace Sql.Migrations
                     b.Navigation("Tooth");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
-                {
-                    b.HasOne("Access.Sql.Entities.Client", "Client")
-                        .WithMany("UserClients")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Access.Sql.Entities.User", "User")
-                        .WithMany("UserClients")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
-                {
-                    b.HasOne("Access.Sql.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Access.Sql.Entities.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Access.Sql.Entities.Client", b =>
                 {
-                    b.Navigation("UserClients");
+                    b.Navigation("DoctorsClients");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
@@ -529,9 +532,9 @@ namespace Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.Role", b =>
                 {
-                    b.Navigation("RolePermissions");
+                    b.Navigation("DoctorRoles");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("RolePermissions");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
@@ -541,9 +544,9 @@ namespace Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.User", b =>
                 {
-                    b.Navigation("UserClients");
+                    b.Navigation("DoctorRoles");
 
-                    b.Navigation("UserRoles");
+                    b.Navigation("DoctorsClients");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,7 +10,7 @@ namespace Contract.Admin.Clients
         Task<IEnumerable<ClientModel>> GetAllAsync();
         Task<ClientModel> GetByIdAsync(string id);
         Task<ClientModel> GetByDocumentAsync(string documentId);
-        Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id, string userName);
+        Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName);
         Task<ClientModel> DeleteAsync(string id);
     }
 }

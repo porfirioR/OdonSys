@@ -55,9 +55,9 @@ namespace Manager.Admin
             return _mapper.Map<ClientModel>(accessModel);
         }
 
-        public async Task<IEnumerable<ClientModel>> GetClientsByDoctorIdAsync(string id, string userName)
+        public async Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName)
         {
-            var accessModel = await _clientAccess.GetClientsByDoctorIdAsync(id, userName);
+            var accessModel = await _clientAccess.GetClientsByUserIdAsync(id, userName);
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
     }

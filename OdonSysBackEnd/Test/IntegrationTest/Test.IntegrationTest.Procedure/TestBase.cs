@@ -1,5 +1,6 @@
 ﻿using Access.Sql;
 using Contract.Admin.Auth;
+using Host.Api.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities.Enums;
@@ -18,13 +20,12 @@ namespace AcceptanceTest.Host.Api
     [TestFixture(Category = "Acceptance")]
     internal class TestBase
     {
-        private static string _testPassword = "123456";
-        private static string _testUser = "admin";
+        private static readonly string _testPassword = "123456";
+        private static readonly string _testUser = "admin";
         protected HostApiFactory _factory;
         protected HttpClient _client;
         protected DataContext _context;
         public IEnumerable<string> TeethIds;
-
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
@@ -37,8 +38,8 @@ namespace AcceptanceTest.Host.Api
             await LoadDataBaseConfigurations();
             _factory = new HostApiFactory();
             _client = _factory.CreateClient();
-            await RegisterTestClient(_client);
-            var jwt = await GetJwtAuthenticationAsync(_client);
+            var jwt = await RegisterTestClient(_client);
+            //var jwt = await GetJwtAuthenticationAsync(_client);
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(jwt.Scheme, jwt.Token);
             _context.Dispose();
         }
@@ -78,9 +79,24 @@ namespace AcceptanceTest.Host.Api
             TeethIds = (await _context.Teeth.FromSqlRaw(Properties.Resources.BasicSql).ToListAsync()).Select(x => x.Id.ToString());
         }
 
-        private Task RegisterTestClient(HttpClient client)
+        private async Task<AuthModel> RegisterTestClient(HttpClient client)
         {
-            throw new NotImplementedException();
+            var testUser = new RegisterUserApiRequest()
+            {
+                Name = _testUser,
+                MiddleName = Guid.NewGuid().ToString()[..25],
+                Surname = _testUser,
+                SecondSurname = Guid.NewGuid().ToString()[..25],
+                Document = Guid.NewGuid().ToString()[..15],
+                Password = _testPassword,
+                Phone = Guid.NewGuid().ToString()[..15],
+                Email = $"{Guid.NewGuid().ToString()[..5]}@{Guid.NewGuid().ToString()[..5]}.com",
+                Country = Country.Paraguay
+            };
+            var response = await client.PostAsJsonAsync("api/authentication/register", testUser);
+            var content = await response.Content.ReadAsStringAsync();
+            var responseBody = JsonConvert.DeserializeObject<AuthModel>(content);
+            return responseBody;
         }
 
         private static async Task<AuthModel> GetJwtAuthenticationAsync(HttpClient httpClient)

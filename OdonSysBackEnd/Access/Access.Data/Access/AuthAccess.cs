@@ -37,7 +37,7 @@ namespace Access.Data.Access
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
         {
-            var user = await _context.Doctors
+            var user = await _context.Users
                             .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email);
 
             if (user is null)
@@ -62,8 +62,9 @@ namespace Access.Data.Access
                     throw new KeyNotFoundException("Correo o contraseña es incorrecta");
                 }
             }
-            var roleCodes = await RoleCodesAsync(user.Id);
-            var token = CreateToken(user.UserName, user.Id.ToString(), roleCodes);
+            var userId = user.Id;
+            var roleCodes = await RoleCodesAsync(userId);
+            var token = CreateToken(user.UserName, userId.ToString(), roleCodes);
             var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
             var userResponse = new AuthAccessModel
             {
@@ -77,15 +78,16 @@ namespace Access.Data.Access
         public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _mapper.Map<User>(dataAccess);
-            var userName = @$"{entity.Name[..1].ToUpper()}{entity.LastName}";
+            var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
             userName = userName.Length > 20 ? userName[..20] : userName;
-            using var hmac = new HMACSHA512();
+             using var hmac = new HMACSHA512();
 
             entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
             entity.PasswordSalt = hmac.Key;
             entity.UserName = userName;
             entity.Approved = false;
             entity.IsDoctor = true;
+            entity.Active = true;
             var existUser = await _context.Users.AsNoTracking().AnyAsync();
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
             if (!existUser)
@@ -94,11 +96,11 @@ namespace Access.Data.Access
                 role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRole);
             }
 
-            entity.DoctorRoles = new List<DoctorRoles>
+            entity.UserRoles = new List<UserRole>
             {
-                new DoctorRoles
+                new UserRole
                 {
-                    Doctor = entity,
+                    User = entity,
                     Role = role
                 }
             };
@@ -112,23 +114,24 @@ namespace Access.Data.Access
                 var userResponse = new AuthAccessModel
                 {
                     Token = token,
-                    User = userAccessModel
+                    User = userAccessModel,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme
                 };
                 return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");
         }
 
-        private string CreateToken(string userName, string userId, IEnumerable<string> roles)
+        private string CreateToken(string userName, string userId, IEnumerable<string> userRoles)
         {
             var claims = new List<Claim>()
             {
                 new Claim(Claims.UserName, userName),
-                new Claim(Claims.UserId, userId)
+                new Claim(Claims.UserId, userId),
             };
-            foreach (var role in roles)
+            foreach (var userRole in userRoles)
             {
-                claims.Add(new Claim(Claims.Roles, role));
+                claims.Add(new Claim(Claims.UserRoles, userRole));
             }
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -148,7 +151,7 @@ namespace Access.Data.Access
         {
             var codes = await _context.DoctorRoles
                                 .Include(x => x.Role)
-                                .Where(x => x.RoleId == userId)
+                                .Where(x => x.UserId.Equals(userId))
                                 .Select(x => x.Role.Code)
                                 .ToListAsync();
             return codes;

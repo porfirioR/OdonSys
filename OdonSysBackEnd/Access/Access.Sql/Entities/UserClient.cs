@@ -2,11 +2,11 @@
 
 namespace Access.Sql.Entities
 {
-    public class DoctorClient : BaseEntity
+    public class UserClient : BaseEntity
     {
         public Guid ClientId { get; set; }
-        public Guid DoctorId { get; set; }
-        public virtual User Doctor { get; set; }
+        public Guid UserId { get; set; }
+        public virtual User User { get; set; }
         public virtual Client Client { get; set; }
     }
 }

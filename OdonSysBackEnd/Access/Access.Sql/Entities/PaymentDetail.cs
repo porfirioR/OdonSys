@@ -2,20 +2,20 @@
 
 namespace Access.Sql.Entities
 {
-    public class PaymentDetails
+    public class PaymentDetail
     {
         public int HeaderBillId { get; set; }
-        public int DoctorId { get; set; }
+        public int UserId { get; set; }
 
         public int Amount { get; set; }
         public DateTime Date { get; set; }
-        public string DoctorName { get; set; }
+        public string UserName { get; set; }
         public virtual HeaderBill HeaderBill { get; set; }
-        public virtual User Doctor { get; set; }
+        public virtual User User { get; set; }
 
-        public void SetDoctorName()
+        public void SetUserName()
         {
-            DoctorName = $"{Doctor.Name} {Doctor.LastName}";
+            UserName = $"{User.Name} {User.Surname}";
         }
     }
 }
