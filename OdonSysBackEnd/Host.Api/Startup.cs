@@ -17,7 +17,7 @@ namespace Host.Api
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
@@ -30,8 +30,13 @@ namespace Host.Api
 
             // partial startup
             ConfigureMappings(services);
+
             InjectServices(services);
             ConfigureAuthentication(services, Configuration);
+
+            ConfigureAuthorization(services);
+            // Configura all Authorization Handlers
+            ConfigureAuthorizationHandlers(services);
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
@@ -40,7 +45,7 @@ namespace Host.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             app.UseSwagger();
 
             app.UseSwaggerUI();

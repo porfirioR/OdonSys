@@ -3,7 +3,9 @@ using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access.Data.Access
@@ -23,6 +25,12 @@ namespace Access.Data.Access
         {
             var entity = _mapper.Map<Role>(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            var rolePermissions = new List<Permission>();
+
+            rolePermissions.AddRange(accessRequest.Permissions.Select(permission => new Permission { Id = Guid.NewGuid(), Name = permission, RoleId = entity.Id, Active = true }));
+            entity.RolePermissions = rolePermissions;
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return _mapper.Map<RoleAccessModel>(entity);
         }
@@ -47,7 +55,12 @@ namespace Access.Data.Access
         public async Task<RoleAccessModel> UpdateAccessAsync(UpdateRoleAccessRequest accessRequest)
         {
             var entity = await GetRoleByCodeAsync(accessRequest.Code);
+            var entityPermissions = entity.RolePermissions.Select(x => x.Name);
+            var persistPermissions = entity.RolePermissions.Where(x => accessRequest.Permissions.Contains(x.Name));
+            var permissions = accessRequest.Permissions.Where(x => !entityPermissions.Contains(x)).Select(x => new Permission { Id = Guid.NewGuid(), Name = x, RoleId = entity.Id, Active = true });
+            permissions = permissions.Concat(persistPermissions);
             entity = _mapper.Map(accessRequest, entity);
+            entity.RolePermissions = permissions.ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<RoleAccessModel>(entity);

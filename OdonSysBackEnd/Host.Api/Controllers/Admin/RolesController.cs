@@ -48,17 +48,17 @@ namespace Host.Api.Controllers.Admin
             return model;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{code}")]
         [Authorize(Policy = Policy.CanAccessRole)]
-        public async Task<RoleModel> GetRoleByCode(string code)
+        public async Task<RoleModel> GetRoleByCode([FromRoute] string code)
         {
             var model = await _roleManager.GetRoleByCodeAsync(code);
             return model;
         }
 
-        [HttpGet("permission-roles")]
+        [HttpGet("permissions-role")]
         [Authorize]
-        public async Task<IEnumerable<string>> GetPermissionsByRoles()
+        public async Task<IEnumerable<string>> GetPermissionsByRoleCodes()
         {
             var roles = Roles;
             var model = await _roleManager.GetPermissonsByRolesAsync(roles);

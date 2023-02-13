@@ -6,7 +6,6 @@ using Contract.Admin.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,6 +73,13 @@ namespace Manager.Admin
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
             var model = _mapper.Map<DoctorModel>(accessModel);
             return model;
+        }
+
+        public async Task<IEnumerable<string>> CheckUsersExistsAsync(IEnumerable<string> users)
+        {
+            var usersAccess = (await _userDataAccess.GetAllUserActiveAsync()).Select(x => x.UserName);
+            var invalidOrInactiveList = users.Where(x => !usersAccess.Contains(x));
+            return invalidOrInactiveList;
         }
 
         private async Task<bool> CheckUserExistsAsync(RegisterUserRequest createUser)

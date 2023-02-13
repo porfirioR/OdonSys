@@ -1,8 +1,8 @@
 ﻿using Access.Contract.Roles;
 using AutoMapper;
 using Contract.Admin.Roles;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Utilities.Enums;
 
@@ -58,14 +58,27 @@ namespace Manager.Admin
             };
         }
 
-        public Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
+        public async Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
         {
-            throw new NotImplementedException();
+            var tasks = new List<Task>();
+            foreach (var role in roles)
+            {
+                tasks.Add(GetRoleByCodeAsync(role));
+            }
+            await Task.WhenAll(tasks);
+            var permissions = new List<string>();
+            foreach (var task in tasks)
+            {
+                var result = ((Task<RoleModel>)task).GetAwaiter().GetResult();
+                permissions.AddRange(result.RolePermissions);
+            }
+            return permissions.Distinct();
         }
 
-        public Task<RoleModel> GetRoleByCodeAsync(string code)
+        public async Task<RoleModel> GetRoleByCodeAsync(string code)
         {
-            throw new NotImplementedException();
+            var result = await _roleAccess.GetRoleByCodeAccessAsync(code);
+            return _mapper.Map<RoleModel>(result);
         }
 
         public async Task<RoleModel> UpdateAsync(UpdateRoleRequest request)
