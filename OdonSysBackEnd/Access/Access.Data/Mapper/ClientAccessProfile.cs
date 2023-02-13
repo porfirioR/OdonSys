@@ -20,7 +20,7 @@ namespace Access.Admin.Mapper
 
             CreateMap<Client, ClientAccessModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Doctors, opt => opt.MapFrom(src => src.DoctorsClients.Select(x => x.Doctor)));
+                .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.UserClients.Select(x => x.User)));
 
         }
     }

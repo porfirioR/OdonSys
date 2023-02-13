@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contract.Admin.Clients;
-using Contract.Workspace.User;
+using Contract.Admin.Users;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +30,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanAssignClientDoctor)]
         public async Task<ClientModel> AssignClientToDoctor([FromBody] AssignClientApiRequest apiRequest)
         {
             var user = _mapper.Map<CreateClientRequest>(apiRequest);
@@ -37,6 +39,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanUpdateDoctor)]
         public async Task<DoctorModel> Update([FromBody] UpdateDoctorApiRequest apiRequest)
         {
             var user = _mapper.Map<UpdateDoctorRequest>(apiRequest);
@@ -45,6 +48,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessDoctor)]
         public async Task<DoctorModel> GetById([FromRoute] string id)
         {
             var response = await _userManager.GetByIdAsync(id);

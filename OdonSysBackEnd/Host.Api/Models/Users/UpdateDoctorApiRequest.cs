@@ -16,9 +16,9 @@ namespace Host.Api.Models.Users
 
         [Required]
         [MaxLength(25)]
-        public string LastName { get; set; }
+        public string Surname { get; set; }
 
-        public string MiddleLastName { get; set; }
+        public string SecondSurname { get; set; }
 
         [Required]
         [MaxLength(15)]

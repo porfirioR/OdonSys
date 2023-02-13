@@ -10,20 +10,19 @@ namespace Access.Admin.Mapper
     {
         public UserDataAccessProfile()
         {
-            CreateMap<UserDataAccessRequest, Doctor>()
-                .ForMember(dest => dest.Email, opt => opt.Ignore())
+            CreateMap<UserDataAccessRequest, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
 
             CreateMap<User, AuthAccessModel>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src));
 
-            CreateMap<Doctor, DoctorDataAccessModel>()
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.User.Approved));
+            CreateMap<User, DoctorDataAccessModel>()
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
 
-            CreateMap<Doctor, UserDataAccessModel>()
+            CreateMap<User, UserDataAccessModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.User.Approved));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
         }
     }
 }
