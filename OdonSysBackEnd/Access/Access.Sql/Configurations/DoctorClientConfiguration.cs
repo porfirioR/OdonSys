@@ -4,21 +4,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class DoctorClientConfiguration : IEntityTypeConfiguration<DoctorClient>
+    public class DoctorClientConfiguration : IEntityTypeConfiguration<UserClient>
     {
-        public void Configure(EntityTypeBuilder<DoctorClient> builder)
+        public void Configure(EntityTypeBuilder<UserClient> builder)
         {
             builder
-                .HasOne(x => x.Doctor)
-                .WithMany(x => x.DoctorsClients)
-                .HasForeignKey(x => x.DoctorId);
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserClients)
+                .HasForeignKey(x => x.UserId);
 
             builder
                 .HasOne(x => x.Client)
-                .WithMany(x => x.DoctorsClients)
+                .WithMany(x => x.UserClients)
                 .HasForeignKey(x => x.ClientId);
 
-            builder.HasKey(x => new { x.DoctorId, x.ClientId });
+            builder.HasKey(x => new { x.UserId, x.ClientId });
         }
     }
 }

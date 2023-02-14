@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Contract.Procedure.Procedures;
+using Contract.Workspace.Procedures;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Procedures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,9 @@ namespace Host.Api.Controllers.Procedure
             var response = await _procedureManager.UpdateAsync(request);
             return response;
         }
+
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessProcedure)]
         public async Task<IEnumerable<ProcedureModel>> GetAll()
         {
             var response = await _procedureManager.GetAllAsync();
@@ -44,6 +47,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpGet("{id}/{active}")]
+        [Authorize(Policy = Policy.CanAccessProcedure)]
         public async Task<ProcedureModel> GetById(string id, bool active = true)
         {
             var response = await _procedureManager.GetByIdAsync(id, active);
@@ -51,12 +55,14 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Delete(string id)
         {
             return await _procedureManager.DeleteAsync(id);
         }
 
         [HttpPost("restore/{id}")]
+        [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Resotre(string id)
         {
             return await _procedureManager.RestoreAsync(id);

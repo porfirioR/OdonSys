@@ -1,4 +1,4 @@
-using Contract.Procedure.Procedures;
+using Contract.Workspace.Procedures;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -20,13 +20,13 @@ namespace AcceptanceTest.Host.Api.Procedures
             var request = CreateProcedureApiRequest;
             var response = await _client.PostAsJsonAsync(_uri, request);
 
-            var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+            var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
             Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            Assert.That(request.Name, Is.EqualTo(model.Name));
-            Assert.That(request.Description, Is.EqualTo(model.Description));
-            Assert.That(request.EstimatedSessions, Is.EqualTo(model.EstimatedSessions));
-            Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(model.ProcedureTeeth.Count()));
+            Assert.That(request.Name, Is.EqualTo(actual.Name));
+            Assert.That(request.Description, Is.EqualTo(actual.Description));
+            Assert.That(request.EstimatedSessions, Is.EqualTo(actual.EstimatedSessions));
+            Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
         }
 
         [Test]
