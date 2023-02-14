@@ -73,13 +73,6 @@ namespace Access.Data.Access
             return respose;
         }
 
-        private async Task<Client> GetClientByIdAsync(string id)
-        {
-            var entity = await _context.Set<Client>()
-                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity ?? throw new KeyNotFoundException($"id {id}");
-        }
-
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)
         {
             var entity = await _context.Set<Client>()
@@ -88,5 +81,19 @@ namespace Access.Data.Access
             return respose;
         }
 
+        public async Task<IEnumerable<ClientAccessModel>> AssignClientToDoctor(AssignClientAccessRequest accessRequest)
+        {
+            var entity = _mapper.Map<UserClient>(accessRequest);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return await GetClientsByUserIdAsync(accessRequest.UserId, "");
+        }
+
+        private async Task<Client> GetClientByIdAsync(string id)
+        {
+            var entity = await _context.Set<Client>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            return entity ?? throw new KeyNotFoundException($"id {id}");
+        }
     }
 }

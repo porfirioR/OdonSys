@@ -1,17 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
-using Utilities.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Models.Clients
 {
     public class AssignClientApiRequest
     {
         [Required]
-        public string DoctorId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public string ClientId { get; set; }
-        [Required]
-        public DoctorClientStatus Status { get; set; }
-        public IFormFile File { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
+using Contract.Admin.Clients;
 using Contract.Admin.Users;
 using System;
 using System.Collections.Generic;

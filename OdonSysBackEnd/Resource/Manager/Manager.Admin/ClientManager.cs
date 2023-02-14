@@ -21,6 +21,7 @@ namespace Manager.Admin
         {
             var accessRequest = _mapper.Map<CreateClientAccessRequest>(request);
             var accessModel = await _clientAccess.CreateClientAsync(accessRequest);
+            _ = await AssignClientToDoctor(new AssignClientRequest(request.UserId, accessModel.Id));
             return _mapper.Map<ClientModel>(accessModel);
         }
 
@@ -58,6 +59,13 @@ namespace Manager.Admin
         public async Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName)
         {
             var accessModel = await _clientAccess.GetClientsByUserIdAsync(id, userName);
+            return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
+        }
+
+        public async Task<IEnumerable<ClientModel>> AssignClientToDoctor(AssignClientRequest request)
+        {
+            var accessRequest = new AssignClientAccessRequest(request.UserId, request.ClientId);
+            var accessModel = await _clientAccess.AssignClientToDoctor(accessRequest);
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
     }
