@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Access.Admin.Access
+namespace Access.Data.Access
 {
     internal class ProcedureAccess : IProcedureAccess
     {

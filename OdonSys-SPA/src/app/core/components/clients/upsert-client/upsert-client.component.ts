@@ -3,14 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { debounceTime, switchMap, take } from 'rxjs/operators';
 import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
-import { EnumToMap } from '../../../../core/helpers/enumToMap';
 import { ClientApiService } from '../../../../core/services/api/client-api.service';
 import { AlertService } from '../../../../core/services/shared/alert.service';
+import { MethodHandler } from '../../../../core/helpers/method-handler';
+import { EnumHandler } from '../../../../core/helpers/enum-handler';
 
 @Component({
   selector: 'app-upsert-client',
@@ -18,11 +19,11 @@ import { AlertService } from '../../../../core/services/shared/alert.service';
   styleUrls: ['./upsert-client.component.scss']
 })
 export class UpsertClientComponent implements OnInit {
-  public title: string = 'Registrar ';
-  public load: boolean = false;
-  public saving: boolean = false;
-  public formGroup: FormGroup = new FormGroup({});
-  public countries: Map<string, string> = new Map<string, string>();
+  protected title: string = 'Registrar ';
+  protected load: boolean = false;
+  protected saving: boolean = false;
+  protected formGroup!: FormGroup;
+  protected countries: Map<string, string> = new Map<string, string>();
   private id = '';
   private fullEdit = false;
   constructor(
@@ -32,7 +33,7 @@ export class UpsertClientComponent implements OnInit {
     private readonly alertService: AlertService,
 
   ) {
-    this.countries = EnumToMap.getCountries();
+    this.countries = EnumHandler.getCountries();
   }
 
   ngOnInit() {
@@ -73,13 +74,24 @@ export class UpsertClientComponent implements OnInit {
           middleName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
           lastName: new FormControl(this.id ? client.lastName : '', [Validators.required, Validators.maxLength(25)]),
           middleLastName: new FormControl(this.id ? client.middleLastName : '', [Validators.maxLength(25)]),
-          document: new FormControl(this.id ? client.document:'', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+          document: new FormControl(this.id ? client.document: '', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
           ruc: new FormControl({ value: this.id && client.ruc ? client.ruc : 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
           phone: new FormControl(this.id ? client.phone:'', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
           country: new FormControl(this.id ? client.country:'', [Validators.required]),
           email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
         });
-        // this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
+        this.formGroup.controls.document.valueChanges.pipe(
+          debounceTime(500),
+        ).subscribe({
+          next: (document: string) => {
+            const checkDigit = MethodHandler.calculateCheckDigit(document, +this.formGroup.controls.country.value);
+            this.formGroup.controls.ruc.setValue(checkDigit);
+          }
+        });
+        this.formGroup.controls.country.valueChanges.subscribe({
+          next: () => this.formGroup.controls.document.updateValueAndValidity()
+        });
+
         if (this.id) {
           this.title = 'Actualizar ';
           if (!this.fullEdit) {

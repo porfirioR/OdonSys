@@ -1,4 +1,5 @@
-﻿using Contract.Procedure.Teeth;
+﻿using Contract.Workspace.Teeth;
+using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessProcedure)]
         public async Task<IEnumerable<ToothModel>> GetAll()
         {
             var response = await _toothManager.GetAllAsync();

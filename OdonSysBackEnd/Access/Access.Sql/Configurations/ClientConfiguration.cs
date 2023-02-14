@@ -28,12 +28,12 @@ namespace Access.Sql.Configurations
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.LastName)
+                .Property(x => x.Surname)
                 .IsRequired()
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.MiddleLastName)
+                .Property(x => x.SecondSurname)
                 .HasMaxLength(25);
 
             builder
@@ -61,6 +61,10 @@ namespace Access.Sql.Configurations
             builder
                 .Property(x => x.Email)
                 .HasMaxLength(25);
+
+            builder
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

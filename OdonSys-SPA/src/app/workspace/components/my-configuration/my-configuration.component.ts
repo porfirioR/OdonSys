@@ -7,7 +7,7 @@ import { UpdateUserRequest } from '../../../core/models/users/update-user-reques
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
-import { EnumToMap } from '../../../core/helpers/enumToMap';
+import { EnumHandler } from '../../../core/helpers/enum-handler';
 
 @Component({
   selector: 'app-my-configuration',
@@ -27,7 +27,7 @@ export class MyConfigurationComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService
   ) {
-    this.countries = EnumToMap.getCountries();
+    this.countries = EnumHandler.getCountries();
   }
 
   ngOnInit() {
