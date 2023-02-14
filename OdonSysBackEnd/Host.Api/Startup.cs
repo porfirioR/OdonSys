@@ -17,19 +17,26 @@ namespace Host.Api
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
             services.AddControllers()
                     .AddNewtonsoftJson();
 
+            services.AddSwaggerGen();
+
             services.AddCors();
 
             // partial startup
             ConfigureMappings(services);
+
             InjectServices(services);
             ConfigureAuthentication(services, Configuration);
+
+            ConfigureAuthorization(services);
+            // Configura all Authorization Handlers
+            ConfigureAuthorizationHandlers(services);
 
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
@@ -39,11 +46,17 @@ namespace Host.Api
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
+
+            app.UseExceptionHandler("/error");
+            app.UseHsts();
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseAuthentication();
 

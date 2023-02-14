@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../helpers/custom-validators';
-import { EnumToMap } from '../../helpers/enumToMap';
+import { EnumHandler } from '../../helpers/enum-handler';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
@@ -13,23 +13,23 @@ import { AlertService } from '../../services/shared/alert.service';
   styleUrls: ['./register-user.component.scss']
 })
 export class RegisterUserComponent implements OnInit {
-  public saving: boolean = false;
-  public formGroup: FormGroup = new FormGroup({});
-  public countries: Map<string, string> = new Map<string, string>();
+  protected saving: boolean = false;
+  protected formGroup: FormGroup = new FormGroup({});
+  protected countries: Map<string, string> = new Map<string, string>();
 
   constructor(
     private readonly router: Router,
     private readonly alertService: AlertService,
     private readonly authApiService: AuthApiService
   ) {
-    this.countries = EnumToMap.getCountries();
+    this.countries = EnumHandler.getCountries();
   }
 
   ngOnInit() {
     this.loadConfiguration();
   }
 
-  public register = (): void => {
+  protected register = (): void => {
     if (this.formGroup.invalid) { return; }
     this.saving = true;
     const request = this.formGroup.getRawValue() as RegisterUserRequest;
@@ -48,7 +48,7 @@ export class RegisterUserComponent implements OnInit {
     });
   }
 
-  public close = (): void => {
+  protected close = (): void => {
     this.router.navigate(['login']);
   };
 

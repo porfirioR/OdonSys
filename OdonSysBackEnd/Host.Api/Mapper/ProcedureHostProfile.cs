@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Contract.Procedure.Procedures;
+using Contract.Workspace.Procedures;
 using Host.Api.Models.Procedures;
 
 namespace Host.Api.Mapper

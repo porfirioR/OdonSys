@@ -1,5 +1,6 @@
 ﻿using Contract.Admin.Clients;
-using Manager.Admin.Clients;
+using Contract.Admin.Roles;
+using Contract.Admin.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Manager.Admin
@@ -9,6 +10,8 @@ namespace Manager.Admin
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IClientManager, ClientManager>();
+            services.AddTransient<IUserManager, UserManager>();
+            services.AddTransient<IRoleManager, RoleManager>();
         }
     }
 }

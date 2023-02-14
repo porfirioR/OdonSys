@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BasicServiceModule } from '../../basic-service.module';
 import { ClientApiModel } from '../../core/models/api/clients/client-api-model';
-import { ClientPatchRequest } from '../../core/models/api/clients/client-patch-request';
+import { PatchRequest } from '../../core/models/api/patch-request';
 import { ClientApiService } from '../../core/services/api/client-api.service';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class ClientAdminApiService extends ClientApiService {
     super(http);
   }
 
-  public clientVisibility = (id: string, request: ClientPatchRequest): Observable<ClientApiModel> => {
+  public clientVisibility = (id: string, request: PatchRequest): Observable<ClientApiModel> => {
     return this.http.patch<ClientApiModel>(`${this.baseUrl}/${id}`, [request]);
   }
 

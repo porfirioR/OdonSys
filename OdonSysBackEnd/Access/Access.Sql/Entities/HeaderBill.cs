@@ -13,6 +13,6 @@ namespace Access.Sql.Entities
         public int Total { get; set; }
         public string Timbrado { get; set; }
         public BillStatus Status { get; set; }
-        public virtual IEnumerable<PaymentDetails> PaymentDetails { get; set; }
+        public virtual IEnumerable<PaymentDetail> PaymentDetails { get; set; }
     }
 }

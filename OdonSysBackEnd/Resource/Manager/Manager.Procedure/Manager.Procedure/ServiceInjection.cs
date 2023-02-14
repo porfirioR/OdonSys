@@ -10,8 +10,6 @@ namespace Manager.Procedure
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IProcedureManager, ProcedureManager>();
-            services.AddTransient<IToothManager, ToothManager>();
         }
     }
 }
