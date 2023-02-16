@@ -1,5 +1,4 @@
 ﻿using Contract.Admin.Clients;
-using Contract.Admin.Users;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +28,6 @@ namespace Host.Api.Models.Clients
         {
             var results = new List<ValidationResult>();
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
-            var userManager = (IUserManager)validationContext.GetService(typeof(IUserManager));
             if (clientManager.GetByDocumentAsync(Document).GetAwaiter().GetResult() != null)
             {
                 results.Add(new ValidationResult($"Paciente con el document: {Document} ya existe."));
