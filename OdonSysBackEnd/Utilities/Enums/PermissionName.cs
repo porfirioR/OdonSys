@@ -28,6 +28,7 @@
         CreateDoctors,
         UpdateDoctors,
         DeleteDoctors,
+        ApproveDoctors
         #endregion
     }
 }
