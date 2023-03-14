@@ -53,7 +53,7 @@ namespace Host.Api.Models.Clients
             var result = 0;
             foreach (var value in documentReverse)
             {
-                result += multiplier * (int)Char.GetNumericValue(value);
+                result += multiplier * (int)char.GetNumericValue(value);
                 multiplier++;
                 if (multiplier > module)
                 {

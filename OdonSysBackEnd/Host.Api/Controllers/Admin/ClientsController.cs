@@ -32,6 +32,7 @@ namespace Host.Api.Controllers.Admin
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateClientRequest>(apiRequest);
+            request.UserId = UserId;
             var model = await _clientManager.CreateAsync(request);
             return model;
         }

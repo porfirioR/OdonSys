@@ -16,7 +16,6 @@
 
         public const string CanAccessDoctor = "can_access_doctor";
         public const string CanUpdateDoctor = "can_update_doctor";
-        public const string CanAssignClientDoctor = "can_assign_update_doctor";
         public const string CanDeleteDoctor = "can_delete_doctor";
 
         public const string CanApproveDoctor = "can_approve_doctor";
