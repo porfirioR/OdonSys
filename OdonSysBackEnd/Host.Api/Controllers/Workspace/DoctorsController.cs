@@ -34,7 +34,7 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanAssignClient)]
         public async Task<IEnumerable<ClientModel>> AssignClientToDoctor([FromBody] AssignClientApiRequest apiRequest)
         {
-            var user =new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
+            var user = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
             var model = await _clientManager.AssignClientToDoctor(user);
             return model;
         }
