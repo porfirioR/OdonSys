@@ -28,6 +28,7 @@ namespace Access.Sql
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<Tooth> Teeth { get; set; }
         public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
+        public DbSet<UserProcedure> UserProcedures { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -39,7 +40,7 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new DoctorClientConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
-            modelBuilder.ApplyConfiguration(new ToothConfiguration());
+            modelBuilder.ApplyConfiguration(new UserProcedureConfiguration());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
