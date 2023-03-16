@@ -30,12 +30,14 @@ namespace Access.Data.Access
             return _mapper.Map<ProcedureAccessModel>(entity);
         }
 
-        public async Task<ProcedureAccessModel> CreateDoctorProcedureAsync(UpsertUserProcedureAccessRequest accessRequest)
+        public async Task<ProcedureAccessModel> CreateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<UserProcedure>(accessRequest);
             _context.UserProcedures.Add(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessModel>(entity);
+            var procedure = await GetByIdAsync(accessRequest.ProcedureId, true);
+            procedure.Price = entity.Price;
+            return procedure;
         }
 
         public async Task<ProcedureAccessModel> DeleteAsync(string id)
@@ -82,6 +84,7 @@ namespace Access.Data.Access
             var entities = await _context.UserProcedures
                             .Include(x => x.Procedures)
                             .ThenInclude(x => x.ProcedureTeeth)
+                            .Include(x => x.Procedures).ThenInclude(x => x.UserProcedures)
                             .AsNoTracking()
                             .Where(x => x.UserId == new Guid(id)).ToListAsync();
             var respose = _mapper.Map<IEnumerable<ProcedureAccessModel>>(entities);
@@ -107,6 +110,16 @@ namespace Access.Data.Access
             entity.Active = accessRequest.Active;
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            var respose = _mapper.Map<ProcedureAccessModel>(entity);
+            return respose;
+        }
+
+        public async Task<ProcedureAccessModel> UpdateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest)
+        {
+            var entity = await _context.UserProcedures
+                            .FirstAsync(x => x.UserId == new Guid(accessRequest.UserId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
+            entity.Price = accessRequest.Price;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<ProcedureAccessModel>(entity);
             return respose;
