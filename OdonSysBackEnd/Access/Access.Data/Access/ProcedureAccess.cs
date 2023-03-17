@@ -21,6 +21,12 @@ namespace Access.Data.Access
             _context = context;
         }
 
+        public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)
+        {
+            var entity = await _context.UserProcedures.SingleOrDefaultAsync(x => x.UserId == new Guid(userId) && x.ProcedureId == new Guid(procedureId));
+            return entity != null;
+        }
+
         public async Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Procedure>(accessRequest);
@@ -75,6 +81,10 @@ namespace Access.Data.Access
                             .Include(x => x.ProcedureTeeth)
                             .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            if (entity is null)
+            {
+                throw new KeyNotFoundException($"id {id}");
+            }
             var respose = _mapper.Map<ProcedureAccessModel>(entity);
             return respose;
         }
@@ -82,9 +92,9 @@ namespace Access.Data.Access
         public async Task<IEnumerable<ProcedureAccessModel>> GetProceduresByUserIdAsync(string id)
         {
             var entities = await _context.UserProcedures
-                            .Include(x => x.Procedures)
+                            .Include(x => x.Procedure)
                             .ThenInclude(x => x.ProcedureTeeth)
-                            .Include(x => x.Procedures).ThenInclude(x => x.UserProcedures)
+                            .Include(x => x.Procedure).ThenInclude(x => x.UserProcedures)
                             .AsNoTracking()
                             .Where(x => x.UserId == new Guid(id)).ToListAsync();
             var respose = _mapper.Map<IEnumerable<ProcedureAccessModel>>(entities);

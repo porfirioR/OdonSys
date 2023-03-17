@@ -1,5 +1,4 @@
 ﻿using Access.Contract.Clients;
-using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Clients;
 using Contract.Admin.Users;

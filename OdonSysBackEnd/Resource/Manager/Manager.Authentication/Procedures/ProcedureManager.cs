@@ -62,5 +62,36 @@ namespace Manager.Workspace.Procedures
         {
             return await _procedureAccess.ValidateProcedureTeethAsync(ids);
         }
+
+        public async Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id)
+        {
+            var accessResponse = await _procedureAccess.GetProceduresByUserIdAsync(id);
+            return _mapper.Map<IEnumerable<ProcedureModel>>(accessResponse);
+        }
+
+        public async Task<ProcedureModel> CreateUserProcedureAsync(UpsertUserProcedureRequest request)
+        {
+            var accessRequest = new UpsertUserProcedureAccessRequest(request.UserId, request.ProcedureId, request.Price);
+            var accessResponse = await _procedureAccess.CreateUserProcedureAsync(accessRequest);
+            return _mapper.Map<ProcedureModel>(accessResponse);
+        }
+
+        public async Task<ProcedureModel> UpdateUserProcedureAsync(UpsertUserProcedureRequest request)
+        {
+            var accessRequest = new UpsertUserProcedureAccessRequest(request.UserId, request.ProcedureId, request.Price);
+            var accessResponse = await _procedureAccess.UpdateUserProcedureAsync(accessRequest);
+            return _mapper.Map<ProcedureModel>(accessResponse);
+        }
+
+        public async Task<ProcedureModel> DeleteUserProcedureAsync(string userId, string procedureId)
+        {
+            var accessResponse = await _procedureAccess.DeleteUserProcedureAsync(userId, procedureId);
+            return _mapper.Map<ProcedureModel>(accessResponse);
+        }
+
+        public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)
+        {
+            return await _procedureAccess.CheckExistsUserProcedureAsync(userId, procedureId);
+        }
     }
 }

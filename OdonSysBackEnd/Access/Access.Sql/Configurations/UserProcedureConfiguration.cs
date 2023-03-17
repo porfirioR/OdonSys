@@ -21,6 +21,16 @@ namespace Access.Sql.Configurations
             builder
                 .Property(x => x.Price)
                 .IsRequired();
+
+            builder
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserProcedures)
+                .HasForeignKey(x => x.UserId);
+
+            builder
+                .HasOne(x => x.Procedure)
+                .WithMany(x => x.UserProcedures)
+                .HasForeignKey(x => x.ProcedureId);
         }
     }
 }

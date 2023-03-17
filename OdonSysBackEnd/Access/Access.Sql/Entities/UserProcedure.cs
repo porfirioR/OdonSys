@@ -8,7 +8,7 @@ namespace Access.Sql.Entities
         public Guid UserId { get; set; }
         public Guid ProcedureId { get; set; }
         public int Price { get; set; }
-        public virtual IEnumerable<User> Users { get; set; }
-        public virtual IEnumerable<Procedure> Procedures { get; set; }
+        public virtual User User { get; set; }
+        public virtual Procedure Procedure { get; set; }
     }
 }
