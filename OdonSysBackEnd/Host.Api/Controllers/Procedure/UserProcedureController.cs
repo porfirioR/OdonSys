@@ -22,6 +22,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanUpdateDoctor)]
         public async Task<ProcedureModel> Create([FromBody] CreateUserProcedureApiRequest apiRequest)
         {
             var userId = UserId;
@@ -36,6 +37,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanUpdateDoctor)]
         public async Task<ProcedureModel> Update([FromBody] UpdateUserProcedureApiRequest apiRequest)
         {
             var userId = UserId;
@@ -46,6 +48,13 @@ namespace Host.Api.Controllers.Procedure
             }
             var request = new UpsertUserProcedureRequest(userId, apiRequest.ProcedureId, apiRequest.Price);
             var response = await _procedureManager.UpdateUserProcedureAsync(request);
+            return response;
+        }
+
+        [HttpGet("all-procedures")]
+        public async Task<IEnumerable<ProcedureModel>> GetAll()
+        {
+            var response = await _procedureManager.GetAllAsync();
             return response;
         }
 

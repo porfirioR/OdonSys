@@ -19,6 +19,5 @@
         public const string CanDeleteDoctor = "can_delete_doctor";
 
         public const string CanApproveDoctor = "can_approve_doctor";
-
     }
 }

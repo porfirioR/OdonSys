@@ -25,7 +25,6 @@
 
         #region Doctors
         AccessDoctors,
-        CreateDoctors,
         UpdateDoctors,
         DeleteDoctors,
         ApproveDoctors
