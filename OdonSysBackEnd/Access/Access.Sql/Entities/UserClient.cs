@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Access.Sql.Entities
 {
@@ -8,5 +9,6 @@ namespace Access.Sql.Entities
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
         public virtual Client Client { get; set; }
+        public virtual IEnumerable<ClientProcedure> ClientProcedures { get; set; }
     }
 }

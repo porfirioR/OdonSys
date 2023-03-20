@@ -25,22 +25,23 @@ namespace Access.Sql
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<UserClient> UserClients { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
         public DbSet<Tooth> Teeth { get; set; }
         public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
-        public DbSet<UserProcedure> UserProcedures { get; set; }
+        public DbSet<ClientProcedure> ClientProcedures { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new DoctorConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
-            modelBuilder.ApplyConfiguration(new DoctorClientConfiguration());
+            modelBuilder.ApplyConfiguration(new UserClientConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
-            modelBuilder.ApplyConfiguration(new UserProcedureConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientProcedureConfiguration());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))

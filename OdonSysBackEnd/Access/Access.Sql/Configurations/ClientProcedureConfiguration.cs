@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class UserProcedureConfiguration : IEntityTypeConfiguration<UserProcedure>
+    public class ClientProcedureConfiguration : IEntityTypeConfiguration<ClientProcedure>
     {
-        public void Configure(EntityTypeBuilder<UserProcedure> builder)
+        public void Configure(EntityTypeBuilder<ClientProcedure> builder)
         {
-            builder.HasKey(x => new { x.Id, x.ProcedureId, x.UserId });
+            builder.HasKey(x => new { x.Id, x.ProcedureId, x.UserClientId });
 
             builder
                 .Property(d => d.DateCreated)
@@ -23,13 +23,13 @@ namespace Access.Sql.Configurations
                 .IsRequired();
 
             builder
-                .HasOne(x => x.User)
-                .WithMany(x => x.UserProcedures)
-                .HasForeignKey(x => x.UserId);
+                .HasOne(x => x.UserClient)
+                .WithMany(x => x.ClientProcedures)
+                .HasForeignKey(x => x.UserClientId);
 
             builder
                 .HasOne(x => x.Procedure)
-                .WithMany(x => x.UserProcedures)
+                .WithMany(x => x.ClientProcedures)
                 .HasForeignKey(x => x.ProcedureId);
         }
     }

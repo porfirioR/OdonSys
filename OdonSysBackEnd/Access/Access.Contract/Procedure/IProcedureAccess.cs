@@ -13,11 +13,5 @@ namespace Access.Contract.Procedure
         Task<ProcedureAccessModel> RestoreAsync(string id);
         Task<bool> ValidateIdNameAsync(string name);
         Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds);
-        Task<IEnumerable<ProcedureAccessModel>> GetProceduresByUserIdAsync(string id);
-        Task<ProcedureAccessModel> CreateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest);
-        Task<ProcedureAccessModel> UpdateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest);
-        Task<ProcedureAccessModel> DeleteUserProcedureAsync(string userId, string procedureId);
-        Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId);
-
     }
 }

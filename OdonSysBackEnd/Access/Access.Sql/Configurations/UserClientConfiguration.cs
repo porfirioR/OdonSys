@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class DoctorClientConfiguration : IEntityTypeConfiguration<UserClient>
+    public class UserClientConfiguration : IEntityTypeConfiguration<UserClient>
     {
         public void Configure(EntityTypeBuilder<UserClient> builder)
         {
