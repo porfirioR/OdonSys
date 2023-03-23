@@ -22,23 +22,18 @@ namespace Access.Data.Access
             _context = context;
         }
 
-        public async Task<ProcedureAccessModel> CreateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest)
+        public async Task<ClientProcedureAccessModel> CreateClientProcedureAsync(CreateClientProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<ClientProcedure>(accessRequest);
             _context.ClientProcedures.Add(entity);
             await _context.SaveChangesAsync();
-            var procedure = await GetByIdAsync(accessRequest.ProcedureId, true);
-            procedure.Price = entity.Price;
-            return procedure;
-        }
-
-        public async Task<ProcedureAccessModel> DeleteUserProcedureAsync(string userId, string procedureId)
-        {
-            var entity = await _context.ClientProcedures.SingleOrDefaultAsync(x => x.UserClientId == new Guid(userId) && x.ProcedureId == new Guid(procedureId));
-            _context.Remove(entity);
-            await _context.SaveChangesAsync();
-            var procedure = await GetByIdAsync(procedureId, true);
-            return _mapper.Map<ProcedureAccessModel>(procedure);
+            var result = new ClientProcedureAccessModel(
+                entity.ProcedureId.ToString(),
+                entity.UserClientId.ToString(),
+                entity.Status,
+                entity.Price,
+                entity.Anesthesia);
+            return result;
         }
 
         public async Task<IEnumerable<ProcedureAccessModel>> GetProceduresByUserIdAsync(string id)
@@ -53,7 +48,7 @@ namespace Access.Data.Access
             return respose;
         }
 
-        public async Task<ProcedureAccessModel> UpdateUserProcedureAsync(UpsertUserProcedureAccessRequest accessRequest)
+        public async Task<ProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest)
         {
             var entity = await _context.ClientProcedures
                             .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
