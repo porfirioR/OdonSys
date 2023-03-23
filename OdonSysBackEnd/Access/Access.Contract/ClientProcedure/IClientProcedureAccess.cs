@@ -6,9 +6,9 @@ namespace Access.Contract.ClientProcedure
 {
     public interface IClientProcedureAccess
     {
-        Task<IEnumerable<ProcedureAccessModel>> GetProceduresByUserIdAsync(string id);
+        Task<IEnumerable<ClientProcedureAccessModel>> GetClientProceduresByUserClientIdAsync(string id);
         Task<ClientProcedureAccessModel> CreateClientProcedureAsync(CreateClientProcedureAccessRequest accessRequest);
-        Task<ProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest);
+        Task<ClientProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest);
         Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId);
     }
 }

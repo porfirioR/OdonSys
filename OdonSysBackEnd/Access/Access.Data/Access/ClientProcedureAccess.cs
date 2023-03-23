@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Access.Data.Access
 {
-    internal class ClientProcedureAccess : IClientProcedureAccess
+    public class ClientProcedureAccess : IClientProcedureAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
@@ -36,26 +36,32 @@ namespace Access.Data.Access
             return result;
         }
 
-        public async Task<IEnumerable<ProcedureAccessModel>> GetProceduresByUserIdAsync(string id)
+        public async Task<IEnumerable<ClientProcedureAccessModel>> GetClientProceduresByUserClientIdAsync(string userClientId)
         {
             var entities = await _context.ClientProcedures
-                            .Include(x => x.Procedure)
-                            .ThenInclude(x => x.ProcedureTeeth)
-                            .Include(x => x.Procedure).ThenInclude(x => x.ClientProcedures)
-                            .AsNoTracking()
-                            .Where(x => x.UserClientId == new Guid(id)).ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ProcedureAccessModel>>(entities);
+                            .Where(x => x.UserClientId == new Guid(userClientId)).ToListAsync();
+            var respose = entities.Select(x => new ClientProcedureAccessModel(
+                x.ProcedureId.ToString(),
+                x.UserClientId.ToString(),
+                x.Status,
+                x.Price,
+                x.Anesthesia));
             return respose;
         }
 
-        public async Task<ProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest)
+        public async Task<ClientProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest)
         {
             var entity = await _context.ClientProcedures
-                            .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
+                            .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserClientId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
             entity.Price = accessRequest.Price;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ProcedureAccessModel>(entity);
-            return respose;
+            var result = new ClientProcedureAccessModel(
+                entity.ProcedureId.ToString(),
+                entity.UserClientId.ToString(),
+                entity.Status,
+                entity.Price,
+                entity.Anesthesia);
+            return result;
         }
 
         public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)

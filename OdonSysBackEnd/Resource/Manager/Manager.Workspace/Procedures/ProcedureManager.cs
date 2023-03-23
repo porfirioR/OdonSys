@@ -1,4 +1,5 @@
-﻿using Access.Contract.Procedure;
+﻿using Access.Contract.ClientProcedure;
+using Access.Contract.Procedure;
 using AutoMapper;
 using Contract.Workspace.Procedures;
 
@@ -7,12 +8,14 @@ namespace Manager.Workspace.Procedures
     internal class ProcedureManager : IProcedureManager
     {
         private readonly IProcedureAccess _procedureAccess;
+        private readonly IClientProcedureAccess _clientProcedureAccess;
         private readonly IMapper _mapper;
 
-        public ProcedureManager(IProcedureAccess procedureAccess, IMapper mapper)
+        public ProcedureManager(IProcedureAccess procedureAccess, IMapper mapper, IClientProcedureAccess clientProcedureAccess)
         {
             _procedureAccess = procedureAccess;
             _mapper = mapper;
+            _clientProcedureAccess = clientProcedureAccess;
         }
 
         public async Task<ProcedureModel> CreateAsync(CreateProcedureRequest request)
@@ -65,7 +68,7 @@ namespace Manager.Workspace.Procedures
 
         public async Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id)
         {
-            var accessResponse = await _procedureAccess.GetProceduresByUserIdAsync(id);
+            var accessResponse = await _clientProcedureAccess.GetClientProceduresByUserClientIdAsync(id);
             return _mapper.Map<IEnumerable<ProcedureModel>>(accessResponse);
         }
 
