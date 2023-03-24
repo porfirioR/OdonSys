@@ -1,4 +1,6 @@
-﻿namespace Contract.Workspace.Procedures
+﻿using Contract.Workspace.ClientProcedures;
+
+namespace Contract.Workspace.Procedures
 {
     public interface IProcedureManager
     {
@@ -12,9 +14,8 @@
         Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids);
 
         Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id);
-        Task<ProcedureModel> CreateUserProcedureAsync(UpsertUserProcedureRequest request);
+        Task<ProcedureModel> CreateUserProcedureAsync(CreateClientProcedureRequest request);
         Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId);
-        Task<ProcedureModel> UpdateUserProcedureAsync(UpsertUserProcedureRequest request);
-        Task<ProcedureModel> DeleteUserProcedureAsync(string userId, string procedureId);
+        Task<ProcedureModel> UpdateUserProcedureAsync(UpdateClientProcedureRequest request);
     }
 }

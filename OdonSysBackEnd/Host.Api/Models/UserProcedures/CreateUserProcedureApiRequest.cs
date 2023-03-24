@@ -1,6 +1,7 @@
 ﻿using Contract.Workspace.Procedures;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Utilities.Enums;
 
 namespace Host.Api.Models.Procedures
 {
@@ -11,6 +12,8 @@ namespace Host.Api.Models.Procedures
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un número valido")]
         public int Price { get; set; }
+        [Required]
+        public bool Anhestesia { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

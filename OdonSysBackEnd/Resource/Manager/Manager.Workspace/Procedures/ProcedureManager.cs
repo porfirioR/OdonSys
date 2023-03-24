@@ -1,7 +1,9 @@
 ﻿using Access.Contract.ClientProcedure;
 using Access.Contract.Procedure;
 using AutoMapper;
+using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
+using Utilities.Enums;
 
 namespace Manager.Workspace.Procedures
 {
@@ -72,29 +74,26 @@ namespace Manager.Workspace.Procedures
             return _mapper.Map<IEnumerable<ProcedureModel>>(accessResponse);
         }
 
-        public async Task<ProcedureModel> CreateUserProcedureAsync(UpsertUserProcedureRequest request)
+        public async Task<ProcedureModel> CreateUserProcedureAsync(CreateClientProcedureRequest request)
         {
-            var accessRequest = new UpsertUserProcedureAccessRequest(request.UserId, request.ProcedureId, request.Price);
-            var accessResponse = await _procedureAccess.CreateUserProcedureAsync(accessRequest);
+            var userClientId = string.Empty;
+            var accessRequest = new CreateClientProcedureAccessRequest(userClientId, request.ProcedureId, request.Price, request.Anesthesia, ProcedureStatus.Nuevo);
+            var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
+
             return _mapper.Map<ProcedureModel>(accessResponse);
         }
 
-        public async Task<ProcedureModel> UpdateUserProcedureAsync(UpsertUserProcedureRequest request)
+        public async Task<ProcedureModel> UpdateUserProcedureAsync(UpdateClientProcedureRequest request)
         {
-            var accessRequest = new UpsertUserProcedureAccessRequest(request.UserId, request.ProcedureId, request.Price);
-            var accessResponse = await _procedureAccess.UpdateUserProcedureAsync(accessRequest);
-            return _mapper.Map<ProcedureModel>(accessResponse);
-        }
-
-        public async Task<ProcedureModel> DeleteUserProcedureAsync(string userId, string procedureId)
-        {
-            var accessResponse = await _procedureAccess.DeleteUserProcedureAsync(userId, procedureId);
+            var userClientId = string.Empty;
+            var accessRequest = new UpdateClientProcedureAccessRequest(userClientId, request.ProcedureId, request.Price, request.Status);
+            var accessResponse = await _clientProcedureAccess.UpdateClientProcedureAsync(accessRequest);
             return _mapper.Map<ProcedureModel>(accessResponse);
         }
 
         public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)
         {
-            return await _procedureAccess.CheckExistsUserProcedureAsync(userId, procedureId);
+            return await _clientProcedureAccess.CheckExistsUserProcedureAsync(userId, procedureId);
         }
     }
 }

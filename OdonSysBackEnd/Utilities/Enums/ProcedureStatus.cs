@@ -2,8 +2,9 @@
 {
     public enum ProcedureStatus
     {
-        Completado = 1,
-        Pendiente = 2,
-        Cancelado = 3
+        Nuevo = 1,
+        Completado = 2,
+        Pendiente = 3,
+        Cancelado = 4
     }
 }

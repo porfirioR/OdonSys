@@ -1,4 +1,5 @@
-﻿using Contract.Workspace.Procedures;
+﻿using Contract.Workspace.ClientProcedures;
+using Contract.Workspace.Procedures;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Procedures;
 using Host.Api.Models.UserProcedures;
@@ -31,7 +32,7 @@ namespace Host.Api.Controllers.Procedure
             {
                 throw new KeyNotFoundException($"Ya existe la relación entre {userId}, y {apiRequest.ProcedureId}");
             }
-            var request = new UpsertUserProcedureRequest(userId, apiRequest.ProcedureId, apiRequest.Price);
+            var request = new CreateClientProcedureRequest(userId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Anhestesia);
             var model = await _procedureManager.CreateUserProcedureAsync(request);
             return model;
         }
@@ -46,7 +47,7 @@ namespace Host.Api.Controllers.Procedure
             {
                 throw new KeyNotFoundException($"No existe la relación entre {userId}, y {apiRequest.ProcedureId}");
             }
-            var request = new UpsertUserProcedureRequest(userId, apiRequest.ProcedureId, apiRequest.Price);
+            var request = new UpdateClientProcedureRequest(userId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Status);
             var response = await _procedureManager.UpdateUserProcedureAsync(request);
             return response;
         }
@@ -65,11 +66,5 @@ namespace Host.Api.Controllers.Procedure
             return response;
         }
 
-        [HttpDelete("{procedureId}")]
-        [Authorize(Policy = Policy.CanUpdateDoctor)]
-        public async Task<ProcedureModel> Delete(string procedureId)
-        {
-            return await _procedureManager.DeleteUserProcedureAsync(UserId, procedureId);
-        }
     }
 }
