@@ -10,6 +10,7 @@ namespace Contract.Admin.Users
         Task<IEnumerable<string>> CheckUsersExistsAsync(IEnumerable<string> users);
         Task<IEnumerable<DoctorModel>> GetAllAsync();
         Task<DoctorModel> GetByIdAsync(string id);
+        Task<UserClientModel> GetUserClientAsync(string userId, string clientId);
         Task<AuthModel> LoginAsync(string authorization);
         Task<AuthModel> RegisterUserAsync(RegisterUserRequest createUserRequest);
         Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);

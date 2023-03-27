@@ -67,6 +67,13 @@ namespace Manager.Admin
             return model;
         }
 
+        public async Task<UserClientModel> GetUserClientAsync(string userId, string clientId)
+        {
+            var accessModel = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(clientId, userId));
+            var model = new UserClientModel(accessModel.Id, accessModel.UserId, accessModel.ClientId);
+            return model;
+        }
+
         public async Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest)
         {
             var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);

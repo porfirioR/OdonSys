@@ -63,9 +63,10 @@ namespace Access.Data.Access
             return result;
         }
 
-        public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)
+        public async Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId)
         {
-            var entity = await _context.ClientProcedures.SingleOrDefaultAsync(x => x.UserClientId == new Guid(userId) && x.ProcedureId == new Guid(procedureId));
+            var entity = await _context.ClientProcedures
+                            .SingleOrDefaultAsync(x => x.UserClientId == new Guid(userClientId) && x.ProcedureId == new Guid(procedureId));
             return entity != null;
         }
     }

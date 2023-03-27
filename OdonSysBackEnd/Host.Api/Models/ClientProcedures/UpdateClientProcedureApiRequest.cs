@@ -22,6 +22,11 @@ namespace Host.Api.Models.ClientProcedures
             var results = new List<ValidationResult>();
             var procedureManager = (IProcedureManager)validationContext.GetService(typeof(IProcedureManager));
             _ = procedureManager.GetByIdAsync(ProcedureId, true).GetAwaiter().GetResult();
+            var exists = procedureManager.CheckExistsClientProcedureAsync(UserClientId, ProcedureId).GetAwaiter().GetResult();
+            if (!exists)
+            {
+                results.Add(new ValidationResult($"No existe la relación entre {UserClientId}, y {ProcedureId}"));
+            }
             return results;
         }
     }

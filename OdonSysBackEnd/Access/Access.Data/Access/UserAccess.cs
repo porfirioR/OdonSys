@@ -54,9 +54,8 @@ namespace Access.Admin.Access
         {
             var entity = await _context.Set<UserClient>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.UserId) && x.ClientId == new Guid(accessRequest.ClientId));
-            var userClient = entity ?? throw new KeyNotFoundException($"id {accessRequest.UserId}");
 
-            return new UserClientAccessModel(userClient.Id, userClient.ClientId, userClient.UserId);
+            return entity is null ? null : new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
         }
 
         public async Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest)

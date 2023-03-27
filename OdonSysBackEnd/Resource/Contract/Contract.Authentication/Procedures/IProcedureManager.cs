@@ -15,7 +15,7 @@ namespace Contract.Workspace.Procedures
 
         Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id);
         Task<ProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request);
-        Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId);// check
+        Task<bool> CheckExistsClientProcedureAsync(string userId, string procedureId);// check
         Task<ProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request);
     }
 }

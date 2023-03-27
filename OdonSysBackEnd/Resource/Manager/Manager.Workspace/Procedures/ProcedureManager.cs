@@ -80,6 +80,7 @@ namespace Manager.Workspace.Procedures
         public async Task<ProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request)
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
+            userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, request.Price, request.Anesthesia, ProcedureStatus.Nuevo);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
@@ -93,9 +94,9 @@ namespace Manager.Workspace.Procedures
             return _mapper.Map<ProcedureModel>(accessResponse);
         }
 
-        public async Task<bool> CheckExistsUserProcedureAsync(string userId, string procedureId)
+        public async Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId)
         {
-            return await _clientProcedureAccess.CheckExistsUserProcedureAsync(userId, procedureId);
+            return await _clientProcedureAccess.CheckExistsClientProcedureAsync(userClientId, procedureId);
         }
     }
 }
