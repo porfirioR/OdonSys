@@ -50,6 +50,23 @@ namespace Access.Admin.Access
             return response;
         }
 
+        public async Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest)
+        {
+            var entity = await _context.Set<UserClient>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.UserId) && x.ClientId == new Guid(accessRequest.ClientId));
+            var userClient = entity ?? throw new KeyNotFoundException($"id {accessRequest.UserId}");
+
+            return new UserClientAccessModel(userClient.Id, userClient.ClientId, userClient.UserId);
+        }
+
+        public async Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest)
+        {
+            var entity = _mapper.Map<UserClient>(accessRequest);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
+        }
+
         public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
             var entity = await GetUserByIdAsync(dataAccess.Id);

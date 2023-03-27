@@ -10,5 +10,7 @@ namespace Access.Contract.Users
         Task<DoctorDataAccessModel> GetByIdAsync(string id);
         Task<UserDataAccessModel> ApproveNewUserAsync(string id);
         Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess);
+        Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest);
+        Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest);
     }
 }

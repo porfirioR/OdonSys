@@ -1,5 +1,4 @@
 ﻿using Access.Contract.ClientProcedure;
-using Access.Contract.Procedure;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;

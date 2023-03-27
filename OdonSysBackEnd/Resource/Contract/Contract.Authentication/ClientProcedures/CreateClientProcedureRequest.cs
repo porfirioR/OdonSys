@@ -2,9 +2,9 @@
 {
     public record CreateClientProcedureRequest(
         string UserId,
+        string ClientId,
         string ProcedureId,
         int Price,
         bool Anesthesia
-    )
-    { }
+    ) { }
 }

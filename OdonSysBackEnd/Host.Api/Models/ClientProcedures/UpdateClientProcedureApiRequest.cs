@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 
-namespace Host.Api.Models.UserProcedures
+namespace Host.Api.Models.ClientProcedures
 {
-    public class UpdateUserProcedureApiRequest : IValidatableObject
+    public class UpdateClientProcedureApiRequest : IValidatableObject
     {
+        [Required]
+        public string UserClientId { get; set; }
         [Required]
         public string ProcedureId { get; set; }
         [Required]

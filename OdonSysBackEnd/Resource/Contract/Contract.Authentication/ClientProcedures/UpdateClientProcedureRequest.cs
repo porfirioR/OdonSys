@@ -3,10 +3,9 @@
 namespace Contract.Workspace.Procedures
 {
     public record UpdateClientProcedureRequest(
-        string UserId,
+        string UserClientId,
         string ProcedureId,
         int Price,
         ProcedureStatus Status
-    )
-    { }
+    ) { }
 }
