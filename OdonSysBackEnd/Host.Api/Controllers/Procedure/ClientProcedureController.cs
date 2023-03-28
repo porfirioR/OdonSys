@@ -22,7 +22,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPost]
-        [Authorize(Policy = Policy.CanUpdateDoctor)]
+        [Authorize(Policy = Policy.CanCreateClientProcedure)]
         public async Task<ProcedureModel> Create([FromBody] CreateClientProcedureApiRequest apiRequest)
         {
             var request = new CreateClientProcedureRequest(UserId, apiRequest.ClientId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Anhestesia);
@@ -31,7 +31,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPut]
-        [Authorize(Policy = Policy.CanUpdateDoctor)]
+        [Authorize(Policy = Policy.CanUpdateClientProcedure)]
         public async Task<ProcedureModel> Update([FromBody] UpdateClientProcedureApiRequest apiRequest)
         {
             var request = new UpdateClientProcedureRequest(apiRequest.UserClientId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Status);
