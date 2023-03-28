@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Access.Admin.Access
+namespace Access.Data.Access
 {
     internal class ClientAccess : IClientAccess
     {
@@ -53,23 +53,13 @@ namespace Access.Admin.Access
             return respose;
         }
 
-        public async Task<IEnumerable<ClientAccessModel>> GetClientsByDoctorIdAsync(string id, string userName)
+        public async Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string userId, string userName)
         {
             var entities = await _context.Clients
-                                .Include(x => x.DoctorsClients)
-                                .ThenInclude(x => x.Doctor)
-                                .Where(x => x.DoctorsClients.Any(y => y.DoctorId == new Guid(id)) || x.UserCreated == userName).ToListAsync();
+                            .Include(x => x.UserClients)
+                            .ThenInclude(x => x.User)
+                            .Where(x => x.UserClients.Any(y => y.UserId == new Guid(userId)) || x.UserCreated == userName).ToListAsync();
             var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
-            return respose;
-        }
-
-        public async Task<ClientAccessModel> PatchClientAsync(PatchClientAccessRequest accessRequest)
-        {
-            var entity = await GetClientByIdAsync(accessRequest.Id);
-            entity = _mapper.Map(accessRequest, entity);
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ClientAccessModel>(entity);
             return respose;
         }
 
@@ -83,13 +73,6 @@ namespace Access.Admin.Access
             return respose;
         }
 
-        private async Task<Client> GetClientByIdAsync(string id)
-        {
-            var entity = await _context.Set<Client>()
-                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity ?? throw new KeyNotFoundException($"id {id}");
-        }
-
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)
         {
             var entity = await _context.Set<Client>()
@@ -98,5 +81,19 @@ namespace Access.Admin.Access
             return respose;
         }
 
+        public async Task<IEnumerable<ClientAccessModel>> AssignClientToDoctorAsync(AssignClientAccessRequest accessRequest)
+        {
+            var entity = _mapper.Map<UserClient>(accessRequest);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return await GetClientsByUserIdAsync(accessRequest.UserId, entity.UserCreated);
+        }
+
+        private async Task<Client> GetClientByIdAsync(string id)
+        {
+            var entity = await _context.Set<Client>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            return entity ?? throw new KeyNotFoundException($"id {id}");
+        }
     }
 }

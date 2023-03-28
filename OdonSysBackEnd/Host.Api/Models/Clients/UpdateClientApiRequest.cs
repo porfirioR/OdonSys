@@ -13,8 +13,8 @@ namespace Host.Api.Models.Clients
         public string Name { get; set; }
         public string MiddleName { get; set; }
         [Required]
-        public string LastName { get; set; }
-        public string MiddleLastName { get; set; }
+        public string Surname { get; set; }
+        public string SecondSurname { get; set; }
         [Required]
         public string Phone { get; set; }
         [Required]

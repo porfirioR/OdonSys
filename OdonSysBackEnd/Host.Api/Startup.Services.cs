@@ -11,8 +11,7 @@ namespace Host.Api
             
             //Manager
             Manager.Admin.ServiceInjection.ConfigureServices(services);
-            Manager.Procedure.ServiceInjection.ConfigureServices(services);
-            Manager.Workspace.ServiceInjection.ConfigureServices(services);    
+            Manager.Workspace.ServiceInjection.ConfigureServices(services);
         }
     }
 }

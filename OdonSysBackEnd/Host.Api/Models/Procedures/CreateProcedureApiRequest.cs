@@ -1,4 +1,4 @@
-﻿using Contract.Procedure.Procedures;
+﻿using Contract.Workspace.Procedures;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

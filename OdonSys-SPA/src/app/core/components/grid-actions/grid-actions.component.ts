@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
+import { OperationType } from '../../enums/operation-type.enum';
 import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
 
@@ -24,12 +25,17 @@ export class GridActionsComponent implements AgRendererComponent {
 
   public agInit = (params: ICellRendererParams & GridActionModel): void => {
     this.params = params;
-    console.log(params.data);
     if(this.params.conditionalButtons && this.params.conditionalButtons.length > 0) {
       this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
-        const attributeValue = params.data[x.attributeAffected];
-        if (attributeValue === x.attributeValue) {
-          this.verifyButtons(x.buttonType);
+        if (x.principalAttributeAffected) {
+          const principalAttributeValue = params.data[x.principalAttributeAffected];
+          if(x.principalOperator === OperationType.Equal && principalAttributeValue.toString() === x.principalAttributeValue) {
+            this.basicVerifyAttributes(params, x);
+          } else if(x.principalOperator === OperationType.NotEqual && principalAttributeValue.toString() !== x.principalAttributeValue) {
+            this.basicVerifyAttributes(params, x);
+          }
+        } else {
+          this.basicVerifyAttributes(params, x);
         }
       });
     }
@@ -50,6 +56,15 @@ export class GridActionsComponent implements AgRendererComponent {
   
   public refresh = (params: any): boolean => {
     return true;
+  }
+
+  private basicVerifyAttributes = (params: ICellRendererParams, row: ConditionalGridButtonShow) => {
+    const attributeValue = params.data[row.attributeAffected];
+    if(row.operator === OperationType.Equal && attributeValue.toString() === row.attributeValue) {
+      this.verifyButtons(row.buttonType);
+    } else if(row.operator === OperationType.NotEqual && attributeValue.toString() !== row.attributeValue) {
+      this.verifyButtons(row.buttonType);
+    }
   }
 
   private verifyButtons = (action: ButtonGridActionType) => {

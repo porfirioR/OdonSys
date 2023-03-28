@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contract.Admin.Clients;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
 using Microsoft.AspNetCore.Authorization;
@@ -27,14 +28,17 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateClientRequest>(apiRequest);
+            request.UserId = UserId;
             var model = await _clientManager.CreateAsync(request);
             return model;
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
             var request = _mapper.Map<UpdateClientRequest>(apiRequest);
@@ -43,6 +47,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<IEnumerable<ClientModel>> GetAll()
         {
             var model = await _clientManager.GetAllAsync();
@@ -50,6 +55,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<ClientModel> GetById(string id)
         {
             var model = await _clientManager.GetByIdAsync(id);
@@ -57,6 +63,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("document/{documentId}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<ClientModel> GetByDocumentAsync(string documentId)
         {
             var model = await _clientManager.GetByDocumentAsync(documentId);
@@ -64,6 +71,7 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = Policy.CanDeleteClient)]
         public async Task<ClientModel> Delete(string id)
         {
             var model = await _clientManager.DeleteAsync(id);
@@ -71,25 +79,27 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPatch("{id}")]
-        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<ClientModel> patchDocument)
+        [Authorize(Policy = Policy.CanManageClient)]
+        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<UpdateClientRequest> patchClient)
         {
-            if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
-            var clientModel = await _clientManager.GetByIdAsync(id);
-            patchDocument.ApplyTo(clientModel);
+            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            var clientRequest = _mapper.Map<UpdateClientRequest>(await _clientManager.GetByIdAsync(id));
+            patchClient.ApplyTo(clientRequest);
             if (!ModelState.IsValid)
             {
                 throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
             }
-            var model = await _clientManager.UpdateAsync(clientModel);
+            var model = await _clientManager.UpdateAsync(clientRequest);
             return model;
         }
 
         [HttpGet("patients")]
-        public async Task<IEnumerable<ClientModel>> GetPatientsByDoctorId()
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<IEnumerable<ClientModel>> GetPatientsByUserId()
         {
             var id = UserId;
             var userName = UserName;
-            var model = await _clientManager.GetClientsByDoctorIdAsync(id, userName);
+            var model = await _clientManager.GetClientsByUserIdAsync(id, userName);
             return model;
         }
 

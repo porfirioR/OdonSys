@@ -6,5 +6,6 @@ namespace Access.Contract.Auth
     {
         public UserDataAccessModel User { get; set; }
         public string Token { get; set; }
+        public string Scheme { get; set; }
     }
 }

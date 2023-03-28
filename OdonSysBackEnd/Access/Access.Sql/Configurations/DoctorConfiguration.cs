@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
+    public class DoctorConfiguration : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Doctor> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.HasKey(x => x.Id);
 
@@ -29,12 +29,12 @@ namespace Access.Sql.Configurations
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.LastName)
+                .Property(x => x.Surname)
                 .HasMaxLength(25)
                 .IsRequired();
 
             builder
-                .Property(x => x.MiddleLastName)
+                .Property(x => x.SecondSurname)
                 .HasMaxLength(25);
 
             builder
@@ -60,9 +60,6 @@ namespace Access.Sql.Configurations
                 .HasIndex(x => x.Email)
                 .IsUnique();
 
-            builder.HasOne(x => x.User)
-                .WithOne(x => x.Doctor)
-                .HasForeignKey<User>(x => x.Id);
         }
     }
 }
