@@ -18,6 +18,9 @@
         public const string CanUpdateDoctor = "can_update_doctor";
         public const string CanDeleteDoctor = "can_delete_doctor";
 
+        public const string CanCreateClientProcedure = "can_create_client_procedure";
+        public const string CanUpdateClientProcedure = "can_update_client_procedure";
+
         public const string CanApproveDoctor = "can_approve_doctor";
     }
 }

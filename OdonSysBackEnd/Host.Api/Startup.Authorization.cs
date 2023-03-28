@@ -36,6 +36,8 @@ namespace Host.Api
                 //        PermissionName.UpdateDoctors,
                 //        PermissionName.DeleteDoctors,
                 //    })),
+                new PolicyModel(Policy.CanCreateClientProcedure, new AuthRequirement(PermissionName.CreateClientProcedures)),
+                new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(
