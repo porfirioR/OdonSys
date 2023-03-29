@@ -8,7 +8,10 @@ namespace Access.Sql.Configurations
     {
         public void Configure(EntityTypeBuilder<UserClient> builder)
         {
-            builder.HasKey(x => new {x.Id, x.UserId, x.ClientId });
+            builder.HasKey(x => x.Id);
+            builder
+                .HasIndex(x => new {x.Id, x.UserId, x.ClientId })
+                .IsUnique();
 
             builder
                 .Property(x => x.DateCreated)

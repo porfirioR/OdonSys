@@ -11,7 +11,7 @@ namespace Access.Admin.Mapper
         {
             CreateMap<UpdateClientProcedureAccessRequest, ClientProcedure>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.UserClientId, opt => opt.MapFrom(src => new Guid(src.UserId)))
+                .ForMember(dest => dest.UserClientId, opt => opt.MapFrom(src => new Guid(src.UserClientId)))
                 .ForMember(dest => dest.ProcedureId, opt => opt.MapFrom(src => new Guid(src.ProcedureId)));
         }
     }
