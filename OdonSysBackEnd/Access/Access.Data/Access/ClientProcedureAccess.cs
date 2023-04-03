@@ -52,7 +52,7 @@ namespace Access.Data.Access
         {
             var entity = await _context.ClientProcedures
                             .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserClientId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
-            entity.Price = accessRequest.Price;
+            entity = _mapper.Map(accessRequest, entity);
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(
                 entity.ProcedureId.ToString(),
