@@ -17,7 +17,7 @@ namespace Host.Api
                 typeof(ProcedureHostProfile),
                 typeof(ProcedureManagerProfile),
                 typeof(ProcedureAccessProfile),
-                typeof(UserProcedureAccessProfile)
+                typeof(ClientProcedureAccessProfile)
             );
         }
     }

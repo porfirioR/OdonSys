@@ -77,21 +77,33 @@ namespace Manager.Workspace.Procedures
             return _mapper.Map<IEnumerable<ProcedureModel>>(accessResponse);
         }
 
-        public async Task<ProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request)
+        public async Task<ClientProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request)
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, request.Price, request.Anesthesia, ProcedureStatus.Nuevo);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
-            return _mapper.Map<ProcedureModel>(accessResponse);
+            return new ClientProcedureModel(
+                accessResponse.ProcedureId,
+                accessResponse.UserClientId,
+                accessResponse.Status,
+                accessResponse.Price,
+                accessResponse.Anesthesia
+            );
         }
 
-        public async Task<ProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request)
+        public async Task<ClientProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request)
         {
             var accessRequest = new UpdateClientProcedureAccessRequest(request.UserClientId, request.ProcedureId, request.Price, request.Status);
             var accessResponse = await _clientProcedureAccess.UpdateClientProcedureAsync(accessRequest);
-            return _mapper.Map<ProcedureModel>(accessResponse);
+            return new ClientProcedureModel(
+                accessResponse.ProcedureId,
+                accessResponse.UserClientId,
+                accessResponse.Status,
+                accessResponse.Price,
+                accessResponse.Anesthesia
+            );
         }
 
         public async Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId)
