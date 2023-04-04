@@ -62,7 +62,7 @@ export class RegisterUserComponent implements OnInit {
       password: new FormControl('', [Validators.required, Validators.maxLength(25)]),
       repeatPassword: new FormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
       phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.email]),
       country: new FormControl('', [Validators.required])
     });
     this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
@@ -76,6 +76,4 @@ export class RegisterUserComponent implements OnInit {
       return isInvalid ? { invalidRepeatPassword: isInvalid } : null;
     }
   }
-
-
 }
