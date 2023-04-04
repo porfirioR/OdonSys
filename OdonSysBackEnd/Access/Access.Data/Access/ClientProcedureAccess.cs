@@ -35,10 +35,11 @@ namespace Access.Data.Access
             return result;
         }
 
-        public async Task<IEnumerable<ClientProcedureAccessModel>> GetClientProceduresByUserClientIdAsync(string userClientId)
+        public async Task<IEnumerable<ClientProcedureAccessModel>> GetClientProceduresByUserClientIdAsync(IEnumerable<Guid> userClientIds)
         {
             var entities = await _context.ClientProcedures
-                            .Where(x => x.UserClientId == new Guid(userClientId)).ToListAsync();
+                            .AsNoTracking()
+                            .Where(x => userClientIds.Contains(x.UserClientId)).ToListAsync();
             var respose = entities.Select(x => new ClientProcedureAccessModel(
                 x.ProcedureId.ToString(),
                 x.UserClientId.ToString(),

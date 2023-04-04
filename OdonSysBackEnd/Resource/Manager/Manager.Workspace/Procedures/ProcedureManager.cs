@@ -73,8 +73,12 @@ namespace Manager.Workspace.Procedures
 
         public async Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id)
         {
-            var accessResponse = await _clientProcedureAccess.GetClientProceduresByUserClientIdAsync(id);
-            return _mapper.Map<IEnumerable<ProcedureModel>>(accessResponse);
+            var userClientList = (await _userDataAccess.GetUserClientsByUserIdAsync(id)).Select(x => x.Id);
+            var clientProceduresAccessResponse = await _clientProcedureAccess.GetClientProceduresByUserClientIdAsync(userClientList);
+            var allProcedures = await _procedureAccess.GetAllAsync();
+            var myProcedureIds = clientProceduresAccessResponse.Select(x => x.ProcedureId);
+            var procedures = allProcedures.Where(x => myProcedureIds.Contains(x.Id));
+            return _mapper.Map<IEnumerable<ProcedureModel>>(procedures);
         }
 
         public async Task<ClientProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request)

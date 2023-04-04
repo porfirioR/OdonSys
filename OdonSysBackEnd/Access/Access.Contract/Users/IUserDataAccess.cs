@@ -11,6 +11,7 @@ namespace Access.Contract.Users
         Task<UserDataAccessModel> ApproveNewUserAsync(string id);
         Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess);
         Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest);
+        Task<IEnumerable<UserClientAccessModel>> GetUserClientsByUserIdAsync(string userId);
         Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest);
     }
 }

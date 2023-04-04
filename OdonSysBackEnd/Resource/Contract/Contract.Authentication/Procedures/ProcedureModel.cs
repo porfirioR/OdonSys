@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Contract.Workspace.Procedures
+﻿namespace Contract.Workspace.Procedures
 {
     public class ProcedureModel
     {
