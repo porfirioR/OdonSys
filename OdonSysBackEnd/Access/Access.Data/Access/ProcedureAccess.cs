@@ -21,32 +21,32 @@ namespace Access.Data.Access
             _context = context;
         }
 
-        public async Task<ProcedureAccessResponse> CreateAsync(CreateProcedureAccessRequest accessRequest)
+        public async Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Procedure>(accessRequest);
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
             _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessResponse>(entity);
+            return _mapper.Map<ProcedureAccessModel>(entity);
         }
 
-        public async Task<ProcedureAccessResponse> DeleteAsync(string id)
+        public async Task<ProcedureAccessModel> DeleteAsync(string id)
         {
             var entity = await _context.Procedures.SingleOrDefaultAsync(x => x.Id == new Guid(id));
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessResponse>(entity);
+            return _mapper.Map<ProcedureAccessModel>(entity);
         }
 
-        public async Task<IEnumerable<ProcedureAccessResponse>> GetAllAsync()
+        public async Task<IEnumerable<ProcedureAccessModel>> GetAllAsync()
         {
             var entities = await _context.Procedures.AsNoTracking().ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ProcedureAccessResponse>>(entities);
+            var respose = _mapper.Map<IEnumerable<ProcedureAccessModel>>(entities);
             return respose;
         }
 
-        public async Task<ProcedureAccessResponse> GetByIdAsync(string id, bool active)
+        public async Task<ProcedureAccessModel> GetByIdAsync(string id, bool active)
         {
             var entity = active ? await _context.Procedures
                                         .Include(x => x.ProcedureTeeth)
@@ -56,20 +56,24 @@ namespace Access.Data.Access
                             .Include(x => x.ProcedureTeeth)
                             .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            var respose = _mapper.Map<ProcedureAccessResponse>(entity);
+            if (entity is null)
+            {
+                throw new KeyNotFoundException($"id {id}");
+            }
+            var respose = _mapper.Map<ProcedureAccessModel>(entity);
             return respose;
         }
 
-        public async Task<ProcedureAccessResponse> RestoreAsync(string id)
+        public async Task<ProcedureAccessModel> RestoreAsync(string id)
         {
             var entity = await _context.Procedures.SingleOrDefaultAsync(x => x.Id == new Guid(id) && !x.Active);
             entity.Active = true;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessResponse>(entity);
+            return _mapper.Map<ProcedureAccessModel>(entity);
         }
 
-        public async Task<ProcedureAccessResponse> UpdateAsync(UpdateProcedureAccessRequest accessRequest)
+        public async Task<ProcedureAccessModel> UpdateAsync(UpdateProcedureAccessRequest accessRequest)
         {
             var entity = await _context.Procedures
                             .Include(x => x.ProcedureTeeth)
@@ -80,7 +84,7 @@ namespace Access.Data.Access
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ProcedureAccessResponse>(entity);
+            var respose = _mapper.Map<ProcedureAccessModel>(entity);
             return respose;
         }
 

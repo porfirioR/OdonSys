@@ -16,6 +16,7 @@ namespace Host.Api.Controllers.Procedure
     {
         private readonly IMapper _mapper;
         private readonly IProcedureManager _procedureManager;
+
         public ProcedureController(IMapper mapper, IProcedureManager procedureManager)
         {
             _mapper = mapper;

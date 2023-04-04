@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Contract.Workspace.Procedures
+﻿namespace Contract.Workspace.Procedures
 {
     public class ProcedureModel
     {
@@ -12,6 +9,7 @@ namespace Contract.Workspace.Procedures
         public string Name { get; set; }
         public string Description { get; set; }
         public string EstimatedSessions { get; set; }
+        public int Price { get; set; }
         public IEnumerable<string> ProcedureTeeth { get; set; }
     }
 }
