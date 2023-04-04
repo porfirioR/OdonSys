@@ -4,10 +4,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class DoctorClientConfiguration : IEntityTypeConfiguration<UserClient>
+    public class UserClientConfiguration : IEntityTypeConfiguration<UserClient>
     {
         public void Configure(EntityTypeBuilder<UserClient> builder)
         {
+            builder.HasKey(x => x.Id);
+            builder
+                .HasIndex(x => new {x.Id, x.UserId, x.ClientId })
+                .IsUnique();
+
+            builder
+                .Property(x => x.DateCreated)
+                .HasDefaultValueSql("GetDate()");
+
+            builder
+                .Property(x => x.DateModified)
+                .HasDefaultValueSql("GetDate()");
+
             builder
                 .HasOne(x => x.User)
                 .WithMany(x => x.UserClients)
@@ -17,8 +30,6 @@ namespace Access.Sql.Configurations
                 .HasOne(x => x.Client)
                 .WithMany(x => x.UserClients)
                 .HasForeignKey(x => x.ClientId);
-
-            builder.HasKey(x => new { x.UserId, x.ClientId });
         }
     }
 }

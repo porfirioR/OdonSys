@@ -23,9 +23,14 @@
         DeleteProcedures,
         #endregion
 
+        #region Client Procedures
+        AccessClientProcedures,
+        CreateClientProcedures,
+        UpdateClientProcedures,
+        #endregion
+
         #region Doctors
         AccessDoctors,
-        CreateDoctors,
         UpdateDoctors,
         DeleteDoctors,
         ApproveDoctors

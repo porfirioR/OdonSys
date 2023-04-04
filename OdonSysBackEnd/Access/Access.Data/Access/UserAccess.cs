@@ -1,4 +1,5 @@
-﻿using Access.Contract.Users;
+﻿using Access.Contract.ClientProcedure;
+using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
@@ -6,6 +7,7 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access.Admin.Access
@@ -48,6 +50,29 @@ namespace Access.Admin.Access
             var entity = await GetUserByIdAsync(id);
             var response = _mapper.Map<DoctorDataAccessModel>(entity);
             return response;
+        }
+
+        public async Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest)
+        {
+            var entity = await _context.Set<UserClient>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.UserId) && x.ClientId == new Guid(accessRequest.ClientId));
+
+            return entity is null ? null : new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
+        }
+
+        public async Task<IEnumerable<UserClientAccessModel>> GetUserClientsByUserIdAsync(string userId)
+        {
+            var entities = await _context.Set<UserClient>().Where(x => x.UserId == new Guid(userId)).ToListAsync();
+            var response = entities.Select(x => new UserClientAccessModel(x.Id, x.ClientId, x.UserId)).ToList();
+            return response;
+        }
+
+        public async Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest)
+        {
+            var entity = _mapper.Map<UserClient>(accessRequest);
+            _context.Entry(entity).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
         }
 
         public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)

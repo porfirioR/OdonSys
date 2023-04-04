@@ -15,6 +15,7 @@ namespace Access.Sql.Entities
         public string Phone { get; set; }
         public virtual IEnumerable<UserRole> UserRoles { get; set; }
         public virtual IEnumerable<UserClient> UserClients { get; set; }
+        public virtual IEnumerable<ClientProcedure> UserProcedures { get; set; }
 
         public bool Approved { get; set; }
         public string UserName { get; set; }

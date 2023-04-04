@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Clients;
 using AutoMapper;
 using Contract.Admin.Clients;
-using System;
 
 namespace Manager.Admin.Mapper
 {
