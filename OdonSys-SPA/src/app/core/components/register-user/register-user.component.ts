@@ -14,7 +14,18 @@ import { AlertService } from '../../services/shared/alert.service';
 })
 export class RegisterUserComponent implements OnInit {
   protected saving: boolean = false;
-  protected formGroup: FormGroup = new FormGroup({});
+  protected formGroup: FormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+    middleName: new FormControl('', [Validators.maxLength(25)]),
+    surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+    secondSurname: new FormControl('', [Validators.maxLength(25)]),
+    document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+    password: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+    repeatPassword: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+    phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
+    email: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.email]),
+    country: new FormControl('', [Validators.required])
+  })
   protected countries: Map<string, string> = new Map<string, string>();
 
   constructor(
@@ -53,24 +64,13 @@ export class RegisterUserComponent implements OnInit {
   };
 
   private loadConfiguration = (): void => {
-    this.formGroup = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      middleName: new FormControl('', [Validators.maxLength(25)]),
-      lastName: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      middleLastName: new FormControl('', [Validators.maxLength(25)]),
-      document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
-      password: new FormControl('', [Validators.required, Validators.maxLength(25)]),
-      repeatPassword: new FormControl('', [Validators.required, Validators.maxLength(25), this.checkRepeatPassword()]),
-      phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.email]),
-      country: new FormControl('', [Validators.required])
-    });
+    this.formGroup.controls.repeatPassword.addValidators(this.checkRepeatPassword())
     this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
   }
 
   private checkRepeatPassword = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const repeatPassword = (control as FormControl).value;
+      const repeatPassword = (control as FormControl<string | null>).value;
       if (!repeatPassword) { return null; }
       const isInvalid = !repeatPassword || this.formGroup.controls.password.value !== repeatPassword;
       return isInvalid ? { invalidRepeatPassword: isInvalid } : null;
