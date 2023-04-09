@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -20,7 +20,16 @@ export class AuthApiService {
   ) { }
 
   public login = (request: LoginRequest): Observable<AuthApiModel> => {
-    return this.http.post<AuthApiModel>(`${this.baseUrl}/login`, request).pipe(
+    const auth = btoa(`${request.email}:${request.password}`)
+    const httpOptions = {
+      headers: new HttpHeaders(
+        {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${auth}`,
+        }
+      )
+    };
+    return this.http.post<AuthApiModel>(`${this.baseUrl}/login`, null, httpOptions).pipe(
       switchMap(x => {
         this.userInfoService.setUserLogin(x);
         return of(x);

@@ -13,7 +13,11 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./authenticate.component.scss'],
 })
 export class AuthenticateComponent implements OnInit {
-  public formGroup: FormGroup = new FormGroup({});
+  public formGroup = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    type: new FormControl<boolean>(false, { nonNullable: true }),
+  })
   public typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
   public currentType = this.typeValue.password;
   public currentMessage = this.typeValue.passwordMessage;
@@ -28,11 +32,6 @@ export class AuthenticateComponent implements OnInit {
 
   ngOnInit() {
     this.userInfoService.clearAll();
-    this.formGroup = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required]),
-      type: new FormControl(false),
-    });
     this.load = true;
     this.formGroup.controls.type.valueChanges.subscribe({
       next: (x: Boolean) => {
@@ -45,7 +44,7 @@ export class AuthenticateComponent implements OnInit {
   public login = (): void => {
     if (this.formGroup.invalid) { return; }
     this.load = false;
-    const request = this.formGroup.getRawValue() as LoginRequest;
+    const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!);
     this.formGroup.disable();
     this.authApiService.login(request).subscribe({
       next: (response: AuthApiModel) => {

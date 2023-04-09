@@ -18,6 +18,7 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { UpsertClientComponent } from './components/clients/upsert-client/upsert-client.component';
+import { AnimationComponent } from './components/animation/animation.component';
 
 @NgModule({
   imports: [
@@ -40,8 +41,8 @@ import { UpsertClientComponent } from './components/clients/upsert-client/upsert
     AuthenticateComponent,
     RegisterUserComponent,
     ClientsComponent,
-    UpsertClientComponent
-
+    UpsertClientComponent,
+    AnimationComponent
   ],
   exports: [
     FormsModule,
@@ -59,7 +60,8 @@ import { UpsertClientComponent } from './components/clients/upsert-client/upsert
     GridActionsComponent,
     AuthenticateComponent,
     ClientsComponent,
-    UpsertClientComponent
+    UpsertClientComponent,
+    AnimationComponent
   ],
   providers:[
     AuthGuard

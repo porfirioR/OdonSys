@@ -29,7 +29,13 @@ namespace Host.Api
 
             services.AddSwaggerGen();
 
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder
+                                              .AllowAnyOrigin()
+                                              .AllowAnyHeader()
+                                              .AllowAnyMethod());
+            });
 
             // partial startup
             ConfigureMappings(services);
@@ -52,14 +58,15 @@ namespace Host.Api
             app.UseSwagger();
 
             app.UseSwaggerUI();
-            app.UseHttpsRedirection();
 
             app.UseExceptionHandler("/error");
             app.UseHsts();
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors();
+
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
 
