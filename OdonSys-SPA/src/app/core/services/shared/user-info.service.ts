@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UserDataApiModel } from '../../models/api/user-data-api-model';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
 import { UserDataApiService } from '../api/user-data-api.service';
