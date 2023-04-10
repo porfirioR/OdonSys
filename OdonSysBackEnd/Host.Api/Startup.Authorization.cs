@@ -16,7 +16,7 @@ namespace Host.Api
             {
                 new PolicyModel(Policy.CanAccessRole, new AuthRequirement(PermissionName.AccessRoles)),
                 new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
-                
+
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
                     new List<PermissionName> {
