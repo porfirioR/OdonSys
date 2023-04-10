@@ -16,7 +16,7 @@ export class AgGridService {
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
     { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 105, resizable: true },
-    { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 80,
+    { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
     { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 105, maxWidth: 140, resizable: true,
