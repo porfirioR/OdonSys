@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sql.Entities;
 
-namespace Sql.Configurations
+namespace Access.Sql.Configurations
 {
     public class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
@@ -24,16 +24,16 @@ namespace Sql.Configurations
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.SecondName)
+                .Property(x => x.MiddleName)
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.LastName)
+                .Property(x => x.Surname)
                 .IsRequired()
                 .HasMaxLength(25);
 
             builder
-                .Property(x => x.SecondLastName)
+                .Property(x => x.SecondSurname)
                 .HasMaxLength(25);
 
             builder
@@ -61,6 +61,10 @@ namespace Sql.Configurations
             builder
                 .Property(x => x.Email)
                 .HasMaxLength(25);
+
+            builder
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

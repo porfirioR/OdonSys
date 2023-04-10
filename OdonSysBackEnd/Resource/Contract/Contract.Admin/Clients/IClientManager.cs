@@ -7,9 +7,11 @@ namespace Contract.Admin.Clients
     {
         Task<ClientModel> CreateAsync(CreateClientRequest request);
         Task<ClientModel> UpdateAsync(UpdateClientRequest request);
-        Task<ClientModel> UpdateAsync(ClientModel request);
         Task<IEnumerable<ClientModel>> GetAllAsync();
-        Task<ClientModel> GetByIdAsync(string id, bool active = true);
-        Task DeleteAsync(string id);
+        Task<ClientModel> GetByIdAsync(string id);
+        Task<ClientModel> GetByDocumentAsync(string documentId);
+        Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName);
+        Task<ClientModel> DeleteAsync(string id);
+        Task<IEnumerable<ClientModel>> AssignClientToDoctor(AssignClientRequest request);
     }
 }

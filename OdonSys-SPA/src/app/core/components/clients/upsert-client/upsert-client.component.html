@@ -1,0 +1,46 @@
+<app-progress *ngIf="!load || saving"></app-progress>
+<div class="container" *ngIf="load">
+  <div class="header-top">
+    <h3>{{title}} paciente</h3>
+  </div>
+  <div class="m-16 p-16">
+    <form [formGroup]="formGroup" (ngSubmit)="save()">
+      <div class="row">
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Apellido'" formControlName="lastName"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Segundo Apellido'" formControlName="middleLastName"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"></app-text-number-input>
+        </div>
+        <div class="col-lg-6">
+          <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"></app-text-number-input>
+        </div>
+      </div>
+      <div class="form-group text-center btn-footer m-t-16">
+        <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()"
+          [disabled]="saving">Cancelar</button>
+        <button class="btn btn-outline-primary" type="submit"
+          [disabled]="!formGroup.valid || saving"
+          (keydown.enter)="save()">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

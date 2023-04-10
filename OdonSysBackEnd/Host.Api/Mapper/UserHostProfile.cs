@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Contract.Authentication.User;
+using Contract.Admin.Users;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Users;
 
 namespace Host.Api.Mapper
@@ -8,8 +9,11 @@ namespace Host.Api.Mapper
     {
         public UserHostProfile()
         {
-            CreateMap<CreateUserApiRequest, CreateUserRequest>().ReverseMap();
-            CreateMap<UpdateUserApiRequest, UpdateUserRequest>().ReverseMap();
+            CreateMap<RegisterUserApiRequest, RegisterUserRequest>();
+
+            CreateMap<UpdateDoctorApiRequest, UpdateDoctorRequest>().ReverseMap();
+
+            CreateMap<DoctorModel, UpdateDoctorRequest>();
         }
     }
 }

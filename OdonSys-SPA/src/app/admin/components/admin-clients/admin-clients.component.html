@@ -1,0 +1,13 @@
+<app-progress *ngIf="!ready || loading"></app-progress>
+<div *ngIf="ready" class="container">
+  <div class="header-top">
+    <h3>Pacientes</h3>
+  </div>
+  <div class="p-t-16">
+    <ng-container *ngIf="gridOptions">
+      <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
+        [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </ng-container>
+  </div>
+</div>

@@ -5,12 +5,12 @@ namespace Access.Contract.Procedure
 {
     public interface IProcedureAccess
     {
-        Task<ProcedureAccessResponse> CreateAsync(CreateProcedureAccessRequest accessRequest);
-        Task<ProcedureAccessResponse> UpdateAsync(UpdateProcedureAccessRequest accessRequest);
-        Task<IEnumerable<ProcedureAccessResponse>> GetAllAsync();
-        Task<ProcedureAccessResponse> GetByIdAsync(string id, bool active);
-        Task<ProcedureAccessResponse> DeleteAsync(string id);
-        Task<ProcedureAccessResponse> RestoreAsync(string id);
+        Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest);
+        Task<ProcedureAccessModel> UpdateAsync(UpdateProcedureAccessRequest accessRequest);
+        Task<IEnumerable<ProcedureAccessModel>> GetAllAsync();
+        Task<ProcedureAccessModel> GetByIdAsync(string id, bool active);
+        Task<ProcedureAccessModel> DeleteAsync(string id);
+        Task<ProcedureAccessModel> RestoreAsync(string id);
         Task<bool> ValidateIdNameAsync(string name);
         Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds);
     }

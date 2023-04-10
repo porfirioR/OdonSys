@@ -1,0 +1,20 @@
+#square {
+  width: 200px;
+  height: 200px;
+  background: #aaa;
+  animation-name: myAnimation;
+  animation-duration: 4s;
+  animation-delay: 2s;
+  position: relative;
+  animation-direction: reverse;
+  animation-timing-function: initial;
+  animation-iteration-count: 2;
+}
+
+@keyframes myAnimation {
+  0% {background: #aaa; left: 0; top: 0;}
+  25% {background: red; left: 300px; top: 0;}
+  50% {background: green; left: 300px; top: 300px;}
+  75% {background: pink; left: 0; top: 300px;}
+  100% {background: blue;left: 0; top: 0;}
+}

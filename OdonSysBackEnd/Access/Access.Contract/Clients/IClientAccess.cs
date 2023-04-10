@@ -5,11 +5,13 @@ namespace Access.Contract.Clients
 {
     public interface IClientAccess
     {
-        Task<ClientAccessResponse> CreateClientAsync(CreateClientAccessRequest accessRequest);
-        Task<ClientAccessResponse> UpdateClientAsync(UpdateClientAccessRequest accessRequest);
-        Task<ClientAccessResponse> PatchClientAsync(PatchClientAccessRequest accessRequest);
-        Task<IEnumerable<ClientAccessResponse>> GetAllAsync();
-        Task<ClientAccessResponse> GetByIdAsync(string id, bool active);
-        Task DeleteAsync(string id);
+        Task<ClientAccessModel> CreateClientAsync(CreateClientAccessRequest accessRequest);
+        Task<ClientAccessModel> UpdateClientAsync(UpdateClientAccessRequest accessRequest);
+        Task<IEnumerable<ClientAccessModel>> GetAllAsync();
+        Task<ClientAccessModel> GetByIdAsync(string id);
+        Task<ClientAccessModel> GetByDocumentAsync(string document);
+        Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string id, string userName);
+        Task<ClientAccessModel> DeleteAsync(string id);
+        Task<IEnumerable<ClientAccessModel>> AssignClientToDoctorAsync(AssignClientAccessRequest accessRequest);
     }
 }

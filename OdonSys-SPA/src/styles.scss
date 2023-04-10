@@ -1,22 +1,28 @@
-@import "~bootstrap/dist/css/bootstrap.css";
-@import "~@fortawesome/fontawesome-free/scss/fontawesome";
-@import "~@fortawesome/fontawesome-free/scss/solid";
-@import "~@fortawesome/fontawesome-free/scss/brands";
-@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "bootstrap/dist/css/bootstrap.css";
+@import 'bootstrap/scss/bootstrap';
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/brands";
+@import "@fortawesome/fontawesome-free/scss/regular";
 
 @import "ag-grid-community/dist/styles/ag-grid.css";
 @import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 @import "./assets/scss/ag-grid.scss";
 @import "./assets/scss/padding&margin.scss";
+@import "./assets/scss/colors.scss";
 
-$white: #fff;
-$primary: #1548cd;
-$redColor: red;
-$blue: #d1f2ff;
-.centerDiv {
+body {
+  background-color: #eafaff;
+}
+.center-block {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.middle-block {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .header-title {
@@ -34,8 +40,9 @@ $blue: #d1f2ff;
   padding: 1rem;
   border-bottom: 1px solid blue;
 }
+
 .swal2-styled.swal2-confirm {
-  background-color: $primary !important;
+  background-color: $primaryColor !important;
 }
 
 .swal2-icon.swal2-error {
@@ -43,7 +50,7 @@ $blue: #d1f2ff;
 }
 
 .swal2-styled.swal2-cancel {
-  background-color: $primary !important;
+  background-color: $primaryColor !important;
 }
 
 .swal2-icon.swal2-warning {

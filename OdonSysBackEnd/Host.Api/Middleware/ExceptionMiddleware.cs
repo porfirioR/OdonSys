@@ -36,7 +36,17 @@ namespace Host.Api.Middleware
                 context.Response.ContentType = "application/json";
                 if (ex is KeyNotFoundException)
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    response = new ApiException(context.Response.StatusCode, ex.Message);
+                }
+                else if(ex is UnauthorizedAccessException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    response = new ApiException(context.Response.StatusCode, ex.Message);
+                }
+                else if(ex is AggregateException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiException(context.Response.StatusCode, ex.Message);
                 }
                 else

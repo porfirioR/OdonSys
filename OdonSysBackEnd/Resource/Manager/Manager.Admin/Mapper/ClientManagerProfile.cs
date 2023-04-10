@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Clients;
 using AutoMapper;
 using Contract.Admin.Clients;
-using System;
 
 namespace Manager.Admin.Mapper
 {
@@ -11,12 +10,10 @@ namespace Manager.Admin.Mapper
         {
             CreateMap<CreateClientRequest, CreateClientAccessRequest>();
 
-            CreateMap<UpdateClientRequest, UpdateClientAccessRequest>();
+            CreateMap<UpdateClientRequest, UpdateClientAccessRequest>()
+                .ForMember(dest => dest.Active, opt => opt.Ignore());
 
-            CreateMap<ClientAccessResponse, ClientModel>();
-
-            CreateMap<ClientModel, PatchClientAccessRequest>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
+            CreateMap<ClientAccessModel, ClientModel>();
 
         }
     }

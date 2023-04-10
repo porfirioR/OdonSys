@@ -1,4 +1,8 @@
 export enum Country {
-    Paraguay = 'Paraguay',
-    Argentina = 'Argentina'
+    Paraguay = 1,
+    Argentina = 2,
+    Brasil = 3,
+    Uruguay = 4,
+    España = 5,
+    Bolivia = 6
 }

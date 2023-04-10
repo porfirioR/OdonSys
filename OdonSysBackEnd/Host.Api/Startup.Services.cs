@@ -1,5 +1,4 @@
-﻿using Access.Data;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Host.Api
 {
@@ -8,12 +7,11 @@ namespace Host.Api
         public void InjectServices(IServiceCollection services)
         {
             //Access
-            ServiceInjection.ConfigureServices(services);
+            Access.Data.ServiceInjection.ConfigureServices(services);
             
             //Manager
             Manager.Admin.ServiceInjection.ConfigureServices(services);
-            Manager.Procedure.ServiceInjection.ConfigureServices(services);
-            Manager.Authentication.ServiceInjection.ConfigureServices(services);    
+            Manager.Workspace.ServiceInjection.ConfigureServices(services);
         }
     }
 }

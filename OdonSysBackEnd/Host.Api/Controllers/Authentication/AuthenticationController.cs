@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
-using Contract.Authentication.User;
+using Contract.Admin.Auth;
+using Contract.Admin.Users;
+using Host.Api.Models.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OdonSysBackEnd.Models.Auth;
 using System.Threading.Tasks;
@@ -19,11 +22,20 @@ namespace Host.Api.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<UserModel> Login([FromBody] LoginApiRequest loginApiRequest)
+        public async Task<AuthModel> Login([FromHeader] LoginApiRequest loginApiRequest)
         {
-            var login = _mapper.Map<LoginRequest>(loginApiRequest);
-            var model = await _userManager.Login(login);
+            var model = await _userManager.LoginAsync(loginApiRequest.Authorization);
+            return model;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<AuthModel> Register([FromBody] RegisterUserApiRequest apiRequest)
+        {
+            var register = _mapper.Map<RegisterUserRequest>(apiRequest);
+            var model = await _userManager.RegisterUserAsync(register);
             return model;
         }
 

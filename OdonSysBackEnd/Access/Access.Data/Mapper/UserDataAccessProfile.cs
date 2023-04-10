@@ -1,6 +1,7 @@
-﻿using Access.Contract.Users;
+﻿using Access.Contract.Auth;
+using Access.Contract.Users;
+using Access.Sql.Entities;
 using AutoMapper;
-using Sql.Entities;
 using System;
 
 namespace Access.Admin.Mapper
@@ -9,9 +10,19 @@ namespace Access.Admin.Mapper
     {
         public UserDataAccessProfile()
         {
-            CreateMap<UserDataAccessRequest, Doctor>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
+            CreateMap<UserDataAccessRequest, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
 
-            CreateMap<Doctor, UserDataAccessModel>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()));
+            CreateMap<User, AuthAccessModel>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src));
+
+            CreateMap<User, DoctorDataAccessModel>()
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
+
+            CreateMap<User, UserDataAccessModel>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
         }
     }
 }

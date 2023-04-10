@@ -1,7 +1,8 @@
-﻿using Access.Admin.Access;
+﻿using Access.Contract.Auth;
 using Access.Contract.Users;
 using AutoMapper;
-using Contract.Authentication.User;
+using Contract.Admin.Auth;
+using Contract.Admin.Users;
 
 namespace Manager.Admin.Mapper
 {
@@ -9,11 +10,18 @@ namespace Manager.Admin.Mapper
     {
         public UserManagerProfile()
         {
-            CreateMap<CreateUserRequest, UserDataAccess>();
 
-            CreateMap<UpdateUserRequest, UserDataAccess>();
+            CreateMap<RegisterUserRequest, UserDataAccessRequest>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<AuthAccessModel, AuthModel>();
+
+            CreateMap<UpdateDoctorRequest, UserDataAccessRequest>();
 
             CreateMap<UserDataAccessModel, UserModel>();
+
+            CreateMap<DoctorDataAccessModel, DoctorModel>();
+
         }
     }
 }

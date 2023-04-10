@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
+using Newtonsoft.Json.Converters;
 
 namespace Host.Api
 {
@@ -19,15 +21,32 @@ namespace Host.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                    .AddNewtonsoftJson();
+            IdentityModelEventSource.ShowPII = true;
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new StringEnumConverter());
+            });
 
-            services.AddCors();
+            services.AddSwaggerGen();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder => builder
+                                              .AllowAnyOrigin()
+                                              .AllowAnyHeader()
+                                              .AllowAnyMethod());
+            });
 
             // partial startup
             ConfigureMappings(services);
+
             InjectServices(services);
-            
+            ConfigureAuthentication(services, Configuration);
+
+            ConfigureAuthorization(services);
+            // Configura all Authorization Handlers
+            ConfigureAuthorizationHandlers(services);
+
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
@@ -36,11 +55,18 @@ namespace Host.Api
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+
+            app.UseSwaggerUI();
+
+            app.UseExceptionHandler("/error");
+            app.UseHsts();
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            app.UseCors();
+
+            app.UseHttpsRedirection();
 
             app.UseAuthentication();
 

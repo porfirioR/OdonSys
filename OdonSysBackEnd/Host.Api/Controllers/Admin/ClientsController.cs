@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Contract.Admin.Clients;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,8 +14,9 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Admin
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class ClientsController : OdonSysBaseController
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
@@ -25,53 +28,79 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
-            var user = _mapper.Map<CreateClientRequest>(apiRequest);
-            var model = await _clientManager.CreateAsync(user);
+            var request = _mapper.Map<CreateClientRequest>(apiRequest);
+            request.UserId = UserId;
+            var model = await _clientManager.CreateAsync(request);
             return model;
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            var user = _mapper.Map<UpdateClientRequest>(apiRequest);
-            var response = await _clientManager.UpdateAsync(user);
-            return response;
+            var request = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var model = await _clientManager.UpdateAsync(request);
+            return model;
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<IEnumerable<ClientModel>> GetAll()
         {
-            var response = await _clientManager.GetAllAsync();
-            return response;
+            var model = await _clientManager.GetAllAsync();
+            return model;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<ClientModel> GetById(string id)
         {
-            var response = await _clientManager.GetByIdAsync(id);
-            return response;
+            var model = await _clientManager.GetByIdAsync(id);
+            return model;
+        }
+
+        [HttpGet("document/{documentId}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<ClientModel> GetByDocumentAsync(string documentId)
+        {
+            var model = await _clientManager.GetByDocumentAsync(documentId);
+            return model;
         }
 
         [HttpDelete("{id}")]
-        public async Task Delete(string id)
+        [Authorize(Policy = Policy.CanDeleteClient)]
+        public async Task<ClientModel> Delete(string id)
         {
-            await _clientManager.DeleteAsync(id);
+            var model = await _clientManager.DeleteAsync(id);
+            return model;
         }
 
         [HttpPatch("{id}")]
-        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument patchDocument)
+        [Authorize(Policy = Policy.CanManageClient)]
+        public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<UpdateClientRequest> patchClient)
         {
-            if (patchDocument == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
-            var clientModel = await _clientManager.GetByIdAsync(id, false);
-            patchDocument.ApplyTo(clientModel);
+            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            var clientRequest = _mapper.Map<UpdateClientRequest>(await _clientManager.GetByIdAsync(id));
+            patchClient.ApplyTo(clientRequest);
             if (!ModelState.IsValid)
             {
                 throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
             }
-            var response = await _clientManager.UpdateAsync(clientModel);
-            return response;
+            var model = await _clientManager.UpdateAsync(clientRequest);
+            return model;
+        }
+
+        [HttpGet("patients")]
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<IEnumerable<ClientModel>> GetPatientsByUserId()
+        {
+            var id = UserId;
+            var userName = UserName;
+            var model = await _clientManager.GetClientsByUserIdAsync(id, userName);
+            return model;
         }
 
     }

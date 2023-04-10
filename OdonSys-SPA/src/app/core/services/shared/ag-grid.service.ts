@@ -17,7 +17,7 @@ export class AgGridService {
     { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 150,
-      cellRenderer: this.activeFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
     { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 145, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
@@ -29,13 +29,52 @@ export class AgGridService {
     cellRendererFramework: GridActionsComponent }
   ];
 
+  private doctorColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 95,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 235, maxWidth: 650, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
+  private clientColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
+  private adminClientColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 650, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ];
+
   constructor() { }
 
   public getGridOptions = (): GridOptions => {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Porfavor espere mientras carga las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras carga las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,
@@ -65,7 +104,26 @@ export class AgGridService {
     grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
     return grid;
   }
-  
+
+  // Configuration
+  public getDoctorGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.doctorColumnDef);
+    return grid;
+  }
+
+  public getAdminClientGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.adminClientColumnDef);
+    return grid;
+  }
+
+  public getClientGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.clientColumnDef);
+    return grid;
+  }
+
   public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
     const gridApi = gridOptions.api as GridApi;
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number;
@@ -74,7 +132,7 @@ export class AgGridService {
     return gridApi.getRenderedNodes()[renderSelectedColumnIndex];
   }
   
-  private activeFormatter(cell: { value: any; }): string {
+  private booleanFormatter(cell: { value: any; }): string {
     return cell.value ? 'Si' : 'No';
   }
   

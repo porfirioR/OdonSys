@@ -12,7 +12,7 @@ namespace AcceptanceTest.Host.Api
             var optionsBuilder = new DbContextOptionsBuilder<DataContext>()
                             .UseSqlServer($"Server=(local);Database={Configuration.DataBase};Integrated Security=True;MultipleActiveResultSets=False");
 
-            return new DataContext(optionsBuilder.Options);
+            return new DataContext(optionsBuilder.Options, null);
         }
     }
 }

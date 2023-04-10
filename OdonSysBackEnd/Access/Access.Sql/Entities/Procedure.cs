@@ -1,7 +1,6 @@
-﻿using Access.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class Procedure : BaseEntity
     {
@@ -9,5 +8,6 @@ namespace Sql.Entities
         public string Description { get; set; }
         public string EstimatedSessions { get; set; }
         virtual public IEnumerable<ProcedureTooth> ProcedureTeeth { get; set; }
+        virtual public IEnumerable<ClientProcedure> ClientProcedures { get; set; }
     }
 }

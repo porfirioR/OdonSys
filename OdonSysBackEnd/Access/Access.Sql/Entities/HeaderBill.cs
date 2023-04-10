@@ -1,8 +1,7 @@
-﻿using Access.Sql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Utilities.Enums;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
     public class HeaderBill : BaseEntity
     {
@@ -14,6 +13,6 @@ namespace Sql.Entities
         public int Total { get; set; }
         public string Timbrado { get; set; }
         public BillStatus Status { get; set; }
-        public virtual IEnumerable<PaymentDetails> PaymentDetails { get; set; }
+        public virtual IEnumerable<PaymentDetail> PaymentDetails { get; set; }
     }
 }

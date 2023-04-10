@@ -1,13 +1,26 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using Utilities.Enums;
 
-namespace Sql.Entities
+namespace Access.Sql.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        public Guid DoctorId { get; set; }
+        public string Name { get; set; }
+        public string MiddleName { get; set; }
+        public string Surname { get; set; }
+        public string SecondSurname { get; set; }
+        public string Document { get; set; }
+        public Country Country { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public virtual IEnumerable<UserRole> UserRoles { get; set; }
+        public virtual IEnumerable<UserClient> UserClients { get; set; }
+        public virtual IEnumerable<ClientProcedure> UserProcedures { get; set; }
+
+        public bool Approved { get; set; }
         public string UserName { get; set; }
+        public bool IsDoctor { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public virtual Doctor Doctor { get; set; }
     }
 }

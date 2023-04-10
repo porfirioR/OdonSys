@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Access.Sql.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Sql.Entities;
+using System;
+using Utilities.Enums;
+using Utilities.Extensions;
 
-namespace Sql.Configurations
+namespace Access.Sql.Configurations
 {
     public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.HasKey(u => u.Id);
-
             builder
                 .Property(d => d.DateCreated)
                 .HasDefaultValueSql("GetDate()");
@@ -18,9 +19,12 @@ namespace Sql.Configurations
                 .Property(d => d.DateModified)
                 .HasDefaultValueSql("GetDate()");
 
-            builder
-                .Property(d => d.Name)
-                .HasMaxLength(25);
+            builder.HasKey(x => new { x.Name, x.RoleId });
+
+            builder.Property(s => s.Name)
+               .HasConversion(
+                   s => s.GetDescription(),
+                   s => (PermissionName)Enum.Parse(typeof(PermissionName), s));
         }
     }
 }

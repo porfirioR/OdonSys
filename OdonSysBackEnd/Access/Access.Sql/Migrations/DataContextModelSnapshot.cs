@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
@@ -15,11 +17,12 @@ namespace Sql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("Sql.Entities.Client", b =>
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Access.Sql.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,8 +56,7 @@ namespace Sql.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
+                    b.Property<string>("MiddleName")
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
@@ -72,23 +74,34 @@ namespace Sql.Migrations
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<string>("SecondLastName")
+                    b.Property<string>("SecondSurname")
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("SecondName")
+                    b.Property<string>("Surname")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Document")
                         .IsUnique();
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Doctor", b =>
+            modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -97,87 +110,60 @@ namespace Sql.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Country")
+                    b.Property<bool>("Anesthesia")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<DateTime>("DateModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                    b.Property<Guid>("ProcedureId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Document")
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                    b.Property<Guid>("UserClientId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("LastName")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Document")
-                        .IsUnique()
-                        .HasFilter("[Document] IS NOT NULL");
+                    b.HasIndex("ProcedureId");
 
-                    b.ToTable("Doctors");
+                    b.HasIndex("UserClientId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Id", "ProcedureId", "UserClientId")
+                        .IsUnique();
+
+                    b.ToTable("ClientProcedures");
                 });
 
-            modelBuilder.Entity("Sql.Entities.DoctorClient", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
                 {
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DoctorId", "ClientId");
-
-                    b.HasIndex("ClientId");
-
-                    b.ToTable("DoctorClient");
-                });
-
-            modelBuilder.Entity("Sql.Entities.DoctorRoles", b =>
-                {
-                    b.Property<Guid>("DoctorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RolId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DoctorId", "RolId");
-
-                    b.HasIndex("RolId");
-
-                    b.ToTable("DoctorRoles");
-                });
-
-            modelBuilder.Entity("Sql.Entities.Permission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
@@ -193,16 +179,24 @@ namespace Sql.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GetDate()");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Name", "RoleId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Permissions");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Procedure", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,12 +230,18 @@ namespace Sql.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Procedures");
                 });
 
-            modelBuilder.Entity("Sql.Entities.ProcedureTooth", b =>
+            modelBuilder.Entity("Access.Sql.Entities.ProcedureTooth", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -266,6 +266,12 @@ namespace Sql.Migrations
                     b.Property<Guid>("ToothId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProcedureId");
@@ -275,7 +281,7 @@ namespace Sql.Migrations
                     b.ToTable("ProcedureTeeth");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Role", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -283,6 +289,11 @@ namespace Sql.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
@@ -295,30 +306,28 @@ namespace Sql.Migrations
                         .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Sql.Entities.RolePermission", b =>
-                {
-                    b.Property<Guid>("RolId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PermissionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RolId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("RolePermissions");
-                });
-
-            modelBuilder.Entity("Sql.Entities.Tooth", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -328,14 +337,10 @@ namespace Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Group")
                         .HasColumnType("int");
@@ -344,9 +349,7 @@ namespace Sql.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -354,15 +357,63 @@ namespace Sql.Migrations
                     b.Property<int>("Quadrant")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Teeth");
                 });
 
-            modelBuilder.Entity("Sql.Entities.User", b =>
+            modelBuilder.Entity("Access.Sql.Entities.User", b =>
                 {
-                    b.Property<Guid>("DoctorId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<DateTime>("DateModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<string>("Document")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsDoctor")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
@@ -370,62 +421,141 @@ namespace Sql.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("DoctorId");
+                    b.Property<string>("SecondSurname")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Document")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Sql.Entities.DoctorClient", b =>
+            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
                 {
-                    b.HasOne("Sql.Entities.Client", "Client")
-                        .WithMany("DoctorsClients")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasOne("Sql.Entities.Doctor", "Doctor")
-                        .WithMany("DoctorsClients")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
-                    b.Navigation("Client");
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Navigation("Doctor");
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<DateTime>("DateModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Id", "UserId", "ClientId")
+                        .IsUnique();
+
+                    b.ToTable("UserClients");
                 });
 
-            modelBuilder.Entity("Sql.Entities.DoctorRoles", b =>
+            modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
                 {
-                    b.HasOne("Sql.Entities.Doctor", "Doctor")
-                        .WithMany("DoctorRoles")
-                        .HasForeignKey("DoctorId")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("DoctorRoles");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.Procedure", "Procedure")
+                        .WithMany("ClientProcedures")
+                        .HasForeignKey("ProcedureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sql.Entities.Role", "Role")
-                        .WithMany("DoctorRoles")
-                        .HasForeignKey("RolId")
+                    b.HasOne("Access.Sql.Entities.UserClient", "UserClient")
+                        .WithMany("ClientProcedures")
+                        .HasForeignKey("UserClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Doctor");
+                    b.HasOne("Access.Sql.Entities.User", null)
+                        .WithMany("UserProcedures")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Procedure");
+
+                    b.Navigation("UserClient");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.Role", "Role")
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Sql.Entities.ProcedureTooth", b =>
+            modelBuilder.Entity("Access.Sql.Entities.ProcedureTooth", b =>
                 {
-                    b.HasOne("Sql.Entities.Procedure", "Procedure")
+                    b.HasOne("Access.Sql.Entities.Procedure", "Procedure")
                         .WithMany("ProcedureTeeth")
                         .HasForeignKey("ProcedureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sql.Entities.Tooth", "Tooth")
+                    b.HasOne("Access.Sql.Entities.Tooth", "Tooth")
                         .WithMany("ProcedureTeeth")
                         .HasForeignKey("ToothId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -436,70 +566,80 @@ namespace Sql.Migrations
                     b.Navigation("Tooth");
                 });
 
-            modelBuilder.Entity("Sql.Entities.RolePermission", b =>
+            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
                 {
-                    b.HasOne("Sql.Entities.Permission", "Permission")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("PermissionId")
+                    b.HasOne("Access.Sql.Entities.Client", "Client")
+                        .WithMany("UserClients")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sql.Entities.Role", "Role")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("RolId")
+                    b.HasOne("Access.Sql.Entities.User", "User")
+                        .WithMany("UserClients")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Sql.Entities.User", b =>
-                {
-                    b.HasOne("Sql.Entities.Doctor", "Doctor")
-                        .WithOne("User")
-                        .HasForeignKey("Sql.Entities.User", "DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("Sql.Entities.Client", b =>
-                {
-                    b.Navigation("DoctorsClients");
-                });
-
-            modelBuilder.Entity("Sql.Entities.Doctor", b =>
-                {
-                    b.Navigation("DoctorRoles");
-
-                    b.Navigation("DoctorsClients");
+                    b.Navigation("Client");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Permission", b =>
+            modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
                 {
-                    b.Navigation("RolePermissions");
+                    b.HasOne("Access.Sql.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Access.Sql.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Procedure", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Client", b =>
+                {
+                    b.Navigation("UserClients");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
+                {
+                    b.Navigation("ClientProcedures");
+
+                    b.Navigation("ProcedureTeeth");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.Role", b =>
+                {
+                    b.Navigation("RolePermissions");
+
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
                 {
                     b.Navigation("ProcedureTeeth");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Role", b =>
+            modelBuilder.Entity("Access.Sql.Entities.User", b =>
                 {
-                    b.Navigation("DoctorRoles");
+                    b.Navigation("UserClients");
 
-                    b.Navigation("RolePermissions");
+                    b.Navigation("UserProcedures");
+
+                    b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("Sql.Entities.Tooth", b =>
+            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
                 {
-                    b.Navigation("ProcedureTeeth");
+                    b.Navigation("ClientProcedures");
                 });
 #pragma warning restore 612, 618
         }
