@@ -1,2 +1,4 @@
-export class PermissionModel {
+export interface PermissionModel {
+  name: string,
+  
 }
