@@ -14,15 +14,15 @@ export class AgGridService {
 
   private procedureColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 150,
-      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
+    { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 105, resizable: true },
+    { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 80,
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
-    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 145, resizable: true,
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 105, maxWidth: 140, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
-    { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', minWidth: 160, resizable: true,
+    { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', maxWidth: 165, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
@@ -97,7 +97,7 @@ export class AgGridService {
     };
     return gridOptions;
   }
-  
+
   // Configuration
   public getProcedureGridOptions = (): GridOptions => {
     const grid = this.getGridOptions();
