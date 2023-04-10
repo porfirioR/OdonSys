@@ -18,6 +18,17 @@
 a {
   color: $white;
   text-decoration: none;
+  &.nav-link.active, &:hover  {
+    border-bottom: 1px solid $white !important;
+  }
+}
+
+#dropdownConfig:hover {
+  border-bottom: unset !important;
+}
+
+.dropdown-menu.show {
+  inset: 0px auto auto auto !important;
 }
 
 ul {

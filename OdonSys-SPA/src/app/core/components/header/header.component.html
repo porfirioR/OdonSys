@@ -1,5 +1,5 @@
 <header class="header-container">
-  <nav class="nav-main">
+  <nav class="nav-main bg-primary">
     <div class="nav-menu-left">
       <a class="navbar-brand" routerLink="inicio">OdonSys</a>
     </div>
@@ -23,6 +23,10 @@
     <div class="nav-menu-right m-r-16" ngbDropdown>
       <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
       <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+        <p ngbDropdownItem [disabled]="true">
+          <strong>Usuario: </strong>{{userName}}
+        </p>
+        <hr>
         <button ngbDropdownItem routerLink="trabajo/configuración/datos">Mis datos</button>
         <button ngbDropdownItem (click)="logOut()">Salir</button>
       </div>
