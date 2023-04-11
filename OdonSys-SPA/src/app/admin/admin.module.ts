@@ -13,6 +13,7 @@ import { UserApiService } from './service/user-api.service';
 import { AdminClientsComponent } from './components/admin-clients/admin-clients.component';
 import { BasicServiceModule } from '../basic-service.module';
 import { ClientAdminApiService } from './service/client-admin-api.service';
+import { RolesComponent } from './components/roles/roles.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ClientAdminApiService } from './service/client-admin-api.service';
     UpsertProcedureComponent,
     DoctorsComponent,
     UpsertDoctorComponent,
-    AdminClientsComponent
+    AdminClientsComponent,
+    RolesComponent
   ],
   providers:[
     ClientAdminApiService,

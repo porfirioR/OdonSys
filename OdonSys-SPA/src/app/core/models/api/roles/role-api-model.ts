@@ -4,5 +4,5 @@ export interface RoleApiModel {
   name: string,
   code: string,
   rolePermission: string[],
-  userRoles: DoctorApiModel
+  userRoles: DoctorApiModel[]
 }

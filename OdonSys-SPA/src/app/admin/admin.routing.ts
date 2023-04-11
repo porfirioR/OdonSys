@@ -4,6 +4,7 @@ import { AdminClientsComponent } from './components/admin-clients/admin-clients.
 import { AdminProcedureComponent } from './components/admin-procedure/admin-procedure.component';
 import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
+import { RolesComponent } from './components/roles/roles.component';
 
 export const AdminRoutes: Routes = [
   { 
@@ -16,6 +17,7 @@ export const AdminRoutes: Routes = [
       { path: 'pacientes', component: AdminClientsComponent, title: 'Pacientes' },
       { path: 'pacientes/ver/:id', component: AdminClientsComponent, title: 'Ver pacientes' },
       { path: 'pacientes/actualizar/:id', component: UpsertClientComponent, title: 'Actualizar pacientes' },
+      { path: 'roles', component: RolesComponent, title: 'Roles' },
     ]
   },
 ];
