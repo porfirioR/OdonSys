@@ -6,6 +6,8 @@ import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
+import { Store } from '@ngrx/store';
+import { selectUserInfo } from '../../store/user-info/user-info.selectors';
 
 @Component({
   selector: 'app-authenticate',
@@ -27,7 +29,8 @@ export class AuthenticateComponent implements OnInit {
     private readonly router: Router,
     private readonly authApiService: AuthApiService,
     private readonly alertService: AlertService,
-    private readonly userInfoService: UserInfoService
+    private readonly userInfoService: UserInfoService,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -42,20 +45,21 @@ export class AuthenticateComponent implements OnInit {
   }
 
   public login = (): void => {
-    if (this.formGroup.invalid) { return; }
-    this.load = false;
-    const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!);
-    this.formGroup.disable();
+    if (this.formGroup.invalid) { return }
+    this.load = false
+    const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!)
+    this.formGroup.disable()
     this.authApiService.login(request).subscribe({
       next: (response: AuthApiModel) => {
-        this.formGroup.enable();
-        this.alertService.showSuccess(`Bienvenido ${response.user.userName}`);
-        this.router.navigate(['']);
+        this.formGroup.enable()
+        this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
+        this.router.navigate([''])
       }, error: (e) => {
-        this.load = true;
-        this.formGroup.enable();
-        throw e;
+        this.load = true
+        this.formGroup.enable()
+        throw e
       }
     })
+    this.store.select(selectUserInfo).subscribe()
   };
 }

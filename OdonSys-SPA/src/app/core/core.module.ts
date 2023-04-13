@@ -19,6 +19,13 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ClientsComponent } from './components/clients/clients.component';
 import { UpsertClientComponent } from './components/clients/upsert-client/upsert-client.component';
 import { AnimationComponent } from './components/animation/animation.component';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../../environments/environment';
+import * as fromUserInfo from './store/user-info.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { UserInfoEffects } from './store/user-info.effects';
 
 @NgModule({
   imports: [
@@ -28,6 +35,10 @@ import { AnimationComponent } from './components/animation/animation.component';
     RouterModule,
     AgGridModule.withComponents([]),
     NgbModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
+    EffectsModule.forFeature([UserInfoEffects]),
   ],
   declarations: [
     HeaderComponent,

@@ -7,6 +7,8 @@ import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { UserInfoService } from '../shared/user-info.service';
+import { Store } from '@ngrx/store';
+import * as userInfoActions from '../../store/user-info/user-info.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class AuthApiService {
 
   constructor(
     private readonly http: HttpClient,
-    private readonly userInfoService: UserInfoService
+    private readonly userInfoService: UserInfoService,
+    private store: Store
   ) { }
 
   public login = (request: LoginRequest): Observable<AuthApiModel> => {
@@ -31,7 +34,8 @@ export class AuthApiService {
     };
     return this.http.post<AuthApiModel>(`${this.baseUrl}/login`, null, httpOptions).pipe(
       switchMap(x => {
-        this.userInfoService.setUserLogin(x);
+        this.store.dispatch(userInfoActions.getUserInfo())
+        // this.userInfoService.setUserLogin(x);
         return of(x);
       }
     ));
