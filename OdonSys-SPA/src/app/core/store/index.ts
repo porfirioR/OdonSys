@@ -5,16 +5,16 @@ import {
   createSelector,
   MetaReducer
 } from '@ngrx/store'
-import * as fromUserInfo from './user-info/user-info.reducer'
+import * as fromRoles from './roles/roles.reducer'
 
 export const coreFeatureKey = 'core'
 
 export interface CoreState {
-  [fromUserInfo.userInfoFeatureKey]: fromUserInfo.UserInfoState,
+  [fromRoles.roleFeatureKey]: fromRoles.RoleState,
 }
 
 export const reducers: ActionReducerMap<CoreState> = {
-  [fromUserInfo.userInfoFeatureKey]: fromUserInfo.reducer,
+  [fromRoles.roleFeatureKey]: fromRoles.rolesReducer,
 }
 
 export const selectCoreFeature = createFeatureSelector<CoreState>(coreFeatureKey)

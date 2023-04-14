@@ -7,7 +7,7 @@ import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
 import { Store } from '@ngrx/store';
-import { selectUserInfo } from '../../store/user-info/user-info.selectors';
+import { selectRole } from '../../store/roles/roles.selectors';
 
 @Component({
   selector: 'app-authenticate',
@@ -60,6 +60,6 @@ export class AuthenticateComponent implements OnInit {
         throw e
       }
     })
-    this.store.select(selectUserInfo).subscribe()
+    this.store.select(selectRole).subscribe()
   };
 }

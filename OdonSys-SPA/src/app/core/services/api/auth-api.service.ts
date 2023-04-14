@@ -8,7 +8,7 @@ import { LoginRequest } from '../../models/users/api/login-request';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { UserInfoService } from '../shared/user-info.service';
 import { Store } from '@ngrx/store';
-import * as userInfoActions from '../../store/user-info/user-info.actions';
+import * as userInfoActions from '../../store/roles/roles.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +34,7 @@ export class AuthApiService {
     };
     return this.http.post<AuthApiModel>(`${this.baseUrl}/login`, null, httpOptions).pipe(
       switchMap(x => {
-        this.store.dispatch(userInfoActions.getUserInfo())
+        this.store.dispatch(userInfoActions.getRoles())
         // this.userInfoService.setUserLogin(x);
         return of(x);
       }

@@ -3,6 +3,8 @@ using Access.Contract.Users;
 using Access.Sql.Entities;
 using AutoMapper;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Access.Admin.Mapper
 {
@@ -22,7 +24,8 @@ namespace Access.Admin.Mapper
             CreateMap<User, UserDataAccessModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
+                .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved))
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Any() ? src.UserRoles.Select(x => x.Role.Code) : new List<string>()));
         }
     }
 }

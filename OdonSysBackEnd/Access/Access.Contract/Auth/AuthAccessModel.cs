@@ -2,10 +2,10 @@
 
 namespace Access.Contract.Auth
 {
-    public class AuthAccessModel
-    {
-        public UserDataAccessModel User { get; set; }
-        public string Token { get; set; }
-        public string Scheme { get; set; }
-    }
+    public record AuthAccessModel
+    (
+        UserDataAccessModel User,
+        string Token,
+        string Scheme
+    );
 }
