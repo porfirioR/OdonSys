@@ -13,23 +13,25 @@ export class CustomErrorHandler implements ErrorHandler {
   ) {}
 
   handleError(error: any): void {
-    console.error(error);
+    console.error(error)
 
     if (typeof error === 'object' && error.error) {
       const errors = error.error;
-      let message = '';
+      let message = ''
       if (errors.errors) {
         for (const key in errors.errors) {
-          const element = error.error.errors[key];
+          const element = error.error.errors[key]
           message = message.concat(`${element}\n`)
         }
       } else if (errors.statusCode) {
-        message = errors.message;
+        message = errors.message
+      } else if(errors && errors.title) {
+        message = errors.title
       }
-      this.alertService.showError(message);
-      return;
+      this.alertService.showError(message)
+      return
     } else if (error?.status === 401) {
-      this.router.navigate(['login']);
+      this.router.navigate(['login'])
     }
   }
 }

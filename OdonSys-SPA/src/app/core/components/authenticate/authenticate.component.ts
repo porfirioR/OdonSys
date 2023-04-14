@@ -6,7 +6,6 @@ import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
-import { Store } from '@ngrx/store';
 import { selectRole } from '../../store/roles/roles.selectors';
 
 @Component({
@@ -30,18 +29,17 @@ export class AuthenticateComponent implements OnInit {
     private readonly authApiService: AuthApiService,
     private readonly alertService: AlertService,
     private readonly userInfoService: UserInfoService,
-    private store: Store
   ) {}
 
   ngOnInit() {
-    this.userInfoService.clearAll();
+    // this.userInfoService.clearAll();
     this.load = true;
     this.formGroup.controls.type.valueChanges.subscribe({
       next: (x: Boolean) => {
         this.currentType = x ? this.typeValue.text : this.typeValue.password;
         this.currentMessage = x ? this.typeValue.textMessage : this.typeValue.passwordMessage;
       }
-    });
+    })
   }
 
   public login = (): void => {
@@ -60,6 +58,5 @@ export class AuthenticateComponent implements OnInit {
         throw e
       }
     })
-    this.store.select(selectRole).subscribe()
-  };
+  }
 }

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { AppRoutes } from './app-routing.module';
+import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CustomErrorHandler } from './core/helpers/custom-error-handler';
