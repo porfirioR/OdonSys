@@ -10,6 +10,7 @@ export interface RoleState extends EntityState<RoleModel> { }
 export function selectRoleId(a: RoleModel): string {
   return a.code;
 }
+
 export function sortByCode(a: RoleModel, b: RoleModel): number {
   return a.code.localeCompare(b.code);
 }

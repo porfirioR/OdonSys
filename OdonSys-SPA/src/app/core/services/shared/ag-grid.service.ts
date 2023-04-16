@@ -27,7 +27,14 @@ export class AgGridService {
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
     cellRendererFramework: GridActionsComponent }
-  ];
+  ]
+
+  private roleColumnDef: ColDef[] = [
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Código', field: 'code', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ]
 
   private doctorColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
@@ -70,7 +77,7 @@ export class AgGridService {
 
   constructor() { }
 
-  public getGridOptions = (): GridOptions => {
+  public getGridOptions(): GridOptions {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
@@ -94,14 +101,20 @@ export class AgGridService {
           }
         }
       },
-    };
-    return gridOptions;
+    }
+    return gridOptions
   }
 
   // Configuration
   public getProcedureGridOptions = (): GridOptions => {
     const grid = this.getGridOptions();
     grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
+    return grid;
+  }
+
+  public getRoleGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions();
+    grid.columnDefs = this.columnDef.concat(this.roleColumnDef);
     return grid;
   }
 

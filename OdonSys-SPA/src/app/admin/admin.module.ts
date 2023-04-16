@@ -14,6 +14,7 @@ import { AdminClientsComponent } from './components/admin-clients/admin-clients.
 import { BasicServiceModule } from '../basic-service.module';
 import { ClientAdminApiService } from './service/client-admin-api.service';
 import { RolesComponent } from './components/roles/roles.component';
+import { PermissionGuard } from '../core/guards/permission.guard';
 
 @NgModule({
   imports: [

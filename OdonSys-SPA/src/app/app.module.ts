@@ -25,7 +25,6 @@ import { EffectsModule } from '@ngrx/effects';
     HttpClientModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule,
-    StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !environment.production }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
-import { UserDataApiService } from '../api/user-data-api.service';
 import { LocalStorageService } from './local-storage.service';
+import { Permission } from '../../enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +12,9 @@ export class UserInfoService {
   private userToken = 'token';
   private permissionKey = 'permissions';
 
-  constructor(private readonly localStorageService: LocalStorageService, private readonly userDataApiService: UserDataApiService) { }
-
-  // public loadUserData = (): Observable<string> => {
-  //   this.localStorageService.clearAll(this.userKey)
-  //   this.localStorageService.clearAll(this.userToken)
-  //   return this.userDataApiService.getUserData().pipe(
-  //     switchMap((userInfo: UserDataApiModel) => {
-  //       this.localStorageService.setData(this.userKey, userInfo)
-  //       return of(userInfo.name)
-  //     }),
-  //     catchError((error) => {
-  //       return throwError(`Problemas al traer datos del usuario. ${JSON.stringify(error)}`)
-  //     })
-  //   )
-  // }
+  constructor(
+    private readonly localStorageService: LocalStorageService
+  ) { }
 
   public getToken = (): string => {
     return this.localStorageService.getByKey(this.userToken)
@@ -48,14 +36,19 @@ export class UserInfoService {
   }
 
   public getUserData = (): UserApiModel => {
-    const userData: UserApiModel = this.localStorageService.getByKey(this.userKey)
-    return userData
+    const userData = JSON.parse(this.localStorageService.getByKey(this.userKey)) as UserApiModel;
+    return userData;
   }
 
   public getPermissions = (): string[] => {
-    const permissions: string[] = this.localStorageService.getArrayByKey(this.userKey)
+    const permissions: string[] = this.localStorageService.getArrayByKey(this.permissionKey)
     return permissions
   }
 
+  public havePermission = (permission: Permission): boolean => this.havePermissions([permission])
 
+  public havePermissions = (pagePermissions: Permission[]): boolean => {
+    const permissions = this.getPermissions()
+    return pagePermissions.every(x => permissions.includes(x))
+  }
 }

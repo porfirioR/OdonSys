@@ -1,8 +1,8 @@
 <app-progress *ngIf="!load"></app-progress>
 <div *ngIf="load" class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-    <h3>Procedimientos</h3>
-    <button type="button" class="btn btn-outline-primary" routerLink="crear">
+    <h3>Roles</h3>
+    <button type="button" class="btn btn-outline-primary" routerLink="crear" *ngIf="canCreate">
       <i class="fas fa-plus"></i>
       Agregar
     </button>
@@ -10,7 +10,8 @@
   <div class="m-t-16">
     <ng-container *ngIf="gridOptions">
       <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
-        [gridOptions]="gridOptions">
+        [gridOptions]="gridOptions"
+        [rowData]="rowData$ | async">
       </ag-grid-angular>
     </ng-container>
   </div>

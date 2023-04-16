@@ -8,6 +8,12 @@ import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { DoctorModel } from '../../models/doctors/doctor-model';
+import { Store } from '@ngrx/store';
+import { Observable, tap } from 'rxjs';
+import { selectRoles } from '../../../core/store/roles/roles.selectors';
+import  * as fromRolesActions from '../../../core/store/roles/roles.actions';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { Permission } from 'src/app/core/enums/permission.enum';
 
 @Component({
   selector: 'app-roles',
@@ -17,56 +23,56 @@ import { DoctorModel } from '../../models/doctors/doctor-model';
 export class RolesComponent implements OnInit {
   public load: boolean = false
   public gridOptions!: GridOptions
-  public roleList: RoleModel[] = []
+  protected rowData$!: Observable<RoleModel[]>
+  protected canCreate = false
+  protected canEdit = false
 
   constructor(
     private readonly router: Router,
     private readonly roleApiService: RoleApiService,
     private readonly alertService: AlertService,
-    private readonly agGridService: AgGridService
-  ) { }
+    private readonly agGridService: AgGridService,
+    private store: Store,
+    private userInfoService: UserInfoService,
+    ) { }
 
   ngOnInit() {
-    this.setupAgGrid();
-    this.load = true;
-    this.getList();
-
-  }
-  private getList = () => {
-    this.roleApiService.getAll().subscribe({
-      next: (response) => {
-        this.roleList =  response.map(x => new RoleModel(x.name, x.code, x.rolePermission, x.userRoles.map(y => new DoctorModel())));
-        this.gridOptions.api?.setRowData(this.roleList);
-        this.gridOptions.api?.sizeColumnsToFit();
-        if (this.roleList.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay();
-        }
-      },
-      error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay();
-        throw e;
+    this.setupAgGrid()
+    this.canCreate = this.userInfoService.havePermission(Permission.ManageRoles)
+    this.canEdit = this.userInfoService.havePermission(Permission.ManageRoles)
+    let loading = true;
+    this.rowData$ = this.store.select(selectRoles).pipe(tap(x => {
+      if(loading && x.length === 0) { 
+        this.store.dispatch(fromRolesActions.loadRoles()) 
+        loading = false
       }
-    });
+      // this.gridOptions.api?.sizeColumnsToFit()
+    }))
+    this.load = true
   }
 
   private setupAgGrid = (): void => {
-    this.gridOptions = this.agGridService.getProcedureGridOptions();
-    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
+    this.gridOptions = this.agGridService.getRoleGridOptions()
+    const columnAction: ColDef = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action')!
+    if (!this.canEdit) {
+      columnAction.hide = true
+      return
+    }
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Editar],
       clicked: this.actionColumnClicked
-    };
-    columnAction.cellRendererParams = params;
+    }
+    columnAction!.cellRendererParams = params
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}/${currentRowNode.data.active}`]);
-        break;
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        break
       default:
-        break;
+        break
     }
   }
 }

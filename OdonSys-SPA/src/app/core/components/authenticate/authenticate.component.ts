@@ -6,7 +6,7 @@ import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
-import { selectRole } from '../../store/roles/roles.selectors';
+import { selectRoles } from '../../store/roles/roles.selectors';
 
 @Component({
   selector: 'app-authenticate',
