@@ -1,4 +1,5 @@
 ﻿using Contract.Admin.Users;
+using System;
 using System.Collections.Generic;
 
 namespace Contract.Admin.Roles
@@ -9,5 +10,9 @@ namespace Contract.Admin.Roles
         public string Code { get; set; }
         public IEnumerable<string> RolePermissions { get; set; }
         public IEnumerable<DoctorModel> UserRoles { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+        public string UserCreated { get; set; }
+        public string UserUpdated { get; set; }
     }
 }

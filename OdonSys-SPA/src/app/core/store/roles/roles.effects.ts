@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as roleActions from './roles.actions';
-import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { RoleApiService } from '../../services/api/role-api.service';
 import { RoleModel } from '../../models/view/role-model';
 import { Store } from '@ngrx/store';
@@ -23,10 +23,30 @@ export class RolesEffects {
       switchMap(([action, roles]) => roles.length > 0 ?
         of(roleActions.allRolesLoaded({ roles:roles })) :
         this.roleApiService.getAll().pipe(
-          map(response => roleActions.allRolesLoaded({ roles: response.map(x => new RoleModel(x.name, x.code, x.rolePermission, x.userRoles)) })),
+          map(response => roleActions.allRolesLoaded({
+            roles: response.map(x =>
+              new RoleModel(
+                x.name,
+                x.code,
+                x.userCreated,
+                x.userUpdated,
+                x.dateCreated,
+                x.dateModified,
+                x.rolePermissions,
+                x.userRoles
+                )
+              )
+          })),
           catchError(error => of(roleActions.rolesFailure({ error })))
         )
-      ),
+      )
     )
   })
+
+  errorHandler$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(roleActions.rolesFailure),
+      tap((x) => {throw x.error})
+    )
+  });
 }

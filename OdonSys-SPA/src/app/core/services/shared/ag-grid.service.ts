@@ -32,6 +32,14 @@ export class AgGridService {
   private roleColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Código', field: 'code', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
+    { headerName: 'Quien creo', field: 'userCreated', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 150, resizable: true },
+    { headerName: 'Quien cambio', field: 'userUpdated', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 150, resizable: true },
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 140, resizable: true,
+      valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
+      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
+    { headerName: 'Fecha Modificada', field: 'dateModified', filter: false, maxWidth: 175, resizable: true,
+      valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
+      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
@@ -113,8 +121,8 @@ export class AgGridService {
   }
 
   public getRoleGridOptions = (): GridOptions => {
-    const grid = this.getGridOptions();
-    grid.columnDefs = this.columnDef.concat(this.roleColumnDef);
+    const grid = this.getGridOptions()
+    grid.columnDefs = [...this.roleColumnDef]
     return grid;
   }
 

@@ -7,6 +7,7 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { Permission } from '../core/enums/permission.enum';
+import { UpsertRoleComponent } from './components/roles/upsert-role/upsert-role.component';
 
 export const AdminRoutes: Routes = [
   { 
@@ -65,14 +66,14 @@ export const AdminRoutes: Routes = [
       },
       {
         path: 'roles/crear',
-        component: RolesComponent,
+        component: UpsertRoleComponent,
         canActivate: [PermissionGuard],
         title: 'Crear Roles',
         data: { permissions: [ Permission.ManageRoles ] }
       },
       {
         path: 'roles/actualizar/:id',
-        component: RolesComponent,
+        component: UpsertRoleComponent,
         canActivate: [PermissionGuard],
         title: 'Actualizar Roles',
         data: { permissions: [ Permission.ManageRoles ] }

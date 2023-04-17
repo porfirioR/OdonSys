@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public logOut = () => {
-    this.userInfoService.clearAll()
+    this.userInfoService.clearAllCredentials()
     this.router.navigateByUrl('/login')
   }
 }

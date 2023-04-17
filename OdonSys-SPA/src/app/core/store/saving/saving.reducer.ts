@@ -16,6 +16,7 @@ export const reducer = createReducer(
   initialState,
   on(
     fromRolesActions.updateRole,
+    fromRolesActions.createRole,
     (state) => ({
       ...state,
       saving: true

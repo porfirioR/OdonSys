@@ -14,7 +14,7 @@ import { AdminClientsComponent } from './components/admin-clients/admin-clients.
 import { BasicServiceModule } from '../basic-service.module';
 import { ClientAdminApiService } from './service/client-admin-api.service';
 import { RolesComponent } from './components/roles/roles.component';
-import { PermissionGuard } from '../core/guards/permission.guard';
+import { UpsertRoleComponent } from './components/roles/upsert-role/upsert-role.component';
 
 @NgModule({
   imports: [
@@ -29,7 +29,8 @@ import { PermissionGuard } from '../core/guards/permission.guard';
     DoctorsComponent,
     UpsertDoctorComponent,
     AdminClientsComponent,
-    RolesComponent
+    RolesComponent,
+    UpsertRoleComponent
   ],
   providers:[
     ClientAdminApiService,

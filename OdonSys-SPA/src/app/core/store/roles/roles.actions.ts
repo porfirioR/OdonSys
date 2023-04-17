@@ -30,7 +30,7 @@ export const createRoleSuccess = createAction(
 
 export const updateRole = createAction(
   '[Update Role Component] Update Role',
-  props<{ createRole: UpdateRoleApiRequest }>()
+  props<{ updateRole: UpdateRoleApiRequest }>()
 );
 
 export const updateRoleSuccess = createAction(

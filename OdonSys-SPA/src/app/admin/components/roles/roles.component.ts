@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { Observable, tap } from 'rxjs';
 import { RoleModel } from '../../../core/models/view/role-model';
-import { RoleApiService } from '../../../core/services/api/role-api.service';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
-import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { DoctorModel } from '../../models/doctors/doctor-model';
-import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
 import { selectRoles } from '../../../core/store/roles/roles.selectors';
 import  * as fromRolesActions from '../../../core/store/roles/roles.actions';
-import { UserInfoService } from '../../../core/services/shared/user-info.service';
-import { Permission } from 'src/app/core/enums/permission.enum';
+import { Permission } from '../../../core/enums/permission.enum';
 
 @Component({
   selector: 'app-roles',
@@ -29,7 +27,6 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly roleApiService: RoleApiService,
     private readonly alertService: AlertService,
     private readonly agGridService: AgGridService,
     private store: Store,
@@ -37,12 +34,13 @@ export class RolesComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.setupAgGrid()
     this.canCreate = this.userInfoService.havePermission(Permission.ManageRoles)
     this.canEdit = this.userInfoService.havePermission(Permission.ManageRoles)
+    this.setupAgGrid()
     let loading = true;
     this.rowData$ = this.store.select(selectRoles).pipe(tap(x => {
-      if(loading && x.length === 0) { 
+      if(loading && x.length === 0) {
+        // this.gridOptions.api?.showLoadingOverlay()
         this.store.dispatch(fromRolesActions.loadRoles()) 
         loading = false
       }
@@ -69,7 +67,7 @@ export class RolesComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.code}`])
         break
       default:
         break

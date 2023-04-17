@@ -29,7 +29,7 @@ export class UserInfoService {
     this.localStorageService.setData(this.permissionKey, permissions)
   }
 
-  public clearAll = () => {
+  public clearAllCredentials = () => {
     this.localStorageService.clearAll(this.userKey)
     this.localStorageService.clearAll(this.userToken)
     this.localStorageService.clearAll(this.permissionKey)
