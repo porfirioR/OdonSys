@@ -5,7 +5,6 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { Observable, tap } from 'rxjs';
 import { RoleModel } from '../../../core/models/view/role-model';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { AlertService } from '../../../core/services/shared/alert.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
@@ -27,7 +26,6 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly alertService: AlertService,
     private readonly agGridService: AgGridService,
     private store: Store,
     private userInfoService: UserInfoService,
