@@ -22,7 +22,7 @@ export class UpsertRoleComponent implements OnInit {
   public load: boolean = false;
   public saving$: Observable<boolean> = this.store.select(savingSelector)
   private code = '';
-  public title = 'crear';
+  public title = 'Crear';
   public formGroup = new FormGroup( {
     name : new FormControl('', [Validators.required, Validators.maxLength(30)]),
     code : new FormControl('', [Validators.required, Validators.maxLength(30)]),
@@ -37,10 +37,10 @@ export class UpsertRoleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const code: string = this.activateRoute.snapshot.data['code']
+    this.code = this.activateRoute.snapshot.params['code']
     const role$ = this.store.pipe(
       select(selectRoles),
-      map(x => code ? x.find(y => y.code === code) ?? undefined : undefined)
+      map(x => this.code ? x.find(y => y.code === this.code) ?? undefined : undefined)
     )
     combineLatest([this.roleApiService.getPermissions(), role$])
     .subscribe({

@@ -1,22 +1,22 @@
 <app-progress *ngIf="!load || (saving$ | async)"></app-progress>
 <div *ngIf="load" class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-    <h3>{{title}} roles</h3>
+    <h3>{{title}} rol</h3>
   </div>
   <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-6">
           <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-6">
           <app-text-number-input [label]="'Código'" formControlName="code"></app-text-number-input>
         </div>
       </div>
-      <div class="col-lg-12 row m-t-16 m-b-12 m-l-12">
+      <div class="col-12 row m-t-16 m-b-12 m-l-12">
         <h3>Permisos</h3>
         <ng-container *ngFor="let subGroupPermissions of formGroup.controls.subGroupPermissions.controls; let i = index">
-          <div class="form-check col-lg-6">
+          <div class="form-check col-lg-6 col-md-4">
             <h5>{{subGroupPermissions.value.subGroup}}</h5>
             <ng-container >
               <div class="col-lg-6" *ngFor="let permissions of subGroupPermissions.controls.permissions.controls">

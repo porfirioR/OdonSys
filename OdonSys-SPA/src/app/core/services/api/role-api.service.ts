@@ -30,7 +30,7 @@ export class RoleApiService {
   public create = (request: CreateRoleApiRequest): Observable<RoleApiModel> => {
     return this.http.post<RoleApiModel>(`${this.baseUrl}`, request);
   }
-  public update = (id: string, model: UpdateRoleApiRequest): Observable<RoleApiModel> => {
+  public update = (model: UpdateRoleApiRequest): Observable<RoleApiModel> => {
     return this.http.put<RoleApiModel>(`${this.baseUrl}`, model);
   }
 

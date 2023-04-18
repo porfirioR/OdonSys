@@ -43,10 +43,34 @@ export class RolesEffects {
     )
   })
 
+  createRole$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(roleActions.createRole),
+      switchMap((action) =>
+        this.roleApiService.create(action.createRole).pipe(
+          map(role => roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })),
+          catchError(error => of(roleActions.rolesFailure({ error })))
+        )
+      )
+    )
+  })
+
+  updateRole$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(roleActions.updateRole),
+      switchMap((action) =>
+        this.roleApiService.update(action.updateRole).pipe(
+          map(role => roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })),
+          catchError(error => of(roleActions.rolesFailure({ error })))
+        )
+      )
+    )
+  })
+
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.rolesFailure),
       tap((x) => {throw x.error})
     )
-  });
+  })
 }

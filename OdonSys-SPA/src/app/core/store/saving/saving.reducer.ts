@@ -23,13 +23,16 @@ export const reducer = createReducer(
     })
   ),
   on(
+    fromRolesActions.createRoleSuccess,
     fromRolesActions.updateRoleSuccess,
     (state) => ({
       ...state,
       saving: false
     })
   ),
-  on(fromSavingActions.savingFailed,
+  on(
+    fromSavingActions.savingFailed,
+    fromRolesActions.rolesFailure,
     (state) => ({
       ...state,
       saving: false

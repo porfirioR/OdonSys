@@ -72,7 +72,7 @@ export const AdminRoutes: Routes = [
         data: { permissions: [ Permission.ManageRoles ] }
       },
       {
-        path: 'roles/actualizar/:id',
+        path: 'roles/actualizar/:code',
         component: UpsertRoleComponent,
         canActivate: [PermissionGuard],
         title: 'Actualizar Roles',
