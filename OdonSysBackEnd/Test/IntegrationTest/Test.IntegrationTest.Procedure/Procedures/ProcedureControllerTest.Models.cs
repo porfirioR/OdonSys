@@ -9,7 +9,7 @@ namespace AcceptanceTest.Host.Api.Procedures
         {
             Name = Guid.NewGuid().ToString()[30..],
             Description = "Procedimiento",
-            EstimatedSessions = "1 mes",
+            Price = 0,
             ProcedureTeeth = TeethIds
         };
 

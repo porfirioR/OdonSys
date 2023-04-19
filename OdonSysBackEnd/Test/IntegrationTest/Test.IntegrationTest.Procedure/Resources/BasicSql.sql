@@ -34,4 +34,6 @@ insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreat
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 46, 'Primer Molar', 2, 1, 4, 4, GETDATE(), GETDATE(), 'system', 'system');
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 47, 'Segundo Molar', 2, 1, 4, 4, GETDATE(), GETDATE(), 'system', 'system');
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 48, 'Tercer Molar', 2, 1, 4, 4, GETDATE(), GETDATE(), 'system', 'system');
+--Procedures
+insert into [Procedures] (Id, [Name], [Description], Active, Price, DateCreated, DateModified, UserCreated, UserUpdated) values (newid(), 'Consulta', 'Consulta general', true, 0, GETDATE(), GETDATE(), 'system', 'system')
 SELECT * from Teeth;

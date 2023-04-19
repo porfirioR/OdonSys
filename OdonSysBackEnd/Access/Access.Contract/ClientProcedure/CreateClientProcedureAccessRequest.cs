@@ -6,7 +6,6 @@ namespace Access.Contract.ClientProcedure
         string UserClientId,
         string ProcedureId,
         int Price,
-        bool Anesthesia,
         ProcedureStatus Status
     ) { }
 }

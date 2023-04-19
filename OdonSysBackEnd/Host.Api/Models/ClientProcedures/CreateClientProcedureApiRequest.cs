@@ -12,10 +12,8 @@ namespace Host.Api.Models.ClientProcedures
         [Required]
         public string ClientId { get; set; }
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un número valido")]
+        [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un precio válido")]
         public int Price { get; set; }
-        [Required]
-        public bool Anhestesia { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

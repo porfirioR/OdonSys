@@ -14,6 +14,9 @@ namespace Host.Api.Models.Procedures
         [Required]
         public bool Active { get; set; }
         [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un precio válido")]
+        public int Price { get; set; }
+        [Required]
         public IEnumerable<string> ProcedureTeeth { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

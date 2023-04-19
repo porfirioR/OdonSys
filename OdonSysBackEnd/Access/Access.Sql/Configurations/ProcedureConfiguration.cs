@@ -27,11 +27,6 @@ namespace Access.Sql.Configurations
                 .Property(x => x.Description)
                 .IsRequired()
                 .HasMaxLength(50);
-
-            builder
-                .Property(x => x.EstimatedSessions)
-                .IsRequired()
-                .HasMaxLength(50);
         }
     }
 }

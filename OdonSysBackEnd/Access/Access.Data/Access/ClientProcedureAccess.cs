@@ -30,8 +30,8 @@ namespace Access.Data.Access
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString(),
                 entity.Status,
-                entity.Price,
-                entity.Anesthesia);
+                entity.Price
+            );
             return result;
         }
 
@@ -44,8 +44,8 @@ namespace Access.Data.Access
                 x.ProcedureId.ToString(),
                 x.UserClientId.ToString(),
                 x.Status,
-                x.Price,
-                x.Anesthesia));
+                x.Price
+            ));
             return respose;
         }
 
@@ -59,8 +59,8 @@ namespace Access.Data.Access
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString(),
                 entity.Status,
-                entity.Price,
-                entity.Anesthesia);
+                entity.Price
+            );
             return result;
         }
 

@@ -25,7 +25,7 @@ namespace Host.Api.Controllers.Procedure
         [Authorize(Policy = Policy.CanCreateClientProcedure)]
         public async Task<ClientProcedureModel> Create([FromBody] CreateClientProcedureApiRequest apiRequest)
         {
-            var request = new CreateClientProcedureRequest(UserId, apiRequest.ClientId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Anhestesia);
+            var request = new CreateClientProcedureRequest(UserId, apiRequest.ClientId, apiRequest.ProcedureId, apiRequest.Price);
             var response = await _procedureManager.CreateClientProcedureAsync(request);
             return response;
         }
