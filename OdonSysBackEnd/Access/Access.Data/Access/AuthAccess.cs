@@ -38,6 +38,8 @@ namespace Access.Data.Access
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
         {
             var user = await _context.Users
+                            .Include(x => x.UserRoles)
+                            .ThenInclude(x => x.Role)
                             .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email);
 
             if (user is null)
@@ -66,12 +68,7 @@ namespace Access.Data.Access
             var roleCodes = await RoleCodesAsync(userId);
             var token = CreateToken(user.UserName, userId.ToString(), roleCodes);
             var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
-            var userResponse = new AuthAccessModel
-            {
-                Token = token,
-                User = userAccessModel,
-                Scheme = JwtBearerDefaults.AuthenticationScheme
-            };
+            var userResponse = new AuthAccessModel(userAccessModel, token, JwtBearerDefaults.AuthenticationScheme);
             return userResponse;
         }
 
@@ -111,12 +108,7 @@ namespace Access.Data.Access
                 var roleCodes = await RoleCodesAsync(entity.Id);
                 var token = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
-                var userResponse = new AuthAccessModel
-                {
-                    Token = token,
-                    User = userAccessModel,
-                    Scheme = JwtBearerDefaults.AuthenticationScheme
-                };
+                var userResponse = new AuthAccessModel(userAccessModel, token, JwtBearerDefaults.AuthenticationScheme);
                 return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");

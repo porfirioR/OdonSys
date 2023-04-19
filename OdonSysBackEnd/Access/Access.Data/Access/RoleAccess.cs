@@ -24,13 +24,7 @@ namespace Access.Data.Access
         public async Task<RoleAccessModel> CreateAccessAsync(CreateRoleAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Role>(accessRequest);
-            _context.Entry(entity).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            var rolePermissions = new List<Permission>();
-
-            rolePermissions.AddRange(accessRequest.Permissions.Select(permission => new Permission { Id = Guid.NewGuid(), Name = permission, RoleId = entity.Id, Active = true }));
-            entity.RolePermissions = rolePermissions;
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Roles.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<RoleAccessModel>(entity);
         }

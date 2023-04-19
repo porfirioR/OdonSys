@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Host.Api.Controllers.Admin
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RolesController : OdonSysBaseController
     {
@@ -57,7 +58,6 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("permissions-role")]
-        [Authorize]
         public async Task<IEnumerable<string>> GetPermissionsByRoleCodes()
         {
             var roles = Roles;
@@ -66,7 +66,6 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpGet("permissions")]
-        [Authorize]
         public IEnumerable<PermissionModel> GetPermissions()
         {
             var model = _roleManager.GetAllPermissions();

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
-import { UserDataApiService } from '../api/user-data-api.service';
 import { LocalStorageService } from './local-storage.service';
+import { Permission } from '../../enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -10,36 +10,29 @@ import { LocalStorageService } from './local-storage.service';
 export class UserInfoService {
   private userKey = 'userData';
   private userToken = 'token';
+  private permissionKey = 'permissions';
 
-  constructor(private readonly localStorageService: LocalStorageService, private readonly userDataApiService: UserDataApiService) { }
-
-  // public loadUserData = (): Observable<string> => {
-  //   this.localStorageService.clearAll(this.userKey);
-  //   this.localStorageService.clearAll(this.userToken);
-  //   return this.userDataApiService.getUserData().pipe(
-  //     switchMap((userInfo: UserDataApiModel) => {
-  //       this.localStorageService.setData(this.userKey, userInfo);
-  //       return of(userInfo.name);
-  //     }),
-  //     catchError((error) => {
-  //       return throwError(`Problemas al traer datos del usuario. ${JSON.stringify(error)}`);
-  //     })
-  //   );
-  // }
+  constructor(
+    private readonly localStorageService: LocalStorageService
+  ) { }
 
   public getToken = (): string => {
-    return this.localStorageService.getByKey(this.userToken);
+    return this.localStorageService.getByKey(this.userToken)
   }
 
   public setUserLogin = (auth: AuthApiModel): void => {
-    this.localStorageService.setData(this.userToken, auth.token);
-    this.localStorageService.setData(this.userKey, JSON.stringify(auth.user));
-    //nextStep add this.userDataApiService.getUserData() for roles, and other things
+    this.localStorageService.setData(this.userToken, auth.token)
+    this.localStorageService.setData(this.userKey, JSON.stringify(auth.user))
   }
 
-  public clearAll = () => {
-    this.localStorageService.clearAll(this.userKey);
-    this.localStorageService.clearAll(this.userToken);
+  public setUserPermissions = (permissions: string[]): void => {
+    this.localStorageService.setData(this.permissionKey, permissions)
+  }
+
+  public clearAllCredentials = () => {
+    this.localStorageService.clearAll(this.userKey)
+    this.localStorageService.clearAll(this.userToken)
+    this.localStorageService.clearAll(this.permissionKey)
   }
 
   public getUserData = (): UserApiModel => {
@@ -47,4 +40,15 @@ export class UserInfoService {
     return userData;
   }
 
+  public getPermissions = (): string[] => {
+    const permissions: string[] = this.localStorageService.getArrayByKey(this.permissionKey)
+    return permissions
+  }
+
+  public havePermission = (permission: Permission): boolean => this.havePermissions([permission])
+
+  public havePermissions = (pagePermissions: Permission[]): boolean => {
+    const permissions = this.getPermissions()
+    return pagePermissions.every(x => permissions.includes(x))
+  }
 }

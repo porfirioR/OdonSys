@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../environments/environment';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { FieldId } from '../../enums/field-id.enum';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
-import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
 import { SystemAttributeModel } from '../../models/view/system-attribute-model';
 import { ClientApiService } from '../../services/api/client-api.service';

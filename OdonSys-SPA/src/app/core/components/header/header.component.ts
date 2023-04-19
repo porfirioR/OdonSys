@@ -8,16 +8,19 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  protected userName: string = '';
+  protected userName: string = ''
 
-  constructor(private readonly userInfoService: UserInfoService, private readonly router: Router) { }
+  constructor(
+    private readonly userInfoService: UserInfoService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit() {
     this.userName = this.userInfoService.getUserData().userName
   }
 
   public logOut = () => {
-    this.userInfoService.clearAll();
-    this.router.navigateByUrl('/login');
+    this.userInfoService.clearAllCredentials()
+    this.router.navigateByUrl('/login')
   }
 }

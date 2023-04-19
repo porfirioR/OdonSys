@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
@@ -6,6 +6,7 @@ import { LoginRequest } from '../../models/users/api/login-request';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
+import { selectRoles } from '../../store/roles/roles.selectors';
 
 @Component({
   selector: 'app-authenticate',
@@ -27,35 +28,35 @@ export class AuthenticateComponent implements OnInit {
     private readonly router: Router,
     private readonly authApiService: AuthApiService,
     private readonly alertService: AlertService,
-    private readonly userInfoService: UserInfoService
+    private readonly zone: NgZone,
   ) {}
 
   ngOnInit() {
-    this.userInfoService.clearAll();
+    // this.userInfoService.clearAll();
     this.load = true;
     this.formGroup.controls.type.valueChanges.subscribe({
       next: (x: Boolean) => {
         this.currentType = x ? this.typeValue.text : this.typeValue.password;
         this.currentMessage = x ? this.typeValue.textMessage : this.typeValue.passwordMessage;
       }
-    });
+    })
   }
 
   public login = (): void => {
-    if (this.formGroup.invalid) { return; }
-    this.load = false;
-    const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!);
-    this.formGroup.disable();
+    if (this.formGroup.invalid) { return }
+    this.load = false
+    const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!)
+    this.formGroup.disable()
     this.authApiService.login(request).subscribe({
       next: (response: AuthApiModel) => {
-        this.formGroup.enable();
-        this.alertService.showSuccess(`Bienvenido ${response.user.userName}`);
-        this.router.navigate(['']);
+        this.formGroup.enable()
+        this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
+        this.zone.run(() => this.router.navigate(['']))
       }, error: (e) => {
-        this.load = true;
-        this.formGroup.enable();
-        throw e;
+        this.load = true
+        this.formGroup.enable()
+        throw e
       }
     })
-  };
+  }
 }
