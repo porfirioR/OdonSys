@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { UserInfoService } from '../shared/user-info.service';
-import * as userInfoActions from '../../store/roles/roles.actions';
 import { RoleApiService } from './role-api.service';
 
 @Injectable({
