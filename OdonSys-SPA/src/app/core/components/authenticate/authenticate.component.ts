@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
@@ -28,7 +28,7 @@ export class AuthenticateComponent implements OnInit {
     private readonly router: Router,
     private readonly authApiService: AuthApiService,
     private readonly alertService: AlertService,
-    private readonly userInfoService: UserInfoService,
+    private readonly zone: NgZone,
   ) {}
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class AuthenticateComponent implements OnInit {
       next: (response: AuthApiModel) => {
         this.formGroup.enable()
         this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
-        this.router.navigate([''])
+        this.zone.run(() => this.router.navigate(['']))
       }, error: (e) => {
         this.load = true
         this.formGroup.enable()

@@ -6,6 +6,7 @@ import { RoleApiService } from '../../services/api/role-api.service';
 import { RoleModel } from '../../models/view/role-model';
 import { Store } from '@ngrx/store';
 import { selectRoles } from './roles.selectors';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class RolesEffects {
@@ -13,7 +14,8 @@ export class RolesEffects {
   constructor(
     private actions$: Actions,
     private readonly roleApiService: RoleApiService,
-    private readonly store: Store
+    private readonly store: Store,
+    private readonly router: Router
   ) {}
 
   getRoles$ = createEffect(() => {
@@ -48,7 +50,10 @@ export class RolesEffects {
       ofType(roleActions.createRole),
       switchMap((action) =>
         this.roleApiService.create(action.createRole).pipe(
-          map(role => roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })),
+          map(role => {
+            this.router.navigate(['/admin/roles'])
+            return roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
+          }),
           catchError(error => of(roleActions.rolesFailure({ error })))
         )
       )
@@ -60,7 +65,10 @@ export class RolesEffects {
       ofType(roleActions.updateRole),
       switchMap((action) =>
         this.roleApiService.update(action.updateRole).pipe(
-          map(role => roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })),
+          map(role => {
+            this.router.navigate(['/admin/roles'])
+            return roleActions.updateRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
+          }),
           catchError(error => of(roleActions.rolesFailure({ error })))
         )
       )

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Store, select } from '@ngrx/store';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
 import { RoleApiService } from '../../../../core/services/api/role-api.service';
 import * as fromRolesActions from '../../../../core/store/roles/roles.actions';
@@ -33,11 +33,13 @@ export class UpsertRoleComponent implements OnInit {
     private readonly location: Location,
     private readonly roleApiService: RoleApiService,
     private store: Store,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private readonly router: Router
   ) { }
 
   ngOnInit() {
     this.code = this.activateRoute.snapshot.params['code']
+    const isUpdateUrl = this.activateRoute.snapshot.url[1].path === 'actualizar'
     const role$ = this.store.pipe(
       select(selectRoles),
       map(x => this.code ? x.find(y => y.code === this.code) ?? undefined : undefined)
@@ -45,10 +47,14 @@ export class UpsertRoleComponent implements OnInit {
     combineLatest([this.roleApiService.getPermissions(), role$])
     .subscribe({
       next: ([permissions, role]) => {
+        if (isUpdateUrl && !role) {
+          this.router.navigate(['admin/roles/crear'])
+        }
         if (role) {
           this.title = 'Modificar'
           this.formGroup.controls.code.setValue(role.code)
           this.formGroup.controls.name.setValue(role.name)
+          this.formGroup.controls.code.disable()
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
         this.load = true
@@ -120,7 +126,7 @@ export class UpsertRoleComponent implements OnInit {
   private getSelectedPermissions = (): string[] => {
     const selectedPermissions = this.formGroup.controls.subGroupPermissions!.controls
                 .map(x => x.controls.permissions.controls)
-                .map(x => x.filter(y => y.controls.value).map(x => x.controls.code.value!))
+                .map(x => x.filter(y => y.controls.value!.value!).map(x => x.controls.code.value!))
                 .reduce((accumulator, value) => accumulator.concat(value), [])
     return selectedPermissions
   }

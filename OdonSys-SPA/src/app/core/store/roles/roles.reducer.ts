@@ -28,7 +28,7 @@ export const rolesReducer = createReducer(
     (state, action) => adapter.setAll(action.roles, state)
   ),
   on(RolesActions.createRoleSuccess,
-    (state, action) => adapter.addOne(action.role, state),
+    (state, action) => adapter.setOne(action.role, state),
   ),
   on(RolesActions.updateRoleSuccess,
     (state, action) => adapter.upsertOne(action.role, state),
