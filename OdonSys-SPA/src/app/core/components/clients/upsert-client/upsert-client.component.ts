@@ -1,7 +1,6 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
@@ -28,10 +27,9 @@ export class UpsertClientComponent implements OnInit {
   private fullEdit = false;
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly location: Location,
     private readonly clientApiService: ClientApiService,
     private readonly alertService: AlertService,
-
+    private readonly router: Router
   ) {
     this.countries = EnumHandler.getCountries();
   }
@@ -41,7 +39,7 @@ export class UpsertClientComponent implements OnInit {
   }
 
   protected close = () => {
-    this.location.back();
+    this.router.navigate(['trabajo/misPacientes'])
   }
 
   protected save = (): void => {
@@ -51,7 +49,7 @@ export class UpsertClientComponent implements OnInit {
     request$.subscribe({
       next: () => {
         this.alertService.showSuccess('Datos guardados.');
-        this.location.back();
+        this.close()
       },
       error: (error) => {
         this.saving = false;
