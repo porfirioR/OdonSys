@@ -10,6 +10,7 @@ namespace Host.Api.Models.Procedures
         [Required]
         public string Id { get; set; }
         [Required]
+        [StringLength(100, ErrorMessage = "Longitud máxima de nombre es 100.")]
         public string Description { get; set; }
         [Required]
         public bool Active { get; set; }
