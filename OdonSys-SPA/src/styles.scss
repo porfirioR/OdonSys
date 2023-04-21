@@ -1,5 +1,4 @@
 @import "bootstrap/dist/css/bootstrap.css";
-@import 'bootstrap/scss/bootstrap';
 @import "@fortawesome/fontawesome-free/scss/fontawesome";
 @import "@fortawesome/fontawesome-free/scss/solid";
 @import "@fortawesome/fontawesome-free/scss/brands";
@@ -11,9 +10,15 @@
 @import "./assets/scss/padding&margin.scss";
 @import "./assets/scss/colors.scss";
 
+// Variables
+$primary: $primaryColor;
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+
 body {
   background-color: #eafaff;
 }
+
 .center-block {
   display: flex !important;
   justify-content: center !important;
@@ -31,14 +36,14 @@ body {
   margin-left: 0;
   border-width: 0.2rem;
   padding-left: 0 !important;
-  border-bottom: 1px solid blue;
+  border-bottom: 1px solid $primaryColor;
 }
 
 .header-top {
   display: flex !important;
   justify-content: space-between !important;
   padding: 1rem;
-  border-bottom: 1px solid blue;
+  border-bottom: 1px solid $primaryColor;
 }
 
 .swal2-styled.swal2-confirm {
