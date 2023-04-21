@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Location } from '@angular/common';
 import { Store, select } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
@@ -30,7 +29,6 @@ export class UpsertRoleComponent implements OnInit {
   })
 
   constructor(
-    private readonly location: Location,
     private readonly roleApiService: RoleApiService,
     private store: Store,
     private activateRoute: ActivatedRoute,
@@ -70,7 +68,7 @@ export class UpsertRoleComponent implements OnInit {
   }
 
   protected close = () => {
-    this.location.back();
+    this.router.navigate(['admin/roles'])
   }
 
   
@@ -86,7 +84,7 @@ export class UpsertRoleComponent implements OnInit {
   private update = (): void => {
     const request =  new UpdateRoleApiRequest(
       this.formGroup.value.name!,
-      this.formGroup.value.code!,
+      this.formGroup.controls.code.value!,
       true,
       this.getSelectedPermissions(),
       []
