@@ -25,7 +25,7 @@ namespace AcceptanceTest.Host.Api.Procedures
             Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
             Assert.That(request.Name, Is.EqualTo(actual.Name));
             Assert.That(request.Description, Is.EqualTo(actual.Description));
-            Assert.That(request.EstimatedSessions, Is.EqualTo(actual.EstimatedSessions));
+            Assert.That(request.Price, Is.EqualTo(actual.Price));
             Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
         }
 

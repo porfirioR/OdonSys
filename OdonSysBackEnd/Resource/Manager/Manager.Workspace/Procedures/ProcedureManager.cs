@@ -85,15 +85,14 @@ namespace Manager.Workspace.Procedures
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
-            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, request.Price, request.Anesthesia, ProcedureStatus.Nuevo);
+            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, request.Price, ProcedureStatus.Nuevo);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
             return new ClientProcedureModel(
                 accessResponse.ProcedureId,
                 accessResponse.UserClientId,
                 accessResponse.Status,
-                accessResponse.Price,
-                accessResponse.Anesthesia
+                accessResponse.Price
             );
         }
 
@@ -105,8 +104,7 @@ namespace Manager.Workspace.Procedures
                 accessResponse.ProcedureId,
                 accessResponse.UserClientId,
                 accessResponse.Status,
-                accessResponse.Price,
-                accessResponse.Anesthesia
+                accessResponse.Price
             );
         }
 

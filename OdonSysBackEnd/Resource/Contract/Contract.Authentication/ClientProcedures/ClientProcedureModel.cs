@@ -6,7 +6,6 @@ namespace Contract.Workspace.ClientProcedures
         string ProcedureId,
         string UserClientId,
         ProcedureStatus Status,
-        int Price,
-        bool Anesthesia
+        int Price
     ) { }
 }

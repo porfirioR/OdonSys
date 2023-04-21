@@ -8,15 +8,15 @@ namespace AcceptanceTest.Host.Api.Procedures
         CreateProcedureApiRequest CreateProcedureApiRequest => new()
         {
             Name = Guid.NewGuid().ToString()[30..],
-            Description = "Procedimiento",
-            EstimatedSessions = "1 mes",
+            Description = Guid.NewGuid().ToString()[30..],
+            Price = 0,
             ProcedureTeeth = TeethIds
         };
 
         UpdateProcedureApiRequest UpdateProcedureApiRequest(string Id) => new()
         {
             Id = Id,
-            Description = "Procedimiento",
+            Description = Guid.NewGuid().ToString()[30..],
             ProcedureTeeth = TeethIds
         };
     }
