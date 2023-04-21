@@ -33,7 +33,7 @@ namespace Host.Api.Models.Auth
 
         [Required]
         [EmailAddress]
-        [MaxLength(20)]
+        [MaxLength(40)]
         public string Email { get; set; }
 
         [Required]

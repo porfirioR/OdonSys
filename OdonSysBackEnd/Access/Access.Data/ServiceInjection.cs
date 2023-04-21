@@ -1,5 +1,6 @@
 ﻿using Access.Admin.Access;
 using Access.Contract.Auth;
+using Access.Contract.ClientProcedure;
 using Access.Contract.Clients;
 using Access.Contract.Procedure;
 using Access.Contract.Roles;
@@ -20,6 +21,7 @@ namespace Access.Data
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IToothAccess, ToothAccess>();
             services.AddTransient<IRoleAccess, RoleAccess>();
+            services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
             services.AddHttpContextAccessor();
         }
     }

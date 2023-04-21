@@ -101,6 +101,60 @@ namespace Sql.Migrations
                     b.ToTable("Clients");
                 });
 
+            modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<DateTime>("DateModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProcedureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserClientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcedureId");
+
+                    b.HasIndex("UserClientId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Id", "ProcedureId", "UserClientId")
+                        .IsUnique();
+
+                    b.ToTable("ClientProcedures");
+                });
+
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
                 {
                     b.Property<string>("Name")
@@ -160,18 +214,16 @@ namespace Sql.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("EstimatedSessions")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserCreated")
                         .HasColumnType("nvarchar(max)");
@@ -280,14 +332,10 @@ namespace Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Group")
                         .HasColumnType("int");
@@ -296,9 +344,7 @@ namespace Sql.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
@@ -406,36 +452,45 @@ namespace Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("UserCreated")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "ClientId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("UserClient");
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("Id", "UserId", "ClientId")
+                        .IsUnique();
+
+                    b.ToTable("UserClients");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
@@ -451,6 +506,29 @@ namespace Sql.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("DoctorRoles");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.Procedure", "Procedure")
+                        .WithMany("ClientProcedures")
+                        .HasForeignKey("ProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Access.Sql.Entities.UserClient", "UserClient")
+                        .WithMany("ClientProcedures")
+                        .HasForeignKey("UserClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Access.Sql.Entities.User", null)
+                        .WithMany("UserProcedures")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Procedure");
+
+                    b.Navigation("UserClient");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
@@ -528,6 +606,8 @@ namespace Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
                 {
+                    b.Navigation("ClientProcedures");
+
                     b.Navigation("ProcedureTeeth");
                 });
 
@@ -547,7 +627,14 @@ namespace Sql.Migrations
                 {
                     b.Navigation("UserClients");
 
+                    b.Navigation("UserProcedures");
+
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
+                {
+                    b.Navigation("ClientProcedures");
                 });
 #pragma warning restore 612, 618
         }

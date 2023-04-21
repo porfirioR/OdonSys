@@ -16,7 +16,7 @@ namespace Host.Api
             {
                 new PolicyModel(Policy.CanAccessRole, new AuthRequirement(PermissionName.AccessRoles)),
                 new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
-                
+
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
                     new List<PermissionName> {
@@ -27,15 +27,17 @@ namespace Host.Api
                 new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
                 new PolicyModel(Policy.CanAssignClient, new AuthRequirement(PermissionName.AssignClients)),
                 new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),
-                
                 new PolicyModel(Policy.CanApproveDoctor, new AuthRequirement(PermissionName.ApproveDoctors)),
                 new PolicyModel(Policy.CanDeleteDoctor, new AuthRequirement(PermissionName.DeleteDoctors)),
+                new PolicyModel(Policy.CanUpdateDoctor, new AuthRequirement(PermissionName.UpdateDoctors)),
                 new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(PermissionName.AccessDoctors)),
-                new PolicyModel(Policy.CanManageClient, new AuthRequirement(new List<PermissionName> {
-                        PermissionName.CreateDoctors,
-                        PermissionName.UpdateDoctors,
-                        PermissionName.DeleteDoctors,
-                    })),
+                //new PolicyModel(Policy.CanManageClient, new AuthRequirement(new List<PermissionName> {
+                //        PermissionName.CreateDoctors,
+                //        PermissionName.UpdateDoctors,
+                //        PermissionName.DeleteDoctors,
+                //    })),
+                new PolicyModel(Policy.CanCreateClientProcedure, new AuthRequirement(PermissionName.CreateClientProcedures)),
+                new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(

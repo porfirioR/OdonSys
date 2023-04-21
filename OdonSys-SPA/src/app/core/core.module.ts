@@ -18,6 +18,15 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { UpsertClientComponent } from './components/clients/upsert-client/upsert-client.component';
+import { AnimationComponent } from './components/animation/animation.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { PermissionGuard } from './guards/permission.guard';
+import { environment } from '../../environments/environment';
+import * as fromSaving from './store/saving/saving.reducer';
+import * as fromRoles from './store/roles/roles.reducer';
+import { RolesEffects } from './store/roles/roles.effects';
 
 @NgModule({
   imports: [
@@ -27,6 +36,11 @@ import { UpsertClientComponent } from './components/clients/upsert-client/upsert
     RouterModule,
     AgGridModule.withComponents([]),
     NgbModule,
+    StoreModule.forFeature(fromSaving.savingFeatureKey, fromSaving.reducer),
+    StoreModule.forFeature(fromRoles.roleFeatureKey, fromRoles.rolesReducer),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
+    EffectsModule.forFeature([RolesEffects]),
   ],
   declarations: [
     HeaderComponent,
@@ -40,8 +54,8 @@ import { UpsertClientComponent } from './components/clients/upsert-client/upsert
     AuthenticateComponent,
     RegisterUserComponent,
     ClientsComponent,
-    UpsertClientComponent
-
+    UpsertClientComponent,
+    AnimationComponent
   ],
   exports: [
     FormsModule,
@@ -59,10 +73,12 @@ import { UpsertClientComponent } from './components/clients/upsert-client/upsert
     GridActionsComponent,
     AuthenticateComponent,
     ClientsComponent,
-    UpsertClientComponent
+    UpsertClientComponent,
+    AnimationComponent,
   ],
   providers:[
-    AuthGuard
+    AuthGuard,
+    PermissionGuard
   ]
 })
 export class CoreModule { }

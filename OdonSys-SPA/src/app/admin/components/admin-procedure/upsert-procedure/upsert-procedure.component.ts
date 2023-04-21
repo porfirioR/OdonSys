@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { AbstractControl, UntypedFormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ToothApiService } from '../../../../core/services/api/tooth-api.service';
@@ -25,7 +24,13 @@ export class UpsertProcedureComponent implements OnInit {
   public saving: boolean = false;
   public title = 'crear';
   private id = '';
-  public formGroup: FormGroup = new FormGroup({});
+  public formGroup: FormGroup = new FormGroup( {
+    name : new FormControl('', [Validators.required, Validators.maxLength(30)]),
+    description : new FormControl('', [Validators.required, Validators.maxLength(50)]),
+    estimatedSessions : new FormControl('', [Validators.required, Validators.maxLength(50)]),
+    active : new FormControl(false, [Validators.required]),
+    teeth: new UntypedFormArray([])
+  });
   public teethList: ToothModel[] = [];
   public jaw = Jaw;
   public quadrant = Quadrant;
@@ -36,8 +41,8 @@ export class UpsertProcedureComponent implements OnInit {
     private readonly alertService: AlertService,
     private readonly procedureApiService: ProcedureApiService,
     private readonly toothApiService: ToothApiService,
-    private readonly location: Location
-  ) {
+    private readonly router: Router
+    ) {
     this.teethFormArray = new UntypedFormArray([]);
   }
 
@@ -55,7 +60,7 @@ export class UpsertProcedureComponent implements OnInit {
   }
 
   protected close = () => {
-    this.location.back();
+    this.router.navigate(['admin/procedimientos'])
   }
 
   private loadValues = () => {
@@ -92,15 +97,14 @@ export class UpsertProcedureComponent implements OnInit {
           );
         });
         this.teethFormArray.addValidators(this.minimumOneSelectedValidator);
-        this.formGroup = new FormGroup( {
-          name : new FormControl(this.id ? procedure.name : '', [Validators.required, Validators.maxLength(30)]),
-          description : new FormControl(this.id ? procedure.description: '', [Validators.required, Validators.maxLength(50)]),
-          estimatedSessions : new FormControl(this.id ? procedure.estimatedSessions: '', [Validators.required, Validators.maxLength(50)]),
-          active : new FormControl(this.id ? procedure.active : true, [Validators.required]),
-          teeth: this.teethFormArray
-        });
         if (this.id) {
-          this.formGroup.controls.active.disable();
+          this.formGroup.controls.name.setValue(procedure.name)
+          this.formGroup.controls.description.setValue(procedure.description)
+          this.formGroup.controls.estimatedSessions.setValue(procedure.estimatedSessions)
+          this.formGroup.controls.active.setValue(procedure.active)
+          this.formGroup.controls.teeth.setValue(this.teethFormArray)
+
+          this.formGroup.controls.active.disable()
           this.title = 'actualizar';
           this.formGroup.controls.estimatedSessions.disable();
           this.formGroup.controls.name.disable();
@@ -114,9 +118,11 @@ export class UpsertProcedureComponent implements OnInit {
   }
 
   private update = (): void => {
-    const request =  this.formGroup.getRawValue() as UpdateProcedureRequest;
-    request.id = this.id;
-    request.procedureTeeth = (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
+    const request =  new UpdateProcedureRequest(
+      this.id,
+      this.formGroup.value.description,
+      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string)
+    )
     this.procedureApiService.update(request).subscribe({
       next: () => this.saved(),
       error: (e) => {
@@ -127,8 +133,12 @@ export class UpsertProcedureComponent implements OnInit {
   }
 
   private create = () => {
-    const request =  this.formGroup.getRawValue() as CreateProcedureRequest;
-    request.procedureTeeth = (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string);
+    const request =  new CreateProcedureRequest(
+      this.formGroup.value.name,
+      this.formGroup.value.description,
+      this.formGroup.value.estimatedSessions,
+      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string)
+    )
     this.procedureApiService.create(request).subscribe({
       next: () => this.saved(),
       error: (e) => {

@@ -21,17 +21,16 @@ namespace Access.Sql.Configurations
             builder
                 .Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(30);
+                .HasMaxLength(60);
 
             builder
                 .Property(x => x.Description)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(100);
 
             builder
-                .Property(x => x.EstimatedSessions)
-                .IsRequired()
-                .HasMaxLength(50);
+                .Property(x => x.Price)
+                .IsRequired();
         }
     }
 }

@@ -1,9 +1,9 @@
-@import "~bootstrap/dist/css/bootstrap.css";
-@import '~bootstrap/scss/bootstrap';
-@import "~@fortawesome/fontawesome-free/scss/fontawesome";
-@import "~@fortawesome/fontawesome-free/scss/solid";
-@import "~@fortawesome/fontawesome-free/scss/brands";
-@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "bootstrap/dist/css/bootstrap.css";
+@import 'bootstrap/scss/bootstrap';
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/brands";
+@import "@fortawesome/fontawesome-free/scss/regular";
 
 @import "ag-grid-community/dist/styles/ag-grid.css";
 @import "ag-grid-community/dist/styles/ag-theme-alpine.css";
@@ -11,7 +11,9 @@
 @import "./assets/scss/padding&margin.scss";
 @import "./assets/scss/colors.scss";
 
-
+body {
+  background-color: #eafaff;
+}
 .center-block {
   display: flex !important;
   justify-content: center !important;
@@ -54,4 +56,13 @@
 .swal2-icon.swal2-warning {
   border-color: $redColor !important;
   color: $redColor !important;
+}
+
+.invalid-feedback-check-box {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  color: #ff6565;
+  font-weight: 400;
 }

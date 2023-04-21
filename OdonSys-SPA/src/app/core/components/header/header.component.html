@@ -1,5 +1,5 @@
 <header class="header-container">
-  <nav class="nav-main">
+  <nav class="nav-main bg-primary">
     <div class="nav-menu-left">
       <a class="navbar-brand" routerLink="inicio">OdonSys</a>
     </div>
@@ -8,7 +8,7 @@
         <a class="nav-link" routerLink="admin/doctores" routerLinkActive="active">Doctores</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="roles">Roles</a>
+        <a class="nav-link" routerLink="admin/roles">Roles</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="admin/procedimientos" routerLinkActive="active">Procedimientos</a>
@@ -23,6 +23,10 @@
     <div class="nav-menu-right m-r-16" ngbDropdown>
       <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
       <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+        <p ngbDropdownItem [disabled]="true">
+          <strong>Usuario: </strong>{{userName}}
+        </p>
+        <hr>
         <button ngbDropdownItem routerLink="trabajo/configuración/datos">Mis datos</button>
         <button ngbDropdownItem (click)="logOut()">Salir</button>
       </div>
