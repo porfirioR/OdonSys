@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable, tap } from 'rxjs';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { ProcedureApiService } from '../../../admin/service/procedure-admin-api.service';
-import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { Permission } from '../../../core/enums/permission.enum';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { selectProcedures } from '../../../core/store/procedure/procedure.selectors';
+import  * as fromProceduresActions from '../../../core/store/procedure/procedure.actions';
 
 @Component({
   selector: 'app-admin-procedure',
@@ -14,75 +19,79 @@ import { AlertService } from '../../../core/services/shared/alert.service';
   styleUrls: ['./admin-procedure.component.scss']
 })
 export class AdminProcedureComponent implements OnInit {
-  public load: boolean = false;
-  public gridOptions!: GridOptions;
-  public procedureList: ProcedureModel[] = [];
+  public load: boolean = false
+  public gridOptions!: GridOptions
+  protected rowData$!: Observable<ProcedureModel[]>
+  protected canCreate = false
+  protected canEdit = false
+  protected canDelete = false
 
   constructor(
     private readonly router: Router,
-    private readonly alertService: AlertService,
-    private readonly procedureApiService: ProcedureApiService,
-    private readonly agGridService: AgGridService) {
-  }
+    private readonly agGridService: AgGridService,
+    private store: Store,
+    private userInfoService: UserInfoService,
+    private readonly alertService: AlertService
+  ) { }
 
   ngOnInit() {
-    this.setupAgGrid();
-    this.load = true;
-    this.getList();
-  }
-
-  private getList = () => {
-    this.procedureApiService.getAll().subscribe({
-      next: (response) => {
-        this.procedureList =  response.map(x => new ProcedureModel(x.id, x.active, x.dateCreate, x.dateModified, x.name, x.description, x.estimatedSessions, x.procedureTeeth));
-        this.gridOptions.api?.setRowData(this.procedureList);
-        this.gridOptions.api?.sizeColumnsToFit();
-        if (this.procedureList.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay();
-        }
-      },
-      error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay();
-        throw e;
+    this.canCreate = this.userInfoService.havePermission(Permission.CreateProcedures)
+    this.canEdit = this.userInfoService.havePermission(Permission.UpdateProcedures)
+    this.canDelete = this.userInfoService.havePermission(Permission.DeleteProcedures)
+    this.setupAgGrid()
+    let loading = true;
+    this.rowData$ = this.store.select(selectProcedures).pipe(tap(x => {
+      if(loading && x.length === 0) {
+        this.store.dispatch(fromProceduresActions.loadProcedures()) 
+        loading = false
       }
-    });
+    }))
+    this.load = true
   }
 
   private setupAgGrid = (): void => {
-    this.gridOptions = this.agGridService.getProcedureGridOptions();
-    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
+    this.gridOptions = this.agGridService.getProcedureGridOptions()
+    const columnAction: ColDef = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action')!
+    if (!this.canEdit && this.canDelete) {
+      columnAction.hide = true
+      return
+    }
+    const buttonShows = []
+    if (this.canEdit) {
+      buttonShows.push(ButtonGridActionType.Editar)
+    }
+    if (this.canDelete) {
+      buttonShows.push(ButtonGridActionType.Borrar)
+    }
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Borrar, ButtonGridActionType.Editar],
       clicked: this.actionColumnClicked
-    };
-    columnAction.cellRendererParams = params;
+    }
+    columnAction.cellRendererParams = params
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}/${currentRowNode.data.active}`]);
-        break;
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        break
       case ButtonGridActionType.Borrar:
-        this.deleteSelectedItem(currentRowNode.data.id);
-        break;
+        this.deleteSelectedItem(currentRowNode.data.id)
+        break
       default:
-        break;
+        break
     }
   }
 
-  public deleteSelectedItem = (code: string): void => {
-    this.alertService.showQuestionModal('¿Está seguro de eliminar el procedimiento?', 'Los cambios son permanentes.').then((result) => {
+  public deleteSelectedItem = (id: string): void => {
+    this.alertService.showInfo('Sin implementar')
+    return
+    this.alertService.showQuestionModal('¿Está seguro de eliminar el procedimiento?', 'No va a ser seleccionable en otras vistas').then((result) => {
       if (result.value) {
-        this.procedureApiService.delete(code).subscribe({
-          next: () => {
-            this.alertService.showSuccess('El procedimiento ha sido eliminado');
-            this.getList();
-          }
-        });
+        this.store.dispatch(fromProceduresActions.deleteProcedure({ id }))
       }
-    });
+    })
   }
 }
 

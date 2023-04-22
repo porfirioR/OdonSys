@@ -1,7 +1,7 @@
-<app-progress *ngIf="!load || saving"></app-progress>
+<app-progress *ngIf="!load || (saving$ | async)"></app-progress>
 <div *ngIf="load" class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-    <h3>Procedimientos {{title}}</h3>
+    <h3>{{title}} Procedimientos</h3>
   </div>
   <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
@@ -37,8 +37,8 @@
         </div>
       </div>
     <div class="form-group text-center btn-footer">
-      <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()" [disabled]="saving">Cancelar</button>
-      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || saving">Guardar</button>
+      <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()" [disabled]="(saving$ | async)">Cancelar</button>
+      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
     </div>
     </form>
   </div>

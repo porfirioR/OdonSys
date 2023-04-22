@@ -12,6 +12,7 @@ import { CreateRoleApiRequest } from '../../../../core/models/api/roles/create-r
 import { UpdateRoleApiRequest } from '../../../../core/models/api/roles/update-role-api-request';
 import { SubGroupPermissions } from '../../../../core/forms/sub-group-permissions.form';
 import { PermissionFormGroup } from '../../../../core/forms/permission-form-group.form';
+
 @Component({
   selector: 'app-upsert-role',
   templateUrl: './upsert-role.component.html',
@@ -23,21 +24,21 @@ export class UpsertRoleComponent implements OnInit {
   private code = '';
   public title = 'Crear';
   public formGroup = new FormGroup( {
-    name : new FormControl('', [Validators.required, Validators.maxLength(30)]),
-    code : new FormControl('', [Validators.required, Validators.maxLength(30)]),
+    name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
+    code: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
 
   constructor(
     private readonly roleApiService: RoleApiService,
     private store: Store,
-    private activateRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private readonly router: Router
   ) { }
 
   ngOnInit() {
-    this.code = this.activateRoute.snapshot.params['code']
-    const isUpdateUrl = this.activateRoute.snapshot.url[1].path === 'actualizar'
+    this.code = this.activatedRoute.snapshot.params['code']
+    const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'
     const role$ = this.store.pipe(
       select(selectRoles),
       map(x => this.code ? x.find(y => y.code === this.code) ?? undefined : undefined)
@@ -78,7 +79,7 @@ export class UpsertRoleComponent implements OnInit {
       this.formGroup.value.code!,
       this.getSelectedPermissions()
     )
-    this.store.dispatch(fromRolesActions.createRole({createRole: request}))
+    this.store.dispatch(fromRolesActions.createRole({ createRole: request }))
   }
   
   private update = (): void => {

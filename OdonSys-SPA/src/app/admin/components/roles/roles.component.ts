@@ -29,7 +29,7 @@ export class RolesComponent implements OnInit {
     private readonly agGridService: AgGridService,
     private store: Store,
     private userInfoService: UserInfoService,
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.canCreate = this.userInfoService.havePermission(Permission.ManageRoles)

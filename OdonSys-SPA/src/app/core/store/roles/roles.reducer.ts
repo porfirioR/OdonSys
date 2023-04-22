@@ -7,6 +7,13 @@ export const roleFeatureKey = 'roles'
 
 export interface RoleState extends EntityState<RoleModel> { }
 
+export const adapter: EntityAdapter<RoleModel> = createEntityAdapter<RoleModel>({
+  selectId: selectRoleId,
+  sortComparer: sortByCode
+});
+
+export const initialState: RoleState = adapter.getInitialState({ })
+
 export function selectRoleId(a: RoleModel): string {
   return a.code;
 }
@@ -15,12 +22,6 @@ export function sortByCode(a: RoleModel, b: RoleModel): number {
   return a.code.localeCompare(b.code);
 }
 
-export const adapter: EntityAdapter<RoleModel> = createEntityAdapter<RoleModel>({
-  selectId: selectRoleId,
-  sortComparer: sortByCode
-});
-
-export const initialState: RoleState = adapter.getInitialState({ })
 
 export const rolesReducer = createReducer(
   initialState,
