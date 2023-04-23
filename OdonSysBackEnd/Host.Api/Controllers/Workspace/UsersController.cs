@@ -43,7 +43,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpPatch("{id}")]
-        [Authorize(Policy = Policy.CanDeleteDoctor)]
+        [Authorize(Policy = Policy.CanModifyVisibilityDoctor)]
         public async Task<DoctorModel> PatchDoctor([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateDoctorRequest> patchDoctor)
         {
             if (patchDoctor == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));

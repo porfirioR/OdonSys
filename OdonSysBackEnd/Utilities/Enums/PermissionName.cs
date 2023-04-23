@@ -34,6 +34,8 @@
         AccessDoctors,
         UpdateDoctors,
         DeleteDoctors,
+        RestoreDoctors,
+        DeactivateDoctors,
         ApproveDoctors
         #endregion
     }
