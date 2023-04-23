@@ -52,6 +52,7 @@ export class AuthenticateComponent implements OnInit {
         this.formGroup.enable()
         this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
         this.zone.run(() => this.router.navigate(['']))
+        this.load = true
       }, error: (e) => {
         this.load = true
         this.formGroup.enable()

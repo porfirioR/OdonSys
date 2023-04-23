@@ -50,11 +50,13 @@ export class MyConfigurationComponent implements OnInit {
 
   public close = () => {
     this.router.navigate(['']);
-  };
+  }
 
   private loadConfiguration = () => {
-    const user = this.userInfoService.getUserData();
-    if (!user || !user.id) { this.router.navigate(['/login']); }
+    const user = this.userInfoService.getUserData()
+    if (!user || !user.id) {
+      this.router.navigate(['/login'])
+    }
     this.doctorApiService.getById(user.id).subscribe({
       next: (user: DoctorApiModel) => {
         this.formGroup = new FormGroup({
