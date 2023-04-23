@@ -3,6 +3,7 @@ export class UpdateProcedureRequest {
     public id: string,
     public description: string,
     public price: number,
+    public active: boolean,
     public procedureTeeth: string[]
   ) {}
 }

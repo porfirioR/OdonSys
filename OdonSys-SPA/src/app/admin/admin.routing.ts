@@ -27,7 +27,7 @@ export const AdminRoutes: Routes = [
         data: { permissions: [ Permission.CreateProcedures ] }
       },
       {
-        path: 'procedimientos/actualizar/:id/',
+        path: 'procedimientos/actualizar/:id',
         component: UpsertProcedureComponent,
         canActivate: [PermissionGuard],
         title: 'Actualizar Procedimientos',

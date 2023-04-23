@@ -78,9 +78,7 @@ namespace Access.Data.Access
             var entity = await _context.Procedures
                             .Include(x => x.ProcedureTeeth)
                             .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.Id));
-
-            entity.Description = accessRequest.Description;
-            entity.Active = accessRequest.Active;
+            entity = _mapper.Map(accessRequest, entity);
             entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();

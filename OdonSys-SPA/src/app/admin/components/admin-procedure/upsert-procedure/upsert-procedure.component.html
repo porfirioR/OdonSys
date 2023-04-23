@@ -1,7 +1,7 @@
 <app-progress *ngIf="!load || (saving$ | async)"></app-progress>
 <div *ngIf="load" class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-    <h3>{{title}} Procedimientos</h3>
+    <h3>{{title}} Procedimiento</h3>
   </div>
   <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
@@ -13,13 +13,13 @@
           <app-text-number-input [label]="'Descripción'" formControlName="description"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Cantidad de sesiones'" formControlName="estimatedSessions"></app-text-number-input>
+          <app-text-number-input [label]="'Precio'" [type]="'number'" formControlName="price"></app-text-number-input>
         </div>
-        <div class="col-lg-6 m-t-18">
+        <div class="col-lg-6 m-t-18" *ngIf="canRestore">
           <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
         </div>
       </div>
-      <div class="col-lg-12 row m-t-16" formArrayName="teeth">
+      <!-- <div class="col-lg-12 row m-t-16" formArrayName="teeth">
         <h3>Dientes</h3>
         <ng-container *ngFor="let tooth of teethFormArray.controls; let i = index">
           <h5 *ngIf="i === 0">Maxilar Superior</h5>
@@ -35,11 +35,13 @@
         <div class="invalid-feedback-check-box" *ngIf="formGroup.get('teeth')?.hasError('noneSelected')">
           Debe seleccionar al menos un diente.
         </div>
+      </div> -->
+      <div class="form-group text-center btn-footer">
+        <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()"
+          [disabled]="(saving$ | async)">Cancelar</button>
+        <button class="btn btn-outline-primary" type="submit"
+          [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
       </div>
-    <div class="form-group text-center btn-footer">
-      <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()" [disabled]="(saving$ | async)">Cancelar</button>
-      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
-    </div>
     </form>
   </div>
 </div>

@@ -12,6 +12,8 @@ import { UpdateProcedureRequest } from '../../../../core/models/procedure/update
 import { savingSelector } from '../../../../core/store/saving/saving.selector';
 import { selectProcedures } from '../../../../core/store/procedure/procedure.selectors';
 import * as fromProceduresActions from '../../../../core/store/procedure/procedure.actions';
+import { UserInfoService } from '../../../../core/services/shared/user-info.service';
+import { Permission } from '../../../../core/enums/permission.enum';
 
 @Component({
   selector: 'app-upsert-procedure',
@@ -21,12 +23,14 @@ import * as fromProceduresActions from '../../../../core/store/procedure/procedu
 export class UpsertProcedureComponent implements OnInit {
   public load: boolean = false;
   public saving$: Observable<boolean> = this.store.select(savingSelector)
-  public title = 'crear';
-  private id = '';
+  public title = 'Crear'
+  private id = ''
+  protected canRestore = false
+
   public formGroup = new FormGroup( {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    active : new FormControl(false, [Validators.required]),
+    active : new FormControl(true, [Validators.required]),
     price : new FormControl(0, [Validators.required, Validators.min(0)]),
   })
   public teethList: ToothModel[] = []
@@ -38,6 +42,7 @@ export class UpsertProcedureComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private store: Store,
+    private userInfoService: UserInfoService,
   ) { }
 
   ngOnInit() {
@@ -69,6 +74,9 @@ export class UpsertProcedureComponent implements OnInit {
           this.formGroup.controls.name!.setValue(data.name)
           this.formGroup.controls.description.setValue(data.description)
           this.formGroup.controls.price.setValue(data.price)
+          this.formGroup.controls.active.setValue(data.active)
+          this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
+          this.formGroup.controls.name.disable()
         }
         this.load = true
       }, error: (e) => {
@@ -131,6 +139,7 @@ export class UpsertProcedureComponent implements OnInit {
       this.id,
       this.formGroup.value.description!,
       this.formGroup.value.price!,
+      this.formGroup.controls.active.value!,
       (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string)
     )
     this.store.dispatch(fromProceduresActions.updateProcedure({ procedure: request }))
