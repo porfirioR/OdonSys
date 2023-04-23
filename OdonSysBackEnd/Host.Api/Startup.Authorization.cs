@@ -45,6 +45,7 @@ namespace Host.Api
                         PermissionName.CreateProcedures,
                         PermissionName.UpdateProcedures,
                         PermissionName.DeleteProcedures,
+                        PermissionName.RestoreProcedures,
                     })
                 ),
 

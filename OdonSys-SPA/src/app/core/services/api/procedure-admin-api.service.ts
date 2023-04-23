@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProcedureApiModel } from '../../core/models/procedure/procedure-api-model';
-import { environment } from '../../../environments/environment';
-import { CreateProcedureRequest } from '../models/procedure/api/create-procedure-request';
-import { UpdateProcedureRequest } from '../models/procedure/api/update-procedure-request';
-import { BasicServiceModule } from '../../basic-service.module';
+import { ProcedureApiModel } from '../../models/procedure/procedure-api-model';
+import { environment } from '../../../../environments/environment';
+import { CreateProcedureRequest } from '../../models/procedure/create-procedure-request';
+import { UpdateProcedureRequest } from '../../models/procedure/update-procedure-request';
 
 @Injectable({
-  providedIn: BasicServiceModule
+  providedIn: 'root'
 })
 export class ProcedureApiService {
   private baseUrl = `${environment.apiUrl}/procedure`;

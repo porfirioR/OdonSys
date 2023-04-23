@@ -3,6 +3,7 @@ export enum Permission {
   CreateProcedures = 'CreateProcedures',
   UpdateProcedures = 'UpdateProcedures',
   DeleteProcedures = 'DeleteProcedures',
+  RestoreProcedures = 'RestoreProcedures',
 
   AccessRoles = 'AccessRoles',
   ManageRoles = 'ManageRoles',

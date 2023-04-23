@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import * as roleActions from './roles.actions';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { RoleApiService } from '../../services/api/role-api.service';
+import { AlertService } from '../../services/shared/alert.service';
 import { RoleModel } from '../../models/view/role-model';
-import { Store } from '@ngrx/store';
 import { selectRoles } from './roles.selectors';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class RolesEffects {
@@ -15,7 +16,8 @@ export class RolesEffects {
     private actions$: Actions,
     private readonly roleApiService: RoleApiService,
     private readonly store: Store,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly alertService: AlertService
   ) {}
 
   getRoles$ = createEffect(() => {
@@ -23,7 +25,7 @@ export class RolesEffects {
       ofType(roleActions.loadRoles),
       withLatestFrom(this.store.select(selectRoles)),
       switchMap(([action, roles]) => roles.length > 0 ?
-        of(roleActions.allRolesLoaded({ roles:roles })) :
+        of(roleActions.allRolesLoaded({ roles: roles })) :
         this.roleApiService.getAll().pipe(
           map(response => roleActions.allRolesLoaded({
             roles: response.map(x =>
@@ -45,13 +47,14 @@ export class RolesEffects {
     )
   })
 
-  createRole$ = createEffect(() => {
+  create$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.createRole),
       switchMap((action) =>
         this.roleApiService.create(action.createRole).pipe(
           map(role => {
             this.router.navigate(['/admin/roles'])
+            this.alertService.showSuccess('Rol creado con éxito.')
             return roleActions.createRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
           }),
           catchError(error => of(roleActions.rolesFailure({ error })))
@@ -60,13 +63,14 @@ export class RolesEffects {
     )
   })
 
-  updateRole$ = createEffect(() => {
+  update$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.updateRole),
       switchMap((action) =>
         this.roleApiService.update(action.updateRole).pipe(
           map(role => {
             this.router.navigate(['/admin/roles'])
+            this.alertService.showSuccess('Rol actualizado con éxito.')
             return roleActions.updateRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
           }),
           catchError(error => of(roleActions.rolesFailure({ error })))

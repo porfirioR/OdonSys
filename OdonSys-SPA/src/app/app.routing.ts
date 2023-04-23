@@ -11,6 +11,7 @@ export const AppRoutes: Routes = [
     component: PrincipalPageComponent,
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
+    title: 'Dr. Cano',
     children: [
       {
         path: 'admin',
@@ -27,5 +28,4 @@ export const AppRoutes: Routes = [
   { path: 'registrar', component: RegisterUserComponent, title: 'Registro' },
   { path: 'página-no-encontrada', component: NotFoundComponent, title: 'página no encontrada' },
   { path: '**', redirectTo: '/página-no-encontrada' },
-  
 ];

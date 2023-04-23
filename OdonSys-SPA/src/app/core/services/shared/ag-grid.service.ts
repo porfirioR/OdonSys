@@ -13,16 +13,16 @@ export class AgGridService {
   private redColor = '#FF6565';
 
   private procedureColumnDef: ColDef[] = [
-    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
-    { headerName: 'Sesiones', field: 'estimatedSessions', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 105, resizable: true },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 300, resizable: true },
+    { headerName: 'Precio', field: 'price', type: 'numberColumn', filter: 'agNumberColumnFilter', minWidth: 40, maxWidth: 120, resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
-    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 105, maxWidth: 140, resizable: true,
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: 'agDateColumnFilter', minWidth: 105, maxWidth: 150, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
-    { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', maxWidth: 165, resizable: true,
+    { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', maxWidth: 175, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
@@ -107,6 +107,13 @@ export class AgGridService {
               } else { return 0; }
             },
           }
+        },
+        numberColumn: {
+          valueFormatter: (cell) => cell.value ? `Gs. ${cell.value.toLocaleString('es', { minimumFractionDigits: 0 }).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}` : 'Gs. 0',
+          filter: 'agTextColumnFilter',
+          cellStyle: {
+            textAlign: 'right'
+          }
         }
       },
     }
@@ -117,6 +124,7 @@ export class AgGridService {
   public getProcedureGridOptions = (): GridOptions => {
     const grid = this.getGridOptions();
     grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
+    (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
     return grid;
   }
 

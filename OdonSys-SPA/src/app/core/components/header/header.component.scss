@@ -42,6 +42,7 @@ ul {
   height: 60px;
   padding: 20px 0;
   font-size: 17px;
+  background: $primaryColor !important;
 }
 
 .nav-main ul {
@@ -71,4 +72,9 @@ ul {
 .navbar-brand {
   width: 50px;
   padding-left: 15px;
+}
+
+img {
+  height: 58px;
+  margin-left: -15px !important;
 }
