@@ -17,6 +17,7 @@
         public const string CanAccessDoctor = "can_access_doctor";
         public const string CanUpdateDoctor = "can_update_doctor";
         public const string CanDeleteDoctor = "can_delete_doctor";
+        public const string CanModifyVisibilityDoctor = "can_modify_visibility_doctor";
 
         public const string CanCreateClientProcedure = "can_create_client_procedure";
         public const string CanUpdateClientProcedure = "can_update_client_procedure";
