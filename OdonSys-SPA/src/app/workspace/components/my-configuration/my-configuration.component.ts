@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
@@ -25,7 +25,8 @@ export class MyConfigurationComponent implements OnInit {
     private readonly router: Router,
     private readonly alertService: AlertService,
     private readonly doctorApiService: DoctorApiService,
-    private readonly userInfoService: UserInfoService
+    private readonly userInfoService: UserInfoService,
+    private readonly zone: NgZone,
   ) {
     this.countries = EnumHandler.getCountries();
   }
@@ -50,11 +51,13 @@ export class MyConfigurationComponent implements OnInit {
 
   public close = () => {
     this.router.navigate(['']);
-  };
+  }
 
   private loadConfiguration = () => {
-    const user = this.userInfoService.getUserData();
-    if (!user || !user.id) { this.router.navigate(['/login']); }
+    const user = this.userInfoService.getUserData()
+    if (!user || !user.id) {
+      this.zone.run(() => this.router.createUrlTree(['/login']))
+    }
     this.doctorApiService.getById(user.id).subscribe({
       next: (user: DoctorApiModel) => {
         this.formGroup = new FormGroup({
