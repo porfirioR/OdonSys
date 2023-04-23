@@ -24,6 +24,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Create([FromBody] CreateProcedureApiRequest apiRequest)
         {
             var request = _mapper.Map<CreateProcedureRequest>(apiRequest);
@@ -32,6 +33,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPut]
+        [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Update([FromBody] UpdateProcedureApiRequest apiRequest)
         {
             var request = _mapper.Map<UpdateProcedureRequest>(apiRequest);

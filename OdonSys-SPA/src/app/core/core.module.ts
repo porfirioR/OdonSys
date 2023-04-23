@@ -27,6 +27,8 @@ import { environment } from '../../environments/environment';
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
 import { RolesEffects } from './store/roles/roles.effects';
+import * as fromProcedure from './store/procedure/procedure.reducer';
+import { ProcedureEffects } from './store/procedure/procedure.effects';
 
 @NgModule({
   imports: [
@@ -40,7 +42,8 @@ import { RolesEffects } from './store/roles/roles.effects';
     StoreModule.forFeature(fromRoles.roleFeatureKey, fromRoles.rolesReducer),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
-    EffectsModule.forFeature([RolesEffects]),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects]),
+    StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
   ],
   declarations: [
     HeaderComponent,
