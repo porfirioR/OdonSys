@@ -1,4 +1,4 @@
-import { ErrorHandler, Injectable } from '@angular/core';
+import { ErrorHandler, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from '../services/shared/alert.service';
 import { HttpStatusCode } from '@angular/common/http';
@@ -12,7 +12,8 @@ export class CustomErrorHandler implements ErrorHandler {
   constructor(
     private readonly alertService: AlertService,
     private readonly router: Router,
-    private readonly userInfoService: UserInfoService
+    private readonly userInfoService: UserInfoService,
+    private readonly zone: NgZone,
   ) {}
 
   handleError(error: any): void {
@@ -32,7 +33,7 @@ export class CustomErrorHandler implements ErrorHandler {
       } else if(error?.status === HttpStatusCode.Unauthorized && errors && errors.title) {
         message = errors.title
         this.userInfoService.clearAllCredentials()
-        this.router.navigate(['login'])
+        this.zone.run(() => this.router.navigate(['/login']))
       } else if (errors.statusCode && errors.message) {
         message = errors.message
       } else if(errors && errors.title) {

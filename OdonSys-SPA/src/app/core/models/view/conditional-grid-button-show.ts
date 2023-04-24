@@ -10,6 +10,5 @@ export class ConditionalGridButtonShow {
     public principalAttributeAffected: string = '',
     public principalAttributeValue: string = '',
     public principalOperator: OperationType = OperationType.NotEqual,
-    ) {
-  }
+  ) { }
 }

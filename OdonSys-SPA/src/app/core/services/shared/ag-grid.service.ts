@@ -9,8 +9,8 @@ export class AgGridService {
   private columnDef: ColDef[] = [
     { headerName: 'Id', field: 'id', sortable: true, filter: true, resizable: true, minWidth: 200 }
   ];
-  private greenColor = '#1DC9B7';
-  private redColor = '#FF6565';
+  private greenColor = '#1DC9B7'
+  private redColor = '#FF6565'
 
   private procedureColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
@@ -46,18 +46,18 @@ export class AgGridService {
 
   private doctorColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
-      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor})
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor })
     },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 95,
-      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 235, maxWidth: 650, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 300, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
-  ];
+  ]
 
   private clientColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
@@ -65,11 +65,11 @@ export class AgGridService {
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
-      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
+      cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
     cellRendererFramework: GridActionsComponent }
-  ];
+  ]
 
   private adminClientColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
@@ -81,7 +81,7 @@ export class AgGridService {
     },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
-  ];
+  ]
 
   constructor() { }
 
@@ -115,58 +115,59 @@ export class AgGridService {
             textAlign: 'right'
           }
         }
-      },
+      }
     }
     return gridOptions
   }
 
   // Configuration
   public getProcedureGridOptions = (): GridOptions => {
-    const grid = this.getGridOptions();
-    grid.columnDefs = this.columnDef.concat(this.procedureColumnDef);
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.procedureColumnDef) as ColDef[]
     (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
-    return grid;
+    return grid
   }
 
   public getRoleGridOptions = (): GridOptions => {
     const grid = this.getGridOptions()
     grid.columnDefs = [...this.roleColumnDef]
-    return grid;
+    return grid
   }
 
   // Configuration
   public getDoctorGridOptions = (): GridOptions => {
-    const grid = this.getGridOptions();
-    grid.columnDefs = this.columnDef.concat(this.doctorColumnDef);
-    return grid;
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.doctorColumnDef) as ColDef[]
+    (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
+    return grid
   }
 
   public getAdminClientGridOptions = (): GridOptions => {
-    const grid = this.getGridOptions();
-    grid.columnDefs = this.columnDef.concat(this.adminClientColumnDef);
-    return grid;
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.adminClientColumnDef)
+    return grid
   }
 
   public getClientGridOptions = (): GridOptions => {
-    const grid = this.getGridOptions();
-    grid.columnDefs = this.columnDef.concat(this.clientColumnDef);
-    return grid;
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.clientColumnDef)
+    return grid
   }
 
   public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
-    const gridApi = gridOptions.api as GridApi;
-    const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number;
+    const gridApi = gridOptions.api as GridApi
+    const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number
     const renderSelectedColumnIndex = selectedColumnIndex > gridApi.getRenderedNodes().length ?
-                                      selectedColumnIndex - gridApi.getFirstDisplayedRow() : selectedColumnIndex;
-    return gridApi.getRenderedNodes()[renderSelectedColumnIndex];
+                                      selectedColumnIndex - gridApi.getFirstDisplayedRow() : selectedColumnIndex
+    return gridApi.getRenderedNodes()[renderSelectedColumnIndex]
   }
-  
-  private booleanFormatter(cell: { value: any; }): string {
-    return cell.value ? 'Si' : 'No';
+
+  private booleanFormatter(cell: { value: any }): string {
+    return cell.value ? 'Si' : 'No'
   }
-  
+
   private localDateFormatter(data: any): string {
-    return !data.value ? '' : new Date(data.value).toLocaleDateString();
+    return !data.value ? '' : new Date(data.value).toLocaleDateString()
   }
 
 }

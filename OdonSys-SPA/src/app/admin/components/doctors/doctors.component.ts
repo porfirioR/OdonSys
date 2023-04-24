@@ -13,6 +13,7 @@ import { SystemAttributeModel } from '../../../core/models/view/system-attribute
 import { FieldId } from '../../../core/enums/field-id.enum';
 import { OperationType } from '../../../core/enums/operation-type.enum';
 import { PatchRequest } from '../../../core/models/api/patch-request';
+import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 
 @Component({
   selector: 'app-doctors',
@@ -20,113 +21,112 @@ import { PatchRequest } from '../../../core/models/api/patch-request';
   styleUrls: ['./doctors.component.scss']
 })
 export class DoctorsComponent implements OnInit {
-  public loading: boolean = false;
-  public ready: boolean = false;
-  public gridOptions!: GridOptions;
-  private attributeActive!: string;
-  private attributeId!: string;
-  private attributeApproved!: string;
+  public loading: boolean = false
+  public ready: boolean = false
+  public gridOptions!: GridOptions
+  private attributeActive!: string
+  private attributeId!: string
+  private attributeApproved!: string
 
   constructor(
     private readonly alertService: AlertService,
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
     private readonly userInfo: UserInfoService
-
   ) { }
 
   ngOnInit() {
-    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!;
-    this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!;
-    this.attributeApproved = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Approved)?.value!;
-    this.setupAgGrid();
-    this.ready = true;
-    this.getList();
+    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
+    this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!
+    this.attributeApproved = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Approved)?.value!
+    this.setupAgGrid()
+    this.ready = true
+    this.getList()
   }
 
   private setupAgGrid = (): void => {
-    this.gridOptions = this.agGridService.getDoctorGridOptions();
-    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef;
-    const userId = this.userInfo.getUserData().id.toLocaleUpperCase();
+    this.gridOptions = this.agGridService.getDoctorGridOptions()
+    const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
+    const userId = this.userInfo.getUserData().id.toLocaleUpperCase()
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
       conditionalButtons: [
         new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar),
         new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Ver, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-      ]
-    };
-    columnAction.cellRendererParams = params;
+        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
+      ],
+      customButton: new CustomGridButtonShow(' Roles', 'fa-id-badge')
+    }
+    columnAction.cellRendererParams = params
   }
 
   private getList = () => {
-    this.loading = true;
+    this.loading = true
     this.userApiService.getAll().subscribe({
       next: (response: DoctorApiModel[]) => {
-        this.gridOptions.api?.setRowData(response);
-        this.gridOptions.api?.sizeColumnsToFit();
+        this.gridOptions.api?.setRowData(response)
+        this.gridOptions.api?.sizeColumnsToFit()
         if (response.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay();
+          this.gridOptions.api?.showNoRowsOverlay()
         }
-        this.loading = false;
+        this.loading = false
       }, error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay();
-        this.loading = false;
-        throw e;
+        this.gridOptions.api?.showNoRowsOverlay()
+        this.loading = false
+        throw e
       }
-    });
+    })
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Aprobar:
-        this.approve();
-        break;
-      case ButtonGridActionType.Ver:
+        this.approve()
+        break
       case ButtonGridActionType.Desactivar:
-        this.changeSelectedDoctorVisibility(currentRowNode.data);
-        break;
+        this.changeSelectedDoctorVisibility(currentRowNode.data)
+        break
       default:
-        break;
+        break
     }
   }
 
   private changeSelectedDoctorVisibility = (doctor: DoctorApiModel): void => {
     const message = doctor.active ?
                     '¿Está seguro de deshabilitar al doctor?, no será visible y no podra acceder al sistema' :
-                    '¿Está seguro de habilitar al doctor?, será visible para los doctores y podra acceder al sistema';
+                    '¿Está seguro de habilitar al doctor?, será visible para los doctores y podra acceder al sistema'
     this.alertService.showQuestionModal(message).then((result) => {
       if (result.value) {
-        this.loading = true;
-        const request = new PatchRequest(!doctor.active);
+        this.loading = true
+        const request = new PatchRequest(!doctor.active)
         this.userApiService.doctorVisibility(doctor.id, request).subscribe({
           next: () => {
-            this.loading = false;
-            this.alertService.showSuccess('Visibilidad del doctor ha sido actualizado.');
-            this.getList();
+            this.loading = false
+            this.alertService.showSuccess('Visibilidad del doctor ha sido actualizado.')
+            this.getList()
           }, error: (e) => {
-            this.loading = false;
-            throw e;
+            this.loading = false
+            throw e
           }
-        });
+        })
       }
-    });
+    })
   }
 
   private approve = (): void => {
-    this.loading = true;
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions);
+    this.loading = true
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     this.userApiService.approve(currentRowNode.data.id).subscribe({
       next: (response: DoctorApiModel) => {
-        currentRowNode.data.approved = response.approved;
-        this.alertService.showSuccess('El doctor ha sido habilitado para ingresar al sistema.');
-        this.getList();
+        currentRowNode.data.approved = response.approved
+        this.alertService.showSuccess('El doctor ha sido habilitado para ingresar al sistema.')
+        this.getList()
       }, error: (e) => {
-        this.loading = false;
-        throw e;
+        this.loading = false
+        throw e
       }
-    });
+    })
   }
 }
