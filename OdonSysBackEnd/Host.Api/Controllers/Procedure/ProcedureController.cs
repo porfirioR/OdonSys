@@ -65,7 +65,7 @@ namespace Host.Api.Controllers.Procedure
         }
 
         [HttpPost("restore/{id}")]
-        [Authorize(Policy = Policy.CanManageProcedure)]
+        [Authorize(Policy = Policy.CanModifyVisibilityProcedure)]
         public async Task<ProcedureModel> Resotre(string id)
         {
             return await _procedureManager.RestoreAsync(id);
