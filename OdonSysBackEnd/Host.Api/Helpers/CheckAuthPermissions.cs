@@ -29,7 +29,7 @@ namespace Host.Api.Helpers
             }
             else
             {
-                var failureReason = new AuthorizationFailureReason(this, $"One of the following permissions is required: {string.Join(", ", requirementPermissions)}");
+                var failureReason = new AuthorizationFailureReason(this, $"Se requiere uno de los siguientes permisos: {string.Join(", ", requirementPermissions)}");
                 context.Fail(failureReason);
             }
 
