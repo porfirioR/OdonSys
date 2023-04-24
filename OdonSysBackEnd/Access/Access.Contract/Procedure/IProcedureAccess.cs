@@ -10,7 +10,6 @@ namespace Access.Contract.Procedure
         Task<IEnumerable<ProcedureAccessModel>> GetAllAsync();
         Task<ProcedureAccessModel> GetByIdAsync(string id, bool active);
         Task<ProcedureAccessModel> DeleteAsync(string id);
-        Task<ProcedureAccessModel> RestoreAsync(string id);
         Task<bool> ValidateIdNameAsync(string name);
         Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds);
     }

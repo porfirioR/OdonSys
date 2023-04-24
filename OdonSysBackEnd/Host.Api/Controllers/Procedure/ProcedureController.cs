@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Contract.Workspace.Procedures;
 using Host.Api.Models.Auth;
+using Host.Api.Models.Error;
 using Host.Api.Models.Procedures;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -57,6 +61,7 @@ namespace Host.Api.Controllers.Procedure
             return response;
         }
 
+        // Hard Delete
         [HttpDelete("{id}")]
         [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Delete(string id)
@@ -64,11 +69,28 @@ namespace Host.Api.Controllers.Procedure
             return await _procedureManager.DeleteAsync(id);
         }
 
-        [HttpPost("restore/{id}")]
+        [HttpPatch("{id}")]
         [Authorize(Policy = Policy.CanModifyVisibilityProcedure)]
-        public async Task<ProcedureModel> Resotre(string id)
+        public async Task<ProcedureModel> PatchProcedure([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateProcedureRequest> patchProcedure)
         {
-            return await _procedureManager.RestoreAsync(id);
+            if (patchProcedure == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede estar vacío.")));
+            ProcedureModel response;
+            try
+            {
+                response = await _procedureManager.GetByIdAsync(id, true);
+            }
+            catch (KeyNotFoundException)
+            {
+                response = await _procedureManager.GetByIdAsync(id, false);
+            }
+            var updateDoctorRequest = _mapper.Map<UpdateProcedureRequest>(response);
+            patchProcedure.ApplyTo(updateDoctorRequest);
+            if (!ModelState.IsValid)
+            {
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
+            }
+            var model = await _procedureManager.UpdateAsync(updateDoctorRequest);
+            return model;
         }
     }
 }
