@@ -14,6 +14,7 @@ import { FieldId } from '../../../core/enums/field-id.enum';
 import { OperationType } from '../../../core/enums/operation-type.enum';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
+import { Permission } from '../../../core/enums/permission.enum';
 
 @Component({
   selector: 'app-doctors',
@@ -27,18 +28,24 @@ export class DoctorsComponent implements OnInit {
   private attributeActive!: string
   private attributeId!: string
   private attributeApproved!: string
+  private canDeactivate = false
+  private canRestore = false
+  private canApprove = false
 
   constructor(
     private readonly alertService: AlertService,
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
-    private readonly userInfo: UserInfoService
+    private readonly userInfoService: UserInfoService,
   ) { }
 
   ngOnInit() {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!
     this.attributeApproved = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Approved)?.value!
+    this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateDoctors)
+    this.canRestore = this.userInfoService.havePermission(Permission.RestoreDoctors)
+    this.canApprove = this.userInfoService.havePermission(Permission.ApproveDoctors)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -47,15 +54,29 @@ export class DoctorsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getDoctorGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    const userId = this.userInfo.getUserData().id.toLocaleUpperCase()
+    const userId = this.userInfoService.getUserData().id.toLocaleUpperCase()
+
+    const conditionalButtons = []
+    if (this.canRestore) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
+      )
+    }
+    if (this.canDeactivate) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
+      )
+    }
+    if (this.canApprove) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar)
+      )
+    }
+
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
-      conditionalButtons: [
-        new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar),
-        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-      ],
+      conditionalButtons: conditionalButtons,
       customButton: new CustomGridButtonShow(' Roles', 'fa-id-badge')
     }
     columnAction.cellRendererParams = params
@@ -86,6 +107,7 @@ export class DoctorsComponent implements OnInit {
         this.approve()
         break
       case ButtonGridActionType.Desactivar:
+      case ButtonGridActionType.Restaurar:
         this.changeSelectedDoctorVisibility(currentRowNode.data)
         break
       default:

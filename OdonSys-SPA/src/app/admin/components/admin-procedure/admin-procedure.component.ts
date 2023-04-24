@@ -12,6 +12,11 @@ import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { selectProcedures } from '../../../core/store/procedure/procedure.selectors';
 import  * as fromProceduresActions from '../../../core/store/procedure/procedure.actions';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { OperationType } from '../../../core/enums/operation-type.enum';
+import { environment } from '../../../../environments/environment';
+import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
+import { FieldId } from '../../../core/enums/field-id.enum';
 
 @Component({
   selector: 'app-admin-procedure',
@@ -25,6 +30,10 @@ export class AdminProcedureComponent implements OnInit {
   protected canCreate = false
   protected canEdit = false
   protected canDelete = false
+  private canDeactivate = false
+  private canRestore = false
+  private attributeActive!: string
+  private attributeId!: string
 
   constructor(
     private readonly router: Router,
@@ -35,9 +44,15 @@ export class AdminProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
+    this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateProcedures)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateProcedures)
     this.canDelete = this.userInfoService.havePermission(Permission.DeleteProcedures)
+    this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateProcedures)
+    this.canRestore = this.userInfoService.havePermission(Permission.RestoreProcedures)
+    this.canDeactivate = true
+    this.canRestore = true
     this.setupAgGrid()
     let loading = true;
     this.rowData$ = this.store.select(selectProcedures).pipe(tap(x => {
@@ -63,9 +78,17 @@ export class AdminProcedureComponent implements OnInit {
     if (this.canDelete) {
       buttonShows.push(ButtonGridActionType.Borrar)
     }
+    const conditionalButtons = []
+    if (this.canRestore) {
+      conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar))
+    }
+    if (this.canDeactivate) {
+      conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
+    }
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Borrar, ButtonGridActionType.Editar],
-      clicked: this.actionColumnClicked
+      clicked: this.actionColumnClicked,
+      conditionalButtons: conditionalButtons
     }
     columnAction.cellRendererParams = params
   }
@@ -78,6 +101,12 @@ export class AdminProcedureComponent implements OnInit {
         break
       case ButtonGridActionType.Borrar:
         this.deleteSelectedItem(currentRowNode.data.id)
+        break
+      case ButtonGridActionType.Restaurar:
+            this.alertService.showInfo('Sin implementar')
+        break
+      case ButtonGridActionType.Desactivar:
+            this.alertService.showInfo('Sin implementar')
         break
       default:
         break

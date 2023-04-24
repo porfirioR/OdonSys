@@ -25,7 +25,7 @@ export class AgGridService {
     { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', maxWidth: 175, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
 
