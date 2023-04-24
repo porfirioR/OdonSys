@@ -22,6 +22,7 @@
         UpdateProcedures,
         DeleteProcedures,
         RestoreProcedures,
+        DeactivateProcedures,
         #endregion
 
         #region Client Procedures

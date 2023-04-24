@@ -46,12 +46,17 @@ namespace Host.Api
                 new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
+                new PolicyModel(Policy.CanModifyVisibilityProcedure, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.RestoreProcedures,
+                        PermissionName.DeactivateProcedures
+                    })
+                ),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateProcedures,
                         PermissionName.UpdateProcedures,
                         PermissionName.DeleteProcedures,
-                        PermissionName.RestoreProcedures,
                     })
                 ),
 

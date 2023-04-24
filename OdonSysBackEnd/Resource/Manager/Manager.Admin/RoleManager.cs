@@ -51,6 +51,7 @@ namespace Manager.Admin
                 new PermissionModel("Actualizar", PermissionName.UpdateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Borrar", PermissionName.DeleteProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Restaurar", PermissionName.RestoreProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
+                new PermissionModel("Inhabilitar", PermissionName.DeactivateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
 
                 new PermissionModel("Acceso", PermissionName.AccessDoctors, PermissionGroup.Work, PermissionSubGroup.Doctor),
                 new PermissionModel("Aprobar acceso", PermissionName.ApproveDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
