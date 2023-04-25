@@ -13,11 +13,6 @@
     <i class="fas fa-eye m-r-2"></i>Ver
   </span>
 </span>
-<span class="btn btn-sm btn-outline-success m-r-8" *ngIf="canRestore">
-  <span class="d-flex-center" (click)="restoreItem()">
-    <i class="fa fa-recycle m-r-2"></i>Restaurar
-  </span>
-</span>
 <span class="btn btn-sm btn-outline-success m-r-8" *ngIf="canShowEdit">
   <span class="d-flex-center" (click)="editItem()">
     <i class="fas fa-pen m-r-2"></i>Editar
@@ -26,6 +21,11 @@
 <span class="btn btn-sm btn-outline-danger m-r-8" (click)="deleteItem()" *ngIf="canShowDelete">
   <span class="d-flex-center">
     <i class="fas fa-trash m-r-2"></i>Borrar
+  </span>
+</span>
+<span class="btn btn-sm btn-outline-success m-r-8" *ngIf="canRestore">
+  <span class="d-flex-center" (click)="restoreItem()">
+    <i class="fa fa-recycle m-r-2"></i>Restaurar
   </span>
 </span>
 <span class="btn btn-sm btn-outline-danger m-r-8" (click)="deactivateItem()" *ngIf="canShowDeactivate">

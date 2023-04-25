@@ -123,7 +123,7 @@ export class DoctorsComponent implements OnInit {
       if (result.value) {
         this.loading = true
         const request = new PatchRequest(!doctor.active)
-        this.userApiService.doctorVisibility(doctor.id, request).subscribe({
+        this.userApiService.changeVisibility(doctor.id, request).subscribe({
           next: () => {
             this.loading = false
             this.alertService.showSuccess('Visibilidad del doctor ha sido actualizado.')

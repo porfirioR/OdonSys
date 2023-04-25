@@ -101,6 +101,31 @@ export class ProcedureEffects {
     )
   })
 
+  patchProcedure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(procedureActions.changeProcedureVisibility),
+      switchMap((x) =>
+        this.procedureApiService.changeVisibility(x.id, x.model).pipe(
+          map(data => {
+          this.alertService.showSuccess(`Tratamiento fue ${data.active ? 'restaurado' : 'deshabilitado'} con éxito.`)
+          return procedureActions.changeProcedureVisibilitySuccess({
+            procedure: new ProcedureModel(
+              data.id,
+              data.active,
+              data.dateCreated,
+              data.dateModified,
+              data.name,
+              data.description,
+              data.procedureTeeth,
+              data.price
+            )
+          })
+        }),
+        catchError(error => of(procedureActions.procedureFailure({ error }))))
+      )
+    )
+  })
+
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.procedureFailure),
