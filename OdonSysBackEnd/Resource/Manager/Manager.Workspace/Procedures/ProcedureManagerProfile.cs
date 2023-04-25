@@ -13,6 +13,8 @@ namespace Manager.Workspace.Procedures
             CreateMap<UpdateProcedureRequest, UpdateProcedureAccessRequest>();
 
             CreateMap<ProcedureAccessModel, ProcedureModel>();
+
+            CreateMap<ProcedureModel, UpdateProcedureRequest>();
         }
     }
 }

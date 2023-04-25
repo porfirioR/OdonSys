@@ -19,7 +19,9 @@ export const reducer = createReducer(
   on(ProcedureActions.addProcedureSuccess,
     (state, action) => adapter.addOne(action.procedure, state)
   ),
-  on(ProcedureActions.updateProcedureSuccess,
+  on(
+    ProcedureActions.updateProcedureSuccess,
+    ProcedureActions.changeProcedureVisibilitySuccess,
     (state, action) => adapter.upsertOne(action.procedure, state)
   ),
   on(ProcedureActions.deleteProcedure,

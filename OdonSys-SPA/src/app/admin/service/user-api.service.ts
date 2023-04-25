@@ -10,20 +10,22 @@ import { PatchRequest } from '../../core/models/api/patch-request';
   providedIn: BasicServiceModule
 })
 export class UserApiService {
-  private baseUrl = `${environment.apiUrl}/users`;
+  private baseUrl = `${environment.apiUrl}/users`
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+  ) {}
 
   public approve = (id: string): Observable<DoctorApiModel> => {
     return this.http.post<DoctorApiModel>(`${this.baseUrl}/approve/${id}`, null);
-  };
+  }
 
   public getAll = (): Observable<DoctorApiModel[]> => {
     return this.http.get<DoctorApiModel[]>(`${this.baseUrl}`);
-  };
+  }
 
-  public doctorVisibility = (id: string, request: PatchRequest): Observable<DoctorApiModel> => {
+  public changeVisibility = (id: string, request: PatchRequest): Observable<DoctorApiModel> => {
     return this.http.patch<DoctorApiModel>(`${this.baseUrl}/${id}`, [request]);
-  };
+  }
 
 }

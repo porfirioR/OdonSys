@@ -5,13 +5,18 @@ import { Observable, tap } from 'rxjs';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
+import { PatchRequest } from '../../../core/models/api/patch-request';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
+import { FieldId } from '../../../core/enums/field-id.enum';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { selectProcedures } from '../../../core/store/procedure/procedure.selectors';
 import  * as fromProceduresActions from '../../../core/store/procedure/procedure.actions';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-procedure',
@@ -25,6 +30,9 @@ export class AdminProcedureComponent implements OnInit {
   protected canCreate = false
   protected canEdit = false
   protected canDelete = false
+  private canDeactivate = false
+  private canRestore = false
+  private attributeActive!: string
 
   constructor(
     private readonly router: Router,
@@ -35,9 +43,12 @@ export class AdminProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateProcedures)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateProcedures)
     this.canDelete = this.userInfoService.havePermission(Permission.DeleteProcedures)
+    this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateProcedures)
+    this.canRestore = this.userInfoService.havePermission(Permission.RestoreProcedures)
     this.setupAgGrid()
     let loading = true;
     this.rowData$ = this.store.select(selectProcedures).pipe(tap(x => {
@@ -63,9 +74,17 @@ export class AdminProcedureComponent implements OnInit {
     if (this.canDelete) {
       buttonShows.push(ButtonGridActionType.Borrar)
     }
+    const conditionalButtons = []
+    if (this.canRestore) {
+      conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar))
+    }
+    if (this.canDeactivate) {
+      conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
+    }
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Borrar, ButtonGridActionType.Editar],
-      clicked: this.actionColumnClicked
+      clicked: this.actionColumnClicked,
+      conditionalButtons: conditionalButtons
     }
     columnAction.cellRendererParams = params
   }
@@ -79,9 +98,25 @@ export class AdminProcedureComponent implements OnInit {
       case ButtonGridActionType.Borrar:
         this.deleteSelectedItem(currentRowNode.data.id)
         break
+      case ButtonGridActionType.Restaurar:
+      case ButtonGridActionType.Desactivar:
+        this.changeSelectedDoctorVisibility(currentRowNode.data)
+        break
       default:
         break
     }
+  }
+
+  private changeSelectedDoctorVisibility = (procedure: ProcedureModel): void => {
+    const message = procedure.active ?
+                    '¿Está seguro de deshabilitar el tratamiento?, no será visible y no podra ser seleccionado en el sistema.' :
+                    '¿Está seguro de restaurar el tratamiento?, será visible para ser seleccionado en el sistema.'
+    this.alertService.showQuestionModal(message).then((result) => {
+      if (result.value) {
+        const request = new PatchRequest(!procedure.active)
+        this.store.dispatch(fromProceduresActions.changeProcedureVisibility({ id: procedure.id, model: request }))
+      }
+    })
   }
 
   public deleteSelectedItem = (id: string): void => {

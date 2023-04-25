@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ProcedureModel } from '../../models/procedure/procedure-model';
 import { UpdateProcedureRequest } from '../../models/procedure/update-procedure-request';
 import { CreateProcedureRequest } from '../../models/procedure/create-procedure-request';
+import { PatchRequest } from '../../models/api/patch-request';
 
 export const loadProcedures = createAction(
   '[Procedure Component] Load Procedures'
@@ -36,6 +37,19 @@ export const updateProcedure = createAction(
 export const deleteProcedure = createAction(
   '[Procedure/API] Delete Procedure',
   props<{ id: string }>()
+)
+
+export const changeProcedureVisibility = createAction(
+  '[Procedure Component] Change Visibility Procedure',
+  props<{
+    id: string,
+    model: PatchRequest
+  }>()
+)
+
+export const changeProcedureVisibilitySuccess = createAction(
+  '[Procedure Effect] Change Visibility Procedure Success',
+  props<{ procedure: ProcedureModel }>()
 )
 
 export const clearProcedures = createAction(

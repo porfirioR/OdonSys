@@ -14,7 +14,7 @@ export class AgGridService {
 
   private procedureColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 300, resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200, resizable: true },
     { headerName: 'Precio', field: 'price', type: 'numberColumn', filter: 'agNumberColumnFilter', minWidth: 40, maxWidth: 120, resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
@@ -25,22 +25,22 @@ export class AgGridService {
     { headerName: 'Fecha Modificada', field: 'dateModified', filter: 'agDateColumnFilter', maxWidth: 175, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 298, maxWidth: 298, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
 
   private roleColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Código', field: 'code', filter: 'agTextColumnFilter', minWidth: 40, resizable: true },
-    { headerName: 'Quien creo', field: 'userCreated', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 150, resizable: true },
+    { headerName: 'Quien creo', field: 'userCreated', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 170, resizable: true },
     { headerName: 'Quien cambio', field: 'userUpdated', filter: 'agTextColumnFilter', minWidth: 40, maxWidth: 150, resizable: true },
-    { headerName: 'Fecha Creada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 140, resizable: true,
+    { headerName: 'Fecha Creada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 180, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
     { headerName: 'Fecha Modificada', field: 'dateModified', filter: false, maxWidth: 175, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateModified}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateModified}) },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 250, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 260, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
 
