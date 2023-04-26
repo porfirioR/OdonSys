@@ -84,7 +84,10 @@ namespace Manager.Admin
 
         public async Task<IEnumerable<string>> CheckUsersExistsAsync(IEnumerable<string> users)
         {
-            var usersAccess = (await _userDataAccess.GetAllUserActiveAsync()).Select(x => x.UserName);
+            var usersAccess = (await _userDataAccess.GetAllUserAsync())
+                                    .Where(x => x.Active)
+                                    .Select(x => x.UserName);
+
             var invalidOrInactiveList = users.Where(x => !usersAccess.Contains(x));
             return invalidOrInactiveList;
         }

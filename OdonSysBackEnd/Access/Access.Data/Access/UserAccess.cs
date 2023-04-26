@@ -39,7 +39,7 @@ namespace Access.Admin.Access
             return response;
         }
 
-        public async Task<IEnumerable<UserDataAccessModel>> GetAllUserActiveAsync()
+        public async Task<IEnumerable<UserDataAccessModel>> GetAllUserAsync()
         {
             var entity = await _context.Set<User>().ToListAsync();
             return _mapper.Map<IEnumerable<UserDataAccessModel>>(entity);

@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Contract.Admin.Roles;
 using Host.Api.Models.Auth;
-using Host.Api.Models.Role;
+using Host.Api.Models.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,6 +31,16 @@ namespace Host.Api.Controllers.Admin
             var request = _mapper.Map<CreateRoleRequest>(apiRequest);
             var model = await _roleManager.CreateAsync(request);
             return model;
+        }
+
+        [HttpPost("user-roles")]
+        [Authorize(Policy = Policy.CanManageRole)]
+        public async Task<RoleModel> UserRoles([FromBody] UserRolesApiRequest apiRequest)
+        {
+            throw new Exception();
+            //var request = _mapper.Map<CreateRoleRequest>(apiRequest);
+            //var model = await _roleManager.CreateAsync(request);
+            //return model;
         }
 
         [HttpPut]
