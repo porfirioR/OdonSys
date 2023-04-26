@@ -1,12 +1,26 @@
 <div class="modal-header">
   <h4 class="modal-title">Asignar Roles</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
   </button>
 </div>
 <div class="modal-body">
+  <div class="col-12 row">
+    <h5>Doctor seleccionado: {{name}}</h5>
+    <br>
+    <br>
+    <h5>Lista de Roles</h5>
+    <div class="col-lg-6" *ngFor="let role of formGroup.controls.roles.controls">
+      <input class="form-check-input col-2" type="checkbox" [formControl]="role.controls.value" [id]="role.controls.code.value">
+      <label class="form-check-label offset-1 col-8" [for]="role.controls.code.value">{{role.controls.name.value}}</label>
+    </div>
+    <br>
+    <br>
+    <div class="invalid-feedback-check-box" *ngIf="formGroup.controls.roles?.hasError('noneSelected')">
+      Debe seleccionar al menos un rol.
+    </div>
+  </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close()">Cerrar</button>
-  <button type="button" class="btn btn-outline-dark" (click)="save()">Guardar</button>
+  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()" [disabled]="saving">Cerrar</button>
+  <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving">Guardar</button>
 </div>

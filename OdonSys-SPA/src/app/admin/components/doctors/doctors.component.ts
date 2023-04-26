@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
-import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
-import { GridActionModel } from '../../../core/models/view/grid-action-model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { UserApiService } from '../../service/user-api.service';
+import { UserApiService } from '../../services/user-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
-import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { environment } from '../../../../environments/environment';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
-import { FieldId } from '../../../core/enums/field-id.enum';
-import { OperationType } from '../../../core/enums/operation-type.enum';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
+import { FieldId } from '../../../core/enums/field-id.enum';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { OperationType } from '../../../core/enums/operation-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
+import { UserRoleComponent } from '../../modals/user-role/user-role.component';
 
 @Component({
   selector: 'app-doctors',
@@ -37,6 +39,7 @@ export class DoctorsComponent implements OnInit {
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
     private readonly userInfoService: UserInfoService,
+    public modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -109,6 +112,16 @@ export class DoctorsComponent implements OnInit {
       case ButtonGridActionType.Desactivar:
       case ButtonGridActionType.Restaurar:
         this.changeSelectedDoctorVisibility(currentRowNode.data)
+        break
+      case ButtonGridActionType.CustomButton:
+        const modalRef = this.modalService.open(UserRoleComponent)
+        modalRef.componentInstance.userId = currentRowNode.data.id
+        modalRef.componentInstance.name = currentRowNode.data.name
+        modalRef.result.then((result) => {
+          if(result){
+            // this.reload();
+          }
+        }, () => {})
         break
       default:
         break
