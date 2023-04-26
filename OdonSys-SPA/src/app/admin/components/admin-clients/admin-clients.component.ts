@@ -6,7 +6,7 @@ import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { ClientAdminApiService } from '../../service/client-admin-api.service';
+import { ClientAdminApiService } from '../../services/client-admin-api.service';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
