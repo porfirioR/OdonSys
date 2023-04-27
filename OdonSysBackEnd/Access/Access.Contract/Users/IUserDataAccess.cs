@@ -13,5 +13,6 @@ namespace Access.Contract.Users
         Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest);
         Task<IEnumerable<UserClientAccessModel>> GetUserClientsByUserIdAsync(string userId);
         Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest);
+        Task<IEnumerable<string>> SetUserRolesAsync(UserRolesAccessRequest accessRequest);
     }
 }

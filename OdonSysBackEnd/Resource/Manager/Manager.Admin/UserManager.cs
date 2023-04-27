@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Auth;
+using Access.Contract.Roles;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
@@ -58,6 +59,13 @@ namespace Manager.Admin
             var accessModel = await _userDataAccess.GetAllAsync();
             var response = _mapper.Map<IEnumerable<DoctorModel>>(accessModel);
             return response;
+        }
+
+        public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request)
+        {
+            var accessRequest = new UserRolesAccessRequest(request.UserId, request.Roles);
+            var roles = await _userDataAccess.SetUserRolesAsync(accessRequest);
+            return roles;
         }
 
         public async Task<DoctorModel> GetByIdAsync(string id)

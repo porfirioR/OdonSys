@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Contract.Admin.Roles;
 using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
+using Host.Api.Models.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -57,5 +59,14 @@ namespace Host.Api.Controllers.Workspace
             return model;
         }
         // TODO hard delete if not associated with patients and other references
+
+        [HttpPost("user-roles")]
+        [Authorize(Policy = Policy.CanAssignDoctorRoles)]
+        public async Task<IEnumerable<string>> UserRoles([FromBody] UserRolesApiRequest apiRequest)
+        {
+            var request = new UserRolesRequest(apiRequest.UserId, apiRequest.Roles);
+            var roles = await _userManager.SetUserRolesAsync(request);
+            return roles;
+        }
     }
 }

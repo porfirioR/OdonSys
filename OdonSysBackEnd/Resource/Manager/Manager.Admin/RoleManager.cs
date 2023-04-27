@@ -1,6 +1,7 @@
 ﻿using Access.Contract.Roles;
 using AutoMapper;
 using Contract.Admin.Roles;
+using Contract.Admin.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

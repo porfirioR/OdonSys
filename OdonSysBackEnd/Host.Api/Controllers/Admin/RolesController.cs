@@ -33,16 +33,6 @@ namespace Host.Api.Controllers.Admin
             return model;
         }
 
-        [HttpPost("user-roles")]
-        [Authorize(Policy = Policy.CanManageRole)]
-        public async Task<RoleModel> UserRoles([FromBody] UserRolesApiRequest apiRequest)
-        {
-            throw new Exception();
-            //var request = _mapper.Map<CreateRoleRequest>(apiRequest);
-            //var model = await _roleManager.CreateAsync(request);
-            //return model;
-        }
-
         [HttpPut]
         [Authorize(Policy = Policy.CanManageRole)]
         public async Task<RoleModel> Update([FromBody] UpdateRoleApiRequest apiRequest)
