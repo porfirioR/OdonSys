@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace OdonSysBackEnd.Models.Auth
+namespace Host.Api.Models.Auth
 {
     public class LoginApiRequest : IValidatableObject
     {

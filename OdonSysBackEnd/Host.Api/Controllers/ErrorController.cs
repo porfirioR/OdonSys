@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace Host.Controllers
+namespace Host.Api.Controllers
 {
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -89,7 +89,7 @@ namespace Host.Controllers
             var initialDuplicateIndex = message.IndexOf("(") + 1;
             var finalDuplicateIndex = message.IndexOf(")");
 
-            return (initialDuplicateIndex != -1 && finalDuplicateIndex != -1) ? message[initialDuplicateIndex..finalDuplicateIndex] : duplicateValue;
+            return initialDuplicateIndex != -1 && finalDuplicateIndex != -1 ? message[initialDuplicateIndex..finalDuplicateIndex] : duplicateValue;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Roles;
+using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
@@ -65,6 +66,7 @@ namespace Access.Data.Access
         {
             var entity = await _context.Set<Role>()
                             .Include(x => x.RolePermissions)
+                            .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Code == code);
             return entity ?? throw new KeyNotFoundException($"code {code}");
         }

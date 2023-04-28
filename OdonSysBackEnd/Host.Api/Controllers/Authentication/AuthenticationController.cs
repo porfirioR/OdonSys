@@ -4,10 +4,9 @@ using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OdonSysBackEnd.Models.Auth;
 using System.Threading.Tasks;
 
-namespace Host.Api.Controllers
+namespace Host.Api.Controllers.Authentication
 {
     [Route("api/[controller]")]
     [ApiController]
