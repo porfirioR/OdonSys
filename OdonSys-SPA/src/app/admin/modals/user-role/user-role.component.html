@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">Asignar Roles</h4>
-  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <button type="button" class="btn-close" data-bs-dismiss="modal" [disabled]="saving" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
   </button>
 </div>
 <div class="modal-body">

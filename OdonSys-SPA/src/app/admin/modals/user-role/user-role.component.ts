@@ -7,6 +7,7 @@ import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { UserApiService } from '../../services/user-api.service';
 
 @Component({
   selector: 'app-user-role',
@@ -26,7 +27,8 @@ export class UserRoleComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private readonly rolesApiService: RoleApiService,
     private userInfoService: UserInfoService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private readonly userApiService: UserApiService,
   ) { }
 
   ngOnInit() {
@@ -53,7 +55,7 @@ export class UserRoleComponent implements OnInit {
     this.saving = true
     const roles = this.formGroup.value.roles!.filter(x => x.value).map(x => x.code!)
     const userRoles = new UserRoleApiRequest(this.userId, roles)
-    this.rolesApiService.setUserRoles(userRoles).pipe(take(1)).subscribe({
+    this.userApiService.setUserRoles(userRoles).pipe(take(1)).subscribe({
       next: (response) => {
         if(this.userInfoService.getUserData().id === this.userId) {
           this.userInfoService.setRoles(response)

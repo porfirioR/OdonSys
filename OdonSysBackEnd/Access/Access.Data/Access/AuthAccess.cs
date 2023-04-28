@@ -44,7 +44,7 @@ namespace Access.Data.Access
 
             if (user is null)
             {
-                throw new KeyNotFoundException("Correo y/o contraseña es incorrecta");
+                throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
             }
             if (!user.Approved)
             {

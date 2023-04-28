@@ -33,13 +33,14 @@ export class DoctorsComponent implements OnInit {
   private canDeactivate = false
   private canRestore = false
   private canApprove = false
+  private canAddRoles = false
 
   constructor(
     private readonly alertService: AlertService,
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
     private readonly userInfoService: UserInfoService,
-    public modalService: NgbModal,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -49,6 +50,7 @@ export class DoctorsComponent implements OnInit {
     this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateDoctors)
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreDoctors)
     this.canApprove = this.userInfoService.havePermission(Permission.ApproveDoctors)
+    this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -80,7 +82,7 @@ export class DoctorsComponent implements OnInit {
       buttonShow: [],
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons,
-      customButton: new CustomGridButtonShow(' Roles', 'fa-id-badge')
+      customButton: this.canAddRoles ? new CustomGridButtonShow(' Roles', 'fa-id-badge') : undefined
     }
     columnAction.cellRendererParams = params
   }

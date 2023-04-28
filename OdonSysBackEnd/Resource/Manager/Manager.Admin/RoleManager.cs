@@ -38,6 +38,7 @@ namespace Manager.Admin
             {
                 new PermissionModel("Acceso", PermissionName.AccessRoles, PermissionGroup.Admin, PermissionSubGroup.Role),
                 new PermissionModel("Administrar", PermissionName.ManageRoles, PermissionGroup.Admin, PermissionSubGroup.Role),
+                new PermissionModel("Asignar Usuarios", PermissionName.AssignRoleDoctors, PermissionGroup.Admin, PermissionSubGroup.Role),
 
                 new PermissionModel("Acceso", PermissionName.AccessClients, PermissionGroup.Work, PermissionSubGroup.Client),
                 new PermissionModel("Crear", PermissionName.CreateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
@@ -57,6 +58,7 @@ namespace Manager.Admin
                 new PermissionModel("Aprobar acceso", PermissionName.ApproveDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Actualizar", PermissionName.UpdateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Borrar", PermissionName.DeleteDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
+                new PermissionModel("Asignar Roles", PermissionName.AssignDoctorRoles, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Inhabilitar", PermissionName.DeactivateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Restaurar", PermissionName.RestoreDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
             };

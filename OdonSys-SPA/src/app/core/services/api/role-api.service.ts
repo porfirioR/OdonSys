@@ -41,8 +41,4 @@ export class RoleApiService {
   public getByCode = (code: string): Observable<RoleApiModel> => {
     return this.http.get<RoleApiModel>(`${this.baseUrl}/${code}`)
   }
-
-  public setUserRoles = (request: UserRoleApiRequest): Observable<string[]> => {
-    return this.http.post<string[]>(`${this.baseUrl}/user-roles`, request)
-  }
 }

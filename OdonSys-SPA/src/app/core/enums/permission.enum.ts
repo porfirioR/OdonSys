@@ -7,6 +7,7 @@ export enum Permission {
   RestoreProcedures = 'RestoreProcedures',
 
   ApproveDoctors = 'ApproveDoctors',
+  AssignDoctorRoles = 'AssignDoctorRoles',
   DeactivateDoctors = 'DeactivateDoctors',
   RestoreDoctors = 'RestoreDoctors',
 

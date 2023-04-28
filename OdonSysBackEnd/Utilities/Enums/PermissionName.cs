@@ -5,6 +5,7 @@
         #region Roles
         AccessRoles,
         ManageRoles,
+        AssignRoleDoctors,
         #endregion
 
         #region Clients

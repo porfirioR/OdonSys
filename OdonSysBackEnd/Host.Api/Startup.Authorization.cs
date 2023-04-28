@@ -16,6 +16,7 @@ namespace Host.Api
             {
                 new PolicyModel(Policy.CanAccessRole, new AuthRequirement(PermissionName.AccessRoles)),
                 new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
+                new PolicyModel(Policy.CanAssignRoleDoctors, new AuthRequirement(PermissionName.AssignRoleDoctors)),
 
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
@@ -60,8 +61,6 @@ namespace Host.Api
                         PermissionName.DeleteProcedures,
                     })
                 ),
-
-
             };
 
             //  Add Authorization
