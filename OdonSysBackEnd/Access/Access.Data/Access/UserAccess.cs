@@ -33,11 +33,12 @@ namespace Access.Admin.Access
         public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesAccessRequest accessRequest)
         {
             var userRoles = await _context.UserRoles.Include(x => x.Role)
+                                .AsNoTracking()
                                 .Where(x => x.UserId == new Guid(accessRequest.UserId)).ToListAsync();
             var currentRoles = userRoles.Select(x => x.Role);
             var roleCodes = currentRoles.Select(x => x.Code);
             var persistRoles = currentRoles.Where(x => accessRequest.Roles.Contains(x.Code));
-            var deleteUserRoles = currentRoles.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => new UserRole() { Role = x, UserId = new Guid(accessRequest.UserId) });
+            var deleteUserRoles = currentRoles.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => new UserRole() { UserId = new Guid(accessRequest.UserId), RoleId = x.Id });
 
             var newRoleCodes = accessRequest.Roles.Where(x => !roleCodes.Contains(x));
             var newRoles = await _context.Roles.Where(x => newRoleCodes.Contains(x.Code)).ToListAsync();

@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Roles;
 using AutoMapper;
 using Contract.Admin.Roles;
-using Contract.Admin.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,19 +64,8 @@ namespace Manager.Admin
 
         public async Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
         {
-            var tasks = new List<Task>();
-            foreach (var role in roles)
-            {
-                tasks.Add(GetRoleByCodeAsync(role));
-            }
-            await Task.WhenAll(tasks);
-            var permissions = new List<string>();
-            foreach (var task in tasks)
-            {
-                var result = ((Task<RoleModel>)task).GetAwaiter().GetResult();
-                permissions.AddRange(result.RolePermissions);
-            }
-            return permissions.Distinct();
+            var allPermissions = (await GetAllAsync()).Where(x => roles.Contains(x.Code)).SelectMany(x => x.RolePermissions);
+            return allPermissions.Distinct();
         }
 
         public async Task<RoleModel> GetRoleByCodeAsync(string code)
