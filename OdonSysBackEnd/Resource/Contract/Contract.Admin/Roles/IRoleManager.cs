@@ -7,8 +7,8 @@ namespace Contract.Admin.Roles
     {
         Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles);
         IEnumerable<PermissionModel> GetAllPermissions();
-        Task<RoleModel> CreateAsync(CreateRoleRequest accessRequest);
-        Task<RoleModel> UpdateAsync(UpdateRoleRequest accessRequest);
+        Task<RoleModel> CreateAsync(CreateRoleRequest request);
+        Task<RoleModel> UpdateAsync(UpdateRoleRequest request);
         Task<RoleModel> GetRoleByCodeAsync(string code);
         Task<IEnumerable<RoleModel>> GetAllAsync();
     }

@@ -141,7 +141,7 @@ namespace Access.Data.Access
 
         private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)
         {
-            var codes = await _context.DoctorRoles
+            var codes = await _context.UserRoles
                                 .Include(x => x.Role)
                                 .Where(x => x.UserId.Equals(userId))
                                 .Select(x => x.Role.Code)

@@ -6,6 +6,5 @@ namespace Contract.Admin.Users
         Guid Id,
         Guid UserId,
         Guid ClientId
-        )
-    { }
+    );
 }

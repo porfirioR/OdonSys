@@ -37,7 +37,8 @@
         DeleteDoctors,
         RestoreDoctors,
         DeactivateDoctors,
-        ApproveDoctors
+        ApproveDoctors,
+        AssignDoctorRoles
         #endregion
     }
 }

@@ -1,5 +1,4 @@
-﻿using Access.Contract.ClientProcedure;
-using Access.Contract.Users;
+﻿using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
@@ -31,6 +30,26 @@ namespace Access.Admin.Access
             return _mapper.Map<UserDataAccessModel>(entity);
         }
 
+        public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesAccessRequest accessRequest)
+        {
+            var userRoles = await _context.UserRoles.Include(x => x.Role)
+                                .AsNoTracking()
+                                .Where(x => x.UserId == new Guid(accessRequest.UserId)).ToListAsync();
+            var currentRoles = userRoles.Select(x => x.Role);
+            var roleCodes = currentRoles.Select(x => x.Code);
+            var persistRoles = currentRoles.Where(x => accessRequest.Roles.Contains(x.Code));
+            var deleteUserRoles = currentRoles.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => new UserRole() { UserId = new Guid(accessRequest.UserId), RoleId = x.Id });
+
+            var newRoleCodes = accessRequest.Roles.Where(x => !roleCodes.Contains(x));
+            var newRoles = await _context.Roles.Where(x => newRoleCodes.Contains(x.Code)).ToListAsync();
+            var newUserRoles = newRoles.Select(x => new UserRole() { Role = x, UserId = new Guid(accessRequest.UserId) });
+
+            _context.UserRoles.AddRange(newUserRoles);
+            _context.UserRoles.RemoveRange(deleteUserRoles);
+            await _context.SaveChangesAsync();
+            return newUserRoles.Select(x => x.Role.Code).Concat(persistRoles.Select(x => x.Code));
+        }
+
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
             var response = await _context.Set<User>()
@@ -39,7 +58,7 @@ namespace Access.Admin.Access
             return response;
         }
 
-        public async Task<IEnumerable<UserDataAccessModel>> GetAllUserActiveAsync()
+        public async Task<IEnumerable<UserDataAccessModel>> GetAllUserAsync()
         {
             var entity = await _context.Set<User>().ToListAsync();
             return _mapper.Map<IEnumerable<UserDataAccessModel>>(entity);
