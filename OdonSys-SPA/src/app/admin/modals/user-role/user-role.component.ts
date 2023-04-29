@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { take } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
+import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
 import { CheckFormGroup } from '../../../core/forms/check-form-group';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
-import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { UserApiService } from '../../services/user-api.service';
+import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 
 @Component({
   selector: 'app-user-role',
@@ -26,13 +28,15 @@ export class UserRoleComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private readonly rolesApiService: RoleApiService,
     private userInfoService: UserInfoService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private readonly userApiService: UserApiService,
+    private readonly doctorApiService: DoctorApiService,
   ) { }
 
   ngOnInit() {
-    this.rolesApiService.getAll().pipe(take(1)).subscribe({
-      next: (roles) => {
-        const userRoles = this.userInfoService.getUserData().roles
+    combineLatest([this.rolesApiService.getAll(), this.doctorApiService.getById(this.userId)]).pipe(take(1)).subscribe({
+      next: ([roles, user]) => {
+        const userRoles = user.roles
         roles.forEach(x => {
           const formGroup = new FormGroup<CheckFormGroup>({
             name: new FormControl(x.name),
@@ -53,14 +57,14 @@ export class UserRoleComponent implements OnInit {
     this.saving = true
     const roles = this.formGroup.value.roles!.filter(x => x.value).map(x => x.code!)
     const userRoles = new UserRoleApiRequest(this.userId, roles)
-    this.rolesApiService.setUserRoles(userRoles).pipe(take(1)).subscribe({
+    this.userApiService.setUserRoles(userRoles).pipe(take(1)).subscribe({
       next: (response) => {
         if(this.userInfoService.getUserData().id === this.userId) {
           this.userInfoService.setRoles(response)
         }
-        this.alertService.showSuccess('Roles asignados al usuario correctamente.')
+        this.alertService.showSuccess('Lista de Roles actualizada correctamente.')
         this.saving = false
-        this.activeModal.close()
+        this.activeModal.close(response)
       }, error: (e) => {
         this.saving = false
         throw e

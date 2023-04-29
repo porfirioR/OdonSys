@@ -10,6 +10,7 @@
 
         public const string CanAccessRole = "can_access_role";
         public const string CanManageRole = "can_manage_role";
+        public const string CanAssignRoleDoctors = "can_assign_role_doctors";
 
         public const string CanAccessProcedure = "can_access_procedure";
         public const string CanManageProcedure = "can_manage_procedure";

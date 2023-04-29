@@ -13,13 +13,14 @@ namespace Access.Admin.Mapper
         public UserDataAccessProfile()
         {
             CreateMap<UserDataAccessRequest, User>()
-                .BeforeMap((src, dest) => src.Email = src.Email ?? dest.Email)
+                .BeforeMap((src, dest) => src.Email ??= dest.Email)
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid(src.Id)));
 
             CreateMap<User, AuthAccessModel>()
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src));
 
             CreateMap<User, DoctorDataAccessModel>()
+                .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(x => x.Role.Code)))
                 .ForMember(dest => dest.Approved, opt => opt.MapFrom(src => src.Approved));
 
             CreateMap<User, UserDataAccessModel>()

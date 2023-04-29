@@ -1,4 +1,5 @@
-﻿using Utilities.Enums;
+﻿using System.Collections.Generic;
+using Utilities.Enums;
 
 namespace Access.Contract.Users
 {
@@ -15,5 +16,6 @@ namespace Access.Contract.Users
         public string Phone { get; set; }
         public bool Active { get; set; }
         public bool Approved { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }
