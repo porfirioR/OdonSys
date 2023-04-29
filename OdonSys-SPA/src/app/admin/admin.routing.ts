@@ -52,6 +52,12 @@ export const AdminRoutes: Routes = [
         data: { permissions: [ Permission.CreateProcedures ] }
       },
       {
+        path: 'pacientes/registrar',
+        component: UpsertClientComponent,
+        title: 'Actualizar pacientes',
+        data: { permissions: [ Permission.CreateClients ] }
+      },
+      {
         path: 'pacientes/actualizar/:id',
         component: UpsertClientComponent,
         title: 'Actualizar pacientes',

@@ -45,7 +45,7 @@ namespace Manager.Admin
                 new PermissionModel("Actualizar", PermissionName.UpdateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Asignar", PermissionName.AssignClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Borrar", PermissionName.DeleteClients, PermissionGroup.Admin, PermissionSubGroup.Client),
-                new PermissionModel("Mis clientes", PermissionName.AssignClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Mis clientes", PermissionName.AccessMyClients, PermissionGroup.Work, PermissionSubGroup.Client),
 
                 new PermissionModel("Acceso", PermissionName.AccessProcedures, PermissionGroup.Work, PermissionSubGroup.Procedure),
                 new PermissionModel("Crear", PermissionName.CreateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
