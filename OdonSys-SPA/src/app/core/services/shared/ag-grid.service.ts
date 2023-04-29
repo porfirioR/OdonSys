@@ -55,6 +55,8 @@ export class AgGridService {
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, maxWidth: 95,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
+    { headerName: 'Roles', field: 'roles', filter: 'agTextColumnFilter', resizable: true,
+      cellRenderer: this.arrayFormatter, valueFormatter: this.arrayFormatter },
     { headerName: 'Actions', field: 'action', sortable: false, filter: false, minWidth: 300, maxWidth: 650, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
@@ -164,6 +166,10 @@ export class AgGridService {
 
   private booleanFormatter(cell: { value: any }): string {
     return cell.value ? 'Si' : 'No'
+  }
+
+  private arrayFormatter(cell: { value: any }): string {
+    return cell.value ? cell.value.join(', ') : ''
   }
 
   private localDateFormatter(data: any): string {

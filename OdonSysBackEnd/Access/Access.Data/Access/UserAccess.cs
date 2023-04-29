@@ -32,22 +32,35 @@ namespace Access.Admin.Access
 
         public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesAccessRequest accessRequest)
         {
-            var userRoles = await _context.UserRoles.Include(x => x.Role)
+            var userRoles = await _context.UserRoles
                                 .AsNoTracking()
-                                .Where(x => x.UserId == new Guid(accessRequest.UserId)).ToListAsync();
+                                .Include(x => x.Role)
+                                .AsNoTracking()
+                                .Where(x => x.UserId == new Guid(accessRequest.UserId))
+                                .ToListAsync();
             var currentRoles = userRoles.Select(x => x.Role);
             var roleCodes = currentRoles.Select(x => x.Code);
             var persistRoles = currentRoles.Where(x => accessRequest.Roles.Contains(x.Code));
             var deleteUserRoles = currentRoles.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => new UserRole() { UserId = new Guid(accessRequest.UserId), RoleId = x.Id });
 
             var newRoleCodes = accessRequest.Roles.Where(x => !roleCodes.Contains(x));
-            var newRoles = await _context.Roles.Where(x => newRoleCodes.Contains(x.Code)).ToListAsync();
-            var newUserRoles = newRoles.Select(x => new UserRole() { Role = x, UserId = new Guid(accessRequest.UserId) });
+            var allRoles = await _context.Roles
+                                .AsNoTracking()
+                                .ToListAsync();
+            var newRoles = allRoles.Where(x => newRoleCodes.Contains(x.Code));
+            var newUserRoles = newRoles.Select(x => new UserRole() { RoleId = x.Id, UserId = new Guid(accessRequest.UserId) });
 
-            _context.UserRoles.AddRange(newUserRoles);
-            _context.UserRoles.RemoveRange(deleteUserRoles);
+            if (newUserRoles.Any())
+            {
+                _context.UserRoles.AddRange(newUserRoles);
+            }
+            if (deleteUserRoles.Any())
+            {
+                _context.UserRoles.RemoveRange(deleteUserRoles);
+            }
             await _context.SaveChangesAsync();
-            return newUserRoles.Select(x => x.Role.Code).Concat(persistRoles.Select(x => x.Code));
+            var rolesIds = newUserRoles.Select(x => x.RoleId).Concat(persistRoles.Select(x => x.Id));
+            return allRoles.Where(x => rolesIds.Contains(x.Id)).Select(x => x.Code);
         }
 
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
@@ -107,6 +120,9 @@ namespace Access.Admin.Access
         private async Task<User> GetUserByIdAsync(string id)
         {
             var entity = await _context.Set<User>()
+                            .Include(x => x.UserRoles)
+                            .ThenInclude(x => x.Role)
+                            .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
             return entity ?? throw new KeyNotFoundException($"id {id}");
         }

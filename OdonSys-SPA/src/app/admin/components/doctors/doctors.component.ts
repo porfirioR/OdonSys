@@ -120,8 +120,9 @@ export class DoctorsComponent implements OnInit {
         modalRef.componentInstance.userId = currentRowNode.data.id
         modalRef.componentInstance.name = currentRowNode.data.name
         modalRef.result.then((result) => {
-          if(result){
-            // this.reload();
+          if(result) {
+            currentRowNode.data.roles = result
+            this.gridOptions.api?.refreshCells({force: true, columns: ['roles']})
           }
         }, () => {})
         break
