@@ -12,6 +12,8 @@ import { CreateRoleApiRequest } from '../../../../core/models/api/roles/create-r
 import { UpdateRoleApiRequest } from '../../../../core/models/api/roles/update-role-api-request';
 import { SubGroupPermissions } from '../../../../core/forms/sub-group-permissions.form';
 import { PermissionFormGroup } from '../../../../core/forms/permission-form-group.form';
+import { PermissionSubGroup } from 'src/app/core/enums/permission-sub-group';
+import { EnumHandler } from 'src/app/core/helpers/enum-handler';
 
 @Component({
   selector: 'app-upsert-role',
@@ -107,7 +109,7 @@ export class UpsertRoleComponent implements OnInit {
       )
       const permissions = permissionsFormGroups.filter(formGroup => formGroup.value.subGroup! === x)
       const subGroupPermissions = new FormGroup({
-        subGroup: new FormControl(x, { nonNullable: true}),
+        subGroup: new FormControl(EnumHandler.getValueByKey(PermissionSubGroup, x), { nonNullable: true}),
         permissions: new FormArray(permissions)
       })
       this.formGroup.controls.subGroupPermissions!.push(subGroupPermissions)

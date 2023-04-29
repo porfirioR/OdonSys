@@ -12,6 +12,8 @@
         AccessClients,
         CreateClients,
         UpdateClients,
+        DeactivateClients,
+        RestoreClients,
         DeleteClients,
         AssignClients,
         AccessMyClients,

@@ -18,24 +18,24 @@ import { EnumHandler } from '../../../../core/helpers/enum-handler';
   styleUrls: ['./upsert-client.component.scss']
 })
 export class UpsertClientComponent implements OnInit {
-  protected title: string = 'Registrar ';
-  protected load: boolean = false;
-  protected saving: boolean = false;
-  protected formGroup!: FormGroup;
-  protected countries: Map<string, string> = new Map<string, string>();
-  private id = '';
-  private fullEdit = false;
+  protected title: string = 'Registrar '
+  protected load: boolean = false
+  protected saving: boolean = false
+  protected formGroup!: FormGroup
+  protected countries: Map<string, string> = new Map<string, string>()
+  private id = ''
+  private fullEdit = false
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly clientApiService: ClientApiService,
     private readonly alertService: AlertService,
     private readonly router: Router
   ) {
-    this.countries = EnumHandler.getCountries();
+    this.countries = EnumHandler.getCountries()
   }
 
   ngOnInit() {
-    this.loadValues();
+    this.loadValues()
   }
 
   protected close = () => {
@@ -43,27 +43,27 @@ export class UpsertClientComponent implements OnInit {
   }
 
   protected save = (): void => {
-    if (this.formGroup.invalid) { return; }
-    this.saving = true;
-    const request$ = this.clientRequest();
+    if (this.formGroup.invalid) { return }
+    this.saving = true
+    const request$ = this.clientRequest()
     request$.subscribe({
       next: () => {
-        this.alertService.showSuccess('Datos guardados.');
+        this.alertService.showSuccess('Datos guardados.')
         this.close()
       },
       error: (error) => {
-        this.saving = false;
-        throw error;
+        this.saving = false
+        throw error
       }
-    });
+    })
   }
 
   private loadValues = () => {
     this.activatedRoute.params.pipe(
       switchMap(params => {
-        this.id = params.id;
-        const client$ = this.id ? this.clientApiService.getById(this.id) : of<ClientApiModel>({ } as ClientApiModel);
-        return client$;
+        this.id = params.id
+        const client$ = this.id ? this.clientApiService.getById(this.id) : of<ClientApiModel>({ } as ClientApiModel)
+        return client$
       })
     ).subscribe({
       next: (client: ClientApiModel ) => {
@@ -77,33 +77,33 @@ export class UpsertClientComponent implements OnInit {
           phone: new FormControl(this.id ? client.phone:'', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
           country: new FormControl(this.id ? client.country:'', [Validators.required]),
           email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email]),
-        });
+        })
         this.formGroup.controls.document.valueChanges.pipe(
           debounceTime(500),
         ).subscribe({
           next: (document: string) => {
-            const checkDigit = MethodHandler.calculateCheckDigit(document, +this.formGroup.controls.country.value);
-            this.formGroup.controls.ruc.setValue(checkDigit);
+            const checkDigit = MethodHandler.calculateCheckDigit(document, +this.formGroup.controls.country.value)
+            this.formGroup.controls.ruc.setValue(checkDigit)
           }
-        });
+        })
         this.formGroup.controls.country.valueChanges.subscribe({
           next: () => this.formGroup.controls.document.updateValueAndValidity()
-        });
+        })
 
         if (this.id) {
-          this.title = 'Actualizar ';
+          this.title = 'Actualizar '
           if (!this.fullEdit) {
-            this.formGroup.controls.document.disable();
-            this.formGroup.controls.country.disable();
-            this.formGroup.controls.email.disable();
+            this.formGroup.controls.document.disable()
+            this.formGroup.controls.country.disable()
+            this.formGroup.controls.email.disable()
           }
         }
-        this.load = true;
+        this.load = true
       }, error: (e) => {
-        this.load = true;
-        throw e;
+        this.load = true
+        throw e
       }
-    });
+    })
   }
 
   private clientRequest = (): Observable<ClientApiModel> => {
@@ -117,8 +117,8 @@ export class UpsertClientComponent implements OnInit {
         this.formGroup.controls.phone.value,
         this.formGroup.controls.country.value,
         this.formGroup.controls.email.value
-      );
-      return this.clientApiService.updateClient(updateClient);
+      )
+      return this.clientApiService.updateClient(updateClient)
     } else {
       const newClient = new CreateClientRequest(
         this.formGroup.controls.name.value,
@@ -130,8 +130,8 @@ export class UpsertClientComponent implements OnInit {
         this.formGroup.controls.country.value,
         this.formGroup.controls.phone.value,
         this.formGroup.controls.email.value
-      );
-      return this.clientApiService.createClient(newClient);
+      )
+      return this.clientApiService.createClient(newClient)
     }
   }
 

@@ -1,11 +1,11 @@
 <app-progress *ngIf="!load || saving"></app-progress>
 <div class="container" *ngIf="load">
-  <div class="header-top">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}} paciente</h3>
   </div>
-  <div class="m-16 p-16">
+  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
-      <div class="row">
+      <div class="row m-l-12">
         <div class="col-lg-6">
           <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
         </div>

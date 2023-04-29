@@ -17,10 +17,12 @@ export enum Permission {
   AccessClients = 'AccessClients',
   CreateClients = 'CreateClients',
   UpdateClients = 'UpdateClients',
+  DeactivateClients = 'DeactivateClients',
+  RestoreClients = 'RestoreClients',
   DeleteClients = 'DeleteClients',
   AssignClients = 'AssignClients',
   AccessMyClients = 'AccessMyClients',
-  
+
   AccessClientProcedures = 'AccessClientProcedures',
   CreateClientProcedures = 'CreateClientProcedures',
   UpdateClientProcedures = 'UpdateClientProcedures',
