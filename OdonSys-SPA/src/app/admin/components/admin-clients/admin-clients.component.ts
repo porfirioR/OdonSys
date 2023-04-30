@@ -95,7 +95,10 @@ export class AdminClientsComponent implements OnInit {
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
-
+    const buttons = buttonsToShow.length + conditionalButtons.length
+    if (buttons > 4) {
+      columnAction.minWidth = 463
+    }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
@@ -109,10 +112,11 @@ export class AdminClientsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Aprobar:
-      case ButtonGridActionType.Desactivar:
-        this.changeSelectedClientVisibility(currentRowNode.data)
-        break
-      case ButtonGridActionType.Ver:
+        case ButtonGridActionType.Desactivar:
+          this.changeSelectedClientVisibility(currentRowNode.data)
+          break
+      case ButtonGridActionType.CustomButton:
+      case ButtonGridActionType.Aprobar:
         this.alertService.showInfo('No implementado.')
         // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break

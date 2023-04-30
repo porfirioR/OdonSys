@@ -69,7 +69,6 @@ export class UpsertClientComponent implements OnInit {
 
   private loadValues = () => {
     this.id = this.activatedRoute.snapshot.params['id']
-    
     const client$ = this.id ? this.clientApiService.getById(this.id) : of<ClientApiModel>({ } as ClientApiModel)
     client$.subscribe({
       next: (client: ClientApiModel) => {
@@ -78,11 +77,12 @@ export class UpsertClientComponent implements OnInit {
           middleName: new FormControl(this.id ? client.secondSurname : '', [Validators.maxLength(25)]),
           surname: new FormControl(this.id ? client.surname : '', [Validators.required, Validators.maxLength(25)]),
           secondSurname: new FormControl(this.id ? client.secondSurname : '', [Validators.maxLength(25)]),
-          document: new FormControl(this.id ? client.document: '', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+          document: new FormControl(this.id ? client.document : '', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
           ruc: new FormControl({ value: this.id && client.ruc ? client.ruc : 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
           country: new FormControl(this.id ? Country[client.country]! as unknown as Country : Country.Paraguay, [Validators.required]),
-          phone: new FormControl(this.id ? client.phone:'', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-          email: new FormControl(this.id ? client.email:'', [Validators.required, Validators.maxLength(20), Validators.email])
+          phone: new FormControl(this.id ? client.phone : '', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
+          email: new FormControl(this.id ? client.email : '', [Validators.required, Validators.maxLength(20), Validators.email]),
+          active: new FormControl(this.id ? client.active : true)
         })
         this.formGroup.controls.document.valueChanges.pipe(
           debounceTime(500),
@@ -92,10 +92,7 @@ export class UpsertClientComponent implements OnInit {
             this.formGroup.controls.ruc.setValue(checkDigit)
           }
         })
-        this.formGroup.controls.country.valueChanges.subscribe({
-          next: () => this.formGroup.controls.document.updateValueAndValidity()
-        })
-
+        this.formGroup.controls.country.valueChanges.subscribe(() => this.formGroup.controls.document.updateValueAndValidity())
         if (this.id) {
           this.title = 'Actualizar '
           if (!this.fullFieldEdit) {
@@ -123,7 +120,8 @@ export class UpsertClientComponent implements OnInit {
         this.formGroup.value.phone!,
         this.formGroup.controls.country.value!,
         this.formGroup.controls.email.value!,
-        this.formGroup.controls.document.value!
+        this.formGroup.controls.document.value!,
+        this.formGroup.value.active!
       )
       return this.clientApiService.updateClient(updateClient)
     } else {
