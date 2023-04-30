@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store'
 import * as fromRolesActions from '../roles/roles.actions'
-import * as fromProceduresActions from '../procedure/procedure.actions'
+import * as fromProceduresActions from '../procedures/procedure.actions'
 import * as fromSavingActions from './saving.actions'
 
 export const savingFeatureKey = 'saving';

@@ -22,8 +22,7 @@ export function sortByCode(a: RoleModel, b: RoleModel): number {
   return a.code.localeCompare(b.code);
 }
 
-
-export const rolesReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(RolesActions.allRolesLoaded,
     (state, action) => adapter.setAll(action.roles, state)

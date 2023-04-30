@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AgGridModule } from 'ag-grid-angular';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuard } from './guards/auth.guard';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AgGridModule } from 'ag-grid-angular';
 
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -19,16 +21,19 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ClientsComponent } from './components/clients/clients.component';
 import { UpsertClientComponent } from './components/clients/upsert-client/upsert-client.component';
 import { AnimationComponent } from './components/animation/animation.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { AuthGuard } from './guards/auth.guard';
 import { PermissionGuard } from './guards/permission.guard';
-import { environment } from '../../environments/environment';
+
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
+import * as fromProcedure from './store/procedures/procedure.reducer';
+import * as fromClient from './store/clients/client.reducer';
+
 import { RolesEffects } from './store/roles/roles.effects';
-import * as fromProcedure from './store/procedure/procedure.reducer';
-import { ProcedureEffects } from './store/procedure/procedure.effects';
+import { ProcedureEffects } from './store/procedures/procedure.effects';
+import { ClientEffects } from './store/clients/client.effects';
+import { environment } from '../../environments/environment';
 
 @NgModule({
   imports: [
@@ -39,11 +44,12 @@ import { ProcedureEffects } from './store/procedure/procedure.effects';
     AgGridModule.withComponents([]),
     NgbModule,
     StoreModule.forFeature(fromSaving.savingFeatureKey, fromSaving.reducer),
-    StoreModule.forFeature(fromRoles.roleFeatureKey, fromRoles.rolesReducer),
+    StoreModule.forFeature(fromRoles.roleFeatureKey, fromRoles.reducer),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
-    EffectsModule.forFeature([RolesEffects, ProcedureEffects]),
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
+    StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects]),
   ],
   declarations: [
     HeaderComponent,

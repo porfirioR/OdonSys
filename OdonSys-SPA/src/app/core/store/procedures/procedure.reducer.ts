@@ -3,13 +3,13 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import * as ProcedureActions from './procedure.actions';
 import { ProcedureModel } from '../../models/procedure/procedure-model';
 
-export const proceduresFeatureKey = 'procedures';
+export const proceduresFeatureKey = 'procedures'
 
 export interface ProcedureState extends EntityState<ProcedureModel> { }
 
-export const adapter: EntityAdapter<ProcedureModel> = createEntityAdapter<ProcedureModel>();
+export const adapter: EntityAdapter<ProcedureModel> = createEntityAdapter<ProcedureModel>()
 
-export const initialState: ProcedureState = adapter.getInitialState({ });
+export const initialState: ProcedureState = adapter.getInitialState({ })
 
 export const reducer = createReducer(
   initialState,
@@ -30,11 +30,11 @@ export const reducer = createReducer(
   on(ProcedureActions.clearProcedures,
     state => adapter.removeAll(state)
   ),
-);
+)
 
 export const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = adapter.getSelectors();
+} = adapter.getSelectors()

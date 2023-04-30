@@ -14,8 +14,8 @@ import { FieldId } from '../../../core/enums/field-id.enum';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
-import { selectProcedures } from '../../../core/store/procedure/procedure.selectors';
-import  * as fromProceduresActions from '../../../core/store/procedure/procedure.actions';
+import { selectProcedures } from '../../../core/store/procedures/procedure.selectors';
+import  * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
 import { environment } from '../../../../environments/environment';
 
 @Component({

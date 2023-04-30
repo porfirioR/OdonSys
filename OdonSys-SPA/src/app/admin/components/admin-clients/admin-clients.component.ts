@@ -8,7 +8,7 @@ import { FieldId } from '../../../core/enums/field-id.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { ClientAdminApiService } from '../../services/client-admin-api.service';
+import { ClientAdminApiService } from '../../../core/services/api/client-admin-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { ClientApiModel } from '../../../core/models/api/clients/client-api-model';
@@ -139,7 +139,7 @@ export class AdminClientsComponent implements OnInit {
       if (result.value) {
         this.loading = true
         const request = new PatchRequest(!client.active)
-        this.clientAdminApiService.clientVisibility(client.id, request).subscribe({
+        this.clientAdminApiService.changeVisibility(client.id, request).subscribe({
           next: () => {
             this.loading = false
             this.alertService.showSuccess('Visibilidad del paciente ha sido actualizado.')
