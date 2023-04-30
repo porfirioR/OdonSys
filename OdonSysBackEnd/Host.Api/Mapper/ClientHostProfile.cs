@@ -10,7 +10,8 @@ namespace Host.Api.Mapper
         {
             CreateMap<CreateClientApiRequest, CreateClientRequest>();
 
-            CreateMap<UpdateClientApiRequest, UpdateClientRequest>();
+            CreateMap<UpdateClientApiRequest, UpdateClientRequest>()
+                .ForMember(dest => dest.Active, opt => opt.Ignore());
 
             CreateMap<ClientModel, UpdateClientRequest>();
 

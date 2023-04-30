@@ -25,6 +25,12 @@ namespace Host.Api
                         PermissionName.UpdateClients,
                     })
                 ),
+                new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.RestoreClients,
+                        PermissionName.DeactivateClients
+                    })
+                ),
                 new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
                 new PolicyModel(Policy.CanAssignClient, new AuthRequirement(PermissionName.AssignClients)),
                 new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),

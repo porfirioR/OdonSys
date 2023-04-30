@@ -17,6 +17,7 @@
         DeleteClients,
         AssignClients,
         AccessMyClients,
+        FullFieldUpdateClients,
         #endregion
 
         #region Procedures

@@ -78,10 +78,10 @@ export class AgGridService {
     { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
+    { headerName: 'Visible', field: 'active', filter: false, resizable: true, minWidth: 80, maxWidth: 90,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
-    { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 650, resizable: true,
+    { headerName: 'Actions', field: 'action', sortable: false, filter: false, maxWidth: 550, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
 

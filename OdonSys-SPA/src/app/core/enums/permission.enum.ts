@@ -17,6 +17,7 @@ export enum Permission {
   AccessClients = 'AccessClients',
   CreateClients = 'CreateClients',
   UpdateClients = 'UpdateClients',
+  FullFieldUpdateClients = 'FullFieldUpdateClients',
   DeactivateClients = 'DeactivateClients',
   RestoreClients = 'RestoreClients',
   DeleteClients = 'DeleteClients',

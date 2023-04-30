@@ -7,6 +7,7 @@
         public const string CanDeleteClient = "can_delete_client";
         public const string CanAssignClient = "can_assign_client";
         public const string CanAccessMyClients = "can_access_my_clients";
+        public const string CanModifyVisibilityClient = "can_modify_visibility_client";
 
         public const string CanAccessRole = "can_access_role";
         public const string CanManageRole = "can_manage_role";
