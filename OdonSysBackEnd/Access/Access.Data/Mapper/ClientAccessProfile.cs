@@ -15,9 +15,6 @@ namespace Access.Admin.Mapper
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true));
 
             CreateMap<UpdateClientAccessRequest, Client>()
-                .ForMember(dest => dest.Document, opt => opt.Ignore())
-                .ForMember(dest => dest.Ruc, opt => opt.Ignore())
-                .ForMember(dest => dest.Country, opt => opt.Ignore())
                 .ForMember(dest => dest.Debts, opt => opt.Ignore());
 
             CreateMap<Client, ClientAccessModel>()

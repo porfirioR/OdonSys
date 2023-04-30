@@ -53,9 +53,7 @@ export class AdminClientsComponent implements OnInit {
     this.canDelete = this.userInfoService.havePermission(Permission.DeleteClients)
     this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateClients)
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreClients)
-
     this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
-
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -82,7 +80,7 @@ export class AdminClientsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getAdminClientGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    columnAction.minWidth = 300
+    columnAction.minWidth = 360
     const conditionalButtons = []
     const buttonsToShow: ButtonGridActionType[] = [ButtonGridActionType.Ver]
     if (this.canDeactivate) {
@@ -102,7 +100,7 @@ export class AdminClientsComponent implements OnInit {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
-      customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-user-doctor') : undefined
+      customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
     }
     columnAction.cellRendererParams = params
   }
@@ -115,7 +113,8 @@ export class AdminClientsComponent implements OnInit {
         this.changeSelectedClientVisibility(currentRowNode.data)
         break
       case ButtonGridActionType.Ver:
-        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        this.alertService.showInfo('No implementado.')
+        // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])

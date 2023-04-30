@@ -10,8 +10,7 @@ namespace Manager.Admin.Mapper
         {
             CreateMap<CreateClientRequest, CreateClientAccessRequest>();
 
-            CreateMap<UpdateClientRequest, UpdateClientAccessRequest>()
-                .ForMember(dest => dest.Active, opt => opt.Ignore());
+            CreateMap<UpdateClientRequest, UpdateClientAccessRequest>();
 
             CreateMap<ClientAccessModel, ClientModel>();
 

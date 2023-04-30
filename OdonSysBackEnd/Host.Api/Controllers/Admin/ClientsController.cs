@@ -79,10 +79,10 @@ namespace Host.Api.Controllers.Admin
         }
 
         [HttpPatch("{id}")]
-        [Authorize(Policy = Policy.CanManageClient)]
+        [Authorize(Policy = Policy.CanModifyVisibilityClient)]
         public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<UpdateClientRequest> patchClient)
         {
-            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede estar vacio.")));
             var clientRequest = _mapper.Map<UpdateClientRequest>(await _clientManager.GetByIdAsync(id));
             patchClient.ApplyTo(clientRequest);
             if (!ModelState.IsValid)
