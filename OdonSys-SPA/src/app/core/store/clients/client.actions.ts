@@ -6,8 +6,7 @@ import { UpdateClientRequest } from '../../models/api/clients/update-client-requ
 import { PatchRequest } from '../../models/api/patch-request';
 
 export const loadClients = createAction(
-  '[Client Component] Load Clients', 
-  props<{ clients: ClientModel[] }>()
+  '[Client Component] Load Clients'
 )
 
 export const allClientsLoaded = createAction(

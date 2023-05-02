@@ -50,7 +50,7 @@ export class AdminProcedureComponent implements OnInit {
     this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateProcedures)
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreProcedures)
     this.setupAgGrid()
-    let loading = true;
+    let loading = true
     this.rowData$ = this.store.select(selectProcedures).pipe(tap(x => {
       if(loading && x.length === 0) {
         this.store.dispatch(fromProceduresActions.loadProcedures()) 
