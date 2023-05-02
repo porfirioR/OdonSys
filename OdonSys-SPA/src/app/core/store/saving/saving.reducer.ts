@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store'
 import * as fromRolesActions from '../roles/roles.actions'
-import * as fromProceduresActions from '../procedure/procedure.actions'
+import * as fromProceduresActions from '../procedures/procedure.actions'
+import * as fromClientsActions from '../clients/client.actions'
 import * as fromSavingActions from './saving.actions'
 
 export const savingFeatureKey = 'saving';
@@ -19,6 +20,9 @@ export const reducer = createReducer(
     fromRolesActions.updateRole,
     fromRolesActions.createRole,
     fromProceduresActions.changeProcedureVisibility,
+    fromClientsActions.addClient,
+    fromClientsActions.updateClient,
+    fromClientsActions.changeClientVisibility,
     (state) => ({
       ...state,
       saving: true
@@ -27,6 +31,10 @@ export const reducer = createReducer(
   on(
     fromRolesActions.createRoleSuccess,
     fromRolesActions.updateRoleSuccess,
+    fromClientsActions.addClientSuccess,
+    fromClientsActions.updateClientSuccess,
+    fromProceduresActions.addProcedureSuccess,
+    fromProceduresActions.updateProcedureSuccess,
     (state) => ({
       ...state,
       saving: false
@@ -36,6 +44,7 @@ export const reducer = createReducer(
     fromSavingActions.savingFailed,
     fromRolesActions.rolesFailure,
     fromProceduresActions.procedureFailure,
+    fromClientsActions.clientFailure,
     (state) => ({
       ...state,
       saving: false

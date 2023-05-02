@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { FieldId } from '../../../core/enums/field-id.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { ClientAdminApiService } from '../../services/client-admin-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { ClientApiModel } from '../../../core/models/api/clients/client-api-model';
@@ -17,6 +16,8 @@ import { ConditionalGridButtonShow } from '../../../core/models/view/conditional
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
+import { selectClients } from '../../../core/store/clients/client.selectors';
+import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import { environment } from '../../../../environments/environment';
 
 @Component({
@@ -25,8 +26,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-clients.component.scss']
 })
 export class AdminClientsComponent implements OnInit {
-  public loading: boolean = false
-  public ready: boolean = false
+  public load: boolean = false
   public gridOptions!: GridOptions
   private attributeActive!: string
   protected rowData$!: Observable<ClientModel[]>
@@ -42,7 +42,6 @@ export class AdminClientsComponent implements OnInit {
     private readonly agGridService: AgGridService,
     private store: Store,
     private readonly alertService: AlertService,
-    private readonly clientAdminApiService: ClientAdminApiService,
     private userInfoService: UserInfoService,
   ) { }
 
@@ -55,26 +54,14 @@ export class AdminClientsComponent implements OnInit {
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreClients)
     this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
     this.setupAgGrid()
-    this.ready = true
-    this.getList()
-  }
-
-  private getList = () => {
-    this.loading = true
-    this.clientAdminApiService.getAll().subscribe({
-      next: (response: ClientApiModel[]) => {
-        this.gridOptions.api?.setRowData(response)
-        this.gridOptions.api?.sizeColumnsToFit()
-        if (response.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay()
-        }
-        this.loading = false
-      }, error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay()
-        this.loading = false
-        throw e
+    let loading = true
+    this.rowData$ = this.store.select(selectClients).pipe(tap(x => {
+      if(loading && x.length === 0) {
+        this.store.dispatch(fromClientsActions.loadClients()) 
+        loading = false
       }
-    })
+    }))
+    this.load = true
   }
 
   private setupAgGrid = (): void => {
@@ -95,7 +82,10 @@ export class AdminClientsComponent implements OnInit {
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
-
+    const buttons = buttonsToShow.length + conditionalButtons.length
+    if (buttons > 4) {
+      columnAction.minWidth = 463
+    }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
@@ -109,10 +99,11 @@ export class AdminClientsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Aprobar:
-      case ButtonGridActionType.Desactivar:
-        this.changeSelectedClientVisibility(currentRowNode.data)
-        break
-      case ButtonGridActionType.Ver:
+        case ButtonGridActionType.Desactivar:
+          this.changeSelectedClientVisibility(currentRowNode.data)
+          break
+      case ButtonGridActionType.CustomButton:
+      case ButtonGridActionType.Aprobar:
         this.alertService.showInfo('No implementado.')
         // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
@@ -133,18 +124,8 @@ export class AdminClientsComponent implements OnInit {
                     '¿Está seguro de habilitar al paciente, será visible para los doctores?'
     this.alertService.showQuestionModal(message).then((result) => {
       if (result.value) {
-        this.loading = true
         const request = new PatchRequest(!client.active)
-        this.clientAdminApiService.clientVisibility(client.id, request).subscribe({
-          next: () => {
-            this.loading = false
-            this.alertService.showSuccess('Visibilidad del paciente ha sido actualizado.')
-            this.getList()
-          }, error: (e) => {
-            this.loading = false
-            throw e
-          }
-        })
+        this.store.dispatch(fromClientsActions.changeClientVisibility({ id: client.id, model: request }))
       }
     })
   }

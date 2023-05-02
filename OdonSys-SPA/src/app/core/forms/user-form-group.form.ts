@@ -11,4 +11,5 @@ export interface UserFormGroup {
   phone: FormControl<string | null>
   country: FormControl<Country | null>
   email: FormControl<string | null>
+  active: FormControl<boolean | null>
 }

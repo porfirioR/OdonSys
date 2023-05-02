@@ -21,6 +21,7 @@ namespace Host.Api.Models.Clients
         public Country Country { get; set; }
         public string Email { get; set; }
         public string Document { get; set; }
+        public bool Active { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

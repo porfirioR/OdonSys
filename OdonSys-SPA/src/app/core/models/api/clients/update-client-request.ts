@@ -10,6 +10,7 @@ export class UpdateClientRequest {
     protected phone: string,
     protected country: Country,
     protected email: string,
-    protected document: string
+    protected document: string,
+    protected active: boolean
   ) { }
 }

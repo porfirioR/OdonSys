@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import * as procedureActions from './procedure.actions';
 import { ProcedureModel } from '../../models/procedure/procedure-model';
+import { ProcedureApiModel } from '../../models/procedure/procedure-api-model';
 import { ProcedureApiService } from '../../services/api/procedure-admin-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { selectProcedures } from './procedure.selectors';
@@ -18,7 +19,7 @@ export class ProcedureEffects {
     private readonly store: Store,
     private readonly router: Router,
     private readonly alertService: AlertService
-    ) {}
+  ) {}
 
   getAll$ = createEffect(() => {
     return this.actions$.pipe(
@@ -27,20 +28,7 @@ export class ProcedureEffects {
       switchMap(([action, procedures]) => procedures.length > 0 ?
       of(procedureActions.allProceduresLoaded({ procedures: procedures })) :
         this.procedureApiService.getAll().pipe(
-          map(data => procedureActions.allProceduresLoaded({
-            procedures: data.map(x => 
-              new ProcedureModel(
-                x.id,
-                x.active,
-                x.dateCreated,
-                x.dateModified,
-                x.name,
-                x.description,
-                x.procedureTeeth,
-                x.price
-              )
-            )
-          })),
+          map(data => procedureActions.allProceduresLoaded({ procedures: data.map(this.getModel) })),
           catchError(error => of(procedureActions.procedureFailure({ error })))
         )
       )
@@ -56,16 +44,7 @@ export class ProcedureEffects {
             this.router.navigate(['/admin/procedimientos'])
             this.alertService.showSuccess('Tratamiento creado con éxito.')
             return procedureActions.addProcedureSuccess({
-              procedure: new ProcedureModel(
-                data.id,
-                data.active,
-                data.dateCreated,
-                data.dateModified,
-                data.name,
-                data.description,
-                data.procedureTeeth,
-                data.price
-              )
+              procedure: this.getModel(data)
             })
           }),
           catchError(error => of(procedureActions.procedureFailure({ error })))
@@ -83,16 +62,7 @@ export class ProcedureEffects {
             this.router.navigate(['/admin/procedimientos'])
             this.alertService.showSuccess('Tratamiento actualizado con éxito.')
             return procedureActions.updateProcedureSuccess({
-              procedure: new ProcedureModel(
-                data.id,
-                data.active,
-                data.dateCreated,
-                data.dateModified,
-                data.name,
-                data.description,
-                data.procedureTeeth,
-                data.price
-              )
+              procedure: this.getModel(data)
             })
           }),
           catchError(error => of(procedureActions.procedureFailure({ error })))
@@ -109,16 +79,7 @@ export class ProcedureEffects {
           map(data => {
           this.alertService.showSuccess(`Tratamiento fue ${data.active ? 'restaurado' : 'deshabilitado'} con éxito.`)
           return procedureActions.changeProcedureVisibilitySuccess({
-            procedure: new ProcedureModel(
-              data.id,
-              data.active,
-              data.dateCreated,
-              data.dateModified,
-              data.name,
-              data.description,
-              data.procedureTeeth,
-              data.price
-            )
+            procedure: this.getModel(data)
           })
         }),
         catchError(error => of(procedureActions.procedureFailure({ error }))))
@@ -129,7 +90,18 @@ export class ProcedureEffects {
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.procedureFailure),
-      tap((x) => {throw x.error})
+      tap((x) => { throw x.error })
     )
   })
+
+  private getModel = (data: ProcedureApiModel) => new ProcedureModel(
+    data.id,
+    data.active,
+    data.dateCreated,
+    data.dateModified,
+    data.name,
+    data.description,
+    data.procedureTeeth,
+    data.price
+  )
 }
