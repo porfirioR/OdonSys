@@ -5,11 +5,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
-import { ClientApiModel } from '../../../../core/models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
-import { ClientApiService } from '../../../../core/services/api/client-api.service';
-import { AlertService } from '../../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../../core/services/shared/user-info.service';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
 import { MethodHandler } from '../../../../core/helpers/method-handler';
@@ -18,6 +15,7 @@ import { UserFormGroup } from '../../../../core/forms/user-form-group.form';
 import { Country } from '../../../../core/enums/country.enum';
 import { Permission } from '../../../../core/enums/permission.enum';
 import { selectClients } from '../../../../core/store/clients/client.selectors';
+import * as fromClientsActions from '../../../../core/store/clients/client.actions';
 import { savingSelector } from '../../../../core/store/saving/saving.selector';
 
 @Component({
@@ -48,8 +46,6 @@ export class UpsertClientComponent implements OnInit {
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly clientApiService: ClientApiService,
-    private readonly alertService: AlertService,
     private readonly location: Location,
     private readonly router: Router,
     private userInfoService: UserInfoService,
@@ -69,19 +65,7 @@ export class UpsertClientComponent implements OnInit {
 
   protected save = (): void => {
     if (this.formGroup.invalid) { return }
-    this.saving = true
-    const request$ = this.clientRequest()
-    request$.subscribe({
-      next: () => {
-        const message = `Paciente ${this.id ? 'actualizado' : 'registrado'} actualizado con éxito.`
-        this.alertService.showSuccess(message)
-        this.close()
-      },
-      error: (error) => {
-        this.saving = false
-        throw error
-      }
-    })
+    this.id ? this.update() : this.create()
   }
 
   private loadValues = () => {
@@ -125,37 +109,6 @@ export class UpsertClientComponent implements OnInit {
     })
   }
 
-  private clientRequest = (): Observable<ClientApiModel> => {
-    if (this.id) {
-      const updateClient = new UpdateClientRequest(
-        this.id,
-        this.formGroup.value.name!,
-        this.formGroup.value.middleName!,
-        this.formGroup.value.surname!,
-        this.formGroup.value.secondSurname!,
-        this.formGroup.value.phone!,
-        this.formGroup.controls.country.value!,
-        this.formGroup.controls.email.value!,
-        this.formGroup.controls.document.value!,
-        this.formGroup.value.active!
-      )
-      return this.clientApiService.updateClient(updateClient)
-    } else {
-      const newClient = new CreateClientRequest(
-        this.formGroup.value.name!,
-        this.formGroup.value.middleName!,
-        this.formGroup.value.surname!,
-        this.formGroup.value.secondSurname!,
-        this.formGroup.value.document!,
-        this.formGroup.controls.ruc.value!.toString(),
-        this.formGroup.value.country!,
-        this.formGroup.value.phone!,
-        this.formGroup.value.email!
-      )
-      return this.clientApiService.createClient(newClient)
-    }
-  }
-
   private formGroupValueChanges = () => {
     this.formGroup.controls.document.valueChanges.pipe(
       debounceTime(500),
@@ -168,4 +121,34 @@ export class UpsertClientComponent implements OnInit {
     this.formGroup.controls.country.valueChanges.subscribe(() => this.formGroup.controls.document.updateValueAndValidity())
   }
 
+  private create = () => {
+    const newClient = new CreateClientRequest(
+      this.formGroup.value.name!,
+      this.formGroup.value.middleName!,
+      this.formGroup.value.surname!,
+      this.formGroup.value.secondSurname!,
+      this.formGroup.value.document!,
+      this.formGroup.controls.ruc.value!.toString(),
+      this.formGroup.value.country!,
+      this.formGroup.value.phone!,
+      this.formGroup.value.email!
+    )
+    this.store.dispatch(fromClientsActions.addClient({ client: newClient }))
+  }
+
+  private update = () => {
+    const updateClient = new UpdateClientRequest(
+      this.id,
+      this.formGroup.value.name!,
+      this.formGroup.value.middleName!,
+      this.formGroup.value.surname!,
+      this.formGroup.value.secondSurname!,
+      this.formGroup.value.phone!,
+      this.formGroup.controls.country.value!,
+      this.formGroup.controls.email.value!,
+      this.formGroup.controls.document.value!,
+      this.formGroup.value.active!
+    )
+    this.store.dispatch(fromClientsActions.updateClient({ client: updateClient }))
+  }
 }

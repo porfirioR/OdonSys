@@ -40,8 +40,8 @@ export class ClientEffects {
       switchMap((action) =>
         this.clientApiService.createClient(action.client).pipe(
           map(data => {
-            this.router.navigate(['/admin/clientes'])
-            this.alertService.showSuccess('Paciente creado con éxito.')
+            this.router.navigate(['/admin/pacientes'])
+            this.alertService.showSuccess('Paciente registrado con éxito.')
             return clientActions.addClientSuccess({ client: this.getModel(data) })
           }),
           catchError(error => of(clientActions.clientFailure({ error })))
@@ -56,7 +56,7 @@ export class ClientEffects {
       switchMap((action) =>
         this.clientApiService.updateClient(action.client).pipe(
           map(data => {
-            this.router.navigate(['/admin/clientes'])
+            this.router.navigate(['/admin/pacientes'])
             this.alertService.showSuccess('Paciente actualizado con éxito.')
             return clientActions.updateClientSuccess({ client: this.getModel(data) })
           }),
@@ -72,7 +72,7 @@ export class ClientEffects {
       switchMap((x) =>
         this.clientApiService.changeVisibility(x.id, x.model).pipe(
           map(data => {
-          this.alertService.showSuccess(`Cliente fue ${data.active ? 'restaurado' : 'deshabilitado'} con éxito.`)
+          this.alertService.showSuccess(`Paciente fue ${data.active ? 'restaurado' : 'deshabilitado'} con éxito.`)
           return clientActions.changeClientVisibilitySuccess({ client: this.getModel(data) })
         }),
         catchError(error => of(clientActions.clientFailure({ error }))))

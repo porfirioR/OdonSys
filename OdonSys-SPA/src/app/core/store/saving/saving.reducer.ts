@@ -33,6 +33,8 @@ export const reducer = createReducer(
     fromRolesActions.updateRoleSuccess,
     fromClientsActions.addClientSuccess,
     fromClientsActions.updateClientSuccess,
+    fromProceduresActions.addProcedureSuccess,
+    fromProceduresActions.updateProcedureSuccess,
     (state) => ({
       ...state,
       saving: false
