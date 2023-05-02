@@ -66,7 +66,6 @@ namespace Access.Data.Access
         {
             var entity = await _context.Set<Role>()
                             .Include(x => x.RolePermissions)
-                            .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Code == code);
             return entity ?? throw new KeyNotFoundException($"code {code}");
         }
