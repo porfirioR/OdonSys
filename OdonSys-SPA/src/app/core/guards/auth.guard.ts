@@ -27,7 +27,6 @@ export class AuthGuard implements CanActivate {
     if(permissions.length === 0) {
       this.alertService.showInfo('No tiene permisos para acceder al sistema, favor contacte con el administrador, e intente devuelta')
     }
-    this.zone.run(() => this.router.createUrlTree(['/login']))
-    return false
+    return this.zone.run(() => this.router.createUrlTree(['/login']))
   }
 }

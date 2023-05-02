@@ -64,15 +64,6 @@ namespace Access.Data.Access
             return respose;
         }
 
-        public async Task<ProcedureAccessModel> RestoreAsync(string id)
-        {
-            var entity = await _context.Procedures.SingleOrDefaultAsync(x => x.Id == new Guid(id) && !x.Active);
-            entity.Active = true;
-            _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessModel>(entity);
-        }
-
         public async Task<ProcedureAccessModel> UpdateAsync(UpdateProcedureAccessRequest accessRequest)
         {
             var entity = await _context.Procedures

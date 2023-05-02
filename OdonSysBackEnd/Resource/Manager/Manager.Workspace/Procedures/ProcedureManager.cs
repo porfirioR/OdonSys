@@ -36,12 +36,6 @@ namespace Manager.Workspace.Procedures
             return _mapper.Map<ProcedureModel>(accessResponse);
         }
 
-        public async Task<ProcedureModel> RestoreAsync(string id)
-        {
-            var accessResponse = await _procedureAccess.RestoreAsync(id);
-            return _mapper.Map<ProcedureModel>(accessResponse);
-        }
-
         public async Task<IEnumerable<ProcedureModel>> GetAllAsync()
         {
             var accessResponse = await _procedureAccess.GetAllAsync();

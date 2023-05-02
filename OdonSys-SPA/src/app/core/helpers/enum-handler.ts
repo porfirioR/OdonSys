@@ -1,3 +1,4 @@
+import { PermissionSubGroup } from '../enums/permission-sub-group';
 import { Country } from '../enums/country.enum';
 
 export class EnumHandler {
@@ -7,8 +8,19 @@ export class EnumHandler {
       if (!isNaN(key as any)) {
         countries.set(key as string, value.toString());
       }
-    });
-    return countries;
-  };
+    })
+    return countries
+  }
 
+  /**
+   * Receives an enum in the form of a record and returns the value assigned from the received key.
+   * 
+   * @param enumType is the enum to work with
+   * @param key enum key of which you want its value
+   * @returns enum value
+   */
+  public static getValueByKey = (enumType: Record<string, string | number>, key: string) => {
+    const result = Object.entries(enumType).find(([enumKey, value]) => enumKey === key)?.[1]!
+    return result
+  }
 }

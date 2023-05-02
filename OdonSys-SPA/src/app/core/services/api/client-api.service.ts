@@ -10,27 +10,27 @@ import { UpdateClientRequest } from '../../models/api/clients/update-client-requ
   providedIn: 'root'
 })
 export class ClientApiService {
-  protected baseUrl = `${environment.apiUrl}/clients`;
+  protected baseUrl = `${environment.apiUrl}/clients`
 
   constructor(protected readonly http: HttpClient) { }
 
   public getById = (id: string): Observable<ClientApiModel> => {
-    return this.http.get<ClientApiModel>(`${this.baseUrl}/${id}`);
+    return this.http.get<ClientApiModel>(`${this.baseUrl}/${id}`)
   }
 
   public getByDocumentId = (documentId: string): Observable<ClientApiModel> => {
-    return this.http.get<ClientApiModel>(`${this.baseUrl}/document/${documentId}`);
+    return this.http.get<ClientApiModel>(`${this.baseUrl}/document/${documentId}`)
   }
 
   public createClient = (request: CreateClientRequest): Observable<ClientApiModel> => {
-    return this.http.post<ClientApiModel>(`${this.baseUrl}`, request);
+    return this.http.post<ClientApiModel>(`${this.baseUrl}`, request)
   }
 
   public updateClient = (request: UpdateClientRequest): Observable<ClientApiModel> => {
-    return this.http.put<ClientApiModel>(`${this.baseUrl}`, request);
+    return this.http.put<ClientApiModel>(`${this.baseUrl}`, request)
   }
 
   public getDoctorPatients = (): Observable<ClientApiModel[]> => {
-    return this.http.get<ClientApiModel[]>(`${this.baseUrl}/patients`);
+    return this.http.get<ClientApiModel[]>(`${this.baseUrl}/patients`)
   }
 }

@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Auth;
+using Access.Contract.Roles;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
@@ -60,6 +61,13 @@ namespace Manager.Admin
             return response;
         }
 
+        public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request)
+        {
+            var accessRequest = new UserRolesAccessRequest(request.UserId, request.Roles);
+            var roles = await _userDataAccess.SetUserRolesAsync(accessRequest);
+            return roles;
+        }
+
         public async Task<DoctorModel> GetByIdAsync(string id)
         {
             var accessModel = await _userDataAccess.GetByIdAsync(id);
@@ -84,7 +92,10 @@ namespace Manager.Admin
 
         public async Task<IEnumerable<string>> CheckUsersExistsAsync(IEnumerable<string> users)
         {
-            var usersAccess = (await _userDataAccess.GetAllUserActiveAsync()).Select(x => x.UserName);
+            var usersAccess = (await _userDataAccess.GetAllUserAsync())
+                                    .Where(x => x.Active)
+                                    .Select(x => x.UserName);
+
             var invalidOrInactiveList = users.Where(x => !usersAccess.Contains(x));
             return invalidOrInactiveList;
         }

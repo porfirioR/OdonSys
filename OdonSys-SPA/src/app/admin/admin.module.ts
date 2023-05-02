@@ -9,12 +9,13 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
 import { UpsertDoctorComponent } from './components/doctors/upsert-doctor/upsert-doctor.component';
 import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
 import { ProcedureApiService } from '../core/services/api/procedure-admin-api.service';
-import { UserApiService } from './service/user-api.service';
+import { UserApiService } from './services/user-api.service';
 import { AdminClientsComponent } from './components/admin-clients/admin-clients.component';
 import { BasicServiceModule } from '../basic-service.module';
-import { ClientAdminApiService } from './service/client-admin-api.service';
+import { ClientAdminApiService } from './services/client-admin-api.service';
 import { RolesComponent } from './components/roles/roles.component';
 import { UpsertRoleComponent } from './components/roles/upsert-role/upsert-role.component';
+import { UserRoleComponent } from './modals/user-role/user-role.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { UpsertRoleComponent } from './components/roles/upsert-role/upsert-role.
     UpsertDoctorComponent,
     AdminClientsComponent,
     RolesComponent,
-    UpsertRoleComponent
+    UpsertRoleComponent,
+    UserRoleComponent
   ],
   providers:[
     ClientAdminApiService,

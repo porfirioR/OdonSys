@@ -16,6 +16,7 @@ namespace Host.Api
             {
                 new PolicyModel(Policy.CanAccessRole, new AuthRequirement(PermissionName.AccessRoles)),
                 new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
+                new PolicyModel(Policy.CanAssignRoleDoctors, new AuthRequirement(PermissionName.AssignRoleDoctors)),
 
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
@@ -24,11 +25,18 @@ namespace Host.Api
                         PermissionName.UpdateClients,
                     })
                 ),
+                new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.RestoreClients,
+                        PermissionName.DeactivateClients
+                    })
+                ),
                 new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
                 new PolicyModel(Policy.CanAssignClient, new AuthRequirement(PermissionName.AssignClients)),
                 new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),
                 new PolicyModel(Policy.CanApproveDoctor, new AuthRequirement(PermissionName.ApproveDoctors)),
                 new PolicyModel(Policy.CanDeleteDoctor, new AuthRequirement(PermissionName.DeleteDoctors)),
+                new PolicyModel(Policy.CanAssignDoctorRoles, new AuthRequirement(PermissionName.AssignDoctorRoles)),
                 new PolicyModel(Policy.CanModifyVisibilityDoctor, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreDoctors,
@@ -46,16 +54,19 @@ namespace Host.Api
                 new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
+                new PolicyModel(Policy.CanModifyVisibilityProcedure, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.RestoreProcedures,
+                        PermissionName.DeactivateProcedures
+                    })
+                ),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateProcedures,
                         PermissionName.UpdateProcedures,
                         PermissionName.DeleteProcedures,
-                        PermissionName.RestoreProcedures,
                     })
                 ),
-
-
             };
 
             //  Add Authorization

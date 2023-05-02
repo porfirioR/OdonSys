@@ -38,24 +38,30 @@ namespace Manager.Admin
             {
                 new PermissionModel("Acceso", PermissionName.AccessRoles, PermissionGroup.Admin, PermissionSubGroup.Role),
                 new PermissionModel("Administrar", PermissionName.ManageRoles, PermissionGroup.Admin, PermissionSubGroup.Role),
+                new PermissionModel("Asignar Usuarios", PermissionName.AssignRoleDoctors, PermissionGroup.Admin, PermissionSubGroup.Role),
 
                 new PermissionModel("Acceso", PermissionName.AccessClients, PermissionGroup.Work, PermissionSubGroup.Client),
                 new PermissionModel("Crear", PermissionName.CreateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Actualizar", PermissionName.UpdateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Asignar", PermissionName.AssignClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Borrar", PermissionName.DeleteClients, PermissionGroup.Admin, PermissionSubGroup.Client),
-                new PermissionModel("Mis clientes", PermissionName.AssignClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Mis clientes", PermissionName.AccessMyClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Editar Todos los campos", PermissionName.FullFieldUpdateClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Restaurar", PermissionName.RestoreClients, PermissionGroup.Admin, PermissionSubGroup.Client),
+                new PermissionModel("Inhabilitar", PermissionName.DeactivateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
 
                 new PermissionModel("Acceso", PermissionName.AccessProcedures, PermissionGroup.Work, PermissionSubGroup.Procedure),
                 new PermissionModel("Crear", PermissionName.CreateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Actualizar", PermissionName.UpdateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Borrar", PermissionName.DeleteProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
                 new PermissionModel("Restaurar", PermissionName.RestoreProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
+                new PermissionModel("Inhabilitar", PermissionName.DeactivateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
 
                 new PermissionModel("Acceso", PermissionName.AccessDoctors, PermissionGroup.Work, PermissionSubGroup.Doctor),
                 new PermissionModel("Aprobar acceso", PermissionName.ApproveDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Actualizar", PermissionName.UpdateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Borrar", PermissionName.DeleteDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
+                new PermissionModel("Asignar Roles", PermissionName.AssignDoctorRoles, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Inhabilitar", PermissionName.DeactivateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Restaurar", PermissionName.RestoreDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
             };
@@ -63,19 +69,8 @@ namespace Manager.Admin
 
         public async Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
         {
-            var tasks = new List<Task>();
-            foreach (var role in roles)
-            {
-                tasks.Add(GetRoleByCodeAsync(role));
-            }
-            await Task.WhenAll(tasks);
-            var permissions = new List<string>();
-            foreach (var task in tasks)
-            {
-                var result = ((Task<RoleModel>)task).GetAwaiter().GetResult();
-                permissions.AddRange(result.RolePermissions);
-            }
-            return permissions.Distinct();
+            var allPermissions = (await GetAllAsync()).Where(x => roles.Contains(x.Code)).SelectMany(x => x.RolePermissions);
+            return allPermissions.Distinct();
         }
 
         public async Task<RoleModel> GetRoleByCodeAsync(string code)

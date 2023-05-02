@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 
-namespace Host.Api.Models.Role
+namespace Host.Api.Models.Roles
 {
     public class UpdateRoleApiRequest : IValidatableObject
     {

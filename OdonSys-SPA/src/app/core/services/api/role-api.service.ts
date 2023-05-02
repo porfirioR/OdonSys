@@ -6,35 +6,39 @@ import { RoleApiModel } from '../../models/api/roles/role-api-model';
 import { UpdateRoleApiRequest } from '../../models/api/roles/update-role-api-request';
 import { CreateRoleApiRequest } from '../../models/api/roles/create-role-api-request';
 import { PermissionModel } from '../../models/view/permission-model';
+import { UserRoleApiRequest } from '../../models/api/roles/user-role-api-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoleApiService {
-  private baseUrl = `${environment.apiUrl}/roles`;
+  private baseUrl = `${environment.apiUrl}/roles`
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   public getAll = (): Observable<RoleApiModel[]> => {
-    return this.http.get<RoleApiModel[]>(`${this.baseUrl}`);
+    return this.http.get<RoleApiModel[]>(`${this.baseUrl}`)
   }
 
   public getMyPermissions = (): Observable<string[]> => {
-    return this.http.get<string[]>(`${this.baseUrl}/permissions-role`);
+    return this.http.get<string[]>(`${this.baseUrl}/permissions-role`)
   }
 
   public getPermissions = (): Observable<PermissionModel[]> => {
-    return this.http.get<PermissionModel[]>(`${this.baseUrl}/permissions`);
+    return this.http.get<PermissionModel[]>(`${this.baseUrl}/permissions`)
   }
 
   public create = (request: CreateRoleApiRequest): Observable<RoleApiModel> => {
-    return this.http.post<RoleApiModel>(`${this.baseUrl}`, request);
+    return this.http.post<RoleApiModel>(`${this.baseUrl}`, request)
   }
+
   public update = (model: UpdateRoleApiRequest): Observable<RoleApiModel> => {
-    return this.http.put<RoleApiModel>(`${this.baseUrl}`, model);
+    return this.http.put<RoleApiModel>(`${this.baseUrl}`, model)
   }
 
   public getByCode = (code: string): Observable<RoleApiModel> => {
-    return this.http.get<RoleApiModel>(`${this.baseUrl}/${code}`);
+    return this.http.get<RoleApiModel>(`${this.baseUrl}/${code}`)
   }
 }

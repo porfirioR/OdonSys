@@ -5,15 +5,19 @@
         #region Roles
         AccessRoles,
         ManageRoles,
+        AssignRoleDoctors,
         #endregion
 
         #region Clients
         AccessClients,
         CreateClients,
         UpdateClients,
+        DeactivateClients,
+        RestoreClients,
         DeleteClients,
         AssignClients,
         AccessMyClients,
+        FullFieldUpdateClients,
         #endregion
 
         #region Procedures
@@ -22,6 +26,7 @@
         UpdateProcedures,
         DeleteProcedures,
         RestoreProcedures,
+        DeactivateProcedures,
         #endregion
 
         #region Client Procedures
@@ -36,7 +41,8 @@
         DeleteDoctors,
         RestoreDoctors,
         DeactivateDoctors,
-        ApproveDoctors
+        ApproveDoctors,
+        AssignDoctorRoles
         #endregion
     }
 }

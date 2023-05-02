@@ -9,6 +9,7 @@ namespace Host.Api.Mapper
         public ProcedureHostProfile()
         {
             CreateMap<CreateProcedureApiRequest, CreateProcedureRequest>().ReverseMap();
+
             CreateMap<UpdateProcedureApiRequest, UpdateProcedureRequest>().ReverseMap();
         }
     }

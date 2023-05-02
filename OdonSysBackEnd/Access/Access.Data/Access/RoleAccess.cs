@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Roles;
+using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;

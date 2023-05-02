@@ -44,7 +44,7 @@ namespace Access.Data.Access
 
             if (user is null)
             {
-                throw new KeyNotFoundException("Correo y/o contraseña es incorrecta");
+                throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
             }
             if (!user.Approved)
             {
@@ -141,7 +141,7 @@ namespace Access.Data.Access
 
         private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)
         {
-            var codes = await _context.DoctorRoles
+            var codes = await _context.UserRoles
                                 .Include(x => x.Role)
                                 .Where(x => x.UserId.Equals(userId))
                                 .Select(x => x.Role.Code)

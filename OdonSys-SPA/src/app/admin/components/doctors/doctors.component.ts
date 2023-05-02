@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
-import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
-import { GridActionModel } from '../../../core/models/view/grid-action-model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { UserApiService } from '../../service/user-api.service';
+import { UserApiService } from '../../services/user-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
-import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { environment } from '../../../../environments/environment';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
-import { FieldId } from '../../../core/enums/field-id.enum';
-import { OperationType } from '../../../core/enums/operation-type.enum';
 import { PatchRequest } from '../../../core/models/api/patch-request';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
+import { FieldId } from '../../../core/enums/field-id.enum';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { OperationType } from '../../../core/enums/operation-type.enum';
+import { Permission } from '../../../core/enums/permission.enum';
+import { UserRoleComponent } from '../../modals/user-role/user-role.component';
 
 @Component({
   selector: 'app-doctors',
@@ -27,18 +30,27 @@ export class DoctorsComponent implements OnInit {
   private attributeActive!: string
   private attributeId!: string
   private attributeApproved!: string
+  private canDeactivate = false
+  private canRestore = false
+  private canApprove = false
+  private canAddRoles = false
 
   constructor(
     private readonly alertService: AlertService,
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
-    private readonly userInfo: UserInfoService
+    private readonly userInfoService: UserInfoService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!
     this.attributeApproved = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Approved)?.value!
+    this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateDoctors)
+    this.canRestore = this.userInfoService.havePermission(Permission.RestoreDoctors)
+    this.canApprove = this.userInfoService.havePermission(Permission.ApproveDoctors)
+    this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -47,16 +59,30 @@ export class DoctorsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getDoctorGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    const userId = this.userInfo.getUserData().id.toLocaleUpperCase()
+    const userId = this.userInfoService.getUserData().id.toLocaleUpperCase()
+
+    const conditionalButtons = []
+    if (this.canRestore) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
+      )
+    }
+    if (this.canDeactivate) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
+      )
+    }
+    if (this.canApprove) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar)
+      )
+    }
+
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
-      conditionalButtons: [
-        new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar),
-        new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-        new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
-      ],
-      customButton: new CustomGridButtonShow(' Roles', 'fa-id-badge')
+      conditionalButtons: conditionalButtons,
+      customButton: this.canAddRoles ? new CustomGridButtonShow(' Roles', 'fa-id-badge') : undefined
     }
     columnAction.cellRendererParams = params
   }
@@ -86,7 +112,19 @@ export class DoctorsComponent implements OnInit {
         this.approve()
         break
       case ButtonGridActionType.Desactivar:
+      case ButtonGridActionType.Restaurar:
         this.changeSelectedDoctorVisibility(currentRowNode.data)
+        break
+      case ButtonGridActionType.CustomButton:
+        const modalRef = this.modalService.open(UserRoleComponent)
+        modalRef.componentInstance.userId = currentRowNode.data.id
+        modalRef.componentInstance.name = currentRowNode.data.name
+        modalRef.result.then((result) => {
+          if(result) {
+            currentRowNode.data.roles = result
+            this.gridOptions.api?.refreshCells({force: true, columns: ['roles']})
+          }
+        }, () => {})
         break
       default:
         break
@@ -101,7 +139,7 @@ export class DoctorsComponent implements OnInit {
       if (result.value) {
         this.loading = true
         const request = new PatchRequest(!doctor.active)
-        this.userApiService.doctorVisibility(doctor.id, request).subscribe({
+        this.userApiService.changeVisibility(doctor.id, request).subscribe({
           next: () => {
             this.loading = false
             this.alertService.showSuccess('Visibilidad del doctor ha sido actualizado.')

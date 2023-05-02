@@ -505,7 +505,7 @@ namespace Sql.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("DoctorRoles");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>

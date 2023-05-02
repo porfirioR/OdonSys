@@ -21,6 +21,7 @@ namespace Access.Contract.Clients
         public bool Debts { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string UserCreated { get; set; }
         public IEnumerable<DoctorDataAccessModel> Doctors { get; set; }
     }
 }

@@ -1,5 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
-import * as fromRolesActions from '../roles/roles.actions';
+import { createReducer, on } from '@ngrx/store'
+import * as fromRolesActions from '../roles/roles.actions'
+import * as fromProceduresActions from '../procedure/procedure.actions'
 import * as fromSavingActions from './saving.actions'
 
 export const savingFeatureKey = 'saving';
@@ -17,6 +18,7 @@ export const reducer = createReducer(
   on(
     fromRolesActions.updateRole,
     fromRolesActions.createRole,
+    fromProceduresActions.changeProcedureVisibility,
     (state) => ({
       ...state,
       saving: true
@@ -33,6 +35,7 @@ export const reducer = createReducer(
   on(
     fromSavingActions.savingFailed,
     fromRolesActions.rolesFailure,
+    fromProceduresActions.procedureFailure,
     (state) => ({
       ...state,
       saving: false
