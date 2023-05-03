@@ -24,7 +24,12 @@ namespace Access.Admin.Access
 
         public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
         {
-            var entity = await GetUserByIdAsync(id);
+            var entity = await _context.Set<User>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            if (entity is null)
+            {
+                throw new KeyNotFoundException($"id {id}");
+            }
             entity.Approved = true;
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDataAccessModel>(entity);

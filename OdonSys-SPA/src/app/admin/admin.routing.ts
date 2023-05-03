@@ -37,7 +37,7 @@ export const AdminRoutes: Routes = [
         component: DoctorsComponent,
         canActivate: [PermissionGuard],
         title: 'Doctores',
-        data: { permissions: [ Permission.CreateProcedures ] }
+        data: { permissions: [ Permission.AccessDoctors ] }
       },
       {
         path: 'pacientes',

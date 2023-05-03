@@ -4,8 +4,8 @@ export interface DoctorApiModel {
   id: string
   name: string
   middleName: string
-  lastName: string
-  middleLastName: string
+  surname: string
+  secondSurname: string
   document: string
   country: Country
   email: string
