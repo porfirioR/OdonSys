@@ -90,7 +90,7 @@ export class MyConfigurationComponent implements OnInit {
     .subscribe({
       next: ([user, allPermissions]) => {
         const rolePermissions = this.userInfoService.getPermissions()
-        const permissions = allPermissions.filter(x =>  rolePermissions.includes(x.code))
+        const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
         MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
         this.formGroup.controls.id.setValue(user.id)
         this.formGroup.controls.name.setValue(user.name)
