@@ -94,7 +94,7 @@ export class UpsertRoleComponent implements OnInit {
   }
 
   private preparePermissions = (allPermissions: PermissionModel[], rolePermissions: string[]) => {
-    MethodHandler.setSubPermissions(allPermissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
+    MethodHandler.setSubGroupPermissions(allPermissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
     this.formGroup.controls.subGroupPermissions!.addValidators(this.minimumOneSelectedValidator)
   }
 

@@ -35,7 +35,7 @@ export class MethodHandler {
     }
   }
 
-  public static setSubPermissions = (allPermissions: PermissionModel[], rolePermissions: string[], subGroupPermissionsFormArray: FormArray<FormGroup<SubGroupPermissions>>) => {
+  public static setSubGroupPermissions = (allPermissions: PermissionModel[], rolePermissions: string[], subGroupPermissionsFormArray: FormArray<FormGroup<SubGroupPermissions>>) => {
     const subGroup = [...new Set(allPermissions.map(x => x.subGroup))].sort((a, b) => a.localeCompare(b))
     subGroup.forEach(x => {
       const permissionsFormGroups = allPermissions.map(x => 
