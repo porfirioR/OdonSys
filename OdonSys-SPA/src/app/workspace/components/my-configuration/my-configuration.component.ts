@@ -1,15 +1,18 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
+import { MethodHandler } from '../../../core/helpers/method-handler';
 import { UpdateUserRequest } from '../../../core/models/users/update-user-request';
-import { DoctorApiModel } from '../../../core/models/api/doctor/doctor-api-model';
 import { Country } from '../../../core/enums/country.enum';
 import { Permission } from '../../../core/enums/permission.enum';
+import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.form';
 
 @Component({
   selector: 'app-my-configuration',
@@ -17,11 +20,10 @@ import { Permission } from '../../../core/enums/permission.enum';
   styleUrls: ['./my-configuration.component.scss'],
 })
 export class MyConfigurationComponent implements OnInit {
-  public load: boolean = false
-  public saving: boolean = false
+  protected load: boolean = false
+  protected saving: boolean = false
   protected canEdit = false
-
-  public formGroup = new FormGroup({
+  protected formGroup = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
@@ -31,11 +33,11 @@ export class MyConfigurationComponent implements OnInit {
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
     email: new FormControl({value: '', disabled: true }),
     country: new FormControl(Country.Paraguay, [Validators.required]),
-    active: new FormControl(true, [Validators.required])
+    active: new FormControl(true, [Validators.required]),
+    subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-
-  public id!: string
-  public countries: Map<string, string> = new Map<string, string>()
+  protected id!: string
+  protected countries: Map<string, string> = new Map<string, string>()
   private canAccessData = false
 
   constructor(
@@ -44,6 +46,7 @@ export class MyConfigurationComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService,
     private readonly zone: NgZone,
+    private readonly roleApiService: RoleApiService
   ) {
     this.countries = EnumHandler.getCountries()
     this.canEdit = userInfoService.havePermission(Permission.UpdateDoctors)
@@ -83,8 +86,12 @@ export class MyConfigurationComponent implements OnInit {
       this.load = true
       return
     }
-    this.doctorApiService.getById(user.id).subscribe({
-      next: (user: DoctorApiModel) => {
+    combineLatest([this.doctorApiService.getById(user.id), this.roleApiService.getPermissions()])
+    .subscribe({
+      next: ([user, allPermissions]) => {
+        const rolePermissions = this.userInfoService.getPermissions()
+        const permissions = allPermissions.filter(x =>  rolePermissions.includes(x.code))
+        MethodHandler.setSubPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
         this.formGroup.controls.id.setValue(user.id)
         this.formGroup.controls.name.setValue(user.name)
         this.formGroup.controls.middleName.setValue(user.middleName)

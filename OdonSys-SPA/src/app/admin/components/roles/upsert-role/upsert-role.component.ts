@@ -11,9 +11,7 @@ import { PermissionModel } from '../../../../core/models/view/permission-model';
 import { CreateRoleApiRequest } from '../../../../core/models/api/roles/create-role-api-request';
 import { UpdateRoleApiRequest } from '../../../../core/models/api/roles/update-role-api-request';
 import { SubGroupPermissions } from '../../../../core/forms/sub-group-permissions.form';
-import { PermissionFormGroup } from '../../../../core/forms/permission-form-group.form';
-import { PermissionSubGroup } from 'src/app/core/enums/permission-sub-group';
-import { EnumHandler } from 'src/app/core/helpers/enum-handler';
+import { MethodHandler } from '../../../../core/helpers/method-handler';
 
 @Component({
   selector: 'app-upsert-role',
@@ -83,7 +81,7 @@ export class UpsertRoleComponent implements OnInit {
     )
     this.store.dispatch(fromRolesActions.createRole({ createRole: request }))
   }
-  
+
   private update = (): void => {
     const request =  new UpdateRoleApiRequest(
       this.formGroup.value.name!,
@@ -96,24 +94,7 @@ export class UpsertRoleComponent implements OnInit {
   }
 
   private preparePermissions = (allPermissions: PermissionModel[], rolePermissions: string[]) => {
-    const subGroup = [...new Set(allPermissions.map(x => x.subGroup))].sort((a, b) => a.localeCompare(b))
-    subGroup.forEach(x => {
-      const permissionsFormGroups = allPermissions.map(x => 
-        new FormGroup<PermissionFormGroup>({
-          name: new FormControl(x.name),
-          code: new FormControl(x.code),
-          group: new FormControl(x.group),
-          subGroup: new FormControl(x.subGroup),
-          value: new FormControl(rolePermissions.includes(x.code))
-        })
-      )
-      const permissions = permissionsFormGroups.filter(formGroup => formGroup.value.subGroup! === x)
-      const subGroupPermissions = new FormGroup({
-        subGroup: new FormControl(EnumHandler.getValueByKey(PermissionSubGroup, x), { nonNullable: true}),
-        permissions: new FormArray(permissions)
-      })
-      this.formGroup.controls.subGroupPermissions!.push(subGroupPermissions)
-    })
+    MethodHandler.setSubPermissions(allPermissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
     this.formGroup.controls.subGroupPermissions!.addValidators(this.minimumOneSelectedValidator)
   }
 
@@ -126,9 +107,9 @@ export class UpsertRoleComponent implements OnInit {
 
   private getSelectedPermissions = (): string[] => {
     const selectedPermissions = this.formGroup.controls.subGroupPermissions!.controls
-                .map(x => x.controls.permissions.controls)
-                .map(x => x.filter(y => y.controls.value!.value!).map(x => x.controls.code.value!))
-                .reduce((accumulator, value) => accumulator.concat(value), [])
+            .map(x => x.controls.permissions.controls)
+            .map(x => x.filter(y => y.controls.value!.value!).map(x => x.controls.code.value!))
+            .reduce((accumulator, value) => accumulator.concat(value), [])
     return selectedPermissions
   }
 }
