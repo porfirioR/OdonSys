@@ -23,8 +23,9 @@ export class PermissionGuard implements CanActivate {
     const invalidPermission = routePermissions.filter(x => !permissions.includes(x))
     if (invalidPermission.length > 0) {
       this.alertService.showError(`No tienes los permisos necesarios para acceder a esta página ${invalidPermission.join(',')}`)
+      return false
     }
-    return true;
+    return true
   }
   
 }

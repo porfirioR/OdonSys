@@ -63,7 +63,7 @@ namespace AcceptanceTest.Host.Api
             var date = DateTime.Now;
             var sqlStatement = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id, DateCreated, DateModified) VALUES('system', 'system', 'SuperAdmin', 'superadmin', 1, '{0}', '{1}', '{2}');";
             sqlStatement = string.Format(sqlStatement, rolId, date, date.ToString(), date, date.ToString());
-            var sqlStatementDoctor = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id, DateCreated, DateModified) VALUES('system', 'system', 'doctor', 'doctor', 1, '{0}', '{1}', '{2}');";
+            var sqlStatementDoctor = @"INSERT INTO Roles(UserCreated, UserUpdated, Name, Code, Active, Id, DateCreated, DateModified) VALUES('system', 'system', 'Doctor', 'doctor', 1, '{0}', '{1}', '{2}');";
             sqlStatementDoctor = string.Format(sqlStatementDoctor, doctorRolId, date, date.ToString(), date, date.ToString());
             sqlStatement = string.Concat(sqlStatement, sqlStatementDoctor);
             var insertPermissions = "INSERT INTO Permissions (UserCreated, UserUpdated, Active, RoleId, Name, Id, DateCreated, DateModified) VALUES ('system', 'system', 1, '{0}', '{1}', '{2}', '{3}', '{4}');\n";
