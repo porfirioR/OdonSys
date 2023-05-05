@@ -21,7 +21,8 @@ namespace Access.Sql.Configurations
             builder
                 .HasOne(x => x.HeaderBill)
                 .WithMany(x => x.BillDetails)
-                .HasForeignKey(x => x.HeaderBillId);
+                .HasForeignKey(x => x.HeaderBillId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(x => x.ClientProcedure)
