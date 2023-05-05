@@ -16,6 +16,7 @@ namespace Access.Sql.Entities
         public virtual IEnumerable<UserRole> UserRoles { get; set; }
         public virtual IEnumerable<UserClient> UserClients { get; set; }
         public virtual IEnumerable<ClientProcedure> UserProcedures { get; set; }
+        public virtual IEnumerable<Payment> Payments { get; set; }
 
         public bool Approved { get; set; }
         public string UserName { get; set; }

@@ -15,6 +15,8 @@ namespace Access.Sql.Entities
         public Country Country { get; set; }
         public bool Debts { get; set; }
         public string Email { get; set; }
+
         public virtual IEnumerable<UserClient> UserClients { get; set; }
+        public virtual IEnumerable<HeaderBill> HeaderBills { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Access.Sql.Entities;
 using AutoMapper;
 using System;
 
-namespace Access.Admin.Mapper
+namespace Access.Data.Mapper
 {
     public class ClientProcedureAccessProfile : Profile
     {

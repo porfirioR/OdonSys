@@ -1,7 +1,7 @@
 ﻿using System;
 using Utilities.Enums;
 
-namespace Access.Contract
+namespace Access.Contract.Teeth
 {
     public class ToothAccessResponse
     {

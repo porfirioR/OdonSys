@@ -12,5 +12,6 @@ namespace Access.Sql.Entities
 
         public virtual UserClient UserClient { get; set; }
         public virtual Procedure Procedure { get; set; }
+        public virtual BillDetail BillDetail { get; set; }
     }
 }

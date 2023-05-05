@@ -1,5 +1,4 @@
-﻿using Access.Contract;
-using Access.Contract.Teeth;
+﻿using Access.Contract.Teeth;
 using Access.Sql;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
