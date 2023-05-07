@@ -28,9 +28,7 @@ namespace Access.Data.Access
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(
                 entity.ProcedureId.ToString(),
-                entity.UserClientId.ToString(),
-                entity.Status,
-                entity.Price
+                entity.UserClientId.ToString()
             );
             return result;
         }
@@ -42,10 +40,7 @@ namespace Access.Data.Access
                             .Where(x => userClientIds.Contains(x.UserClientId)).ToListAsync();
             var respose = entities.Select(x => new ClientProcedureAccessModel(
                 x.ProcedureId.ToString(),
-                x.UserClientId.ToString(),
-                x.Status,
-                x.Price
-            ));
+                x.UserClientId.ToString()));
             return respose;
         }
 
@@ -57,9 +52,7 @@ namespace Access.Data.Access
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(
                 entity.ProcedureId.ToString(),
-                entity.UserClientId.ToString(),
-                entity.Status,
-                entity.Price
+                entity.UserClientId.ToString()
             );
             return result;
         }

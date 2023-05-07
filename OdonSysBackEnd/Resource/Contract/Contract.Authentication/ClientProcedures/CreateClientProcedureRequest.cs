@@ -3,7 +3,6 @@
     public record CreateClientProcedureRequest(
         string UserId,
         string ClientId,
-        string ProcedureId,
-        int Price
+        string ProcedureId
     ) { }
 }
