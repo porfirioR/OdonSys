@@ -3,10 +3,6 @@ using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access.Data.Access
 {
@@ -27,6 +23,7 @@ namespace Access.Data.Access
             _context.ClientProcedures.Add(entity);
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(
+                entity.Id.ToString(),
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString()
             );
@@ -39,6 +36,7 @@ namespace Access.Data.Access
                             .AsNoTracking()
                             .Where(x => userClientIds.Contains(x.UserClientId)).ToListAsync();
             var respose = entities.Select(x => new ClientProcedureAccessModel(
+                x.Id.ToString(),
                 x.ProcedureId.ToString(),
                 x.UserClientId.ToString()));
             return respose;
@@ -51,6 +49,7 @@ namespace Access.Data.Access
             entity = _mapper.Map(accessRequest, entity);
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(
+                entity.Id.ToString(),
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString()
             );

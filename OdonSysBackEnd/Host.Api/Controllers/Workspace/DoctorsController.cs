@@ -6,8 +6,6 @@ using Host.Api.Models.Clients;
 using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
 {

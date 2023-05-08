@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Access.Sql.Entities
+﻿namespace Access.Sql.Entities
 {
     public class UserClient : BaseEntity
     {

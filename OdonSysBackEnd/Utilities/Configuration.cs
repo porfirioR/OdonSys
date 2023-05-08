@@ -1,4 +1,4 @@
-namespace Utilities.Enums
+namespace Utilities
 {
     public static class Configuration
     {

@@ -4,5 +4,5 @@
         string UserId,
         string ClientId,
         string ProcedureId
-    ) { }
+    );
 }

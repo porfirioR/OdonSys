@@ -1,7 +1,6 @@
 ﻿using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 using Utilities.Enums;
 using Utilities.Extensions;
 
@@ -37,7 +36,7 @@ namespace Access.Sql.Configurations
             builder.Property(s => s.Status)
                .HasConversion(
                    s => s.GetDescription(),
-                   s => (BillStatus)Enum.Parse(typeof(PermissionName), s));
+                   s => (BillStatus)Enum.Parse(typeof(BillStatus), s));
 
             builder
                 .HasOne(x => x.Client)

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Access.Sql.Entities
+﻿namespace Access.Sql.Entities
 {
     public class BillDetail : BaseEntity
     {

@@ -2,9 +2,6 @@
 using AutoMapper;
 using Contract.Admin.Clients;
 using Contract.Admin.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Manager.Admin
 {

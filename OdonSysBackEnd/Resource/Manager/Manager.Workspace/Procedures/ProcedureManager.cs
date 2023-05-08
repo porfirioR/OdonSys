@@ -82,6 +82,7 @@ namespace Manager.Workspace.Procedures
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
             return new ClientProcedureModel(
+                accessResponse.Id,
                 accessResponse.ProcedureId,
                 accessResponse.UserClientId
             );
@@ -89,9 +90,13 @@ namespace Manager.Workspace.Procedures
 
         public async Task<ClientProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request)
         {
-            var accessRequest = new UpdateClientProcedureAccessRequest(request.UserClientId, request.ProcedureId, request.Price, request.Status);
+            var accessRequest = new UpdateClientProcedureAccessRequest(request.UserClientId, request.ProcedureId);
             var accessResponse = await _clientProcedureAccess.UpdateClientProcedureAsync(accessRequest);
-            return new ClientProcedureModel(accessResponse.ProcedureId, accessResponse.UserClientId);
+            return new ClientProcedureModel(
+                accessResponse.Id,
+                accessResponse.ProcedureId,
+                accessResponse.UserClientId
+            );
         }
 
         public async Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId)

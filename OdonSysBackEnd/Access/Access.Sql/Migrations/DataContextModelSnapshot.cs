@@ -50,6 +50,9 @@ namespace Sql.Migrations
                     b.Property<int>("FinalPrice")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProcedurePrice")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserCreated")
                         .HasColumnType("nvarchar(max)");
 
@@ -164,14 +167,8 @@ namespace Sql.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GetDate()");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ProcedureId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<Guid>("UserClientId")
                         .HasColumnType("uniqueidentifier");
@@ -273,15 +270,6 @@ namespace Sql.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("BillDetailClientProcedureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BillDetailHeaderBillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BillDetailId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -305,8 +293,6 @@ namespace Sql.Migrations
                     b.HasIndex("HeaderBillId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("BillDetailId", "BillDetailHeaderBillId", "BillDetailClientProcedureId");
 
                     b.ToTable("Payments");
                 });
@@ -731,10 +717,6 @@ namespace Sql.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Access.Sql.Entities.BillDetail", null)
-                        .WithMany("Payments")
-                        .HasForeignKey("BillDetailId", "BillDetailHeaderBillId", "BillDetailClientProcedureId");
-
                     b.Navigation("HeaderBill");
 
                     b.Navigation("User");
@@ -806,11 +788,6 @@ namespace Sql.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.BillDetail", b =>
-                {
-                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Client", b =>

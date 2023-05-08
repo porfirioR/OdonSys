@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Contract.Admin.Clients
+﻿namespace Contract.Admin.Clients
 {
     public interface IClientManager
     {

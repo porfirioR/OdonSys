@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Utilities.Enums;
+﻿using Utilities.Enums;
 
 namespace Access.Contract.Bills
 {
@@ -14,6 +12,6 @@ namespace Access.Contract.Bills
         string Timbrado,
         BillStatus Status,
         Guid ClientId,
-        IEnumerable<BillDetailAccessModel> Details
+        IEnumerable<BillDetailAccessModel> BillDetails
     );
 }

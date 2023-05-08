@@ -2,8 +2,6 @@
 using Access.Contract.Users;
 using Access.Sql.Entities;
 using AutoMapper;
-using System;
-using System.Linq;
 
 namespace Access.Data.Mapper
 {

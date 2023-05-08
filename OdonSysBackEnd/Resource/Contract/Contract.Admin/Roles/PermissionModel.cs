@@ -7,5 +7,5 @@ namespace Contract.Admin.Roles
         PermissionName Code,
         PermissionGroup Group,
         PermissionSubGroup SubGroup
-    ) { }
+    );
 }

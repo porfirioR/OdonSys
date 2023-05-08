@@ -4,8 +4,6 @@ using Host.Api.Models.Auth;
 using Host.Api.Models.ClientProcedures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Procedure
 {
@@ -34,7 +32,7 @@ namespace Host.Api.Controllers.Procedure
         [Authorize(Policy = Policy.CanUpdateClientProcedure)]
         public async Task<ClientProcedureModel> Update([FromBody] UpdateClientProcedureApiRequest apiRequest)
         {
-            var request = new UpdateClientProcedureRequest(apiRequest.UserClientId, apiRequest.ProcedureId, apiRequest.Price, apiRequest.Status);
+            var request = new UpdateClientProcedureRequest(apiRequest.UserClientId, apiRequest.ProcedureId);
             var response = await _procedureManager.UpdateClientProcedureAsync(request);
             return response;
         }

@@ -1,14 +1,9 @@
 ﻿using Access.Contract.Auth;
-using Access.Contract.Roles;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
 using Contract.Admin.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Manager.Admin
 {

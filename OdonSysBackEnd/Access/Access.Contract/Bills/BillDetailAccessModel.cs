@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Access.Contract.Bills
+﻿namespace Access.Contract.Bills
 {
     public record BillDetailAccessModel(
         Guid Id,

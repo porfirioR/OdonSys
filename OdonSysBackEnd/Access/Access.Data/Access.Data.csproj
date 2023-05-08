@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,6 +24,10 @@
     <ProjectReference Include="..\..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
     <ProjectReference Include="..\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\Access.Sql\Access.Sql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

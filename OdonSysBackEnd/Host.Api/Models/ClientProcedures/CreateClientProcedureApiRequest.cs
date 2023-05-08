@@ -1,6 +1,5 @@
 ﻿using Contract.Admin.Clients;
 using Contract.Workspace.Procedures;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Models.ClientProcedures

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Contract.Admin.Roles;
 using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
@@ -8,9 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
 {

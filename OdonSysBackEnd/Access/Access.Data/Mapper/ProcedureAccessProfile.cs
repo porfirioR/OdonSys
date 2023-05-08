@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Procedure;
 using Access.Sql.Entities;
 using AutoMapper;
-using System.Linq;
 
 namespace Access.Data.Mapper
 {

@@ -1,6 +1,5 @@
 ﻿using Host.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Host.Api
 {

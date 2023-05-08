@@ -1,5 +1,4 @@
-﻿using System;
-using Utilities.Enums;
+﻿using Utilities.Enums;
 
 namespace Access.Sql.Entities
 {
