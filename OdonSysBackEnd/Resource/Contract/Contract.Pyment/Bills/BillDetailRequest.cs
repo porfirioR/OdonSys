@@ -1,4 +1,4 @@
-﻿namespace Contract.Pyments.Bills
+﻿namespace Contract.Pyment.Bills
 {
     public record BillDetailRequest(
         Guid ClientProcedureId,
