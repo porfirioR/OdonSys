@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Utilities.Enums;
+﻿using Utilities.Enums;
 
 namespace Contract.Admin.Users
 {

@@ -3,5 +3,5 @@
     public record AssignClientAccessRequest(
         string UserId,
         string ClientId
-    ) { }
+    );
 }

@@ -1,7 +1,5 @@
 ﻿using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace Host.Api.Helpers
 {

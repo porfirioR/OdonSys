@@ -1,4 +1,4 @@
-﻿using Access.Contract;
+﻿using Access.Contract.Teeth;
 using Access.Sql.Entities;
 using AutoMapper;
 

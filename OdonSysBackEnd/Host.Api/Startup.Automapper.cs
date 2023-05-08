@@ -1,4 +1,4 @@
-﻿using Access.Admin.Mapper;
+﻿using Access.Data.Mapper;
 using Host.Api.Mapper;
 using Manager.Admin.Mapper;
 using Manager.Workspace.Procedures;
@@ -17,7 +17,8 @@ namespace Host.Api
                 typeof(ProcedureHostProfile),
                 typeof(ProcedureManagerProfile),
                 typeof(ProcedureAccessProfile),
-                typeof(ClientProcedureAccessProfile)
+                typeof(ClientProcedureAccessProfile),
+                typeof(BillAccessProfile)
             );
         }
     }

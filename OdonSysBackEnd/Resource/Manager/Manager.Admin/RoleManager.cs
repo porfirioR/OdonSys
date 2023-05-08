@@ -1,9 +1,6 @@
 ﻿using Access.Contract.Roles;
 using AutoMapper;
 using Contract.Admin.Roles;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Utilities.Enums;
 
 namespace Manager.Admin

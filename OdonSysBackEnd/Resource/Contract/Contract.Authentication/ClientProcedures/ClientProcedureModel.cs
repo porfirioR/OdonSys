@@ -1,11 +1,8 @@
-﻿using Utilities.Enums;
-
-namespace Contract.Workspace.ClientProcedures
+﻿namespace Contract.Workspace.ClientProcedures
 {
     public record ClientProcedureModel(
+        string Id,
         string ProcedureId,
-        string UserClientId,
-        ProcedureStatus Status,
-        int Price
-    ) { }
+        string UserClientId
+    );
 }

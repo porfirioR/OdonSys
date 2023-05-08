@@ -3,10 +3,6 @@ using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access.Data.Access
 {

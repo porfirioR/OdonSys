@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Access.Contract.Roles
+﻿namespace Access.Contract.Roles
 {
     public interface IRoleAccess
     {

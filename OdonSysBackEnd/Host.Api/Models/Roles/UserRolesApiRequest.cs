@@ -1,8 +1,6 @@
 ﻿using Contract.Admin.Roles;
 using Contract.Admin.Users;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace Host.Api.Models.Roles
 {

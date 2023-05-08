@@ -65,6 +65,7 @@ namespace Access.Sql.Configurations
             builder
                 .HasIndex(x => x.Email)
                 .IsUnique();
+
         }
     }
 }

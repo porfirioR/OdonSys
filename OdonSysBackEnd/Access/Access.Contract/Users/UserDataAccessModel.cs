@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Access.Contract.Users
+﻿namespace Access.Contract.Users
 {
     public class UserDataAccessModel
     {
