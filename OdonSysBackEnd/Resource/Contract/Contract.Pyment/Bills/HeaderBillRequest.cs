@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Contract.Pyments.Bills
+namespace Contract.Pyment.Bills
 {
     public record HeaderBillRequest(
         string BillNumber,

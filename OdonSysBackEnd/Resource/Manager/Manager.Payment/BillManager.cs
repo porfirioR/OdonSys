@@ -1,5 +1,5 @@
 ﻿using Access.Contract.Bills;
-using Contract.Pyments.Bills;
+using Contract.Pyment.Bills;
 
 namespace Manager.Payment
 {

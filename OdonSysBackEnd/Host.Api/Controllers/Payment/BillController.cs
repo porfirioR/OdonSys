@@ -1,4 +1,5 @@
-﻿using Contract.Pyments.Bills;
+﻿using Contract.Pyment.Bills;
+using Contract.Pyments.Bills;
 using Host.Api.Models.Bills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

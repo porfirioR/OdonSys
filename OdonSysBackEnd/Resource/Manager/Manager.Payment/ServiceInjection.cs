@@ -1,4 +1,4 @@
-﻿using Contract.Pyments.Bills;
+﻿using Contract.Pyment.Bills;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Manager.Payment
