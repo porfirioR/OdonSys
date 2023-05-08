@@ -2,6 +2,7 @@
 using Access.Contract.Bills;
 using Access.Contract.ClientProcedure;
 using Access.Contract.Clients;
+using Access.Contract.Payments;
 using Access.Contract.Procedure;
 using Access.Contract.Roles;
 using Access.Contract.Teeth;
@@ -19,6 +20,7 @@ namespace Access.Data
             services.AddTransient<IBillAccess, BillAccess>();
             services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
+            services.AddTransient<IPaymentAccess, PaymentAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IRoleAccess, RoleAccess>();
             services.AddTransient<IToothAccess, ToothAccess>();

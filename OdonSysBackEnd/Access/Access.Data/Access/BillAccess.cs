@@ -19,21 +19,12 @@ namespace Access.Data.Access
 
         public async Task<BillAccessModel> CreateBillAsync(HeaderBillAccessRequest accessRequest)
         {
-            try
-            {
             var entity = _mapper.Map<HeaderBill>(accessRequest);
             _context.HeaderBills.Add(entity);
             await _context.SaveChangesAsync();
             var clientProcedureIds = entity.BillDetails.Select(x => x.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
             return GetModel(entity, clientProcedureEntities);
-
-            }
-            catch (Exception ex)
-            {
-                var ax = ex;
-                throw;
-            }
         }
 
         public async Task<IEnumerable<BillAccessModel>> GetBillsAsync()
