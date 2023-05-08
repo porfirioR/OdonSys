@@ -1,6 +1,8 @@
 ﻿using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Utilities.Enums;
+using Utilities.Extensions;
 
 namespace Access.Sql.Configurations
 {
@@ -66,6 +68,10 @@ namespace Access.Sql.Configurations
                 .HasIndex(x => x.Email)
                 .IsUnique();
 
+            builder.Property(s => s.Country)
+               .HasConversion(
+                   s => s.GetDescription(),
+                   s => (Country)Enum.Parse(typeof(Country), s));
         }
     }
 }
