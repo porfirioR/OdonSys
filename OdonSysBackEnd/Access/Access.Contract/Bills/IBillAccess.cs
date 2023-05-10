@@ -4,5 +4,6 @@
     {
         Task<BillAccessModel> CreateBillAsync(HeaderBillAccessRequest accessRequest);
         Task<IEnumerable<BillAccessModel>> GetBillsAsync();
+        Task<bool> IsValidBillIdAsync(string id);
     }
 }

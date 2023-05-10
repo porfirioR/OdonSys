@@ -59,5 +59,10 @@ namespace Manager.Payment
                     x.FinalPrice))
             );
         }
+
+        public async Task<bool> IsValidBillIdAsync(string id)
+        {
+            return await _billAccess.IsValidBillIdAsync(id);
+        }
     }
 }

@@ -66,5 +66,11 @@ namespace Access.Data.Access
                 ))
             );
         }
+
+        public async Task<bool> IsValidBillIdAsync(string id)
+        {
+            var entity = await _context.HeaderBills.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            return entity != null;
+        }
     }
 }
