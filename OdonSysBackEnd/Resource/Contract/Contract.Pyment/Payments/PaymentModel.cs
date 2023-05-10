@@ -1,6 +1,6 @@
-﻿namespace Access.Contract.Payments
+﻿namespace Contract.Pyment.Payments
 {
-    public record PaymentAccessModel(
+    public record PaymentModel(
         string HeaderBillId,
         string UserId,
         DateTime DateCreated,

@@ -2,6 +2,7 @@
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
@@ -21,7 +22,16 @@ namespace Access.Data.Access
             var entity = _mapper.Map<Payment>(accessRequest);
             _context.Payments.Add(entity);
             await _context.SaveChangesAsync();
-            return new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.Amount);
+            return new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount);
+        }
+
+        public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByBillHeaderId(string headerBillId)
+        {
+            var entities = await _context.Payments
+                                .Where(x => x.HeaderBillId == new Guid(headerBillId))
+                                .ToListAsync();
+
+            return entities.Select(entity => new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
         }
     }
 }
