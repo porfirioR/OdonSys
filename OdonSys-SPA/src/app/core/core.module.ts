@@ -41,7 +41,7 @@ import { environment } from '../../environments/environment';
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
-    AgGridModule.withComponents([]),
+    AgGridModule,
     NgbModule,
     StoreModule.forFeature(fromSaving.savingFeatureKey, fromSaving.reducer),
     StoreModule.forFeature(fromRoles.roleFeatureKey, fromRoles.reducer),

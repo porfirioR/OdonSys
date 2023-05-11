@@ -18,3 +18,9 @@ Estar en \OdonSys\OdonSysBackEnd\
 cd .\Access\Access.Sql\
 dotnet ef migrations add AddNewTables -s ..\..\Host.Api\
 dotnet ef database update -s ..\..\Host.Api
+
+Ver versiones a actualizar
+npm outdated
+
+Para actualizar todos
+npm update
