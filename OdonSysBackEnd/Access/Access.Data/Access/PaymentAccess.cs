@@ -25,7 +25,7 @@ namespace Access.Data.Access
             return new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount);
         }
 
-        public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByBillHeaderId(string headerBillId)
+        public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByBillIdAsync(string headerBillId)
         {
             var entities = await _context.Payments
                                 .Where(x => x.HeaderBillId == new Guid(headerBillId))

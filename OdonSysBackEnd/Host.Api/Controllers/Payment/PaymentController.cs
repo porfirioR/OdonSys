@@ -25,9 +25,9 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpGet("{id}")]
-        public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillHeaderIdAsync([FromRoute] HeaderPaymentApiRequest apiRequest)
+        public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillId([FromRoute] HeaderPaymentApiRequest apiRequest)
         {
-            var model = await _paymentManager.GetPaymentsByBillHeaderIdAsync(apiRequest.Id);
+            var model = await _paymentManager.GetPaymentsByBillIdAsync(apiRequest.Id);
             return model;
         }
     }

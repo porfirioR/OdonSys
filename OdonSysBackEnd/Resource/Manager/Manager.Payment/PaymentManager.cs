@@ -12,9 +12,9 @@ namespace Manager.Payment
             _paymentAccess = paymentAccess;
         }
 
-        public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillHeaderIdAsync(string headerBillId)
+        public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillIdAsync(string headerBillId)
         {
-            var accessModel = await _paymentAccess.GetPaymentsByBillHeaderId(headerBillId);
+            var accessModel = await _paymentAccess.GetPaymentsByBillIdAsync(headerBillId);
             return accessModel.Select(x => new PaymentModel(x.HeaderBillId, x.UserId, x.DateCreated, x.Amount));
         }
 
