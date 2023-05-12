@@ -2,11 +2,8 @@
 using Access.Contract.Users;
 using Access.Sql.Entities;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace Access.Admin.Mapper
+namespace Access.Data.Mapper
 {
     public class UserDataAccessProfile : Profile
     {

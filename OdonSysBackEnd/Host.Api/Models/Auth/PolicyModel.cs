@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
 
 namespace Host.Api.Models.Auth
 {

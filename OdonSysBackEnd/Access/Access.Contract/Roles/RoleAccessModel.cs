@@ -1,6 +1,4 @@
 ﻿using Access.Contract.Users;
-using System;
-using System.Collections.Generic;
 
 namespace Access.Contract.Roles
 {

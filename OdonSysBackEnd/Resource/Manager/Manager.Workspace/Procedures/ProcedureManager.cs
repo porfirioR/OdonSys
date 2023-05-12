@@ -4,7 +4,6 @@ using Access.Contract.Users;
 using AutoMapper;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
-using Utilities.Enums;
 
 namespace Manager.Workspace.Procedures
 {
@@ -79,26 +78,24 @@ namespace Manager.Workspace.Procedures
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
-            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, request.Price, ProcedureStatus.Nuevo);
+            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
             return new ClientProcedureModel(
+                accessResponse.Id,
                 accessResponse.ProcedureId,
-                accessResponse.UserClientId,
-                accessResponse.Status,
-                accessResponse.Price
+                accessResponse.UserClientId
             );
         }
 
         public async Task<ClientProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request)
         {
-            var accessRequest = new UpdateClientProcedureAccessRequest(request.UserClientId, request.ProcedureId, request.Price, request.Status);
+            var accessRequest = new UpdateClientProcedureAccessRequest(request.UserClientId, request.ProcedureId);
             var accessResponse = await _clientProcedureAccess.UpdateClientProcedureAsync(accessRequest);
             return new ClientProcedureModel(
+                accessResponse.Id,
                 accessResponse.ProcedureId,
-                accessResponse.UserClientId,
-                accessResponse.Status,
-                accessResponse.Price
+                accessResponse.UserClientId
             );
         }
 

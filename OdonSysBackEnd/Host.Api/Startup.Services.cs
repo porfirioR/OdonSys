@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace Host.Api
+﻿namespace Host.Api
 {
     public partial class Startup
     {
@@ -11,6 +9,7 @@ namespace Host.Api
             
             //Manager
             Manager.Admin.ServiceInjection.ConfigureServices(services);
+            Manager.Payment.ServiceInjection.ConfigureServices(services);
             Manager.Workspace.ServiceInjection.ConfigureServices(services);
         }
     }

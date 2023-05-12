@@ -1,5 +1,4 @@
 ﻿using Access.Contract.Users;
-using System.Threading.Tasks;
 
 namespace Access.Contract.Auth
 {

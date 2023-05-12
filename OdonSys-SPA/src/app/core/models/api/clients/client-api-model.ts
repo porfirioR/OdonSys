@@ -4,7 +4,7 @@ export interface ClientApiModel {
     id: string
     active: boolean
     dateCreated: Date
-    dateUpdated: Date
+    dateModified: Date
     name: string
     middleName: string
     surname: string

@@ -61,7 +61,7 @@ export class DoctorsComponent implements OnInit {
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const userId = this.userInfoService.getUserData().id.toLocaleUpperCase()
 
-    const conditionalButtons = []
+    const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRestore) {
       conditionalButtons.push(
         new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar, OperationType.Equal, this.attributeId, userId, OperationType.NotEqual),
@@ -77,7 +77,10 @@ export class DoctorsComponent implements OnInit {
         new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar)
       )
     }
-
+    const buttons = conditionalButtons.length
+    if (buttons > 2) {
+      columnAction.maxWidth = 310
+    }
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
@@ -122,7 +125,7 @@ export class DoctorsComponent implements OnInit {
         modalRef.result.then((result) => {
           if(result) {
             currentRowNode.data.roles = result
-            this.gridOptions.api?.refreshCells({force: true, columns: ['roles']})
+            this.gridOptions.api?.refreshCells({ force: true, columns: ['roles'] })
           }
         }, () => {})
         break
@@ -160,7 +163,7 @@ export class DoctorsComponent implements OnInit {
       next: (response: DoctorApiModel) => {
         currentRowNode.data.approved = response.approved
         this.alertService.showSuccess('El doctor ha sido habilitado para ingresar al sistema.')
-        this.getList()
+        this.gridOptions.api?.refreshCells({ force: true, columns: ['approved'] })
       }, error: (e) => {
         this.loading = false
         throw e

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Access.Contract.ClientProcedure
+﻿namespace Access.Contract.ClientProcedure
 {
     public interface IClientProcedureAccess
     {

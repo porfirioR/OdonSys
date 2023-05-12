@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Roles;
 using AutoMapper;
 using Contract.Admin.Roles;
-using System.Linq;
 
 namespace Manager.Admin.Mapper
 {

@@ -1,8 +1,6 @@
 ﻿using Access.Contract.Teeth;
 using AutoMapper;
 using Contract.Workspace.Teeth;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Manager.Workspace.Teeth
 {

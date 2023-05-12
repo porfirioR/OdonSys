@@ -1,6 +1,8 @@
 ﻿using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Utilities.Enums;
+using Utilities.Extensions;
 
 namespace Access.Sql.Configurations
 {
@@ -30,6 +32,21 @@ namespace Access.Sql.Configurations
             builder
                 .Property(x => x.Group)
                 .IsRequired();
+
+            builder.Property(s => s.Jaw)
+               .HasConversion(
+                   s => s.GetDescription(),
+                   s => (Jaw)Enum.Parse(typeof(Jaw), s));
+
+            builder.Property(s => s.Quadrant)
+               .HasConversion(
+                   s => s.GetDescription(),
+                   s => (Quadrant)Enum.Parse(typeof(Quadrant), s));
+
+            builder.Property(s => s.Group)
+               .HasConversion(
+                   s => s.GetDescription(),
+                   s => (DentalGroup)Enum.Parse(typeof(DentalGroup), s));
         }
     }
 }

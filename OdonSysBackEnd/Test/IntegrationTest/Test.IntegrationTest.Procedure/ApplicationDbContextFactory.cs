@@ -1,7 +1,7 @@
 ﻿using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Utilities.Enums;
+using Utilities;
 
 namespace AcceptanceTest.Host.Api
 {

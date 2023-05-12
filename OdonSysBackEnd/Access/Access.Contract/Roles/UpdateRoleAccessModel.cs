@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Access.Contract.Roles
+﻿namespace Access.Contract.Roles
 {
     public class UpdateRoleAccessModel
     {

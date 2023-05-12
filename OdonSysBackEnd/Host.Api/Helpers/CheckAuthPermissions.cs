@@ -1,8 +1,6 @@
 ﻿using Contract.Admin.Roles;
 using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace Host.Api.Helpers

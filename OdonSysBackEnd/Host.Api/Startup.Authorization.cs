@@ -1,9 +1,6 @@
 ﻿using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using System.Linq;
 using Utilities.Enums;
 
 namespace Host.Api

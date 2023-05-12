@@ -4,7 +4,6 @@ using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Authentication
 {
