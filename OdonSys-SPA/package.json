@@ -20,7 +20,8 @@
     "@angular/platform-browser-dynamic": "^14.3.0",
     "@angular/router": "^14.3.0",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ng-bootstrap/ng-bootstrap": "^14.1.1",
+    "@ng-bootstrap/ng-bootstrap": "^13.1.1",
+    "@ngrx/component": "^14.3.3",
     "@ngrx/effects": "^14.3.3",
     "@ngrx/entity": "^14.3.3",
     "@ngrx/store": "^14.3.3",
@@ -34,6 +35,7 @@
     "minimist": "^1.2.8",
     "rxjs": "^7.8.1",
     "sweetalert2": "^11.4.8",
+    "TypeScript": "npm:typescript@^5.0.4",
     "ua-parser-js": "^1.0.35",
     "webpack": "^5.82.1",
     "zone.js": "^0.13.0"
@@ -52,6 +54,6 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.7.0",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.4"
+    "typescript": "~4.7.0"
   }
 }
