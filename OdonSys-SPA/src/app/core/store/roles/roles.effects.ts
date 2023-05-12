@@ -82,7 +82,7 @@ export class RolesEffects {
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.rolesFailure),
-      tap((x) => {throw x.error})
+      tap((x) => { throw x.error })
     )
   })
 }
