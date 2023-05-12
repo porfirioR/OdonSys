@@ -56,8 +56,6 @@ export class UpsertRoleComponent implements OnInit {
           this.formGroup.controls.code.disable()
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
-      }, error: (e) => {
-        throw e
       }
     })
   }
