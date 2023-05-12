@@ -6,20 +6,8 @@
       </a>
     </div>
     <ul class="nav-menu">
-      <li class="nav-item" *ngIf="canAccessData">
-        <a class="nav-link" routerLink="admin/doctores" routerLinkActive="active">Doctores</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="admin/roles" routerLinkActive="active">Roles</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="admin/procedimientos" routerLinkActive="active">Procedimientos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="admin/pacientes" routerLinkActive="active">Pacientes</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="trabajo/misPacientes" routerLinkActive="active">Mis Pacientes</a>
+      <li class="nav-item" *ngFor="let item of menuPermissions">
+        <a class="nav-link" [routerLink]="item.link" routerLinkActive="active">{{item.title}}</a>
       </li>
     </ul>
     <div class="nav-menu-right m-r-16" ngbDropdown>

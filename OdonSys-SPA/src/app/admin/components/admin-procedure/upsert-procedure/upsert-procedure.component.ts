@@ -27,7 +27,7 @@ export class UpsertProcedureComponent implements OnInit {
     active : new FormControl(true, [Validators.required]),
     price : new FormControl(0, [Validators.required, Validators.min(0)]),
   })
-  protected load: boolean = false;
+  public saveData: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected title = 'Crear'
   protected canRestore = false
@@ -45,10 +45,11 @@ export class UpsertProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadValues();
+    this.loadValues()
   }
 
   protected save = () => {
+    this.saveData = true
     this.id ? this.update() : this.create()
   }
 
@@ -77,10 +78,6 @@ export class UpsertProcedureComponent implements OnInit {
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }
-        this.load = true
-      }, error: (e) => {
-        this.load = true
-        throw e
       }
     })
     // this.activatedRoute.params.pipe(

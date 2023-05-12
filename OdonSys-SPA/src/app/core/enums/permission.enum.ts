@@ -9,6 +9,9 @@ export enum Permission {
   UpdateDoctors = 'UpdateDoctors',
   AccessDoctors = 'AccessDoctors',
 
+  AccessBills = 'AccessBills',
+  AccessPayments = 'AccessPayments',
+
   ApproveDoctors = 'ApproveDoctors',
   AssignDoctorRoles = 'AssignDoctorRoles',
   DeactivateDoctors = 'DeactivateDoctors',

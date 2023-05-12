@@ -36,8 +36,8 @@ export class UpsertClientComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  public saveData: boolean = false
   protected title: string = 'Registrar '
-  protected load: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected saving: boolean = false
   protected countries: Map<string, string> = new Map<string, string>()
@@ -65,6 +65,7 @@ export class UpsertClientComponent implements OnInit {
 
   protected save = (): void => {
     if (this.formGroup.invalid) { return }
+    this.saveData = true
     this.id ? this.update() : this.create()
   }
 
@@ -101,10 +102,6 @@ export class UpsertClientComponent implements OnInit {
             this.formGroup.controls.email.disable()
           }
         }
-        this.load = true
-      }, error: (e) => {
-        this.load = true
-        throw e
       }
     })
   }
