@@ -21,22 +21,21 @@ import { UserInfoService } from '../../../../core/services/shared/user-info.serv
   styleUrls: ['./upsert-procedure.component.scss']
 })
 export class UpsertProcedureComponent implements OnInit {
-  protected load: boolean = false;
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
-  protected title = 'Crear'
-  private id = ''
-  protected canRestore = false
-
-  protected formGroup = new FormGroup( {
+  public formGroup = new FormGroup( {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),
     price : new FormControl(0, [Validators.required, Validators.min(0)]),
   })
+  protected load: boolean = false;
+  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected title = 'Crear'
+  protected canRestore = false
   protected teethList: ToothModel[] = []
   protected jaw = Jaw
   protected quadrant = Quadrant
   protected teethFormArray: UntypedFormArray = new UntypedFormArray([])
+  private id = ''
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

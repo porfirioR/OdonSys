@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
+import { selectClients } from '../../../../core/store/clients/client.selectors';
+import * as fromClientsActions from '../../../../core/store/clients/client.actions';
 import { UserInfoService } from '../../../../core/services/shared/user-info.service';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
 import { MethodHandler } from '../../../../core/helpers/method-handler';
@@ -14,8 +16,6 @@ import { EnumHandler } from '../../../../core/helpers/enum-handler';
 import { UserFormGroup } from '../../../../core/forms/user-form-group.form';
 import { Country } from '../../../../core/enums/country.enum';
 import { Permission } from '../../../../core/enums/permission.enum';
-import { selectClients } from '../../../../core/store/clients/client.selectors';
-import * as fromClientsActions from '../../../../core/store/clients/client.actions';
 import { savingSelector } from '../../../../core/store/saving/saving.selector';
 
 @Component({
@@ -24,11 +24,7 @@ import { savingSelector } from '../../../../core/store/saving/saving.selector';
   styleUrls: ['./upsert-client.component.scss']
 })
 export class UpsertClientComponent implements OnInit {
-  protected title: string = 'Registrar '
-  protected load: boolean = false
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
-  protected saving: boolean = false
-  protected formGroup = new FormGroup<UserFormGroup>({
+  public formGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
     surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -40,6 +36,10 @@ export class UpsertClientComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  protected title: string = 'Registrar '
+  protected load: boolean = false
+  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected saving: boolean = false
   protected countries: Map<string, string> = new Map<string, string>()
   private id = ''
   private fullFieldEdit = false

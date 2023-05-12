@@ -19,15 +19,15 @@ import { MethodHandler } from '../../../../core/helpers/method-handler';
   styleUrls: ['./upsert-role.component.scss']
 })
 export class UpsertRoleComponent implements OnInit {
-  public load: boolean = false;
-  public saving$: Observable<boolean> = this.store.select(savingSelector)
-  private code = '';
-  public title = 'Crear';
   public formGroup = new FormGroup( {
     name: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     code: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
+  protected load: boolean = false;
+  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected title = 'Crear';
+  private code = '';
 
   constructor(
     private readonly roleApiService: RoleApiService,
