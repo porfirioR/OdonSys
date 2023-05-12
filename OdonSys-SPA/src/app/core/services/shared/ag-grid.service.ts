@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColDef, GridApi, GridOptions, RowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, IRowNode, RowNode } from 'ag-grid-community';
 import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 
 @Injectable({
@@ -161,7 +161,7 @@ export class AgGridService {
     return grid
   }
 
-  public getCurrentRowNode = (gridOptions: GridOptions): RowNode => {
+  public getCurrentRowNode = (gridOptions: GridOptions): IRowNode<any> => {
     const gridApi = gridOptions.api as GridApi
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number
     const renderSelectedColumnIndex = selectedColumnIndex > gridApi.getRenderedNodes().length ?
