@@ -16,6 +16,6 @@ namespace Access.Sql.Entities
         public string Email { get; set; }
 
         public virtual IEnumerable<UserClient> UserClients { get; set; }
-        public virtual IEnumerable<HeaderBill> HeaderBills { get; set; }
+        public virtual IEnumerable<Invoice> Invoices { get; set; }
     }
 }

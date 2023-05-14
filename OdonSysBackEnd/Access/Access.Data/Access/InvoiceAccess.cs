@@ -1,4 +1,4 @@
-﻿using Access.Contract.Bills;
+﻿using Access.Contract.Invoices;
 using Access.Sql;
 using Access.Sql.Entities;
 using AutoMapper;
@@ -6,34 +6,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class BillAccess : IBillAccess
+    internal class InvoiceAccess : IInvoiceAccess
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
 
-        public BillAccess(IMapper mapper, DataContext context)
+        public InvoiceAccess(IMapper mapper, DataContext context)
         {
             _mapper = mapper;
             _context = context;
         }
 
-        public async Task<BillAccessModel> CreateBillAsync(HeaderBillAccessRequest accessRequest)
+        public async Task<InvoiceAccessModel> CreateInvoiceAsync(InvoiceAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<HeaderBill>(accessRequest);
-            _context.HeaderBills.Add(entity);
+            var entity = _mapper.Map<Invoice>(accessRequest);
+            _context.Invoices.Add(entity);
             await _context.SaveChangesAsync();
-            var clientProcedureIds = entity.BillDetails.Select(x => x.ClientProcedureId);
+            var clientProcedureIds = entity.InvoiceDetails.Select(x => x.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
             return GetModel(entity, clientProcedureEntities);
         }
 
-        public async Task<IEnumerable<BillAccessModel>> GetBillsAsync()
+        public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesAsync()
         {
-            var entities = await _context.HeaderBills
-                                    .Include(x => x.BillDetails)
+            var entities = await _context.Invoices
+                                    .Include(x => x.InvoiceDetails)
                                     .AsNoTracking()
                                     .ToListAsync();
-            var clientProcedureIds = entities.SelectMany(x => x.BillDetails.Select(y => y.ClientProcedureId));
+            var clientProcedureIds = entities.SelectMany(x => x.InvoiceDetails.Select(y => y.ClientProcedureId));
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
             return entities.Select(x => GetModel(x, clientProcedureEntities));
         }
@@ -45,11 +45,11 @@ namespace Access.Data.Access
                                     .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
         }
 
-        private static BillAccessModel GetModel(HeaderBill entity, IEnumerable<ClientProcedure> clientProcedureEntities)
+        private static InvoiceAccessModel GetModel(Invoice entity, IEnumerable<ClientProcedure> clientProcedureEntities)
         {
-            return new BillAccessModel(
+            return new InvoiceAccessModel(
                 entity.Id,
-                entity.BillNumber,
+                entity.InvoiceNumber,
                 entity.Iva10,
                 entity.TotalIva,
                 entity.SubTotal,
@@ -57,9 +57,9 @@ namespace Access.Data.Access
                 entity.Timbrado,
                 entity.Status,
                 entity.ClientId,
-                entity.BillDetails.Select(x => new BillDetailAccessModel(
+                entity.InvoiceDetails.Select(x => new InvoiceDetailAccessModel(
                     x.Id,
-                    x.HeaderBillId,
+                    x.InvoiceId,
                     clientProcedureEntities.First(y => y.Id == x.ClientProcedureId).Procedure.Name,
                     x.ProcedurePrice,
                     x.FinalPrice
@@ -67,9 +67,9 @@ namespace Access.Data.Access
             );
         }
 
-        public async Task<bool> IsValidBillIdAsync(string id)
+        public async Task<bool> IsValidInvoiceIdAsync(string id)
         {
-            var entity = await _context.HeaderBills.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            var entity = await _context.Invoices.FirstOrDefaultAsync(x => x.Id == new Guid(id));
             return entity != null;
         }
     }

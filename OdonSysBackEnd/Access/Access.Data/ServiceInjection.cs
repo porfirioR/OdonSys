@@ -1,7 +1,7 @@
 ﻿using Access.Contract.Auth;
-using Access.Contract.Bills;
 using Access.Contract.ClientProcedure;
 using Access.Contract.Clients;
+using Access.Contract.Invoices;
 using Access.Contract.Payments;
 using Access.Contract.Procedure;
 using Access.Contract.Roles;
@@ -17,7 +17,7 @@ namespace Access.Data
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAuthAccess, AuthAccess>();
-            services.AddTransient<IBillAccess, BillAccess>();
+            services.AddTransient<IInvoiceAccess, InvoiceAccess>();
             services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IPaymentAccess, PaymentAccess>();

@@ -1,6 +1,6 @@
-﻿namespace Contract.Pyment.Bills
+﻿namespace Contract.Pyment.Invoices
 {
-    public record BillDetailRequest(
+    public record InvoiceDetailRequest(
         Guid ClientProcedureId,
         int ProducePrice,
         int FinalPrice

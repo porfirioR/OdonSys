@@ -30,8 +30,8 @@ namespace Access.Sql
         public DbSet<Tooth> Teeth { get; set; }
         public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
         public DbSet<ClientProcedure> ClientProcedures { get; set; }
-        public DbSet<HeaderBill> HeaderBills { get; set; }
-        public DbSet<BillDetail> BillDetails { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,8 +46,8 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
             modelBuilder.ApplyConfiguration(new ClientProcedureConfiguration());
-            modelBuilder.ApplyConfiguration(new BillDetailConfiguration());
-            modelBuilder.ApplyConfiguration(new HeaderBillConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))

@@ -1,7 +1,7 @@
 ﻿namespace Access.Contract.Payments
 {
     public record PaymentAccessRequest(
-        string HeaderBillId,
+        string InvoiceId,
         string UserId,
         int Amount
     );

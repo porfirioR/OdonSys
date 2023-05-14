@@ -6,22 +6,22 @@ using Utilities.Extensions;
 
 namespace Access.Sql.Configurations
 {
-    public class HeaderBillConfiguration : IEntityTypeConfiguration<HeaderBill>
+    public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
     {
-        public void Configure(EntityTypeBuilder<HeaderBill> builder)
+        public void Configure(EntityTypeBuilder<Invoice> builder)
         {
             builder.HasKey(x => x.Id);
 
             builder
-                .Property(d => d.DateCreated)
+                .Property(x => x.DateCreated)
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(d => d.DateModified)
+                .Property(x => x.DateModified)
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(x => x.BillNumber)
+                .Property(x => x.InvoiceNumber)
                 .IsRequired()
                 .HasMaxLength(25);
 
@@ -33,14 +33,14 @@ namespace Access.Sql.Configurations
                 .Property(x => x.Total)
                 .HasDefaultValue(0);
 
-            builder.Property(s => s.Status)
+            builder.Property(x => x.Status)
                .HasConversion(
-                   s => s.GetDescription(),
-                   s => (BillStatus)Enum.Parse(typeof(BillStatus), s));
+                   x => x.GetDescription(),
+                   x => (InvoiceStatus)Enum.Parse(typeof(InvoiceStatus), x));
 
             builder
                 .HasOne(x => x.Client)
-                .WithMany(x => x.HeaderBills)
+                .WithMany(x => x.Invoices)
                 .HasForeignKey(x => x.ClientId);
         }
     }

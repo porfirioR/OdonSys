@@ -1,8 +1,8 @@
-﻿namespace Contract.Pyment.Bills
+﻿namespace Contract.Pyment.Invoices
 {
-    public record BillDetailModel(
+    public record InvoiceDetailModel(
         Guid Id,
-        Guid HeaderBillId,
+        Guid InvoiceId,
         string Procedure,
         int ProcedurePrice,
         int FinalPrice
