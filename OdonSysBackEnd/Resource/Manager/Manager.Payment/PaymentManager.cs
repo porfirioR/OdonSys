@@ -22,6 +22,8 @@ namespace Manager.Payment
         {
             var accessRequest = new PaymentAccessRequest(request.HeaderBillId, request.UserId, request.Amount);
             var accessModel = await _paymentAccess.RegisterPayment(accessRequest);
+            //var invoicePayments = (await _paymentAccess.GetPaymentsByBillIdAsync(request.HeaderBillId)).Select(x => x.Amount).Sum();
+
             return new PaymentModel(accessModel.HeaderBillId, accessModel.UserId, accessModel.DateCreated, accessModel.Amount);
         }
     }
