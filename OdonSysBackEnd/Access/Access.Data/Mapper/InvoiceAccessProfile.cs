@@ -1,17 +1,17 @@
-﻿using Access.Contract.Bills;
+﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
 using AutoMapper;
 
 namespace Access.Data.Mapper
 {
-    public class BillAccessProfile : Profile
+    public class InvoiceAccessProfile : Profile
     {
-        public BillAccessProfile()
+        public InvoiceAccessProfile()
         {
-            CreateMap<HeaderBillAccessRequest, HeaderBill>()
+            CreateMap<InvoiceAccessRequest, Invoice>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true));
 
-            CreateMap<BillDetailAccessRequest, BillDetail>()
+            CreateMap<InvoiceDetailAccessRequest, InvoiceDetail>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true));
 
         }

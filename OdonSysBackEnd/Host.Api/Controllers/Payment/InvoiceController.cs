@@ -1,6 +1,6 @@
-﻿using Contract.Pyment.Bills;
+﻿using Contract.Pyment.Invoices;
 using Host.Api.Models.Auth;
-using Host.Api.Models.Bills;
+using Host.Api.Models.Invoices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,28 +9,28 @@ namespace Host.Api.Controllers.Payment
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class BillController : ControllerBase
+    public class InvoiceController : ControllerBase
     {
-        private readonly IBillManager _billManager;
-        public BillController(IBillManager billManager)
+        private readonly IInvoiceManager _invoiceManager;
+        public InvoiceController(IInvoiceManager invoiceManager)
         {
-            _billManager = billManager;
+            _invoiceManager = invoiceManager;
         }
 
         [HttpGet]
         [Authorize(Policy = Policy.CanAccessInvoice)]
-        public async Task<IEnumerable<HeaderBillModel>> GetBill()
+        public async Task<IEnumerable<InvoiceModel>> GetInvoices()
         {
-            var model = await _billManager.GetBillsAsync();
+            var model = await _invoiceManager.GetInvoicesAsync();
             return model;
         }
 
         [HttpPost]
         [Authorize(Policy = Policy.CanCreateInvoice)]
-        public async Task<HeaderBillModel> CreateInvoice([FromBody] CreateBillApiRequest apiRequest)
+        public async Task<InvoiceModel> CreateInvoice([FromBody] CreateInvoiceApiRequest apiRequest)
         {
-            var request = new HeaderBillRequest(
-                apiRequest.BillNumber,
+            var request = new InvoiceRequest(
+                apiRequest.InvoiceNumber,
                 apiRequest.Iva10,
                 apiRequest.TotalIva,
                 apiRequest.SubTotal,
@@ -38,12 +38,12 @@ namespace Host.Api.Controllers.Payment
                 apiRequest.Timbrado,
                 apiRequest.Status,
                 new Guid(apiRequest.ClientId),
-                apiRequest.BillDetails.Select(x => new BillDetailRequest(
+                apiRequest.InvoiceDetails.Select(x => new InvoiceDetailRequest(
                     new Guid(x.ClientProcedureId),
                     x.ProcedurePrice,
                     x.FinalPrice))
             );
-            var model = await _billManager.CreateBillAsync(request);
+            var model = await _invoiceManager.CreateInvoiceAsync(request);
             return model;
         }
     }

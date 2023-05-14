@@ -1,6 +1,6 @@
 ﻿namespace Utilities.Enums
 {
-    public enum BillStatus
+    public enum InvoiceStatus
     {
         Nuevo = 1,
         Completado = 2,

@@ -21,16 +21,16 @@ namespace Host.Api.Controllers.Payment
         [Authorize(Policy = Policy.CanRegisterPayment)]
         public async Task<PaymentModel> RegisterPayment([FromBody] PaymentApiRequest apiRequest)
         {
-            var request = new PaymentRequest(apiRequest.HeaderBillId, apiRequest.UserId, apiRequest.Amount);
+            var request = new PaymentRequest(apiRequest.InvoiceId, apiRequest.UserId, apiRequest.Amount);
             var model = await _paymentManager.RegisterPaymentAsync(request);
             return model;
         }
 
         [HttpGet("{id}")]
         [Authorize(Policy = Policy.CanAccessPayment)]
-        public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillId([FromRoute] HeaderPaymentApiRequest apiRequest)
+        public async Task<IEnumerable<PaymentModel>> GetPaymentsByInvoiceId([FromRoute] HeaderPaymentApiRequest apiRequest)
         {
-            var model = await _paymentManager.GetPaymentsByBillIdAsync(apiRequest.Id);
+            var model = await _paymentManager.GetPaymentsByInvoiceIdAsync(apiRequest.Id);
             return model;
         }
     }

@@ -1,9 +1,9 @@
 ﻿using Contract.Workspace.Procedures;
 using System.ComponentModel.DataAnnotations;
 
-namespace Host.Api.Models.Bills
+namespace Host.Api.Models.Invoices
 {
-    public class BillDetailApiRequest : IValidatableObject
+    public class CreateInvoiceDetailApiRequest : IValidatableObject
     {
         [Required]
         public string ClientProcedureId { get; set; }

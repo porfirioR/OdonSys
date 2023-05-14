@@ -1,6 +1,6 @@
-﻿namespace Access.Contract.Bills
+﻿namespace Access.Contract.Invoices
 {
-    public record BillDetailAccessRequest(
+    public record InvoiceDetailAccessRequest(
         Guid ClientProcedureId,
         int ProducePrice,
         int FinalPrice

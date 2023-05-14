@@ -11,7 +11,7 @@ namespace Access.Data.Mapper
             CreateMap<PaymentAccessRequest, Payment>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => new Guid(src.UserId)))
-                .ForMember(dest => dest.HeaderBillId, opt => opt.MapFrom(src => new Guid(src.HeaderBillId)));
+                .ForMember(dest => dest.InvoiceId, opt => opt.MapFrom(src => new Guid(src.InvoiceId)));
         }
     }
 }

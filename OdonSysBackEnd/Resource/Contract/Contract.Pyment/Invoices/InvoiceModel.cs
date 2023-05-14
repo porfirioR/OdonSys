@@ -1,17 +1,17 @@
 ﻿using Utilities.Enums;
 
-namespace Access.Contract.Bills
+namespace Contract.Pyment.Invoices
 {
-    public record BillAccessModel(
+    public record InvoiceModel(
         Guid Id,
-        string BillNumber,
+        string InvoiceNumber,
         int Iva10,
         int TotalIva,
         int SubTotal,
         int Total,
         string Timbrado,
-        BillStatus Status,
+        InvoiceStatus Status,
         Guid ClientId,
-        IEnumerable<BillDetailAccessModel> BillDetails
+        IEnumerable<InvoiceDetailModel> InvoiceDetails
     );
 }
