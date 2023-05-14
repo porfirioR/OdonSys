@@ -15,6 +15,10 @@ namespace Host.Api
                 new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
                 new PolicyModel(Policy.CanAssignRoleDoctors, new AuthRequirement(PermissionName.AssignRoleDoctors)),
 
+                new PolicyModel(Policy.CanAccessInvoice, new AuthRequirement(PermissionName.AccessInvoices)),
+                new PolicyModel(Policy.CanAccessMyInvoice, new AuthRequirement(PermissionName.AccessMyInvoices)),
+                new PolicyModel(Policy.CanCreateInvoice, new AuthRequirement(PermissionName.CreateInvoices)),
+
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
                     new List<PermissionName> {

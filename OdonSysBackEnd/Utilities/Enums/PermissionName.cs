@@ -8,6 +8,12 @@
         AssignRoleDoctors,
         #endregion
 
+        #region Invoices
+        AccessInvoices,
+        AccessMyInvoices,
+        CreateInvoices,
+        #endregion
+
         #region Clients
         AccessClients,
         CreateClients,

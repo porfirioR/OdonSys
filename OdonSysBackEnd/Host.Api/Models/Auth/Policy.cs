@@ -9,6 +9,10 @@
         public const string CanAccessMyClients = "can_access_my_clients";
         public const string CanModifyVisibilityClient = "can_modify_visibility_client";
 
+        public const string CanAccessInvoice = "can_access_invoice";
+        public const string CanAccessMyInvoice = "can_access_my_invoice";
+        public const string CanCreateInvoice = "can_create_invoice";
+
         public const string CanAccessRole = "can_access_role";
         public const string CanManageRole = "can_manage_role";
         public const string CanAssignRoleDoctors = "can_assign_role_doctors";
