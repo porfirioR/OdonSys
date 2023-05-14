@@ -6,5 +6,7 @@
         Doctor,
         Procedure,
         Role,
+        Invoice,
+        Payment,
     }
 }

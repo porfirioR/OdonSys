@@ -48,7 +48,12 @@
         RestoreDoctors,
         DeactivateDoctors,
         ApproveDoctors,
-        AssignDoctorRoles
+        AssignDoctorRoles,
+        #endregion
+
+        #region Payments
+        AccessPayments,
+        RegisterPayments
         #endregion
     }
 }
