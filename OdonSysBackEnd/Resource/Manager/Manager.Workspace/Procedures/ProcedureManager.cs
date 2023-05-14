@@ -103,5 +103,10 @@ namespace Manager.Workspace.Procedures
         {
             return await _clientProcedureAccess.CheckExistsClientProcedureAsync(userClientId, procedureId);
         }
+
+        public async Task<bool> CheckExistsClientProcedureAsync(string clientProcedureId)
+        {
+            return await _clientProcedureAccess.CheckExistsClientProcedureAsync(clientProcedureId);
+        }
     }
 }

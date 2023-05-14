@@ -1,4 +1,5 @@
 ﻿using Contract.Pyment.Bills;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Bills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpGet]
+        [Authorize(Policy = Policy.CanAccessInvoice)]
         public async Task<IEnumerable<HeaderBillModel>> GetBill()
         {
             var model = await _billManager.GetBillsAsync();
@@ -24,21 +26,22 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpPost]
-        public async Task<HeaderBillModel> AssignClientToDoctor([FromBody] CreateBillApiRequest apiRequest)
+        [Authorize(Policy = Policy.CanCreateInvoice)]
+        public async Task<HeaderBillModel> CreateInvoice([FromBody] CreateBillApiRequest apiRequest)
         {
             var request = new HeaderBillRequest(
-                    apiRequest.BillNumber,
-                    apiRequest.Iva10,
-                    apiRequest.TotalIva,
-                    apiRequest.SubTotal,
-                    apiRequest.Total,
-                    apiRequest.Timbrado,
-                    apiRequest.Status,
-                    apiRequest.ClientId,
-                    apiRequest.BillDetails.Select(x => new BillDetailRequest(
-                        x.ClientProcedureId,
-                        x.ProcedurePrice,
-                        x.FinalPrice))
+                apiRequest.BillNumber,
+                apiRequest.Iva10,
+                apiRequest.TotalIva,
+                apiRequest.SubTotal,
+                apiRequest.Total,
+                apiRequest.Timbrado,
+                apiRequest.Status,
+                new Guid(apiRequest.ClientId),
+                apiRequest.BillDetails.Select(x => new BillDetailRequest(
+                    new Guid(x.ClientProcedureId),
+                    x.ProcedurePrice,
+                    x.FinalPrice))
             );
             var model = await _billManager.CreateBillAsync(request);
             return model;
