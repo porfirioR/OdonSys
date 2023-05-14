@@ -31,5 +31,8 @@
         public const string CanUpdateClientProcedure = "can_update_client_procedure";
 
         public const string CanApproveDoctor = "can_approve_doctor";
+
+        public const string CanAccessPayment = "can_access_payment";
+        public const string CanRegisterPayment = "can_register_payment";
     }
 }

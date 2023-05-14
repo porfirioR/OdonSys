@@ -1,4 +1,5 @@
 ﻿using Contract.Pyment.Payments;
+using Host.Api.Models.Auth;
 using Host.Api.Models.Payments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpPost]
+        [Authorize(Policy = Policy.CanRegisterPayment)]
         public async Task<PaymentModel> RegisterPayment([FromBody] PaymentApiRequest apiRequest)
         {
             var request = new PaymentRequest(apiRequest.HeaderBillId, apiRequest.UserId, apiRequest.Amount);
@@ -25,6 +27,7 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessPayment)]
         public async Task<IEnumerable<PaymentModel>> GetPaymentsByBillId([FromRoute] HeaderPaymentApiRequest apiRequest)
         {
             var model = await _paymentManager.GetPaymentsByBillIdAsync(apiRequest.Id);

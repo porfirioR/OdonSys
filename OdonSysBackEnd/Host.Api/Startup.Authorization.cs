@@ -68,6 +68,8 @@ namespace Host.Api
                         PermissionName.DeleteProcedures,
                     })
                 ),
+                new PolicyModel(Policy.CanAccessPayment, new AuthRequirement(PermissionName.AccessPayments)),
+                new PolicyModel(Policy.CanRegisterPayment, new AuthRequirement(PermissionName.RegisterPayments)),
             };
 
             //  Add Authorization
