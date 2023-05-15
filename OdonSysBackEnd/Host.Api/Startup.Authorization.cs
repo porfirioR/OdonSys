@@ -18,6 +18,7 @@ namespace Host.Api
                 new PolicyModel(Policy.CanAccessInvoice, new AuthRequirement(PermissionName.AccessInvoices)),
                 new PolicyModel(Policy.CanAccessMyInvoice, new AuthRequirement(PermissionName.AccessMyInvoices)),
                 new PolicyModel(Policy.CanCreateInvoice, new AuthRequirement(PermissionName.CreateInvoices)),
+                new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthRequirement(PermissionName.ChangeInvoiceStatus)),
 
                 new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(

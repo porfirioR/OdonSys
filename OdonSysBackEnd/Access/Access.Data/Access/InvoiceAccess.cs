@@ -60,16 +60,11 @@ namespace Access.Data.Access
         public async Task<InvoiceAccessModel> UpdateInvoiceStatusIdAsync(InvoiceStatusAccessRequest accessRequest)
         {
             var entity = await _context.Invoices
-                                    .Include(x => x.InvoiceDetails)
-                                    .AsNoTracking()
                                     .FirstOrDefaultAsync(x => x.Id == new Guid(accessRequest.InvoiceId));
             entity.Status = accessRequest.Status;
-            _context.Invoices.Update(entity);
+            _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-            var clientProcedureIds = entity.InvoiceDetails.Select(x => x.ClientProcedureId);
-            var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
-            return GetModel(entity, clientProcedureEntities);
+            return GetModel(entity, new List<ClientProcedure>());
         }
 
         private async Task<IEnumerable<ClientProcedure>> GetClientProcedureEntities(IEnumerable<Guid> clientProcedureIds)
@@ -81,6 +76,18 @@ namespace Access.Data.Access
 
         private static InvoiceAccessModel GetModel(Invoice entity, IEnumerable<ClientProcedure> clientProcedureEntities)
         {
+            var invoiceDetails = entity.InvoiceDetails is null ?
+                new List<InvoiceDetailAccessModel>() :
+                entity.InvoiceDetails.Select(x => {
+                    var clientProcedure = clientProcedureEntities.FirstOrDefault(y => y.Id == x.ClientProcedureId);
+                    return new InvoiceDetailAccessModel(
+                        x.Id,
+                        x.InvoiceId,
+                        clientProcedure is null ? string.Empty : clientProcedure.Procedure.Name,
+                        x.ProcedurePrice,
+                        x.FinalPrice
+                    );
+                });
             return new InvoiceAccessModel(
                 entity.Id,
                 entity.InvoiceNumber,
@@ -93,13 +100,7 @@ namespace Access.Data.Access
                 entity.ClientId,
                 entity.DateCreated,
                 entity.UserCreated,
-                entity.InvoiceDetails.Select(x => new InvoiceDetailAccessModel(
-                    x.Id,
-                    x.InvoiceId,
-                    clientProcedureEntities.First(y => y.Id == x.ClientProcedureId).Procedure.Name,
-                    x.ProcedurePrice,
-                    x.FinalPrice
-                ))
+                invoiceDetails
             );
         }
     }

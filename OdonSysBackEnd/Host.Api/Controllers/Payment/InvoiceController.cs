@@ -1,5 +1,4 @@
-﻿using Contract.Admin.Clients;
-using Contract.Pyment.Invoices;
+﻿using Contract.Pyment.Invoices;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
 using Host.Api.Models.Invoices;
@@ -53,7 +52,7 @@ namespace Host.Api.Controllers.Payment
         }
 
         [HttpPatch("{id}")]
-        [Authorize(Policy = Policy.CanModifyVisibilityClient)]
+        [Authorize(Policy = Policy.CanChangeInvoiceStatus)]
         public async Task<InvoiceModel> PatchClient(string id, [FromBody] JsonPatchDocument<InvoiceStatusRequest> patchClient)
         {
             if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
