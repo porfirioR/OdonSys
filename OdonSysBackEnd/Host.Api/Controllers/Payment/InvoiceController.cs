@@ -1,8 +1,13 @@
-﻿using Contract.Pyment.Invoices;
+﻿using Contract.Admin.Clients;
+using Contract.Pyment.Invoices;
 using Host.Api.Models.Auth;
+using Host.Api.Models.Error;
 using Host.Api.Models.Invoices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Utilities.Enums;
 
 namespace Host.Api.Controllers.Payment
 {
@@ -44,6 +49,23 @@ namespace Host.Api.Controllers.Payment
                     x.FinalPrice))
             );
             var model = await _invoiceManager.CreateInvoiceAsync(request);
+            return model;
+        }
+
+        [HttpPatch("{id}")]
+        [Authorize(Policy = Policy.CanModifyVisibilityClient)]
+        public async Task<InvoiceModel> PatchClient(string id, [FromBody] JsonPatchDocument<InvoiceStatusRequest> patchClient)
+        {
+            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
+            var isValidInvoice = await _invoiceManager.IsValidInvoiceIdAsync(id);
+            if (!isValidInvoice) throw new Exception("La factura no existe.");
+            var invoiceStatusRequest = new InvoiceStatusRequest(id, InvoiceStatus.Nuevo);
+            patchClient.ApplyTo(invoiceStatusRequest);
+            if (!ModelState.IsValid)
+            {
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "Valor inválido.")));
+            }
+            var model = await _invoiceManager.UpdateInvoiceStatusIdAsync(invoiceStatusRequest);
             return model;
         }
     }

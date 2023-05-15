@@ -1,15 +1,19 @@
-﻿using Access.Contract.Payments;
+﻿using Access.Contract.Invoices;
+using Access.Contract.Payments;
 using Contract.Pyment.Payments;
+using Utilities.Enums;
 
 namespace Manager.Payment
 {
     internal class PaymentManager : IPaymentManager
     {
         private readonly IPaymentAccess _paymentAccess;
+        private readonly IInvoiceAccess _invoiceAccess;
 
-        public PaymentManager(IPaymentAccess paymentAccess)
+        public PaymentManager(IPaymentAccess paymentAccess, IInvoiceAccess invoiceAccess)
         {
             _paymentAccess = paymentAccess;
+            _invoiceAccess = invoiceAccess;
         }
 
         public async Task<IEnumerable<PaymentModel>> GetPaymentsByInvoiceIdAsync(string invoiceId)
@@ -22,8 +26,12 @@ namespace Manager.Payment
         {
             var accessRequest = new PaymentAccessRequest(request.InvoiceId, request.UserId, request.Amount);
             var accessModel = await _paymentAccess.RegisterPayment(accessRequest);
-            //var invoicePayments = (await _paymentAccess.GetPaymentsByInvoiceIdAsync(request.InvoiceId)).Select(x => x.Amount).Sum();
-
+            var invoice = await _invoiceAccess.GetInvoiceByIdAsync(request.InvoiceId);
+            var invoicePayments = (await _paymentAccess.GetPaymentsByInvoiceIdAsync(request.InvoiceId)).Select(x => x.Amount).Sum();
+            if (invoice.Total == invoicePayments)
+            {
+                await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, InvoiceStatus.Completado));
+            }
             return new PaymentModel(accessModel.InvoiceId, accessModel.UserId, accessModel.DateCreated, accessModel.Amount);
         }
     }

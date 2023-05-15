@@ -12,6 +12,8 @@ namespace Contract.Pyment.Invoices
         string Timbrado,
         InvoiceStatus Status,
         Guid ClientId,
+        DateTime DateCreated,
+        string UserCreated,
         IEnumerable<InvoiceDetailModel> InvoiceDetails
     );
 }

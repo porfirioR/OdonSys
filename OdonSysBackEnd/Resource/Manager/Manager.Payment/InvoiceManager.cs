@@ -39,6 +39,17 @@ namespace Manager.Payment
             return invoices.Select(x => GetModel(x));
         }
 
+        public async Task<bool> IsValidInvoiceIdAsync(string id)
+        {
+            return await _invoiceAccess.IsValidInvoiceIdAsync(id);
+        }
+
+        public async Task<InvoiceModel> UpdateInvoiceStatusIdAsync(InvoiceStatusRequest request)
+        {
+            var accessModel = await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, request.Status));
+            return GetModel(accessModel);
+        }
+
         private static InvoiceModel GetModel(InvoiceAccessModel accessModel)
         {
             return new InvoiceModel(
@@ -51,6 +62,8 @@ namespace Manager.Payment
                 accessModel.Timbrado,
                 accessModel.Status,
                 accessModel.ClientId,
+                accessModel.DateCreated,
+                accessModel.UserCreated,
                 accessModel.InvoiceDetails.Select(x => new InvoiceDetailModel(
                     x.Id,
                     x.InvoiceId,
@@ -58,11 +71,6 @@ namespace Manager.Payment
                     x.ProcedurePrice,
                     x.FinalPrice))
             );
-        }
-
-        public async Task<bool> IsValidInvoiceIdAsync(string id)
-        {
-            return await _invoiceAccess.IsValidInvoiceIdAsync(id);
         }
     }
 }

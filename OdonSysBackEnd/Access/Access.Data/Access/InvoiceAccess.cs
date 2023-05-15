@@ -38,6 +38,40 @@ namespace Access.Data.Access
             return entities.Select(x => GetModel(x, clientProcedureEntities));
         }
 
+        public async Task<InvoiceAccessModel> GetInvoiceByIdAsync(string id)
+        {
+            var entity = await _context.Invoices
+                                    .AsNoTracking()
+                                    .Include(x => x.InvoiceDetails)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            var clientProcedureIds = entity.InvoiceDetails.Select(y => y.ClientProcedureId);
+            var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
+
+            return GetModel(entity, clientProcedureEntities);
+        }
+
+        public async Task<bool> IsValidInvoiceIdAsync(string id)
+        {
+            var entity = await _context.Invoices.FirstOrDefaultAsync(x => x.Id == new Guid(id));
+            return entity != null;
+        }
+
+        public async Task<InvoiceAccessModel> UpdateInvoiceStatusIdAsync(InvoiceStatusAccessRequest accessRequest)
+        {
+            var entity = await _context.Invoices
+                                    .Include(x => x.InvoiceDetails)
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(x => x.Id == new Guid(accessRequest.InvoiceId));
+            entity.Status = accessRequest.Status;
+            _context.Invoices.Update(entity);
+            await _context.SaveChangesAsync();
+
+            var clientProcedureIds = entity.InvoiceDetails.Select(x => x.ClientProcedureId);
+            var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
+            return GetModel(entity, clientProcedureEntities);
+        }
+
         private async Task<IEnumerable<ClientProcedure>> GetClientProcedureEntities(IEnumerable<Guid> clientProcedureIds)
         {
             return await _context.ClientProcedures
@@ -57,6 +91,8 @@ namespace Access.Data.Access
                 entity.Timbrado,
                 entity.Status,
                 entity.ClientId,
+                entity.DateCreated,
+                entity.UserCreated,
                 entity.InvoiceDetails.Select(x => new InvoiceDetailAccessModel(
                     x.Id,
                     x.InvoiceId,
@@ -65,12 +101,6 @@ namespace Access.Data.Access
                     x.FinalPrice
                 ))
             );
-        }
-
-        public async Task<bool> IsValidInvoiceIdAsync(string id)
-        {
-            var entity = await _context.Invoices.FirstOrDefaultAsync(x => x.Id == new Guid(id));
-            return entity != null;
         }
     }
 }

@@ -12,6 +12,8 @@ namespace Access.Contract.Invoices
         string Timbrado,
         InvoiceStatus Status,
         Guid ClientId,
+        DateTime DateCreated,
+        string UserCreated,
         IEnumerable<InvoiceDetailAccessModel> InvoiceDetails
     );
 }
