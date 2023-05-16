@@ -4,20 +4,34 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Clientes</h5>
-          <form>
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="nombre" required>
+          <form [formGroup]="clientFormGroup" class="row">
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Nombre'" formControlName="name" [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="mb-3">
-              <label for="apellido" class="form-label">Apellido</label>
-              <input type="text" class="form-control" id="apellido" required>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName" [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="mb-3">
-              <label for="telefono" class="form-label">Teléfono</label>
-              <input type="tel" class="form-control" id="telefono" required>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Apellido'" formControlName="surname" [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <button type="submit" class="btn btn-primary">Agregar Cliente</button>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname" [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'N° de teléfono'" formControlName="phone" [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-select-input [label]="'País'" formControlName="country" [options]="countries" [colClass]="'col-lg-12'"></app-select-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'" [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'" [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'" [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
           </form>
         </div>
       </div>
