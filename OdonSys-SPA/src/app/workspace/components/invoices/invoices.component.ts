@@ -1,34 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { environment } from '../../../../environments/environment';
-import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
-import { FieldId } from '../../enums/field-id.enum';
-import { ClientApiModel } from '../../models/api/clients/client-api-model';
-import { GridActionModel } from '../../models/view/grid-action-model';
-import { SystemAttributeModel } from '../../models/view/system-attribute-model';
-import { ClientApiService } from '../../services/api/client-api.service';
-import { AgGridService } from '../../services/shared/ag-grid.service';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
+import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
+import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
+import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { InvoiceApiService } from '../../services/invoice-api.service';
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.scss']
+  selector: 'app-invoices',
+  templateUrl: './invoices.component.html',
+  styleUrls: ['./invoices.component.scss']
 })
-export class ClientsComponent implements OnInit {
-  public loading: boolean = false
-  public ready: boolean = false
-  public gridOptions!: GridOptions
-  private attributeActive!: string
+export class InvoicesComponent implements OnInit {
+  protected gridOptions!: GridOptions
+  protected ready: boolean = false
+  protected loading: boolean = false
 
   constructor(
-    private readonly clientApiService: ClientApiService,
     private readonly agGridService: AgGridService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly invoiceApiService: InvoiceApiService
   ) { }
 
   ngOnInit() {
-    this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -36,8 +31,8 @@ export class ClientsComponent implements OnInit {
 
   private getList = () => {
     this.loading = true;
-    this.clientApiService.getDoctorPatients().subscribe({
-      next: (response: ClientApiModel[]) => {
+    this.invoiceApiService.getInvoices().subscribe({
+      next: (response: InvoiceApiModel[]) => {
         this.gridOptions.api?.setRowData(response)
         this.gridOptions.api?.sizeColumnsToFit()
         if (response.length === 0) {
@@ -53,7 +48,7 @@ export class ClientsComponent implements OnInit {
   }
 
   private setupAgGrid = (): void => {
-    this.gridOptions = this.agGridService.getClientGridOptions()
+    this.gridOptions = this.agGridService.getInvoiceGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const params: GridActionModel = {
       buttonShow: [ButtonGridActionType.Editar, ButtonGridActionType.Ver],

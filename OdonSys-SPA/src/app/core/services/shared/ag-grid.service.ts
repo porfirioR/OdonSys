@@ -73,6 +73,18 @@ export class AgGridService {
     cellRendererFramework: GridActionsComponent }
   ]
 
+
+  private invoiceColumnDef: ColDef[] = [
+    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Fecha Registrada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 180, resizable: true,
+      valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
+      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ]
+
   private adminClientColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
@@ -158,6 +170,13 @@ export class AgGridService {
   public getClientGridOptions = (): GridOptions => {
     const grid = this.getGridOptions()
     grid.columnDefs = this.columnDef.concat(this.clientColumnDef)
+    return grid
+  }
+
+  public getInvoiceGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.invoiceColumnDef) as ColDef[]
+    (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
     return grid
   }
 
