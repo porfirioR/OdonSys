@@ -39,13 +39,14 @@ export class UpsertInvoiceComponent implements OnInit {
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
     procedure: new FormControl(''),
-    procedures: new FormArray<FormGroup<ProcedureFormGroup>>([])
+    procedures: new FormArray<FormGroup<ProcedureFormGroup>>([]),
+    subTotal: new FormControl({ value: 0, disabled: true}),
+    total: new FormControl({ value: 0, disabled: true})
   })
 
 
   constructor(
     private store: Store,
-
   ) {
     this.countries = EnumHandler.getCountries()
   }
@@ -78,14 +79,20 @@ export class UpsertInvoiceComponent implements OnInit {
         const currentProcedure = this.procedures.find(x => x.id === procedure)!
         const formArray = this.formGroup.controls.procedures as FormArray
         if (!formArray.controls.find((x) => (x as FormGroup).controls.id.value === currentProcedure.id)) {
-          const checkFormGroup = new FormGroup<ProcedureFormGroup>({
+          const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
             name: new FormControl(currentProcedure.name),
             price: new FormControl(currentProcedure.price),
-            finalPrice: new FormControl(currentProcedure.price)
+            finalPrice: new FormControl(currentProcedure.price, Validators.min(0))
           })
-          formArray.push(checkFormGroup)
+          formArray.push(procedureFormGroup)
+          procedureFormGroup.valueChanges.subscribe({
+            next: (value) => {
+              this.calculatePrices()
+            }
+          })
         }
+        this.calculatePrices()
         this.formGroup.controls.procedure.setValue('', { onlySelf: true, emitEvent: false })
       }
     })
@@ -95,5 +102,16 @@ export class UpsertInvoiceComponent implements OnInit {
     const formArray = this.formGroup.controls.procedures as FormArray
     const index = formArray.controls.findIndex((x) => (x as FormGroup).controls.id.value === id)
     formArray.removeAt(index)
+  }
+
+  private calculatePrices = () => {
+    let subTotal = 0
+    let total = 0
+    this.formGroup.controls.procedures.controls.forEach(x => {
+      subTotal += x.value.price!
+      total += x.value.finalPrice!
+    })
+    this.formGroup.controls.subTotal.setValue(subTotal)
+    this.formGroup.controls.total.setValue(total)
   }
 }

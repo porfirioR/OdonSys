@@ -104,24 +104,25 @@
       <div class="col-md-12 p-b-10">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Bloque con tres inputs</h5>
-            <div class="row">
-              <div class="col-md-4">
+            <div class="row justify-content-end">
+              <div class="col-md-3">
                 <div class="mb-3">
-                  <label for="input1" class="form-label">Nombre</label>
-                  <input type="text" class="form-control" id="input1">
+                  <label for="subTotal" class="form-label">Sub Total</label>
+                  <div>
+                    <label class="form-label">
+                      Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}
+                    </label>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-5">
                 <div class="mb-3">
-                  <label for="input2" class="form-label">Monto</label>
-                  <input type="number" class="form-control" id="input2">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label for="input3" class="form-label">Monto Final</label>
-                  <input type="number" class="form-control" id="input3">
+                  <label for="montoTotal" class="form-label">Monto Total</label>
+                  <div>
+                    <label class="form-label">
+                      Gs. {{formGroup.controls.total.value | number:'' : 'es' }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
