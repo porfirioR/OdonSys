@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Observable, debounceTime, tap } from 'rxjs';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
@@ -12,6 +12,7 @@ import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { Country } from '../../../core/enums/country.enum';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
+import { ProcedureFormGroup } from 'src/app/core/forms/procedure-form-group.form';
 
 @Component({
   selector: 'app-upsert-invoice',
@@ -20,9 +21,9 @@ import { EnumHandler } from '../../../core/helpers/enum-handler';
 })
 export class UpsertInvoiceComponent implements OnInit {
   protected clientRowData$!: Observable<ClientModel[]>
-  protected procedureRowData$!: Observable<ProcedureModel[]>
+  protected procedures!: ProcedureModel[]
   protected countries: Map<string, string> = new Map<string, string>()
-
+  protected proceduresValues: Map<string, string> = new Map<string, string>()
   public clientFormGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
@@ -35,6 +36,13 @@ export class UpsertInvoiceComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  public formGroup = new FormGroup({
+    client: this.clientFormGroup,
+    procedure: new FormControl(''),
+    procedures: new FormArray<FormGroup<ProcedureFormGroup>>([])
+  })
+
+
   constructor(
     private store: Store,
 
@@ -51,12 +59,41 @@ export class UpsertInvoiceComponent implements OnInit {
       }
     }))
     let loadingProcedure = true
-    this.procedureRowData$ = this.store.select(selectProcedures).pipe(tap(x => {
+    const procedureRowData$ = this.store.select(selectProcedures).pipe(tap(x => {
       if(loadingProcedure && x.length === 0) {
         this.store.dispatch(fromProceduresActions.loadProcedures())
         loadingProcedure = false
       }
     }))
+    procedureRowData$.subscribe({
+      next: (procedures) => {
+        this.procedures = procedures
+        procedures.forEach(x => this.proceduresValues.set(x.id, x.name))
+      }
+    })
+    this.formGroup.controls.procedure.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe({
+      next: (procedure) => {
+        const currentProcedure = this.procedures.find(x => x.id === procedure)!
+        const formArray = this.formGroup.controls.procedures as FormArray
+        if (!formArray.controls.find((x) => (x as FormGroup).controls.id.value === currentProcedure.id)) {
+          const checkFormGroup = new FormGroup<ProcedureFormGroup>({
+            id: new FormControl(currentProcedure.id),
+            name: new FormControl(currentProcedure.name),
+            price: new FormControl(currentProcedure.price),
+            finalPrice: new FormControl(currentProcedure.price)
+          })
+          formArray.push(checkFormGroup)
+        }
+        this.formGroup.controls.procedure.setValue('', { onlySelf: true, emitEvent: false })
+      }
+    })
   }
 
+  protected removeProcedure = (id: string) => {
+    const formArray = this.formGroup.controls.procedures as FormArray
+    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls.id.value === id)
+    formArray.removeAt(index)
+  }
 }

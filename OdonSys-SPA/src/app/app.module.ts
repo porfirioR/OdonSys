@@ -2,18 +2,21 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localEs from '@angular/common/locales/es';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { CustomErrorHandler } from './core/helpers/custom-error-handler';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
-import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
-import { EffectsModule } from '@ngrx/effects';
+registerLocaleData(localEs, 'es')
 
 @NgModule({
   declarations: [

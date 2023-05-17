@@ -1,36 +1,45 @@
-<div class="p-l-10 p-t-10">
+<div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <section class="row w-100">
     <div class="col-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Clientes</h5>
+          <h5 class="card-title">Cliente</h5>
           <form [formGroup]="clientFormGroup" class="row">
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Nombre'" formControlName="name" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Nombre'" formControlName="name"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Apellido'" formControlName="surname" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Apellido'" formControlName="surname"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'N° de teléfono'" formControlName="phone" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-select-input [label]="'País'" formControlName="country" [options]="countries" [colClass]="'col-lg-12'"></app-select-input>
+              <app-select-input [label]="'País'" formControlName="country" [options]="countries"
+                [colClass]="'col-lg-12'"></app-select-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
             <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'" [colClass]="'col-lg-12'"></app-text-number-input>
+              <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
           </form>
         </div>
@@ -41,41 +50,53 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Procedimientos</h5>
-            <ul>
-              <li>Leyenda 1</li>
-              <li>Leyenda 2</li>
-              <li>Leyenda 3</li>
-            </ul>
+            <div class="col-lg-6 col-md-6">
+              <app-select-input [label]="'Procedimientos'" formControlName="procedure"
+                [options]="proceduresValues"></app-select-input>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-md-12 p-b-10">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Bloque con tres inputs</h5>
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label for="input1" class="form-label">Nombre</label>
-                      <input type="text" class="form-control" id="input1">
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label for="input2" class="form-label">Monto</label>
-                      <input type="number" class="form-control" id="input2">
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label for="input3" class="form-label">Monto Final</label>
-                      <input type="number" class="form-control" id="input3">
-                    </div>
-                  </div>
-                </div>
+            <h5 class="card-title">Procedimientos seleccionados</h5>
+            <div class="row align-center" formArrayName="procedures">
+              <div class="col-md-4">
+                <label for="name" class="form-label fw-bold">Nombre</label>
               </div>
+              <div class="col-md-3">
+                <label for="price" class="form-label fw-bold">Precio</label>
+              </div>
+              <div class="col-md-3">
+                <label for="finalPrice" class="form-label fw-bold">Precio final</label>
+              </div>
+              <ng-container *ngFor="let item of formGroup.controls.procedures.controls">
+                <ng-container [formGroup]="item">
+                  <div class="col-md-4">
+                    <label class="form-label">
+                      {{item.controls.name.value}}
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">
+                      Gs. {{item.controls.price.value | number:'' : 'es' }}
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        Gs.
+                      </span>
+                      <input type="number" class="form-control text-end" formControlName="finalPrice"
+                        placeholder="Precio">
+                    </div>
+                  </div>
+                  <div class="col-md-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-outline-primary">Cancelar</button>
+                  </div>
+                </ng-container>
+              </ng-container>
             </div>
           </div>
         </div>
