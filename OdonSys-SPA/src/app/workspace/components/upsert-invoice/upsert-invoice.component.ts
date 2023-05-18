@@ -13,6 +13,11 @@ import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
+import { ClientApiService } from 'src/app/core/services/api/client-api.service';
+import { InvoiceApiService } from '../../services/invoice-api.service';
+import { ClientProcedureApiService as ClientProcedureApiService } from '../../services/client-procedure-api.service';
+import { CreateClientRequest } from 'src/app/core/models/api/clients/create-client-request';
+import { UpdateClientRequest } from 'src/app/core/models/api/clients/update-client-request';
 
 @Component({
   selector: 'app-upsert-invoice',
@@ -49,6 +54,9 @@ export class UpsertInvoiceComponent implements OnInit {
 
   constructor(
     private store: Store,
+    private readonly clientApiService: ClientApiService,
+    private readonly invoiceApiService: InvoiceApiService,
+    private readonly clientProcedureApiService: ClientProcedureApiService
   ) {
     this.countries = EnumHandler.getCountries()
   }
@@ -165,5 +173,42 @@ export class UpsertInvoiceComponent implements OnInit {
   private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
     const procedures = abstractControl as FormArray<FormGroup<ProcedureFormGroup>>
     return procedures.controls.some(x => x) ? null : { noneSelected : true }
+  }
+
+  protected save = () => {
+    if (this.formGroup.invalid) { return }
+    const clientRequest$ = this.getClientRequest()
+  }
+
+  private getClientRequest = () => {
+    const clientRequest$ = this.formGroup.value.clientId ?
+      this.clientApiService.updateClient(
+        new UpdateClientRequest(
+          this.formGroup.value.clientId!,
+          this.formGroup.controls.client.controls.name.value!,
+          this.formGroup.controls.client.controls.middleName.value!,
+          this.formGroup.controls.client.controls.surname.value!,
+          this.formGroup.controls.client.controls.secondSurname.value!,
+          this.formGroup.controls.client.controls.phone.value!,
+          this.formGroup.controls.client.controls.country.value!,
+          this.formGroup.controls.client.controls.email.value!,
+          this.formGroup.controls.client.controls.document.value!,
+          this.formGroup.controls.client.controls.active.value!
+        )
+      ) :
+      this.clientApiService.createClient(
+        new CreateClientRequest(
+          this.formGroup.controls.client.controls.name.value!,
+          this.formGroup.controls.client.controls.middleName.value!,
+          this.formGroup.controls.client.controls.surname.value!,
+          this.formGroup.controls.client.controls.secondSurname.value!,
+          this.formGroup.controls.client.controls.phone.value!,
+          this.formGroup.controls.client.controls.country.value!,
+          this.formGroup.controls.client.controls.email.value!,
+          this.formGroup.controls.client.controls.document.value!,
+          this.formGroup.controls.client.controls.ruc.value!.toString()
+        )
+      )
+    return clientRequest$
   }
 }

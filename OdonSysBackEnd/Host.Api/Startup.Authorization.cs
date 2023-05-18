@@ -20,11 +20,20 @@ namespace Host.Api
                 new PolicyModel(Policy.CanCreateInvoice, new AuthRequirement(PermissionName.CreateInvoices)),
                 new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthRequirement(PermissionName.ChangeInvoiceStatus)),
 
-                new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
+                new PolicyModel(Policy.CanAccessClient, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AccessClients,
+                        PermissionName.AccessMyInvoices,
+                        PermissionName.AccessInvoices
+                    })
+                ),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateClients,
                         PermissionName.UpdateClients,
+                        PermissionName.AccessMyInvoices,
+                        PermissionName.AccessInvoices,
+                        PermissionName.CreateInvoices
                     })
                 ),
                 new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
