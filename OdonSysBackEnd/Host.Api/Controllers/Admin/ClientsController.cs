@@ -92,7 +92,7 @@ namespace Host.Api.Controllers.Admin
 
         [HttpGet("patients")]
         [Authorize(Policy = Policy.CanAccessClient)]
-        public async Task<IEnumerable<ClientModel>> GetPatientsByUserId()
+        public async Task<IEnumerable<ClientModel>> GetClientsByUserId()
         {
             var id = UserId;
             var userName = UserName;
