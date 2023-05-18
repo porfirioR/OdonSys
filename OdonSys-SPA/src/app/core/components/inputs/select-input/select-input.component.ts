@@ -7,12 +7,11 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./select-input.component.scss']
 })
 export class SelectInputComponent implements ControlValueAccessor {
-  @Input() label: string = '';
-  @Input() colClass: string = 'col-lg-8';
-  @Input() options: Map<string, string> = new Map<string, string>();
-
+  @Input() label: string = ''
+  @Input() colClass: string = 'col-lg-8'
+  @Input() options: Map<string, string> = new Map<string, string>()
   constructor(@Self() public ngControl: NgControl) {
-    this.ngControl.valueAccessor = this;
+    this.ngControl.valueAccessor = this
   }
 
   writeValue(obj: any): void { }

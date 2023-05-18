@@ -3,7 +3,7 @@
   <select class="form-select"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
     [formControl]="$any(ngControl).control">
-    <option [value]="''" disabled>Selecione una opción</option>
+    <option [value]="''">Selecione una opción</option>
     <option [value]="op.key" *ngFor="let op of options | keyvalue">{{op.value}}</option>
   </select>
 

@@ -4,7 +4,18 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Cliente</h5>
-          <form [formGroup]="clientFormGroup" class="row">
+            <div class="d-flex justify-content-between">
+              <div class="col-lg-9 col-md-6">
+                <select class="form-select" formControlName="clientId">
+                  <option [value]="''" disabled>Clientes existentes</option>
+                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
+                </select>
+              </div>
+              <div class="col-lg-2 col-md-6">
+                <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
+              </div>
+            </div>
+            <form [formGroup]="clientFormGroup" class="row">
             <div class="col-lg-6 col-md-6">
               <app-text-number-input [label]="'Nombre'" formControlName="name"
                 [colClass]="'col-lg-12'"></app-text-number-input>
@@ -53,6 +64,9 @@
             <div class="col-lg-6 col-md-6">
               <app-select-input [label]="'Procedimientos'" formControlName="procedure"
                 [options]="proceduresValues"></app-select-input>
+              <div class="invalid-feedback-check-box" *ngIf="formGroup.get('procedures')?.hasError('noneSelected')">
+                Debe seleccionar al menos un procedimiento.
+              </div>
             </div>
           </div>
         </div>
@@ -93,7 +107,7 @@
                     </div>
                   </div>
                   <div class="col-md-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-outline-primary">Cancelar</button>
+                    <button class="btn btn-outline-primary" (click)="removeProcedure(item.controls.id.value!)">Cancelar</button>
                   </div>
                 </ng-container>
               </ng-container>
@@ -103,10 +117,10 @@
       </div>
       <div class="col-md-12 p-b-10">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body amount">
             <div class="row justify-content-end">
               <div class="col-md-3">
-                <div class="mb-3">
+                <div class="">
                   <label for="subTotal" class="form-label">Sub Total</label>
                   <div>
                     <label class="form-label">
@@ -116,7 +130,7 @@
                 </div>
               </div>
               <div class="col-md-5">
-                <div class="mb-3">
+                <div class="">
                   <label for="montoTotal" class="form-label">Monto Total</label>
                   <div>
                     <label class="form-label">
@@ -136,7 +150,7 @@
       <div class="card-body">
         <div class="d-flex justify-content-end">
           <button type="button" class="btn btn-outline-primary m-r-8">Cancelar</button>
-          <button type="button" class="btn btn-outline-primary">Guardar</button>
+          <button type="button" class="btn btn-outline-primary" [disabled]="formGroup.invalid">Guardar</button>
         </div>
       </div>
     </div>

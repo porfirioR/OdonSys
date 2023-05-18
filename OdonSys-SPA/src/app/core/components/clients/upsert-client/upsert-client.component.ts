@@ -111,7 +111,7 @@ export class UpsertClientComponent implements OnInit {
       debounceTime(500),
     ).subscribe({
       next: (document: string | null) => {
-        const checkDigit = MethodHandler.calculateCheckDigit(document!, +this.formGroup.controls.country.value!)
+        const checkDigit = MethodHandler.calculateCheckDigit(document!, this.formGroup.controls.country.value!)
         this.formGroup.controls.ruc.setValue(checkDigit)
       }
     })
