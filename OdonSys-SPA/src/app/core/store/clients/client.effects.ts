@@ -101,6 +101,7 @@ export class ClientEffects {
     data.country,
     data.debts,
     data.phone,
-    data.email
+    data.email,
+    data.doctors
   )
 }

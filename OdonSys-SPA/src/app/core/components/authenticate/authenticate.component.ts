@@ -47,7 +47,7 @@ export class AuthenticateComponent implements OnInit {
     this.formGroup.disable()
     this.authApiService.login(request).subscribe({
       next: (response: AuthApiModel) => {
-        this.formGroup.enable()
+      this.formGroup.enable()
         this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
         this.zone.run(() => this.router.navigate(['']))
         this.load = true

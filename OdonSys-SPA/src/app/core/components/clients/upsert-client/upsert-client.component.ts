@@ -124,11 +124,11 @@ export class UpsertClientComponent implements OnInit {
       this.formGroup.value.middleName!,
       this.formGroup.value.surname!,
       this.formGroup.value.secondSurname!,
+      this.formGroup.value.phone!,
+      this.formGroup.value.country!,
+      this.formGroup.value.email!,
       this.formGroup.value.document!,
       this.formGroup.controls.ruc.value!.toString(),
-      this.formGroup.value.country!,
-      this.formGroup.value.phone!,
-      this.formGroup.value.email!
     )
     this.store.dispatch(fromClientsActions.addClient({ client: newClient }))
   }

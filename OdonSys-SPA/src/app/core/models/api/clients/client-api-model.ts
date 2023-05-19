@@ -1,4 +1,5 @@
 import { Country } from "../../../../core/enums/country.enum";
+import { DoctorApiModel } from "../doctor/doctor-api-model";
 
 export interface ClientApiModel {
     id: string
@@ -14,5 +15,6 @@ export interface ClientApiModel {
     country: Country
     debts: boolean
     phone: string
-    email: string
+    email: string,
+    doctors: DoctorApiModel[]
 }
