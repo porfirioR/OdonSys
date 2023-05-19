@@ -6,7 +6,6 @@ import { RoleApiModel } from '../../models/api/roles/role-api-model';
 import { UpdateRoleApiRequest } from '../../models/api/roles/update-role-api-request';
 import { CreateRoleApiRequest } from '../../models/api/roles/create-role-api-request';
 import { PermissionModel } from '../../models/view/permission-model';
-import { UserRoleApiRequest } from '../../models/api/roles/user-role-api-request';
 
 @Injectable({
   providedIn: 'root'

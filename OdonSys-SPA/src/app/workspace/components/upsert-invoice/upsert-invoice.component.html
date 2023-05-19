@@ -149,7 +149,7 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-primary m-r-8">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary m-r-8" (click)="cancel()">Cancelar</button>
           <button type="button" class="btn btn-outline-primary" [disabled]="formGroup.invalid" (click)="save()">Guardar</button>
         </div>
       </div>

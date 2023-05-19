@@ -1,34 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, debounceTime, forkJoin, of, switchMap, tap } from 'rxjs';
+import { Observable, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import { CreateClientRequest } from '../../../core/models/api/clients/create-client-request';
-import { ClientApiModel } from '../../../core/models/api/clients/client-api-model';
+import { CreateClientProcedureRequest } from '../../models/client-procedures/create-client-procedure-request';
+import { CreateInvoiceRequest } from '../../models/invoices/api/create-invoice-request';
+import { CreateInvoiceDetailRequest } from '../../models/invoices/api/create-invoice-detail-request';
+import { AssignClientRequest } from '../../../core/models/api/clients/assign-client-request';
+import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import  * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
 import { selectProcedures } from '../../../core/store/procedures/procedure.selectors';
 import { Country } from '../../../core/enums/country.enum';
+import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
+import { MethodHandler } from '../../../core/helpers/method-handler';
 import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
 import { ClientApiService } from '../../../core/services/api/client-api.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { ClientProcedureApiService } from '../../services/client-procedure-api.service';
-import { DoctorApiService } from 'src/app/core/services/api/doctor-api.service';
-import { UserInfoService } from 'src/app/core/services/shared/user-info.service';
-import { CreateClientProcedureRequest } from '../../models/client-procedures/create-client-procedure-request';
-import { CreateInvoiceRequest } from '../../models/invoices/api/create-invoice-request';
-import { InvoiceStatus } from 'src/app/core/enums/invoice-status.enum';
-import { CreateInvoiceDetailRequest } from '../../models/invoices/api/create-invoice-detail-request';
-import { AssignClientRequest } from 'src/app/core/models/api/clients/assign-client-request';
-import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
-import { AlertService } from 'src/app/core/services/shared/alert.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MethodHandler } from 'src/app/core/helpers/method-handler';
+import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { AlertService } from '../../../core/services/shared/alert.service';
 
 @Component({
   selector: 'app-upsert-invoice',
@@ -78,9 +77,6 @@ export class UpsertInvoiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.router);
-    console.log(this.routeActive);
-    
     let loadingClient = true
     const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {
@@ -146,6 +142,12 @@ export class UpsertInvoiceComponent implements OnInit {
         throw e;
       }
     })
+  }
+
+  protected cancel = () => {
+    console.log(this.router);
+    console.log(this.routeActive);
+    this.router.navigate(['trabajo/facturas'])
   }
 
   private formGroupValueChanges = () => {

@@ -9,12 +9,13 @@ export class LocalStorageService {
     localStorage.removeItem(key)
   }
 
-  public setData = (key: string, value: any) => {
-    localStorage.setItem(key, JSON.stringify(value))
+  public setData = (key: string, value: any, isString = false) => {
+    localStorage.setItem(key, isString ? value : JSON.stringify(value))
   }
 
-  public getByKey = (key: string): any => {
-    return JSON.parse(localStorage.getItem(key) as any)
+  public getByKey = (key: string, isObject: boolean = true): any => {
+    const value = localStorage.getItem(key) as any
+    return isObject ? JSON.parse(value) : value
   }
 
   public getArrayByKey = (key: string): Array<any> => {

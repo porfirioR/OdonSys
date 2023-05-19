@@ -16,7 +16,14 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input type="email" class="form-control" placeholder="Correo" formControlName="email" aria-label="Correo">
+                <input type="email" class="form-control" placeholder="Correo" formControlName="email" aria-label="Correo"
+                [class.is-invalid]="formGroup.controls['email'].invalid">
+                <div *ngIf="formGroup.controls.email.errors?.email" class="invalid-feedback">
+                  Correo inválido
+                </div>
+                <div *ngIf="formGroup.controls.email.errors?.required" class="invalid-feedback">
+                  Correo es requerido
+                </div>
               </div>
               <div class="input-group mb-3">
                 <div class="input-group-text" placement="top" [ngbTooltip]="currentMessage">

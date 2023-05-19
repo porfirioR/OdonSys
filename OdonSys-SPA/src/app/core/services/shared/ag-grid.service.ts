@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColDef, GridApi, GridOptions, IRowNode, RowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
 import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 
 @Injectable({
@@ -73,7 +73,6 @@ export class AgGridService {
     cellRendererFramework: GridActionsComponent }
   ]
 
-
   private invoiceColumnDef: ColDef[] = [
     { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true },
@@ -115,10 +114,10 @@ export class AgGridService {
           filter: 'agDateColumnFilter',
           filterParams: {
             comparator(filterLocalDateAtMidnight: Date, cellValue: string): number {
-              const cellDate = cellValue ? (new Date(cellValue)) : '';
-              if (cellDate < filterLocalDateAtMidnight) { return -1;
-              } else if (cellDate > filterLocalDateAtMidnight) { return 1;
-              } else { return 0; }
+              const cellDate = cellValue ? (new Date(cellValue)) : ''
+              if (cellDate < filterLocalDateAtMidnight) { return -1
+              } else if (cellDate > filterLocalDateAtMidnight) { return 1
+              } else { return 0 }
             }
           }
         },
