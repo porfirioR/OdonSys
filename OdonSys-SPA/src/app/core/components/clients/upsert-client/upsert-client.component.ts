@@ -29,7 +29,7 @@ export class UpsertClientComponent implements OnInit {
     middleName: new FormControl('', [Validators.maxLength(25)]),
     surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     secondSurname: new FormControl('', [Validators.maxLength(25)]),
-    document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+    document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0), Validators.minLength(6)]),
     ruc: new FormControl(0, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
     country: new FormControl(Country.Paraguay, [Validators.required]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
