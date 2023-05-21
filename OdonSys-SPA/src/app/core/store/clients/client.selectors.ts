@@ -6,3 +6,9 @@ export const selectClients = createSelector(
   selectClientsFeature,
   fromClient.selectAll
 )
+
+export const selectActiveClients = createSelector(
+  selectClientsFeature,
+  selectClients,
+  (state, clients) => clients.filter(x => x.active)
+)

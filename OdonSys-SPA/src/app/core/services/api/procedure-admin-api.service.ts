@@ -11,31 +11,31 @@ import { PatchRequest } from '../../models/api/patch-request';
   providedIn: 'root'
 })
 export class ProcedureApiService {
-  private baseUrl = `${environment.apiUrl}/procedure`;
+  private baseUrl = `${environment.apiUrl}/procedure`
 
   constructor(private http: HttpClient) { }
 
   public getAll = (): Observable<ProcedureApiModel[]> => {
-    return this.http.get<ProcedureApiModel[]>(`${this.baseUrl}`);
+    return this.http.get<ProcedureApiModel[]>(`${this.baseUrl}`)
   }
 
   public getById = (id: string, active: boolean): Observable<ProcedureApiModel> => {
-    return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${id}/${active}`);
+    return this.http.get<ProcedureApiModel>(`${this.baseUrl}/${id}/${active}`)
   }
 
   public delete = (id: string): Observable<object> => {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.http.delete(`${this.baseUrl}/${id}`)
   }
 
   public create = (model: CreateProcedureRequest): Observable<ProcedureApiModel> => {
-    return this.http.post<ProcedureApiModel>(this.baseUrl, model);
+    return this.http.post<ProcedureApiModel>(this.baseUrl, model)
   }
 
   public update = (model: UpdateProcedureRequest): Observable<ProcedureApiModel> => {
-    return this.http.put<ProcedureApiModel>(`${this.baseUrl}`, model);
+    return this.http.put<ProcedureApiModel>(`${this.baseUrl}`, model)
   }
 
   public changeVisibility = (id: string, request: PatchRequest): Observable<ProcedureApiModel> => {
-    return this.http.patch<ProcedureApiModel>(`${this.baseUrl}/${id}`, [request]);
+    return this.http.patch<ProcedureApiModel>(`${this.baseUrl}/${id}`, [request])
   }
 }

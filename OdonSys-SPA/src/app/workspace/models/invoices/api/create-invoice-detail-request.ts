@@ -1,7 +1,7 @@
 export class CreateInvoiceDetailRequest {
   constructor(
-    clientProcedureId: string,
-    procedurePrice: number,
-    finalPrice: number
+    public clientProcedureId: string,
+    public procedurePrice: number,
+    public finalPrice: number
   ) {}
 }

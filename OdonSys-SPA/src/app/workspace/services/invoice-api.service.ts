@@ -16,7 +16,6 @@ export class InvoiceApiService {
     private readonly http: HttpClient,
   ) { }
 
-
   public getInvoices = (): Observable<InvoiceApiModel[]> => {
     return this.http.get<InvoiceApiModel[]>(`${this.baseUrl}`)
   }

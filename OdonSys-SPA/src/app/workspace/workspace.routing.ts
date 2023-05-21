@@ -6,6 +6,7 @@ import { InvoicesComponent } from './components/invoices/invoices.component';
 import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoice.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { Permission } from '../core/enums/permission.enum';
+import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -26,9 +27,10 @@ export const WorkspaceRoutes: Routes = [
         path: 'facturas/registrar',
         component: UpsertInvoiceComponent,
         canActivate: [PermissionGuard],
+        canDeactivate: [PreventUnsavedChangesWorkspace],
         title: 'Registrar Facturas',
         data: { permissions: [ Permission.CreateInvoices ] }
-      },
+      }
     ]
-  },
+  }
 ];

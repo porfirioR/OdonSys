@@ -3,14 +3,14 @@ import { CreateInvoiceDetailRequest } from "./create-invoice-detail-request";
 
 export class CreateInvoiceRequest {
   constructor(
-    invoiceNumber: string,
-    iva10: number,
-    totalIva: number,
-    subTotal: number,
-    total: number,
-    timbrado: string,
-    status: InvoiceStatus,
-    clientId: string,
-    invoiceDetails: CreateInvoiceDetailRequest[]
+    public invoiceNumber: string,
+    public iva10: number,
+    public totalIva: number,
+    public subTotal: number,
+    public total: number,
+    public timbrado: string,
+    public status: InvoiceStatus,
+    public clientId: string,
+    public invoiceDetails: CreateInvoiceDetailRequest[]
   ) { }
 }

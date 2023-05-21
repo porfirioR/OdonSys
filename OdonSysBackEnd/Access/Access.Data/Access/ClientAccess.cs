@@ -38,6 +38,7 @@ namespace Access.Data.Access
         public async Task<IEnumerable<ClientAccessModel>> GetAllAsync()
         {
             var entities = await _context.Clients
+                                    .Include(x => x.UserClients).ThenInclude(x => x.User)
                                     .AsNoTracking()
                                     .ToListAsync();
             var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
@@ -79,7 +80,7 @@ namespace Access.Data.Access
             return respose;
         }
 
-        public async Task<IEnumerable<ClientAccessModel>> AssignClientToDoctorAsync(AssignClientAccessRequest accessRequest)
+        public async Task<IEnumerable<ClientAccessModel>> AssignClientToUserAsync(AssignClientAccessRequest accessRequest)
         {
             var entity = _mapper.Map<UserClient>(accessRequest);
             _context.Entry(entity).State = EntityState.Added;

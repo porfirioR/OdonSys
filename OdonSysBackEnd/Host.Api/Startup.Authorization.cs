@@ -20,21 +20,33 @@ namespace Host.Api
                 new PolicyModel(Policy.CanCreateInvoice, new AuthRequirement(PermissionName.CreateInvoices)),
                 new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthRequirement(PermissionName.ChangeInvoiceStatus)),
 
-                new PolicyModel(Policy.CanAccessClient, new AuthRequirement(PermissionName.AccessClients)),
+                new PolicyModel(Policy.CanAccessClient, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AccessClients,
+                        PermissionName.AccessMyInvoices,
+                        PermissionName.AccessInvoices
+                    }
+                )),
                 new PolicyModel(Policy.CanManageClient, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateClients,
                         PermissionName.UpdateClients,
+                        PermissionName.CreateInvoices
                     })
                 ),
                 new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreClients,
                         PermissionName.DeactivateClients
-                    })
-                ),
+                    }
+                )),
                 new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
-                new PolicyModel(Policy.CanAssignClient, new AuthRequirement(PermissionName.AssignClients)),
+                new PolicyModel(Policy.CanAssignClient, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AssignClients,
+                        PermissionName.CreateInvoices
+                    }
+                )),
                 new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),
                 new PolicyModel(Policy.CanApproveDoctor, new AuthRequirement(PermissionName.ApproveDoctors)),
                 new PolicyModel(Policy.CanDeleteDoctor, new AuthRequirement(PermissionName.DeleteDoctors)),
@@ -43,8 +55,8 @@ namespace Host.Api
                     new List<PermissionName> {
                         PermissionName.RestoreDoctors,
                         PermissionName.DeactivateDoctors
-                    })
-                ),
+                    }
+                )),
                 new PolicyModel(Policy.CanUpdateDoctor, new AuthRequirement(PermissionName.UpdateDoctors)),
                 new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(PermissionName.AccessDoctors)),
                 //new PolicyModel(Policy.CanManageClient, new AuthRequirement(new List<PermissionName> {
@@ -52,7 +64,12 @@ namespace Host.Api
                 //        PermissionName.UpdateDoctors,
                 //        PermissionName.DeleteDoctors,
                 //    })),
-                new PolicyModel(Policy.CanCreateClientProcedure, new AuthRequirement(PermissionName.CreateClientProcedures)),
+                new PolicyModel(Policy.CanCreateClientProcedure, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.CreateClientProcedures,
+                        PermissionName.CreateInvoices
+                    }
+                )),
                 new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
                 new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
@@ -60,15 +77,15 @@ namespace Host.Api
                     new List<PermissionName> {
                         PermissionName.RestoreProcedures,
                         PermissionName.DeactivateProcedures
-                    })
-                ),
+                    }
+                )),
                 new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateProcedures,
                         PermissionName.UpdateProcedures,
                         PermissionName.DeleteProcedures,
-                    })
-                ),
+                    }
+                )),
                 new PolicyModel(Policy.CanAccessPayment, new AuthRequirement(PermissionName.AccessPayments)),
                 new PolicyModel(Policy.CanRegisterPayment, new AuthRequirement(PermissionName.RegisterPayments)),
             };
