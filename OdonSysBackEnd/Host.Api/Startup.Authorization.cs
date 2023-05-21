@@ -32,8 +32,8 @@ namespace Host.Api
                         PermissionName.CreateClients,
                         PermissionName.UpdateClients,
                         PermissionName.CreateInvoices
-                    })
-                ),
+                    }
+                )),
                 new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreClients,

@@ -10,6 +10,7 @@ import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
 import { UpdateUserRequest } from '../../../core/models/users/update-user-request';
+import { SelectModel } from '../../../core/models/view/select-model';
 import { Country } from '../../../core/enums/country.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.form';
@@ -37,7 +38,7 @@ export class MyConfigurationComponent implements OnInit {
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
   protected id!: string
-  protected countries: Map<string, string> = new Map<string, string>()
+  protected countries: SelectModel[] = []
   private canAccessData = false
 
   constructor(

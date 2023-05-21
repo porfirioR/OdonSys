@@ -1,5 +1,6 @@
 import { Component, Input, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { SelectModel } from '../../../../core/models/view/select-model';
 
 @Component({
   selector: 'app-select-input',
@@ -9,7 +10,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 export class SelectInputComponent implements ControlValueAccessor {
   @Input() label: string = ''
   @Input() colClass: string = 'col-lg-8'
-  @Input() options: Map<string, string> = new Map<string, string>()
+  @Input() options: SelectModel[] = []
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this
   }

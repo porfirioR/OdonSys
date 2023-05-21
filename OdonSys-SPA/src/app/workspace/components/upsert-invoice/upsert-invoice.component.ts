@@ -34,6 +34,7 @@ import { ClientProcedureApiService } from '../../services/client-procedure-api.s
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { SelectModel } from 'src/app/core/models/view/select-model';
 
 @Component({
   selector: 'app-upsert-invoice',
@@ -45,8 +46,8 @@ export class UpsertInvoiceComponent implements OnInit {
   protected saving: boolean = false
   protected clients!: ClientModel[]
   private procedures!: ProcedureModel[]
-  protected countries: Map<string, string> = new Map<string, string>()
-  protected proceduresValues: Map<string, string> = new Map<string, string>()
+  protected countries: SelectModel[] = []
+  protected proceduresValues: SelectModel[] = []
   protected clientsValues: Map<string, string> = new Map<string, string>()
   protected clientFormGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -104,7 +105,7 @@ export class UpsertInvoiceComponent implements OnInit {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
-        procedures.forEach(x => this.proceduresValues.set(x.id, x.name))
+        procedures.forEach(x => this.proceduresValues.push(new SelectModel(x.id, x.name)))
         this.load = true
       }, error: (e) => {
         this.alertService.showError('Error al traer los recuros. si el error persiste contacte con el administrador')
@@ -127,6 +128,7 @@ export class UpsertInvoiceComponent implements OnInit {
     const formArray = this.formGroup.controls.procedures as FormArray
     const index = formArray.controls.findIndex((x) => (x as FormGroup).controls.id.value === id)
     formArray.removeAt(index)
+    this.proceduresValues.find(x => x.key === id)!.disabled = false
     this.calculatePrices()
   }
 
@@ -166,6 +168,7 @@ export class UpsertInvoiceComponent implements OnInit {
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0))
           })
           formArray.push(procedureFormGroup)
+          this.proceduresValues.find(x => x.key === currentProcedure.id)!.disabled = true
           procedureFormGroup.valueChanges.subscribe({ next: () => this.calculatePrices() })
         }
         this.calculatePrices()
@@ -201,10 +204,9 @@ export class UpsertInvoiceComponent implements OnInit {
       }
     })
     this.formGroup.controls.client.controls.country.valueChanges.subscribe(() => this.formGroup.controls.client.controls.document.updateValueAndValidity())
-    
   }
 
-  private calculatePrices = () => {
+  private calculatePrices = (): void => {
     let subTotal = 0
     let total = 0
     this.formGroup.controls.procedures.controls.forEach(x => {
