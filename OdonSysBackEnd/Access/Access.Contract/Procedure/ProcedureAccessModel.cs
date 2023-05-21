@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Access.Contract.Procedure
+﻿namespace Access.Contract.Procedure
 {
     public class ProcedureAccessModel
     {

@@ -3,5 +3,5 @@
     public record LoginDataAccess(
         string Email,
         string Password
-    ) { }
+    );
 }

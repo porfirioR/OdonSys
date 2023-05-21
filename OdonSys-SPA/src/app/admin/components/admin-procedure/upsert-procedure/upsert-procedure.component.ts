@@ -11,8 +11,8 @@ import { ToothModel } from '../../../../core/models/tooth/tooth-model';
 import { CreateProcedureRequest } from '../../../../core/models/procedure/create-procedure-request';
 import { UpdateProcedureRequest } from '../../../../core/models/procedure/update-procedure-request';
 import { savingSelector } from '../../../../core/store/saving/saving.selector';
-import { selectProcedures } from '../../../../core/store/procedure/procedure.selectors';
-import * as fromProceduresActions from '../../../../core/store/procedure/procedure.actions';
+import { selectProcedures } from '../../../../core/store/procedures/procedure.selectors';
+import * as fromProceduresActions from '../../../../core/store/procedures/procedure.actions';
 import { UserInfoService } from '../../../../core/services/shared/user-info.service';
 
 @Component({
@@ -21,22 +21,21 @@ import { UserInfoService } from '../../../../core/services/shared/user-info.serv
   styleUrls: ['./upsert-procedure.component.scss']
 })
 export class UpsertProcedureComponent implements OnInit {
-  public load: boolean = false;
-  public saving$: Observable<boolean> = this.store.select(savingSelector)
-  public title = 'Crear'
-  private id = ''
-  protected canRestore = false
-
   public formGroup = new FormGroup( {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),
     price : new FormControl(0, [Validators.required, Validators.min(0)]),
   })
-  public teethList: ToothModel[] = []
-  public jaw = Jaw
-  public quadrant = Quadrant
-  public teethFormArray: UntypedFormArray = new UntypedFormArray([])
+  public saveData: boolean = false
+  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected title = 'Crear'
+  protected canRestore = false
+  protected teethList: ToothModel[] = []
+  protected jaw = Jaw
+  protected quadrant = Quadrant
+  protected teethFormArray: UntypedFormArray = new UntypedFormArray([])
+  private id = ''
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -46,10 +45,11 @@ export class UpsertProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadValues();
+    this.loadValues()
   }
 
   protected save = () => {
+    this.saveData = true
     this.id ? this.update() : this.create()
   }
 
@@ -78,10 +78,6 @@ export class UpsertProcedureComponent implements OnInit {
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }
-        this.load = true
-      }, error: (e) => {
-        this.load = true
-        throw e
       }
     })
     // this.activatedRoute.params.pipe(

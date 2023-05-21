@@ -4,7 +4,7 @@
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
     [formControl]="$any(ngControl).control">
     <option [value]="''" disabled>Selecione una opción</option>
-    <option [value]="op.key" *ngFor="let op of options | keyvalue">{{op.value}}</option>
+    <option [value]="op.key" *ngFor="let op of options" [disabled]="op.disabled">{{op.value}}</option>
   </select>
 
   <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor seleccionar {{label}}</div>

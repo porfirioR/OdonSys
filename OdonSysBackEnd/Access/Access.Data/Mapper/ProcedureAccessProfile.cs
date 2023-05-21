@@ -1,9 +1,8 @@
 ﻿using Access.Contract.Procedure;
 using Access.Sql.Entities;
 using AutoMapper;
-using System.Linq;
 
-namespace Access.Admin.Mapper
+namespace Access.Data.Mapper
 {
     public class ProcedureAccessProfile : Profile
     {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
 using Utilities.Enums;
 
 namespace Host.Api.Models.Auth

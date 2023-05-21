@@ -2,9 +2,6 @@
 using AutoMapper;
 using Contract.Admin.Clients;
 using Contract.Admin.Users;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Manager.Admin
 {
@@ -23,7 +20,7 @@ namespace Manager.Admin
         {
             var accessRequest = _mapper.Map<CreateClientAccessRequest>(request);
             var accessModel = await _clientAccess.CreateClientAsync(accessRequest);
-            var allClientsForCurrentDoctor = await AssignClientToDoctor(new AssignClientRequest(request.UserId, accessModel.Id));
+            var allClientsForCurrentDoctor = await AssignClientToUser(new AssignClientRequest(request.UserId, accessModel.Id));
             var currentDoctor = allClientsForCurrentDoctor.SelectMany(x => x.Doctors).Distinct().First(x => x.Id == request.UserId);
             var model = _mapper.Map<ClientModel>(accessModel);
             model.Doctors = new List<DoctorModel>() { currentDoctor };
@@ -67,10 +64,10 @@ namespace Manager.Admin
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
 
-        public async Task<IEnumerable<ClientModel>> AssignClientToDoctor(AssignClientRequest request)
+        public async Task<IEnumerable<ClientModel>> AssignClientToUser(AssignClientRequest request)
         {
             var accessRequest = new AssignClientAccessRequest(request.UserId, request.ClientId);
-            var accessModel = await _clientAccess.AssignClientToDoctorAsync(accessRequest);
+            var accessModel = await _clientAccess.AssignClientToUserAsync(accessRequest);
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
     }

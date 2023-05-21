@@ -1,6 +1,4 @@
 ﻿using Access.Contract.Users;
-using System;
-using System.Collections.Generic;
 using Utilities.Enums;
 
 namespace Access.Contract.Clients

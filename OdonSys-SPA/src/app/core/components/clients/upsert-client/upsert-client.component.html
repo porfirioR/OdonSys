@@ -1,36 +1,36 @@
-<app-progress *ngIf="!load || saving"></app-progress>
-<div class="container" *ngIf="load">
+<app-progress *ngIf="saving"></app-progress>
+<div class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}} paciente</h3>
   </div>
   <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <form [formGroup]="formGroup" (ngSubmit)="save()">
-      <div class="row m-l-12">
-        <div class="col-lg-6">
+      <div class="row m-l-12 m-r-12">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Apellido'" formControlName="surname"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-select-input [label]="'País'" formControlName="country" [options]="countries"></app-select-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"></app-text-number-input>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6 col-md-6">
           <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"></app-text-number-input>
         </div>
       </div>

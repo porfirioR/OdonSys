@@ -1,5 +1,5 @@
-<app-progress *ngIf="!ready || loading"></app-progress>
-<div *ngIf="ready" class="container">
+<app-progress *ngIf="!load"></app-progress>
+<div class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>Pacientes</h3>
     <button type="button" class="btn btn-outline-primary" routerLink="registrar" *ngIf="canCreate">
@@ -7,10 +7,11 @@
       Registrar
     </button>
   </div>
-  <div class="p-t-16">
+  <div class="m-t-16">
     <ng-container *ngIf="gridOptions">
       <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
-        [gridOptions]="gridOptions">
+        [gridOptions]="gridOptions"
+        [rowData]="rowData$ | async">
       </ag-grid-angular>
     </ng-container>
   </div>

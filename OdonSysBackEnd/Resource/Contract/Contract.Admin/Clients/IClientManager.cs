@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Contract.Admin.Clients
+﻿namespace Contract.Admin.Clients
 {
     public interface IClientManager
     {
@@ -12,6 +9,6 @@ namespace Contract.Admin.Clients
         Task<ClientModel> GetByDocumentAsync(string documentId);
         Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName);
         Task<ClientModel> DeleteAsync(string id);
-        Task<IEnumerable<ClientModel>> AssignClientToDoctor(AssignClientRequest request);
+        Task<IEnumerable<ClientModel>> AssignClientToUser(AssignClientRequest request);
     }
 }

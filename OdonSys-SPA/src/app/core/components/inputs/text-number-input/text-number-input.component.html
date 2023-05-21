@@ -6,11 +6,11 @@
     [formControl]="$any(ngControl).control" placeholder={{label}}>
 
   <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor ingresar {{label}}</div>
-  <div *ngIf="ngControl.control?.errors?.minLength" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.minlength?.requiredLength}}
+  <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
+    {{label}} debe tener como mínimo {{ngControl.control?.errors?.minlength?.requiredLength}} dígitos y/o letras
   </div>
   <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength?.requiredLength}}
+    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength?.requiredLength}} dígitos y/o letras
   </div>
   <div *ngIf="ngControl.control?.errors?.invalidRepeatPassword" class="invalid-feedback">
     La contraseña no coincide
@@ -22,6 +22,6 @@
     {{label}} debe ser mayor que {{ngControl.control?.errors?.min?.min}}
   </div>
   <div *ngIf="ngControl.control?.errors?.invalidPhone" class="invalid-feedback">
-    {{label}} invalido, solo soporta signo '+' y números
+    {{label}} inválido, solo soporta signo '+' y números
   </div>
 </div>

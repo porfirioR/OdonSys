@@ -1,5 +1,5 @@
-<app-progress *ngIf="!load || (saving$ | async)"></app-progress>
-<div *ngIf="load" class="container">
+<app-progress *ngIf="saving$ | async"></app-progress>
+<div class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}} Rol</h3>
   </div>
@@ -17,7 +17,7 @@
         <h3>Permisos</h3>
         <ng-container *ngFor="let subGroupPermissions of formGroup.controls.subGroupPermissions.controls; let i = index">
           <div class="form-check col-6">
-            <h5>{{subGroupPermissions.value.subGroup}}</h5>
+            <h5 class="offset-3">{{subGroupPermissions.value.subGroup}}</h5>
             <ng-container>
               <div class="col-lg-6 m-l-30" *ngFor="let permissions of subGroupPermissions.controls.permissions.controls">
                 <input class="form-check-input" type="checkbox" [formControl]="permissions.controls.value" [id]="permissions.controls.code.value">
@@ -30,10 +30,10 @@
           Debe seleccionar al menos un permiso.
         </div>
       </div>
-    <div class="form-group text-center btn-footer">
-      <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()" [disabled]="(saving$ | async)">Cancelar</button>
-      <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
-    </div>
+      <div class="form-group text-center btn-footer">
+        <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()" [disabled]="(saving$ | async)">Cancelar</button>
+        <button class="btn btn-outline-primary" type="submit" [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
+      </div>
     </form>
   </div>
 </div>

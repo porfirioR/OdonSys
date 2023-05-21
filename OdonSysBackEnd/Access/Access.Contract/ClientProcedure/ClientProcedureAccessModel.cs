@@ -1,11 +1,8 @@
-﻿using Utilities.Enums;
-
-namespace Access.Contract.ClientProcedure
+﻿namespace Access.Contract.ClientProcedure
 {
     public record ClientProcedureAccessModel(
+        string Id,
         string ProcedureId,
-        string UserClientId,
-        ProcedureStatus Status,
-        int Price
-    ) { }
+        string UserClientId
+    );
 }

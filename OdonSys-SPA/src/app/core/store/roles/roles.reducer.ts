@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import * as RolesActions from './roles.actions';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
+import * as RolesActions from './roles.actions';
 import { RoleModel } from '../../models/view/role-model';
 
 export const roleFeatureKey = 'roles'
@@ -15,15 +15,14 @@ export const adapter: EntityAdapter<RoleModel> = createEntityAdapter<RoleModel>(
 export const initialState: RoleState = adapter.getInitialState({ })
 
 export function selectRoleId(a: RoleModel): string {
-  return a.code;
+  return a.code
 }
 
 export function sortByCode(a: RoleModel, b: RoleModel): number {
-  return a.code.localeCompare(b.code);
+  return a.code.localeCompare(b.code)
 }
 
-
-export const rolesReducer = createReducer(
+export const reducer = createReducer(
   initialState,
   on(RolesActions.allRolesLoaded,
     (state, action) => adapter.setAll(action.roles, state)

@@ -6,8 +6,6 @@ using Host.Api.Models.Clients;
 using Host.Api.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
 {
@@ -32,10 +30,10 @@ namespace Host.Api.Controllers.Workspace
 
         [HttpPost]
         [Authorize(Policy = Policy.CanAssignClient)]
-        public async Task<IEnumerable<ClientModel>> AssignClientToDoctor([FromBody] AssignClientApiRequest apiRequest)
+        public async Task<IEnumerable<ClientModel>> AssignClientToUser([FromBody] AssignClientApiRequest apiRequest)
         {
             var user = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
-            var model = await _clientManager.AssignClientToDoctor(user);
+            var model = await _clientManager.AssignClientToUser(user);
             return model;
         }
 

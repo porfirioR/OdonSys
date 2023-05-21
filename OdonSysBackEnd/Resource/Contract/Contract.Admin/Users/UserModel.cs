@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Contract.Admin.Users
+﻿namespace Contract.Admin.Users
 {
     public class UserModel
     {

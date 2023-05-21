@@ -24,10 +24,6 @@ namespace Access.Sql.Configurations
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .Property(x => x.Price)
-                .IsRequired();
-
-            builder
                 .HasOne(x => x.UserClient)
                 .WithMany(x => x.ClientProcedures)
                 .HasForeignKey(x => x.UserClientId);

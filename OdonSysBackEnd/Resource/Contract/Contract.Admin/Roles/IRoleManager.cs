@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace Contract.Admin.Roles
+﻿namespace Contract.Admin.Roles
 {
     public interface IRoleManager
     {

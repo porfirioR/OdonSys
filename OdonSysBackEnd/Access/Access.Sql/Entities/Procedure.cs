@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Access.Sql.Entities
+﻿namespace Access.Sql.Entities
 {
     public class Procedure : BaseEntity
     {

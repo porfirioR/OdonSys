@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Contract.Admin.Roles;
 using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
@@ -8,9 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Host.Api.Controllers.Workspace
 {
@@ -48,12 +44,12 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanModifyVisibilityDoctor)]
         public async Task<DoctorModel> PatchDoctor([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateDoctorRequest> patchDoctor)
         {
-            if (patchDoctor == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede ser null.")));
+            if (patchDoctor == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
             var updateDoctorRequest = _mapper.Map<UpdateDoctorRequest>(await _userManager.GetByIdAsync(id));
             patchDoctor.ApplyTo(updateDoctorRequest);
             if (!ModelState.IsValid)
             {
-                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "Valor inválido.")));
             }
             var model = await _userManager.UpdateAsync(updateDoctorRequest);
             return model;

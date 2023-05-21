@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Contract.Admin.Users
+﻿namespace Contract.Admin.Users
 {
     public record UserClientModel(
         Guid Id,

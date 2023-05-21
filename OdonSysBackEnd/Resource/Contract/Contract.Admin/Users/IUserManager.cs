@@ -1,6 +1,4 @@
 ﻿using Contract.Admin.Auth;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Contract.Admin.Users
 {

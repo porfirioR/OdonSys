@@ -4,12 +4,8 @@ using Access.Sql.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Access.Admin.Access
+namespace Access.Data.Access
 {
     public class UserAccess : IUserDataAccess
     {
@@ -24,7 +20,12 @@ namespace Access.Admin.Access
 
         public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
         {
-            var entity = await GetUserByIdAsync(id);
+            var entity = await _context.Set<User>()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            if (entity is null)
+            {
+                throw new KeyNotFoundException($"id {id}");
+            }
             entity.Approved = true;
             await _context.SaveChangesAsync();
             return _mapper.Map<UserDataAccessModel>(entity);

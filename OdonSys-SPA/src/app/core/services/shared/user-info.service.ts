@@ -8,20 +8,20 @@ import { Permission } from '../../enums/permission.enum';
   providedIn: 'root'
 })
 export class UserInfoService {
-  private userKey = 'userData';
-  private userToken = 'token';
-  private permissionKey = 'permissions';
+  private userKey = 'userData'
+  private userToken = 'token'
+  private permissionKey = 'permissions'
 
   constructor(
     private readonly localStorageService: LocalStorageService
   ) { }
 
   public getToken = (): string => {
-    return this.localStorageService.getByKey(this.userToken)
+    return this.localStorageService.getByKey(this.userToken, false)
   }
 
   public setUserLogin = (auth: AuthApiModel): void => {
-    this.localStorageService.setData(this.userToken, auth.token)
+    this.localStorageService.setData(this.userToken, auth.token, true)
     this.localStorageService.setData(this.userKey, JSON.stringify(auth.user))
   }
 
@@ -42,8 +42,8 @@ export class UserInfoService {
   }
 
   public getUserData = (): UserApiModel => {
-    const userData = JSON.parse(this.localStorageService.getByKey(this.userKey)) as UserApiModel;
-    return userData;
+    const userData: UserApiModel = JSON.parse(this.localStorageService.getByKey(this.userKey))
+    return userData
   }
 
   public getPermissions = (): string[] => {

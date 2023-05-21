@@ -13,7 +13,7 @@ import { RoleApiService } from './role-api.service';
   providedIn: 'root'
 })
 export class AuthApiService {
-  private baseUrl = `${environment.apiUrl}/authentication`;
+  private baseUrl = `${environment.apiUrl}/authentication`
 
   constructor(
     private readonly http: HttpClient,
@@ -27,7 +27,7 @@ export class AuthApiService {
       headers: new HttpHeaders(
         {
           'Content-Type': 'application/json',
-          'Authorization': `Basic ${auth}`,
+          'Authorization': `Basic ${auth}`
         }
       )
     }
