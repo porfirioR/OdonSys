@@ -61,9 +61,9 @@
       <div class="col-md-12 p-b-10">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Lista de procedimientos</h5>
+            <h5 class="card-title">Procedimientos</h5>
             <div class="col-lg-6 col-md-6">
-              <app-select-input [label]="'Procedimientos'" formControlName="procedure"
+              <app-select-input [label]="'Lista de procedimientos'" formControlName="procedure"
                 [options]="proceduresValues"></app-select-input>
               <div class="invalid-feedback-check-box" *ngIf="formGroup.get('procedures')?.hasError('noneSelected')">
                 Debe seleccionar al menos un procedimiento.
