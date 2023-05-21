@@ -72,7 +72,12 @@ namespace Host.Api
                 )),
                 new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
 
-                new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(PermissionName.AccessProcedures)),
+                new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AccessProcedures,
+                        PermissionName.CreateInvoices
+                    }
+                )),
                 new PolicyModel(Policy.CanModifyVisibilityProcedure, new AuthRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreProcedures,
