@@ -7,8 +7,10 @@ import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
+import { SelectModel } from '../../../../core/models/view/select-model';
 import { selectClients } from '../../../../core/store/clients/client.selectors';
 import * as fromClientsActions from '../../../../core/store/clients/client.actions';
+import { savingSelector } from '../../../../core/store/saving/saving.selector';
 import { UserInfoService } from '../../../../core/services/shared/user-info.service';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
 import { MethodHandler } from '../../../../core/helpers/method-handler';
@@ -16,7 +18,6 @@ import { EnumHandler } from '../../../../core/helpers/enum-handler';
 import { UserFormGroup } from '../../../../core/forms/user-form-group.form';
 import { Country } from '../../../../core/enums/country.enum';
 import { Permission } from '../../../../core/enums/permission.enum';
-import { savingSelector } from '../../../../core/store/saving/saving.selector';
 
 @Component({
   selector: 'app-upsert-client',
@@ -40,7 +41,7 @@ export class UpsertClientComponent implements OnInit {
   protected title: string = 'Registrar '
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected saving: boolean = false
-  protected countries: Map<string, string> = new Map<string, string>()
+  protected countries: SelectModel[] = []
   private id = ''
   private fullFieldEdit = false
 

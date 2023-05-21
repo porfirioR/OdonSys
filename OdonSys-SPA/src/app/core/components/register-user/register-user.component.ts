@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CustomValidators } from '../../helpers/custom-validators';
 import { EnumHandler } from '../../helpers/enum-handler';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
+import { SelectModel } from '../../models/view/select-model';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { Country } from '../../enums/country.enum';
@@ -27,7 +28,7 @@ export class RegisterUserComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(40), Validators.email]),
     country: new FormControl<Country>(Country.Paraguay, [Validators.required])
   })
-  protected countries: Map<string, string> = new Map<string, string>();
+  protected countries: SelectModel[] = []
 
   constructor(
     private readonly router: Router,
