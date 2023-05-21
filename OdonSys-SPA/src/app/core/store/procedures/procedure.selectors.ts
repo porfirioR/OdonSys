@@ -6,3 +6,9 @@ export const selectProcedures = createSelector(
   selectRolesFeature,
   fromProcedure.selectAll
 )
+
+export const selectActiveProcedures = createSelector(
+  selectRolesFeature,
+  selectProcedures,
+  (state, procedures) => procedures.filter(x => x.active)
+)

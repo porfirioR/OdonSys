@@ -3,25 +3,31 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
+
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
-import { selectActiveClients, selectClients } from '../../../core/store/clients/client.selectors';
 import { CreateClientRequest } from '../../../core/models/api/clients/create-client-request';
 import { CreateClientProcedureRequest } from '../../models/client-procedures/create-client-procedure-request';
 import { CreateInvoiceRequest } from '../../models/invoices/api/create-invoice-request';
 import { CreateInvoiceDetailRequest } from '../../models/invoices/api/create-invoice-detail-request';
-import { AssignClientRequest } from '../../../core/models/api/clients/assign-client-request';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
+import { AssignClientRequest } from '../../../core/models/api/clients/assign-client-request';
+
+import { selectActiveClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import  * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
-import { selectProcedures } from '../../../core/store/procedures/procedure.selectors';
+import { selectActiveProcedures } from '../../../core/store/procedures/procedure.selectors';
+
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
+
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
+
 import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
+
 import { ClientApiService } from '../../../core/services/api/client-api.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { ClientProcedureApiService } from '../../services/client-procedure-api.service';
@@ -87,7 +93,7 @@ export class UpsertInvoiceComponent implements OnInit {
       }
     }))
     let loadingProcedure = true
-    const procedureRowData$ = this.store.select(selectProcedures).pipe(tap(x => {
+    const procedureRowData$ = this.store.select(selectActiveProcedures).pipe(tap(x => {
       if(loadingProcedure && x.length === 0) {
         this.store.dispatch(fromProceduresActions.loadProcedures())
         loadingProcedure = false
@@ -141,8 +147,7 @@ export class UpsertInvoiceComponent implements OnInit {
   }
 
   protected exit = () => {
-    console.log(this.router);
-    console.log(this.routeActive);
+    // TODO change path if is myInvoices
     this.router.navigate(['trabajo/facturas'])
   }
 
