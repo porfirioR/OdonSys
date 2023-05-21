@@ -34,6 +34,7 @@ import { RolesEffects } from './store/roles/roles.effects';
 import { ProcedureEffects } from './store/procedures/procedure.effects';
 import { ClientEffects } from './store/clients/client.effects';
 import { environment } from '../../environments/environment';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { environment } from '../../environments/environment';
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
     EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects]),
+    NgxMaskModule.forChild()
   ],
   declarations: [
     HeaderComponent,
@@ -72,6 +74,7 @@ import { environment } from '../../environments/environment';
     CommonModule,
     AgGridModule,
     NgbModule,
+    NgxMaskModule,
     HeaderComponent,
     PrincipalPageComponent,
     NotFoundComponent,
@@ -83,7 +86,7 @@ import { environment } from '../../environments/environment';
     AuthenticateComponent,
     ClientsComponent,
     UpsertClientComponent,
-    AnimationComponent,
+    AnimationComponent
   ],
   providers:[
     AuthGuard,

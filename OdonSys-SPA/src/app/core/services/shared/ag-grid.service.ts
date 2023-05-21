@@ -88,7 +88,7 @@ export class AgGridService {
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Documento', field: 'document', type: 'numberColumn', resizable: true },
+    { headerName: 'Documento', field: 'document', type: 'numberColumn', resizable: true, maxWidth: 140 },
     { headerName: 'Visible', field: 'active', filter: false, resizable: true, minWidth: 80, maxWidth: 90,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
@@ -196,7 +196,7 @@ export class AgGridService {
   }
 
   private localDateFormatter(data: any): string {
-    return !data.value ? '' : new Date(data.value).toLocaleDateString()
+    return !data.value ? '' : new Date(data.value).toLocaleDateString('es')
   }
 
 }

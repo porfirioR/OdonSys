@@ -15,10 +15,16 @@
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  padding-right: 0 !important;
-  padding-left: 10px !important;
+  // position: absolute;
+  // bottom: 10px;
+  // padding-right: 10px !important;
+  // padding-left: 10px !important;
+  // margin-right: calc(-0.5 * var(--bs-gutter-x));
+
+  & .card-body {
+    padding-bottom: 0.5rem !important;
+    padding-top: 0.5rem !important;
+  }
 }
 
 .col-md-4, .col-md-3 {
@@ -30,6 +36,23 @@ footer {
   display: flex !important;
   align-items: center !important;
 }
-.card-body .amount {
-  padding-bottom: 0;
+
+.card-body.amount {
+  padding-bottom: 0.3rem !important;
+  padding-top: 0.3rem !important;
+}
+
+.procedures {
+  overflow-x: hidden;
+  max-height: 530px !important;
+}
+
+#selected-procedures-items {
+  max-height: 456px !important;
+  overflow-x: hidden;
+}
+
+#actions-buttons {
+  margin-left: 25.7%;
+  width: 74.3%;
 }

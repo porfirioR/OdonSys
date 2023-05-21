@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
-import { selectClients } from '../../../core/store/clients/client.selectors';
+import { selectActiveClients, selectClients } from '../../../core/store/clients/client.selectors';
 import { CreateClientRequest } from '../../../core/models/api/clients/create-client-request';
 import { CreateClientProcedureRequest } from '../../models/client-procedures/create-client-procedure-request';
 import { CreateInvoiceRequest } from '../../models/invoices/api/create-invoice-request';
@@ -35,12 +35,14 @@ import { AlertService } from '../../../core/services/shared/alert.service';
   styleUrls: ['./upsert-invoice.component.scss']
 })
 export class UpsertInvoiceComponent implements OnInit {
+  protected load: boolean = false
+  protected saving: boolean = false
   protected clients!: ClientModel[]
   private procedures!: ProcedureModel[]
   protected countries: Map<string, string> = new Map<string, string>()
   protected proceduresValues: Map<string, string> = new Map<string, string>()
   protected clientsValues: Map<string, string> = new Map<string, string>()
-  public clientFormGroup = new FormGroup<UserFormGroup>({
+  protected clientFormGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
     surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -78,18 +80,12 @@ export class UpsertInvoiceComponent implements OnInit {
 
   ngOnInit() {
     let loadingClient = true
-    const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
+    const clientRowData$ = this.store.select(selectActiveClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {
         this.store.dispatch(fromClientsActions.loadClients())
         loadingClient = false
       }
     }))
-    clientRowData$.subscribe({
-      next: (clients) => {
-        this.clients = clients
-        clients.forEach(x => this.clientsValues.set(x.id, x.name))
-      }
-    })
     let loadingProcedure = true
     const procedureRowData$ = this.store.select(selectProcedures).pipe(tap(x => {
       if(loadingProcedure && x.length === 0) {
@@ -97,10 +93,17 @@ export class UpsertInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    procedureRowData$.subscribe({
-      next: (procedures) => {
+    combineLatest([clientRowData$, procedureRowData$]).subscribe({
+      next: ([clients, procedures]) => {
+        this.clients = clients
+        clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
         procedures.forEach(x => this.proceduresValues.set(x.id, x.name))
+        this.load = true
+      }, error: (e) => {
+        this.alertService.showError('Error al traer los recuros. si el error persiste contacte con el administrador')
+        this.exit()
+        throw e;
       }
     })
     this.formGroupValueChanges()
@@ -108,18 +111,8 @@ export class UpsertInvoiceComponent implements OnInit {
   }
 
   protected cleanClient = () => {
-    this.formGroup.controls.client.patchValue({
-      name: '',
-      middleName: '',
-      surname: '',
-      secondSurname: '',
-      document: '',
-      ruc: '',
-      phone: '',
-      country: Country.Paraguay,
-      email: '',
-      active: true
-    })
+    this.formGroup.controls.client.reset()
+    this.formGroup.controls.client.patchValue({ country: Country.Paraguay })
     this.formGroup.controls.clientId.setValue('', { emitEvent: false })
     this.formGroup.controls.client.enable()
   }
@@ -133,18 +126,21 @@ export class UpsertInvoiceComponent implements OnInit {
 
   protected save = () => {
     if (this.formGroup.invalid) { return }
+    this.saving = true
     this.generateRequest().subscribe({
-      next: (invoice) => {
-        this.alertService.showSuccess('Factura creado con exito')
-        this.router.navigate(['trabajo/facturas'])
+      next: () => {
+        this.saving = false
+        this.alertService.showSuccess('Factura creada con exito')
+        this.formGroup.reset()
+        this.exit()
       }, error: (e) => {
-        
+        this.saving = false
         throw e;
       }
     })
   }
 
-  protected cancel = () => {
+  protected exit = () => {
     console.log(this.router);
     console.log(this.routeActive);
     this.router.navigate(['trabajo/facturas'])

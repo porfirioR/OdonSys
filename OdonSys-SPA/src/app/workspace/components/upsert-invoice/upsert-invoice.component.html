@@ -1,13 +1,14 @@
+<app-progress *ngIf="!load || saving"></app-progress>
 <div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <section class="row w-100">
     <div class="col-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Cliente</h5>
+          <h5 class="card-title">Pacientes</h5>
             <div class="d-flex justify-content-between">
               <div class="col-lg-9 col-md-6">
                 <select class="form-select" formControlName="clientId">
-                  <option [value]="''" disabled>Clientes existentes</option>
+                  <option [value]="''" disabled>Pacientes existentes</option>
                   <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
                 </select>
               </div>
@@ -56,7 +57,7 @@
         </div>
       </div>
     </div>
-    <div class="col-9">
+    <section class="col-9">
       <div class="col-md-12 p-b-10">
         <div class="card">
           <div class="card-body">
@@ -71,22 +72,24 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 p-b-10">
+      <section class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 523 : 551}">
             <h5 class="card-title">Procedimientos seleccionados</h5>
-            <div class="row align-center" formArrayName="procedures">
-              <div class="col-md-4">
-                <label for="name" class="form-label fw-bold">Nombre</label>
-              </div>
-              <div class="col-md-3">
-                <label for="price" class="form-label fw-bold">Precio</label>
-              </div>
-              <div class="col-md-3">
-                <label for="finalPrice" class="form-label fw-bold">Precio final</label>
-              </div>
-              <ng-container *ngFor="let item of formGroup.controls.procedures.controls">
-                <ng-container [formGroup]="item">
+            <div formArrayName="procedures">
+              <span class="row">
+                <div class="col-md-4">
+                  <label for="name" class="fw-bold">Nombre</label>
+                </div>
+                <div class="col-md-3">
+                  <label for="price" class="fw-bold">Precio</label>
+                </div>
+                <div class="col-md-3">
+                  <label for="finalPrice" class="fw-bold">Precio final</label>
+                </div>
+              </span>
+              <div class="row align-center" id="selected-procedures-items">
+                <ng-container [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
                   <div class="col-md-4">
                     <label class="form-label">
                       {{item.controls.name.value}}
@@ -102,38 +105,37 @@
                       <span class="input-group-text">
                         Gs.
                       </span>
-                      <input type="number" class="form-control text-end" formControlName="finalPrice"
-                        placeholder="Precio">
+                      <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio" [mask]="'separator.0'" thousandSeparator=".">
                     </div>
                   </div>
                   <div class="col-md-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-outline-primary" (click)="removeProcedure(item.controls.id.value!)">Cancelar</button>
                   </div>
                 </ng-container>
-              </ng-container>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-12 p-b-10">
+      </section>
+      <section class="col-md-12 p-b-10">
         <div class="card">
           <div class="card-body amount">
             <div class="row justify-content-end">
               <div class="col-md-3">
                 <div class="">
-                  <label for="subTotal" class="form-label">Sub Total</label>
+                  <label for="subTotal">Sub Total</label>
                   <div>
-                    <label class="form-label">
+                    <label class=" m-b-0">
                       Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}
                     </label>
                   </div>
                 </div>
               </div>
               <div class="col-md-5">
-                <div class="">
-                  <label for="montoTotal" class="form-label">Monto Total</label>
+                <div>
+                  <label for="montoTotal">Monto Total</label>
                   <div>
-                    <label class="form-label">
+                    <label class=" m-b-0">
                       Gs. {{formGroup.controls.total.value | number:'' : 'es' }}
                     </label>
                   </div>
@@ -142,15 +144,15 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </section>
   </section>
-  <footer class="row w-100">
-    <div class="card">
+  <footer class="row col-12">
+    <div class="card" id="actions-buttons">
       <div class="card-body">
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-primary m-r-8" (click)="cancel()">Cancelar</button>
-          <button type="button" class="btn btn-outline-primary" [disabled]="formGroup.invalid" (click)="save()">Guardar</button>
+          <button type="button" class="btn btn-outline-primary m-r-8" (click)="exit()" [disabled]="saving">Cancelar</button>
+          <button type="button" class="btn btn-outline-primary" [disabled]="formGroup.invalid || saving" (click)="save()">Guardar</button>
         </div>
       </div>
     </div>
