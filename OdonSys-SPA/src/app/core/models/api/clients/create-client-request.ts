@@ -6,10 +6,10 @@ export class CreateClientRequest {
     protected middleName: string,
     protected surname: string,
     protected secondSurname: string,
-    protected document: string,
-    protected ruc: string,
-    protected country: Country,
     protected phone: string,
-    protected email: string
+    protected country: Country,
+    protected email: string,
+    protected document: string,
+    protected ruc: string
   ) { }
 }

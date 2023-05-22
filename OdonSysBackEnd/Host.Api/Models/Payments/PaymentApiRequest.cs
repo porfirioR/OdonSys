@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Contract.Pyment.Invoices;
+using Contract.Pyment.Payments;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace Host.Api.Models.Payments
 {
     public class PaymentApiRequest : IValidatableObject
     {
         [Required]
-        public string HeaderBillId { set; get; }
+        public string InvoiceId { set; get; }
         [Required]
         public string UserId { set; get; }
         [Required]
@@ -15,6 +18,24 @@ namespace Host.Api.Models.Payments
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
+            var invoiceManager = (IInvoiceManager)validationContext.GetService(typeof(IInvoiceManager));
+            var paymentManager = (IPaymentManager)validationContext.GetService(typeof(IPaymentManager));
+            var isValidId = invoiceManager.IsValidInvoiceIdAsync(InvoiceId).GetAwaiter().GetResult();
+            if (!isValidId)
+            {
+                results.Add(new ValidationResult($"{InvoiceId} es inválido o no existe."));
+            }
+            var invoice = invoiceManager.GetInvoicesAsync().GetAwaiter().GetResult().First(x => x.Id == new Guid(InvoiceId));
+            var invoicePayments = paymentManager.GetPaymentsByInvoiceIdAsync(InvoiceId).GetAwaiter().GetResult();
+            if (Amount > invoice.Total)
+            {
+                results.Add(new ValidationResult($"{Amount} supera el monto de la factura {invoice.Total}."));
+            }
+            var activeDebts = invoice.Total - invoicePayments.Select(x => x.Amount).Sum();
+            if (Amount > activeDebts)
+            {
+                results.Add(new ValidationResult($"{Amount} supera la deuda faltante {activeDebts}."));
+            }
             return results;
         }
     }

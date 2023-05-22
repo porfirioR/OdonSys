@@ -3,25 +3,27 @@ import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
 import { LocalStorageService } from './local-storage.service';
 import { Permission } from '../../enums/permission.enum';
+import { SubscriptionService } from './subscription.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserInfoService {
-  private userKey = 'userData';
-  private userToken = 'token';
-  private permissionKey = 'permissions';
+  private userKey = 'userData'
+  private userToken = 'token'
+  private permissionKey = 'permissions'
 
   constructor(
-    private readonly localStorageService: LocalStorageService
+    private readonly localStorageService: LocalStorageService,
+    private readonly subscriptionService: SubscriptionService
   ) { }
 
   public getToken = (): string => {
-    return this.localStorageService.getByKey(this.userToken)
+    return this.localStorageService.getByKey(this.userToken, false)
   }
 
   public setUserLogin = (auth: AuthApiModel): void => {
-    this.localStorageService.setData(this.userToken, auth.token)
+    this.localStorageService.setData(this.userToken, auth.token, true)
     this.localStorageService.setData(this.userKey, JSON.stringify(auth.user))
   }
 
@@ -33,6 +35,7 @@ export class UserInfoService {
 
   public setUserPermissions = (permissions: string[]): void => {
     this.localStorageService.setData(this.permissionKey, permissions)
+    this.subscriptionService.emitCheckMenu(true)
   }
 
   public clearAllCredentials = () => {
@@ -42,8 +45,8 @@ export class UserInfoService {
   }
 
   public getUserData = (): UserApiModel => {
-    const userData = JSON.parse(this.localStorageService.getByKey(this.userKey)) as UserApiModel;
-    return userData;
+    const userData: UserApiModel = JSON.parse(this.localStorageService.getByKey(this.userKey))
+    return userData
   }
 
   public getPermissions = (): string[] => {

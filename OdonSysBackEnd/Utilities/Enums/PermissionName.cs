@@ -8,6 +8,13 @@
         AssignRoleDoctors,
         #endregion
 
+        #region Invoices
+        AccessInvoices,
+        AccessMyInvoices,
+        CreateInvoices,
+        ChangeInvoiceStatus,
+        #endregion
+
         #region Clients
         AccessClients,
         CreateClients,
@@ -42,7 +49,12 @@
         RestoreDoctors,
         DeactivateDoctors,
         ApproveDoctors,
-        AssignDoctorRoles
+        AssignDoctorRoles,
+        #endregion
+
+        #region Payments
+        AccessPayments,
+        RegisterPayments
         #endregion
     }
 }

@@ -7,8 +7,10 @@ import { Observable } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { CreateClientRequest } from '../../../../core/models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../../../core/models/api/clients/update-client-request';
+import { SelectModel } from '../../../../core/models/view/select-model';
 import { selectClients } from '../../../../core/store/clients/client.selectors';
 import * as fromClientsActions from '../../../../core/store/clients/client.actions';
+import { savingSelector } from '../../../../core/store/saving/saving.selector';
 import { UserInfoService } from '../../../../core/services/shared/user-info.service';
 import { CustomValidators } from '../../../../core/helpers/custom-validators';
 import { MethodHandler } from '../../../../core/helpers/method-handler';
@@ -16,7 +18,6 @@ import { EnumHandler } from '../../../../core/helpers/enum-handler';
 import { UserFormGroup } from '../../../../core/forms/user-form-group.form';
 import { Country } from '../../../../core/enums/country.enum';
 import { Permission } from '../../../../core/enums/permission.enum';
-import { savingSelector } from '../../../../core/store/saving/saving.selector';
 
 @Component({
   selector: 'app-upsert-client',
@@ -29,18 +30,18 @@ export class UpsertClientComponent implements OnInit {
     middleName: new FormControl('', [Validators.maxLength(25)]),
     surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     secondSurname: new FormControl('', [Validators.maxLength(25)]),
-    document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
+    document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0), Validators.minLength(6)]),
     ruc: new FormControl(0, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
     country: new FormControl(Country.Paraguay, [Validators.required]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  public saveData: boolean = false
   protected title: string = 'Registrar '
-  protected load: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected saving: boolean = false
-  protected countries: Map<string, string> = new Map<string, string>()
+  protected countries: SelectModel[] = []
   private id = ''
   private fullFieldEdit = false
 
@@ -65,6 +66,7 @@ export class UpsertClientComponent implements OnInit {
 
   protected save = (): void => {
     if (this.formGroup.invalid) { return }
+    this.saveData = true
     this.id ? this.update() : this.create()
   }
 
@@ -101,10 +103,6 @@ export class UpsertClientComponent implements OnInit {
             this.formGroup.controls.email.disable()
           }
         }
-        this.load = true
-      }, error: (e) => {
-        this.load = true
-        throw e
       }
     })
   }
@@ -114,7 +112,7 @@ export class UpsertClientComponent implements OnInit {
       debounceTime(500),
     ).subscribe({
       next: (document: string | null) => {
-        const checkDigit = MethodHandler.calculateCheckDigit(document!, +this.formGroup.controls.country.value!)
+        const checkDigit = MethodHandler.calculateCheckDigit(document!, this.formGroup.controls.country.value!)
         this.formGroup.controls.ruc.setValue(checkDigit)
       }
     })
@@ -127,11 +125,11 @@ export class UpsertClientComponent implements OnInit {
       this.formGroup.value.middleName!,
       this.formGroup.value.surname!,
       this.formGroup.value.secondSurname!,
+      this.formGroup.value.phone!,
+      this.formGroup.value.country!,
+      this.formGroup.value.email!,
       this.formGroup.value.document!,
       this.formGroup.controls.ruc.value!.toString(),
-      this.formGroup.value.country!,
-      this.formGroup.value.phone!,
-      this.formGroup.value.email!
     )
     this.store.dispatch(fromClientsActions.addClient({ client: newClient }))
   }

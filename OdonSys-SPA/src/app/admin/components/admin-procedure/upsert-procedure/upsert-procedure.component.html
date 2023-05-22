@@ -1,5 +1,5 @@
-<app-progress *ngIf="!load || (saving$ | async)"></app-progress>
-<div *ngIf="load" class="container">
+<app-progress *ngIf="saving$ | async"></app-progress>
+<div class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}} Procedimiento</h3>
   </div>

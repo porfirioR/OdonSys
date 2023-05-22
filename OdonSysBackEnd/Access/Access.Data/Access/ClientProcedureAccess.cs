@@ -62,5 +62,12 @@ namespace Access.Data.Access
                             .SingleOrDefaultAsync(x => x.UserClientId == new Guid(userClientId) && x.ProcedureId == new Guid(procedureId));
             return entity != null;
         }
+
+        public async Task<bool> CheckExistsClientProcedureAsync(string clientProcedureId)
+        {
+            var entity = await _context.ClientProcedures
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(clientProcedureId));
+            return entity != null;
+        }
     }
 }

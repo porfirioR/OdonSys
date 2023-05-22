@@ -22,16 +22,22 @@ namespace Access.Data.Access
             var entity = _mapper.Map<Payment>(accessRequest);
             _context.Payments.Add(entity);
             await _context.SaveChangesAsync();
-            return new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount);
+            return new PaymentAccessModel(
+                entity.InvoiceId.ToString(),
+                entity.UserId.ToString(),
+                entity.DateCreated,
+                entity.Amount
+            );
         }
 
-        public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByBillIdAsync(string headerBillId)
+        public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByInvoiceIdAsync(string invoiceId)
         {
             var entities = await _context.Payments
-                                .Where(x => x.HeaderBillId == new Guid(headerBillId))
+                                .AsNoTracking()
+                                .Where(x => x.InvoiceId == new Guid(invoiceId))
                                 .ToListAsync();
 
-            return entities.Select(entity => new PaymentAccessModel(entity.HeaderBillId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
+            return entities.Select(entity => new PaymentAccessModel(entity.InvoiceId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
         }
     }
 }

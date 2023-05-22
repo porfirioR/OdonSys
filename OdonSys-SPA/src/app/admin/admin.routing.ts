@@ -19,7 +19,8 @@ export const AdminRoutes: Routes = [
         component: AdminProcedureComponent,
         canActivate: [PermissionGuard],
         title: 'Procedimientos',
-        data: { permissions: [ Permission.AccessProcedures ] }},
+        data: { permissions: [ Permission.AccessProcedures ] }
+      },
       {
         path: 'procedimientos/crear',
         component: UpsertProcedureComponent,

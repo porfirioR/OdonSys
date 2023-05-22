@@ -1,6 +1,8 @@
 export enum PermissionSubGroup {
-  Client = 'Cliente',
+  Client = 'Paciente',
   Doctor = 'Doctor',
   Procedure = 'Procedimiento',
-  Role = 'Rol'
+  Role = 'Rol',
+  Invoice = 'Factura',
+  Payment = 'Pago'
 }

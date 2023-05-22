@@ -1,7 +1,7 @@
 ﻿namespace Contract.Pyment.Payments
 {
     public record PaymentModel(
-        string HeaderBillId,
+        string InvoiceId,
         string UserId,
         DateTime DateCreated,
         int Amount

@@ -9,6 +9,6 @@
         Task<ClientAccessModel> GetByDocumentAsync(string document);
         Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string id, string userName);
         Task<ClientAccessModel> DeleteAsync(string id);
-        Task<IEnumerable<ClientAccessModel>> AssignClientToDoctorAsync(AssignClientAccessRequest accessRequest);
+        Task<IEnumerable<ClientAccessModel>> AssignClientToUserAsync(AssignClientAccessRequest accessRequest);
     }
 }

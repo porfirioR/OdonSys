@@ -22,53 +22,6 @@ namespace Access.Sql.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Access.Sql.Entities.BillDetail", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("HeaderBillId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ClientProcedureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<int>("FinalPrice")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProcedurePrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id", "HeaderBillId", "ClientProcedureId");
-
-                    b.HasIndex("ClientProcedureId")
-                        .IsUnique();
-
-                    b.HasIndex("HeaderBillId");
-
-                    b.ToTable("BillDetails");
-                });
-
             modelBuilder.Entity("Access.Sql.Entities.Client", b =>
                 {
                     b.Property<Guid>("Id")
@@ -197,7 +150,7 @@ namespace Access.Sql.Migrations
                     b.ToTable("ClientProcedures");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.HeaderBill", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -205,11 +158,6 @@ namespace Access.Sql.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<string>("BillNumber")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -223,6 +171,11 @@ namespace Access.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GetDate()");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<int>("Iva10")
                         .HasColumnType("int");
@@ -256,7 +209,54 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("HeaderBills");
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("Access.Sql.Entities.InvoiceDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ClientProcedureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<DateTime>("DateModified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GetDate()");
+
+                    b.Property<int>("FinalPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcedurePrice")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id", "InvoiceId", "ClientProcedureId");
+
+                    b.HasIndex("ClientProcedureId")
+                        .IsUnique();
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("InvoiceDetails");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Payment", b =>
@@ -277,7 +277,7 @@ namespace Access.Sql.Migrations
                     b.Property<DateTime>("DateModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("HeaderBillId")
+                    b.Property<Guid>("InvoiceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserCreated")
@@ -291,7 +291,7 @@ namespace Access.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HeaderBillId");
+                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("UserId");
 
@@ -652,25 +652,6 @@ namespace Access.Sql.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.BillDetail", b =>
-                {
-                    b.HasOne("Access.Sql.Entities.ClientProcedure", "ClientProcedure")
-                        .WithOne("BillDetail")
-                        .HasForeignKey("Access.Sql.Entities.BillDetail", "ClientProcedureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Access.Sql.Entities.HeaderBill", "HeaderBill")
-                        .WithMany("BillDetails")
-                        .HasForeignKey("HeaderBillId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ClientProcedure");
-
-                    b.Navigation("HeaderBill");
-                });
-
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
                 {
                     b.HasOne("Access.Sql.Entities.Procedure", "Procedure")
@@ -694,10 +675,10 @@ namespace Access.Sql.Migrations
                     b.Navigation("UserClient");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.HeaderBill", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
                 {
                     b.HasOne("Access.Sql.Entities.Client", "Client")
-                        .WithMany("HeaderBills")
+                        .WithMany("Invoices")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -705,11 +686,30 @@ namespace Access.Sql.Migrations
                     b.Navigation("Client");
                 });
 
+            modelBuilder.Entity("Access.Sql.Entities.InvoiceDetail", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.ClientProcedure", "ClientProcedure")
+                        .WithOne("InvoiceDetail")
+                        .HasForeignKey("Access.Sql.Entities.InvoiceDetail", "ClientProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Access.Sql.Entities.Invoice", "Invoice")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClientProcedure");
+
+                    b.Navigation("Invoice");
+                });
+
             modelBuilder.Entity("Access.Sql.Entities.Payment", b =>
                 {
-                    b.HasOne("Access.Sql.Entities.HeaderBill", "HeaderBill")
+                    b.HasOne("Access.Sql.Entities.Invoice", "Invoice")
                         .WithMany("Payments")
-                        .HasForeignKey("HeaderBillId")
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -719,7 +719,7 @@ namespace Access.Sql.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("HeaderBill");
+                    b.Navigation("Invoice");
 
                     b.Navigation("User");
                 });
@@ -794,19 +794,19 @@ namespace Access.Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.Client", b =>
                 {
-                    b.Navigation("HeaderBills");
+                    b.Navigation("Invoices");
 
                     b.Navigation("UserClients");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
                 {
-                    b.Navigation("BillDetail");
+                    b.Navigation("InvoiceDetail");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.HeaderBill", b =>
+            modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
                 {
-                    b.Navigation("BillDetails");
+                    b.Navigation("InvoiceDetails");
 
                     b.Navigation("Payments");
                 });

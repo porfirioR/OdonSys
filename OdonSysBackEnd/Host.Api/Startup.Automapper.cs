@@ -11,7 +11,7 @@ namespace Host.Api
         public void ConfigureMappings(IServiceCollection services)
         {
             services.AddAutoMapper(
-                typeof(BillAccessProfile),
+                typeof(InvoiceAccessProfile),
                 typeof(ClientAccessProfile),
                 typeof(ClientProcedureAccessProfile),
                 typeof(PaymentAccessRequest),

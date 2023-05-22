@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColDef, GridApi, GridOptions, IRowNode, RowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
 import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 
 @Injectable({
@@ -73,11 +73,22 @@ export class AgGridService {
     cellRendererFramework: GridActionsComponent }
   ]
 
+  private invoiceColumnDef: ColDef[] = [
+    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Fecha Registrada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 180, resizable: true,
+      valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
+      tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
+    cellRendererFramework: GridActionsComponent }
+  ]
+
   private adminClientColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Documento', field: 'document', type: 'numberColumn', resizable: true },
+    { headerName: 'Documento', field: 'document', type: 'numberColumn', resizable: true, maxWidth: 140 },
     { headerName: 'Visible', field: 'active', filter: false, resizable: true, minWidth: 80, maxWidth: 90,
       cellRenderer: this.booleanFormatter, cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor})
     },
@@ -103,10 +114,10 @@ export class AgGridService {
           filter: 'agDateColumnFilter',
           filterParams: {
             comparator(filterLocalDateAtMidnight: Date, cellValue: string): number {
-              const cellDate = cellValue ? (new Date(cellValue)) : '';
-              if (cellDate < filterLocalDateAtMidnight) { return -1;
-              } else if (cellDate > filterLocalDateAtMidnight) { return 1;
-              } else { return 0; }
+              const cellDate = cellValue ? (new Date(cellValue)) : ''
+              if (cellDate < filterLocalDateAtMidnight) { return -1
+              } else if (cellDate > filterLocalDateAtMidnight) { return 1
+              } else { return 0 }
             }
           }
         },
@@ -161,6 +172,13 @@ export class AgGridService {
     return grid
   }
 
+  public getInvoiceGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.invoiceColumnDef) as ColDef[]
+    (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
+    return grid
+  }
+
   public getCurrentRowNode = (gridOptions: GridOptions): IRowNode<any> => {
     const gridApi = gridOptions.api as GridApi
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number
@@ -178,7 +196,7 @@ export class AgGridService {
   }
 
   private localDateFormatter(data: any): string {
-    return !data.value ? '' : new Date(data.value).toLocaleDateString()
+    return !data.value ? '' : new Date(data.value).toLocaleDateString('es')
   }
 
 }

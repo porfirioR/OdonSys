@@ -1,7 +1,7 @@
 ﻿namespace Contract.Pyment.Payments
 {
     public record PaymentRequest(
-        string HeaderBillId,
+        string InvoiceId,
         string UserId,
         int Amount
     );

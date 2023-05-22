@@ -234,37 +234,37 @@
     </index>
    </folder>
   </table>
-  <table id="TAB63" populated="true" UUID="8f0a3698-ef1b-4326-a414-0f692e325b19" name="headerBills" objectType="TABLE" physicalName="headerBills" >
+  <table id="TAB63" populated="true" UUID="8f0a3698-ef1b-4326-a414-0f692e325b19" name="invoices" objectType="TABLE" physicalName="invoices" >
    <remarks></remarks>
    <folder id="FOLTAB631" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL64" populated="true" UUID="790969dd-d53b-4423-b6fd-6a8e66de1f3e" autoIncrement="false" autoIncrementSequenceName="headerBills_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL64" populated="true" UUID="790969dd-d53b-4423-b6fd-6a8e66de1f3e" autoIncrement="false" autoIncrementSequenceName="invoices_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL65" populated="true" UUID="fec5de5d-e3e3-4597-93ed-b079bb4c470b" autoIncrement="false" autoIncrementSequenceName="headerBills_billNumber_seq" defaultValue="" name="billNumber" nullable="0" physicalName="billNumber" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL65" populated="true" UUID="fec5de5d-e3e3-4597-93ed-b079bb4c470b" autoIncrement="false" autoIncrementSequenceName="invoices_billNumber_seq" defaultValue="" name="billNumber" nullable="0" physicalName="billNumber" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL66" populated="true" UUID="337fded1-9b3b-4886-8d9a-6f41ad33b588" autoIncrement="false" autoIncrementSequenceName="headerBills_clientId_seq" defaultValue="" name="clientId" nullable="0" physicalName="clientId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL66" populated="true" UUID="337fded1-9b3b-4886-8d9a-6f41ad33b588" autoIncrement="false" autoIncrementSequenceName="invoices_clientId_seq" defaultValue="" name="clientId" nullable="0" physicalName="clientId" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL67" populated="true" UUID="3619ea98-c179-4417-b59d-cb8f00ae388e" autoIncrement="false" autoIncrementSequenceName="headerBills_date_seq" defaultValue="" name="date" nullable="0" physicalName="date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+    <column id="COL67" populated="true" UUID="3619ea98-c179-4417-b59d-cb8f00ae388e" autoIncrement="false" autoIncrementSequenceName="invoices_date_seq" defaultValue="" name="date" nullable="0" physicalName="date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
      <remarks></remarks>
     </column>
-    <column id="COL68" populated="true" UUID="4e691d3e-da09-429f-bfb9-054312cd59b9" autoIncrement="false" autoIncrementSequenceName="headerBills_iva10_seq" defaultValue="" name="iva10" nullable="0" physicalName="iva10" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL68" populated="true" UUID="4e691d3e-da09-429f-bfb9-054312cd59b9" autoIncrement="false" autoIncrementSequenceName="invoices_iva10_seq" defaultValue="" name="iva10" nullable="0" physicalName="iva10" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL69" populated="true" UUID="299f5249-3da8-4724-961a-2b4a91c256cc" autoIncrement="false" autoIncrementSequenceName="headerBills_totalIva_seq" defaultValue="" name="totalIva" nullable="0" physicalName="totalIva" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL69" populated="true" UUID="299f5249-3da8-4724-961a-2b4a91c256cc" autoIncrement="false" autoIncrementSequenceName="invoices_totalIva_seq" defaultValue="" name="totalIva" nullable="0" physicalName="totalIva" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL70" populated="true" UUID="1a1ae97e-e35d-4d21-aac7-7eb3e649043d" autoIncrement="false" autoIncrementSequenceName="headerBills_subTotal_seq" defaultValue="" name="subTotal" nullable="0" physicalName="subTotal" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL70" populated="true" UUID="1a1ae97e-e35d-4d21-aac7-7eb3e649043d" autoIncrement="false" autoIncrementSequenceName="invoices_subTotal_seq" defaultValue="" name="subTotal" nullable="0" physicalName="subTotal" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL71" populated="true" UUID="847a971e-e87f-4a6f-b0e7-fab195dc6d71" autoIncrement="false" autoIncrementSequenceName="headerBills_total_seq" defaultValue="" name="total" nullable="0" physicalName="total" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL71" populated="true" UUID="847a971e-e87f-4a6f-b0e7-fab195dc6d71" autoIncrement="false" autoIncrementSequenceName="invoices_total_seq" defaultValue="" name="total" nullable="0" physicalName="total" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL72" populated="true" UUID="ecd86a89-4e1a-4191-ac97-0256dff172a4" autoIncrement="false" autoIncrementSequenceName="headerBills_timbrado_seq" defaultValue="" name="timbrado" nullable="0" physicalName="timbrado" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL72" populated="true" UUID="ecd86a89-4e1a-4191-ac97-0256dff172a4" autoIncrement="false" autoIncrementSequenceName="invoices_timbrado_seq" defaultValue="" name="timbrado" nullable="0" physicalName="timbrado" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL73" populated="true" UUID="ed4c0932-bf1c-43e8-8b39-742e50f7027a" autoIncrement="false" autoIncrementSequenceName="headerBills_status_seq" defaultValue="" name="status" nullable="0" physicalName="status" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL73" populated="true" UUID="ed4c0932-bf1c-43e8-8b39-742e50f7027a" autoIncrement="false" autoIncrementSequenceName="invoices_status_seq" defaultValue="" name="status" nullable="0" physicalName="status" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     </folder>
@@ -278,10 +278,10 @@
     </index>
    </folder>
   </table>
-  <table id="TAB76" populated="true" UUID="c0088e8c-c605-4ccd-9b21-b935f230e308" name="billDetails" objectType="TABLE" physicalName="billDetails" >
+  <table id="TAB76" populated="true" UUID="c0088e8c-c605-4ccd-9b21-b935f230e308" name="invoiceDetails" objectType="TABLE" physicalName="invoiceDetails" >
    <remarks></remarks>
    <folder id="FOLTAB761" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL77" populated="true" UUID="63a8d919-0b2c-4157-8b0b-38ee97e88f78" autoIncrement="false" autoIncrementSequenceName="billDetails_headerBillId_seq" defaultValue="" name="headerBillId" nullable="0" physicalName="headerBillId" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL77" populated="true" UUID="63a8d919-0b2c-4157-8b0b-38ee97e88f78" autoIncrement="false" autoIncrementSequenceName="invoiceDetails_headerBillId_seq" defaultValue="" name="invoice_id" nullable="0" physicalName="invoice_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL78" populated="true" UUID="53352541-bcc9-42f1-b2e0-468ec64a73cb" autoIncrement="false" autoIncrementSequenceName="clientProcedures_id_seq" defaultValue="" name="client_procedure_id" nullable="0" physicalName="client_procedure_id" precision="0" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
@@ -290,7 +290,7 @@
     <column id="COL79" populated="true" UUID="3ab35597-a064-48b1-b252-1a365c1c9391" autoIncrement="false" autoIncrementSequenceName="paymentDetails_amount_seq" defaultValue="" name="final_price" nullable="0" physicalName="final_price" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL80" populated="true" UUID="23b2ccea-5343-4542-af69-34ae4239b99e" autoIncrement="false" autoIncrementSequenceName="billDetails_date_seq" defaultValue="" name="date" nullable="0" physicalName="date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
+    <column id="COL80" populated="true" UUID="23b2ccea-5343-4542-af69-34ae4239b99e" autoIncrement="false" autoIncrementSequenceName="invoiceDetails_date_seq" defaultValue="" name="date" nullable="0" physicalName="date" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
      <remarks></remarks>
     </column>
     </folder>
@@ -300,7 +300,7 @@
     </folder>
     <folder id="FOLTAB764" populated="true" name="Indices" physicalName="Indices" type="4">
     <index id="IDX81" populated="true" UUID="ba50ce74-8ade-43bf-8f3a-eaba2219df73" clustered="false" name="paymentDetails" physicalName="clientDebt" primaryKeyIndex="true" unique="false" >
-     <index-column id="IDC82" populated="true" UUID="11d7583a-0d0d-49a2-8ebf-23274c662b81" ascendingOrDescending="UNSPECIFIED" column-ref="COL77" name="headerBillId" physicalName="headerBillId" />
+     <index-column id="IDC82" populated="true" UUID="11d7583a-0d0d-49a2-8ebf-23274c662b81" ascendingOrDescending="UNSPECIFIED" column-ref="COL77" name="invoice_id" physicalName="invoice_id" />
      <index-column id="IDC83" populated="true" UUID="38089a06-ecde-451c-86e9-25e2294db95d" ascendingOrDescending="UNSPECIFIED" column-ref="COL78" name="client_procedure_id" physicalName="client_procedure_id" />
     </index>
    </folder>
@@ -392,7 +392,7 @@
     <column id="COL107" populated="true" UUID="2314e26d-26e7-4997-95c0-8a4ddfc2bb86" autoIncrement="false" autoIncrementSequenceName="Payments_id_seq" defaultValue="" name="id" nullable="0" physicalName="id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL108" populated="true" UUID="79e08e32-b7a6-4a90-acd2-ef071e146105" autoIncrement="false" autoIncrementSequenceName="Payments_headerBills_id_seq" defaultValue="" name="headerBills_id" nullable="0" physicalName="headerBills_id" precision="0" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL108" populated="true" UUID="79e08e32-b7a6-4a90-acd2-ef071e146105" autoIncrement="false" autoIncrementSequenceName="Payments_headerBills_id_seq" defaultValue="" name="invoice_id" nullable="0" physicalName="invoice_id" precision="0" primaryKeySeq="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL109" populated="true" UUID="998ae26c-253f-42e7-a16e-dbff363da074" autoIncrement="false" autoIncrementSequenceName="Payments_users_id_seq" defaultValue="" name="users_id" nullable="0" physicalName="users_id" precision="0" primaryKeySeq="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
@@ -409,7 +409,7 @@
     <folder id="FOLTAB1064" populated="true" name="Indices" physicalName="Indices" type="4">
     <index id="IDX111" populated="true" UUID="b9bdb4ff-8fed-4df5-9888-8979499a96f0" clustered="false" name="Payments_pk" physicalName="Payments_pk" primaryKeyIndex="true" unique="false" >
      <index-column id="IDC112" populated="true" UUID="f85739f2-474b-43ce-869b-4f9e08ce8f88" ascendingOrDescending="UNSPECIFIED" column-ref="COL107" name="id" physicalName="id" />
-     <index-column id="IDC113" populated="true" UUID="e66e06de-cbb4-44df-bfca-ae03f9c9bff8" ascendingOrDescending="UNSPECIFIED" column-ref="COL108" name="headerBills_id" physicalName="headerBills_id" />
+     <index-column id="IDC113" populated="true" UUID="e66e06de-cbb4-44df-bfca-ae03f9c9bff8" ascendingOrDescending="UNSPECIFIED" column-ref="COL108" name="invoice_id" physicalName="invoice_id" />
      <index-column id="IDC114" populated="true" UUID="8b63a43e-3584-494d-bd33-7460f9dd43cf" ascendingOrDescending="UNSPECIFIED" column-ref="COL109" name="users_id" physicalName="users_id" />
     </index>
    </folder>

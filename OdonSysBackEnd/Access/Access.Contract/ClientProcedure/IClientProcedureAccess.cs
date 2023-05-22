@@ -6,5 +6,6 @@
         Task<ClientProcedureAccessModel> CreateClientProcedureAsync(CreateClientProcedureAccessRequest accessRequest);
         Task<ClientProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest);
         Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId);
+        Task<bool> CheckExistsClientProcedureAsync(string clientProcedureId);
     }
 }

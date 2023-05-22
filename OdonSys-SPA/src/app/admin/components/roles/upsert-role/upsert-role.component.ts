@@ -24,10 +24,11 @@ export class UpsertRoleComponent implements OnInit {
     code: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-  protected load: boolean = false;
+  public saveData: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
-  protected title = 'Crear';
-  private code = '';
+  protected title = 'Crear'
+  protected loading = true
+  private code = ''
 
   constructor(
     private readonly roleApiService: RoleApiService,
@@ -56,15 +57,13 @@ export class UpsertRoleComponent implements OnInit {
           this.formGroup.controls.code.disable()
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
-        this.load = true
-      }, error: (e) => {
-        this.load = true
-        throw e
+        this.loading = false
       }
     })
   }
 
   protected save = () => {
+    this.saveData = true
     this.code ? this.update() : this.create()
   }
 
@@ -72,7 +71,6 @@ export class UpsertRoleComponent implements OnInit {
     this.router.navigate(['admin/roles'])
   }
 
-  
   private create = () => {
     const request =  new CreateRoleApiRequest(
       this.formGroup.value.name!,
@@ -100,9 +98,9 @@ export class UpsertRoleComponent implements OnInit {
 
   private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
     const groupPermissions = abstractControl as FormArray<FormGroup<SubGroupPermissions>>
-    const permissionFormGroup =  groupPermissions.controls.map(x => x.controls).map(x => x.permissions.controls);
+    const permissionFormGroup =  groupPermissions.controls.map(x => x.controls).map(x => x.permissions.controls)
     const atLeastOneIsSelected = permissionFormGroup.some(permissions => permissions.some(permission => permission.value.value!))
-    return atLeastOneIsSelected ? null : { noneSelected : true };
+    return atLeastOneIsSelected ? null : { noneSelected : true }
   }
 
   private getSelectedPermissions = (): string[] => {

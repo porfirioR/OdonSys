@@ -8,7 +8,7 @@ namespace Access.Sql.Configurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.HasKey(x => new { x.Id, x.HeaderBillId, x.UserId });
+            builder.HasKey(x => new { x.Id, x.InvoiceId, x.UserId });
 
             builder
                 .Property(d => d.DateCreated)
@@ -19,9 +19,9 @@ namespace Access.Sql.Configurations
                 .HasDefaultValueSql("GetDate()");
 
             builder
-                .HasOne(x => x.HeaderBill)
+                .HasOne(x => x.Invoice)
                 .WithMany(x => x.Payments)
-                .HasForeignKey(x => x.HeaderBillId);
+                .HasForeignKey(x => x.InvoiceId);
 
             builder
                 .HasOne(x => x.User)

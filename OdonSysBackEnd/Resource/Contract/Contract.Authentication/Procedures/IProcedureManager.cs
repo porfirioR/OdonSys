@@ -13,7 +13,8 @@ namespace Contract.Workspace.Procedures
         Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids);
         Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id);
         Task<ClientProcedureModel> CreateClientProcedureAsync(CreateClientProcedureRequest request);
-        Task<bool> CheckExistsClientProcedureAsync(string userId, string procedureId);// check
+        Task<bool> CheckExistsClientProcedureAsync(string userId, string procedureId);
+        Task<bool> CheckExistsClientProcedureAsync(string clientProcedureId);
         Task<ClientProcedureModel> UpdateClientProcedureAsync(UpdateClientProcedureRequest request);
     }
 }

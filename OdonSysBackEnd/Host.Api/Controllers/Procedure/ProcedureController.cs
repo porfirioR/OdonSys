@@ -70,7 +70,7 @@ namespace Host.Api.Controllers.Procedure
         [Authorize(Policy = Policy.CanModifyVisibilityProcedure)]
         public async Task<ProcedureModel> PatchProcedure([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateProcedureRequest> patchProcedure)
         {
-            if (patchProcedure == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "No puede estar vacío.")));
+            if (patchProcedure == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
             ProcedureModel response;
             try
             {
@@ -84,7 +84,7 @@ namespace Host.Api.Controllers.Procedure
             patchProcedure.ApplyTo(updateDoctorRequest);
             if (!ModelState.IsValid)
             {
-                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor invalido", "Valor invalido.")));
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "Valor inválido.")));
             }
             var model = await _procedureManager.UpdateAsync(updateDoctorRequest);
             return model;
