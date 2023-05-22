@@ -1,5 +1,5 @@
 export enum PermissionSubGroup {
-  Client = 'Cliente',
+  Client = 'Paciente',
   Doctor = 'Doctor',
   Procedure = 'Procedimiento',
   Role = 'Rol',

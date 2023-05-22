@@ -47,8 +47,8 @@ namespace Manager.Admin
                 new PermissionModel("Actualizar", PermissionName.UpdateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Asignar", PermissionName.AssignClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Borrar", PermissionName.DeleteClients, PermissionGroup.Admin, PermissionSubGroup.Client),
-                new PermissionModel("Mis clientes", PermissionName.AccessMyClients, PermissionGroup.Work, PermissionSubGroup.Client),
-                new PermissionModel("Editar Todos los campos", PermissionName.FullFieldUpdateClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Mis Pacientes", PermissionName.AccessMyClients, PermissionGroup.Work, PermissionSubGroup.Client),
+                new PermissionModel("Editar todos los campos", PermissionName.FullFieldUpdateClients, PermissionGroup.Work, PermissionSubGroup.Client),
                 new PermissionModel("Restaurar", PermissionName.RestoreClients, PermissionGroup.Admin, PermissionSubGroup.Client),
                 new PermissionModel("Inhabilitar", PermissionName.DeactivateClients, PermissionGroup.Admin, PermissionSubGroup.Client),
 

@@ -6,10 +6,10 @@ import * as roleActions from './roles.actions';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { RoleApiService } from '../../services/api/role-api.service';
 import { AlertService } from '../../services/shared/alert.service';
-import { RoleModel } from '../../models/view/role-model';
-import { selectRoles } from './roles.selectors';
 import { UserInfoService } from '../../services/shared/user-info.service';
+import { RoleModel } from '../../models/view/role-model';
 import { RoleApiModel } from '../../models/api/roles/role-api-model';
+import { selectRoles } from './roles.selectors';
 
 @Injectable()
 export class RolesEffects {
