@@ -10,7 +10,7 @@
         <a class="nav-link" [routerLink]="item.link" routerLinkActive="active">{{item.title}}</a>
       </li>
     </ul>
-    <div class="nav-menu-right m-r-16" ngbDropdown>
+    <div id="my-configuration" class="nav-menu-right m-r-16" ngbDropdown>
       <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
       <div ngbDropdownMenu aria-labelledby="dropdownConfig">
         <p ngbDropdownItem [disabled]="true">
