@@ -34,7 +34,7 @@ import { ClientProcedureApiService } from '../../services/client-procedure-api.s
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { SelectModel } from 'src/app/core/models/view/select-model';
+import { SelectModel } from '../../../core/models/view/select-model';
 
 @Component({
   selector: 'app-upsert-invoice',
@@ -110,7 +110,7 @@ export class UpsertInvoiceComponent implements OnInit {
       }, error: (e) => {
         this.alertService.showError('Error al traer los recuros. si el error persiste contacte con el administrador')
         this.exit()
-        throw e;
+        throw e
       }
     })
     this.formGroupValueChanges()
@@ -143,7 +143,7 @@ export class UpsertInvoiceComponent implements OnInit {
         this.exit()
       }, error: (e) => {
         this.saving = false
-        throw e;
+        throw e
       }
     })
   }

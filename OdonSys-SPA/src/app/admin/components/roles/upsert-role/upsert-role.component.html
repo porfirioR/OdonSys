@@ -1,5 +1,5 @@
-<app-progress *ngIf="saving$ | async"></app-progress>
-<div class="container">
+<app-progress *ngIf="loading || (saving$ | async)"></app-progress>
+<div class="container" *ngIf="!loading">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}} Rol</h3>
   </div>

@@ -18,7 +18,8 @@
 a {
   color: $white;
   text-decoration: none;
-  &.nav-link.active, &:hover  {
+  &.nav-link.active,
+  &:hover {
     border-bottom: 1px solid $white !important;
   }
 }

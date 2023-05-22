@@ -36,7 +36,7 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "sweetalert2"
-           ]
+            ]
           },
           "configurations": {
             "production": {

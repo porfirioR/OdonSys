@@ -8,6 +8,8 @@ import { RoleApiService } from '../../services/api/role-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { RoleModel } from '../../models/view/role-model';
 import { selectRoles } from './roles.selectors';
+import { UserInfoService } from '../../services/shared/user-info.service';
+import { RoleApiModel } from '../../models/api/roles/role-api-model';
 
 @Injectable()
 export class RolesEffects {
@@ -17,7 +19,8 @@ export class RolesEffects {
     private readonly roleApiService: RoleApiService,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private userInfoService: UserInfoService
   ) {}
 
   getRoles$ = createEffect(() => {
@@ -68,10 +71,17 @@ export class RolesEffects {
       ofType(roleActions.updateRole),
       switchMap((action) =>
         this.roleApiService.update(action.updateRole).pipe(
-          map(role => {
-            this.router.navigate(['/admin/roles'])
-            this.alertService.showSuccess('Rol actualizado con éxito.')
-            return roleActions.updateRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
+          switchMap(role => {
+            const roles = this.userInfoService.getUserData().roles
+            if (roles.includes(role.code)) {
+              const permissions$ = this.roleApiService.getMyPermissions()
+              return permissions$.pipe(map(permissions => {
+                this.userInfoService.setUserPermissions(permissions)
+                return this.roleSuccess(role)
+              }))
+            } else {
+              return of(this.roleSuccess(role))
+            }
           }),
           catchError(error => of(roleActions.rolesFailure({ error })))
         )
@@ -85,4 +95,10 @@ export class RolesEffects {
       tap((x) => { throw x.error })
     )
   })
+
+  private roleSuccess = (role: RoleApiModel ) => {
+    this.router.navigate(['/admin/roles'])
+    this.alertService.showSuccess('Rol actualizado con éxito.')
+    return roleActions.updateRoleSuccess({ role: new RoleModel(role.name, role.code, role.userCreated, role.userUpdated, role.dateCreated, role.dateModified, role.rolePermissions, role.userRoles) })
+  }
 }

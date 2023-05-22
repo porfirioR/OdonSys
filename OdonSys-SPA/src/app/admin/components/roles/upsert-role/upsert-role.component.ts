@@ -27,6 +27,7 @@ export class UpsertRoleComponent implements OnInit {
   public saveData: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected title = 'Crear'
+  protected loading = true
   private code = ''
 
   constructor(
@@ -56,6 +57,7 @@ export class UpsertRoleComponent implements OnInit {
           this.formGroup.controls.code.disable()
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
+        this.loading = false
       }
     })
   }
