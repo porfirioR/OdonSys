@@ -3,6 +3,7 @@ import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
 import { LocalStorageService } from './local-storage.service';
 import { Permission } from '../../enums/permission.enum';
+import { SubscriptionService } from './subscription.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class UserInfoService {
   private permissionKey = 'permissions'
 
   constructor(
-    private readonly localStorageService: LocalStorageService
+    private readonly localStorageService: LocalStorageService,
+    private readonly subscriptionService: SubscriptionService
   ) { }
 
   public getToken = (): string => {
@@ -33,6 +35,7 @@ export class UserInfoService {
 
   public setUserPermissions = (permissions: string[]): void => {
     this.localStorageService.setData(this.permissionKey, permissions)
+    this.subscriptionService.emitCheckMenu(true)
   }
 
   public clearAllCredentials = () => {
