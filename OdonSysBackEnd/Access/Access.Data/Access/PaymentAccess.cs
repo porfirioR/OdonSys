@@ -20,7 +20,7 @@ namespace Access.Data.Access
         public async Task<PaymentAccessModel> RegisterPayment(PaymentAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Payment>(accessRequest);
-            _context.Payments.Add(entity);
+            _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return new PaymentAccessModel(
                 entity.InvoiceId.ToString(),

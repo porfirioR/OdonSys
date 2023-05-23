@@ -1,26 +1,46 @@
-<div class="modal-header">
-  <h4 class="modal-title">Asignar Roles</h4>
-  <button type="button" class="btn-close" data-bs-dismiss="modal" [disabled]="saving" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-  </button>
-</div>
-<div class="modal-body">
-  <div class="col-12 row">
-    <h5>Doctor seleccionado: {{name}}</h5>
-    <br>
-    <br>
-    <h5>Lista de Roles</h5>
-    <div class="col-lg-6" *ngFor="let role of formGroup.controls.roles.controls">
-      <input class="form-check-input col-2" type="checkbox" [formControl]="role.controls.value" [id]="role.controls.code.value">
-      <label class="form-check-label offset-1 col-8" [for]="role.controls.code.value">{{role.controls.name.value}}</label>
-    </div>
-    <br>
-    <br>
-    <div class="invalid-feedback-check-box" *ngIf="formGroup.controls.roles?.hasError('noneSelected')">
-      Debe seleccionar al menos un rol.
+<form [formGroup]="formGroup">
+  <div class="modal-header">
+    <h4 class="modal-title">Pagos</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" [disabled]="saving" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5>Datos Facturas</h5>
+    <div class="col-12 row">
+      <div class="row justify-content-between">
+        <h6 class="col-5 offset-1">Factura Total</h6>
+        <h6 class="col-4 offset-2">Monto Faltante</h6>
+        <label class="col-3 offset-2" for="totalInvoice">Gs. {{formGroup.value.total | number: '': 'es'}}</label>
+        <label class="col-2 offset-4" for="remainingDebt">Gs. {{formGroup.value.remainingDebt | number: '': 'es'}}</label>
+      </div>
+      <br>
+      <br>
+      <br>
+      <h5>Pagos realizados</h5>
+      <div class="row justify-content-between">
+        <h6 class="col-5 offset-1">Fecha pagada</h6>
+        <h6 class="col-4 offset-2">Monto</h6>
+        <ng-container *ngFor="let payment of payments">
+          <label class="col-3 offset-2">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+          <label class="col-2 offset-4">Gs. {{formGroup.value.remainingDebt | number: '': 'es'}}</label>
+        </ng-container>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <h5>Registrar Pago</h5>
+      <div class="col-6">
+        <app-text-number-input [label]="'Monto a pagar'" formControlName="amount"></app-text-number-input>
+      </div>
+      <br>
+      <br>
     </div>
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()" [disabled]="saving">Cerrar</button>
-  <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving">Guardar</button>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()"
+      [disabled]="saving">Cerrar</button>
+    <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving">Registrar Pago</button>
+  </div>
+</form>

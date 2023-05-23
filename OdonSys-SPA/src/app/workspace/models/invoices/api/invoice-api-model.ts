@@ -1,5 +1,5 @@
-import { InvoiceStatus } from "../../../../core/enums/invoice-status.enum"
 import { InvoiceDetailApiModel } from "./invoice-detail-api-model"
+import { InvoiceStatus } from "../../../../core/enums/invoice-status.enum"
 
 export interface InvoiceApiModel {
   id: string

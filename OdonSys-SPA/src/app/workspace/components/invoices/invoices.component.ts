@@ -78,8 +78,7 @@ export class InvoicesComponent implements OnInit {
         break
       case ButtonGridActionType.CustomButton:
         const modalRef = this.modalService.open(PaymentModalComponent)
-        modalRef.componentInstance.userId = currentRowNode.data.id
-        modalRef.componentInstance.name = currentRowNode.data.name
+        modalRef.componentInstance.invoice = currentRowNode.data
         modalRef.result.then((result) => {
           if(result) {
             currentRowNode.data.roles = result
