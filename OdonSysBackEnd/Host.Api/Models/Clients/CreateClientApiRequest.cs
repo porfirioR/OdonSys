@@ -34,8 +34,12 @@ namespace Host.Api.Models.Clients
             {
                 results.Add(new ValidationResult($"Valor ingresado en ruc: {Ruc} es inválido."));
             }
-            var checkDigit = Country == Country.Paraguay ?  CalculateParaguayanCheckDigit() : 0;
-            if (Country == Country.Paraguay && (Ruc != checkDigit.ToString() || checkDigit.ToString() != "0"))
+            var checkDigit = Country == Country.Paraguay ? CalculateParaguayanCheckDigit() : -1;
+            if (Country == Country.Paraguay && Ruc != checkDigit.ToString())
+            {
+                results.Add(new ValidationResult($"Valor ingresado en ruc: {Ruc} es inválido."));
+            }
+            else if (Country != Country.Paraguay && checkDigit.ToString() != "-1")
             {
                 results.Add(new ValidationResult($"Valor ingresado en ruc: {Ruc} es inválido."));
             }

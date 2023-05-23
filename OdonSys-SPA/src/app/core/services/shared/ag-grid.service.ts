@@ -102,7 +102,7 @@ export class AgGridService {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras carga las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras cargan las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,

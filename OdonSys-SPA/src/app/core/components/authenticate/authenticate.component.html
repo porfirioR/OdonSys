@@ -17,7 +17,7 @@
                   <span class="input-group-text">@</span>
                 </div>
                 <input type="email" class="form-control" placeholder="Correo" formControlName="email" aria-label="Correo"
-                [class.is-invalid]="formGroup.controls['email'].invalid">
+                  [class.is-invalid]="formGroup.controls['email'].invalid">
                 <div *ngIf="formGroup.controls.email.errors?.email" class="invalid-feedback">
                   Correo inválido
                 </div>
@@ -30,9 +30,12 @@
                   <input class="form-check-input mt-0" type="checkbox" formControlName="type">
                 </div>
                 <input [type]="currentType" class="form-control" formControlName="password" placeholder="Contraseña">
+                <div *ngIf="formGroup.controls.password.errors?.required" class="invalid-feedback">
+                  Contraseña es requerido
+                </div>
               </div>
               <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-primary btn-block" (click)="login()" [disabled]="formGroup.invalid">Iniciar</button>
+                <button type="button" class="btn btn-outline-primary btn-block" (click)="login()" [disabled]="formGroup.invalid">Iniciar</button>
                 <!-- <span class="position-relative">
                   <a href="#" class="card-link position-absolute bottom-0 end-0">Olvidé mi contraseña</a>
                 </span> -->

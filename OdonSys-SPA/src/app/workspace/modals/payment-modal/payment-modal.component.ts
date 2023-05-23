@@ -22,12 +22,14 @@ export class PaymentModalComponent implements OnInit {
   @Input() invoice!: InvoiceApiModel
   protected payments: PaymentApiModel[] = []
   protected saving = false
+  protected loading = true
   public formGroup = new FormGroup( {
     total: new FormControl(0),
     remainingDebt: new FormControl(0),
     amount: new FormControl(0, [Validators.required, Validators.min(0)])
   })
 
+  protected hasPayments = false
   constructor(
     public activeModal: NgbActiveModal,
     private readonly rolesApiService: RoleApiService,
@@ -45,6 +47,9 @@ export class PaymentModalComponent implements OnInit {
         const remainingDebt = this.invoice.total - payments.reduce((a, b) => a + b.amount, 0)
         this.formGroup.controls.remainingDebt.setValue(remainingDebt)
         this.formGroup.controls.amount.addValidators(Validators.max(remainingDebt))
+        this.hasPayments = payments.length > 0
+        const userPayments = payments.map(x => x.userId)
+        
       }, error: (e) => {
         this.activeModal.dismiss()
         throw e;
