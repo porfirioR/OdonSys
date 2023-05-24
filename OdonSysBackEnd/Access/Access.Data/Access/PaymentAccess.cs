@@ -19,8 +19,6 @@ namespace Access.Data.Access
 
         public async Task<PaymentAccessModel> RegisterPayment(PaymentAccessRequest accessRequest)
         {
-            try
-            {
             var entity = _mapper.Map<Payment>(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
@@ -30,13 +28,6 @@ namespace Access.Data.Access
                 entity.DateCreated,
                 entity.Amount
             );
-
-            }
-            catch (Exception ex)
-            {
-                var a = ex;
-                throw;
-            }
         }
 
         public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByInvoiceIdAsync(string invoiceId)
