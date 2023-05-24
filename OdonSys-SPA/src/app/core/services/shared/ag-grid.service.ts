@@ -74,13 +74,13 @@ export class AgGridService {
   ]
 
   private invoiceColumnDef: ColDef[] = [
-    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', resizable: true },
-    { headerName: 'Fecha Registrada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 180, resizable: true,
+    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 100, maxWidth: 340 },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200 },
+    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
+    { headerName: 'Fecha Registrada', field: 'dateCreated', filter: false, minWidth: 105, maxWidth: 280, resizable: true,
       valueFormatter: params => this.localDateFormatter({value: params.data.dateCreated}),
       tooltipValueGetter: params => this.localDateFormatter({value: params.data.dateCreated}) },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 200, resizable: true,
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 280, resizable: true,
     cellRendererFramework: GridActionsComponent }
   ]
 
@@ -102,7 +102,7 @@ export class AgGridService {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
       defaultColDef: { sortable: true, filter: true},
-      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras carga las filas.</span>',
+      overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras cargan las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,

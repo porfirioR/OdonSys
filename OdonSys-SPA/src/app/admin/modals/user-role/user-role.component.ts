@@ -73,8 +73,8 @@ export class UserRoleComponent implements OnInit {
   }
 
   private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
-      const roles = abstractControl as FormArray<FormGroup<CheckFormGroup>>
-      const selectedRoles = roles.controls.map(x => x.controls.value.value)
-      return selectedRoles.some(x => x) ? null : { noneSelected : true }
-    }
+    const roles = abstractControl as FormArray<FormGroup<CheckFormGroup>>
+    const selectedRoles = roles.controls.map(x => x.controls.value.value)
+    return selectedRoles.some(x => x) ? null : { noneSelected : true }
+  }
 }

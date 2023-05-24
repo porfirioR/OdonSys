@@ -126,7 +126,7 @@ namespace Access.Data.Access
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(20),
+                Expires = DateTime.UtcNow.AddMinutes(120),
                 SigningCredentials = creds
             };
 

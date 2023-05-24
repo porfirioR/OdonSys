@@ -58,7 +58,12 @@ namespace Host.Api
                     }
                 )),
                 new PolicyModel(Policy.CanUpdateDoctor, new AuthRequirement(PermissionName.UpdateDoctors)),
-                new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(PermissionName.AccessDoctors)),
+                new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AccessDoctors,
+                        PermissionName.RegisterPayments
+                    }
+                )),
                 //new PolicyModel(Policy.CanManageClient, new AuthRequirement(new List<PermissionName> {
                 //        PermissionName.CreateDoctors,
                 //        PermissionName.UpdateDoctors,

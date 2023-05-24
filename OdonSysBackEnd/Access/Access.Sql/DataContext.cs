@@ -37,17 +37,18 @@ namespace Access.Sql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
-            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
-            modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
-            modelBuilder.ApplyConfiguration(new UserClientConfiguration());
+            modelBuilder.ApplyConfiguration(new ClientProcedureConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new PaymentConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
-            modelBuilder.ApplyConfiguration(new ClientProcedureConfiguration());
-            modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
-            modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserClientConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
