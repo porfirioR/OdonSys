@@ -58,7 +58,7 @@ export class PaymentModalComponent implements OnInit {
     })).subscribe({
       error: (e) => {
         this.loading = false
-        throw e;
+        throw e
       }
     })
   }
