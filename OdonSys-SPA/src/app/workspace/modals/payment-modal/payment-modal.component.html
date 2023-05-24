@@ -6,12 +6,13 @@
     </button>
   </div>
   <div class="modal-body">
-    <h5>Datos Facturas</h5>
-    <div class="col-12 row">
+    <h5>Datos Factura</h5>
+    <app-progress *ngIf="loading; else invoiceContent"></app-progress>
+    <ng-template class="col-12 row" #invoiceContent>
       <div class="row">
-        <h6 class="col-4">Quien creó</h6>
-        <h6 class="col-4">Factura Total</h6>
-        <h6 class="col-4">Monto Faltante</h6>
+        <h6 class="col-4">Quien registro</h6>
+        <h6 class="col-4">Factura total</h6>
+        <h6 class="col-4">Deuda faltante</h6>
       </div>
       <div class="row">
         <label class="col-4" for="userCreated">{{invoice.userCreated}}</label>
@@ -21,35 +22,38 @@
       <br>
       <br>
       <div *ngIf="!hasPayments; else allPayments">
-        <h5>Sin pagos realizados</h5>
+        <h5 class="text-center">Sin pagos realizados</h5>
+        <br>
+        <br>
       </div>
       <ng-template #allPayments>
         <h5>Pagos realizados</h5>
-        <div class="row justify-content-between">
+        <div class="row">
           <h6 class="col-4">Quien registró</h6>
           <h6 class="col-4">Fecha pagada</h6>
-          <h6 class="col-4">Monto</h6>
-          <ng-container *ngFor="let payment of payments">
-            <label class="col-3 offset-2">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-            <label class="col-2 offset-4">Gs. {{formGroup.value.remainingDebt | number: '': 'es'}}</label>
-          </ng-container>
+          <h6 class="col-2 text-center">Monto</h6>
+          <h6 class="col-2 text-center">Deuda</h6>
+        </div>
+        <div class="row" *ngFor="let payment of payments">
+          <label class="col-4">{{payment.user}}</label>
+          <label class="col-4">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+          <label class="col-2 text-end">Gs. {{payment.amount | number: '': 'es'}}</label>
+          <label class="col-2 text-end">Gs. {{payment.totalDebt | number: '': 'es'}}</label>
         </div>
         <br>
         <br>
       </ng-template>
-      <br>
-      <br>
       <h5>Registrar Pago</h5>
       <div class="col-12">
-        <app-text-number-input [label]="'Ingrese monto a pagar'" formControlName="amount"></app-text-number-input>
+        <app-text-number-input [label]="'Montó a debitar'" formControlName="amount"></app-text-number-input>
       </div>
       <br>
       <br>
-    </div>
+    </ng-template>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()"
       [disabled]="saving">Cerrar</button>
-    <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving">Registrar Pago</button>
+    <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving || formGroup.invalid">Registrar Pago</button>
   </div>
 </form>

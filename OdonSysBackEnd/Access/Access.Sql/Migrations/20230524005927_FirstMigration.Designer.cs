@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Access.Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230523051346_NewTables")]
-    partial class NewTables
+    [Migration("20230524005927_FirstMigration")]
+    partial class FirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

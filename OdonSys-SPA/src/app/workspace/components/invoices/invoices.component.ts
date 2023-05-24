@@ -11,6 +11,9 @@ import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
+import { ConditionalGridButtonShow } from 'src/app/core/models/view/conditional-grid-button-show';
+import { InvoiceStatus } from 'src/app/core/enums/invoice-status.enum';
+import { OperationType } from 'src/app/core/enums/operation-type.enum';
 
 @Component({
   selector: 'app-invoices',
@@ -59,10 +62,19 @@ export class InvoicesComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
+    
+    const conditionalButtons: ConditionalGridButtonShow[] = []
+    if (this.canRegisterPayments) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual)
+      )
+    }
+    
     const params: GridActionModel = {
-      buttonShow: [ButtonGridActionType.Editar, ButtonGridActionType.Ver],
+      buttonShow: [],
       clicked: this.actionColumnClicked,
-      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagos', 'fa-money-bill') : undefined
+      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true) : undefined,
+      conditionalButtons: conditionalButtons
     }
     columnAction.cellRendererParams = params
   }
@@ -77,7 +89,11 @@ export class InvoicesComponent implements OnInit {
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.CustomButton:
-        const modalRef = this.modalService.open(PaymentModalComponent)
+        const modalRef = this.modalService.open(PaymentModalComponent, {
+          size: 'xl',
+          backdrop: 'static',
+          keyboard: false,
+        })
         modalRef.componentInstance.invoice = currentRowNode.data
         modalRef.result.then((result) => {
           if(result) {

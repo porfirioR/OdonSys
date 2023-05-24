@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { combineLatest, take } from 'rxjs';
-import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
-import { CheckFormGroup } from '../../../core/forms/check-form-group';
-import { RoleApiService } from '../../../core/services/api/role-api.service';
+import { forkJoin, map, of, switchMap, take } from 'rxjs';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
@@ -12,6 +9,7 @@ import { PaymentApiService } from '../../services/payment-api.service';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
 import { PaymentRequest } from '../../models/payments/payment-request';
+import { PaymentModel } from '../../models/payments/payment-model';
 
 @Component({
   selector: 'app-payment-modal',
@@ -20,7 +18,7 @@ import { PaymentRequest } from '../../models/payments/payment-request';
 })
 export class PaymentModalComponent implements OnInit {
   @Input() invoice!: InvoiceApiModel
-  protected payments: PaymentApiModel[] = []
+  protected payments: PaymentModel[] = []
   protected saving = false
   protected loading = true
   public formGroup = new FormGroup( {
@@ -32,7 +30,6 @@ export class PaymentModalComponent implements OnInit {
   protected hasPayments = false
   constructor(
     public activeModal: NgbActiveModal,
-    private readonly rolesApiService: RoleApiService,
     private userInfoService: UserInfoService,
     private alertService: AlertService,
     private readonly doctorApiService: DoctorApiService,
@@ -40,18 +37,27 @@ export class PaymentModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.paymentApiService.getPaymentsByInvoiceId(this.invoice.id).subscribe({
-      next: (payments: PaymentApiModel[]) => {
-        this.payments = payments
-        this.formGroup.controls.total.setValue(this.invoice.total)
-        const remainingDebt = this.invoice.total - payments.reduce((a, b) => a + b.amount, 0)
-        this.formGroup.controls.remainingDebt.setValue(remainingDebt)
-        this.formGroup.controls.amount.addValidators(Validators.max(remainingDebt))
-        this.hasPayments = payments.length > 0
-        const userPayments = payments.map(x => x.userId)
-        
-      }, error: (e) => {
-        this.activeModal.dismiss()
+    this.paymentApiService.getPaymentsByInvoiceId(this.invoice.id).pipe(switchMap((payments: PaymentApiModel[]) => {
+      this.formGroup.controls.total.setValue(this.invoice.total)
+      const remainingDebt = this.invoice.total - payments.reduce((a, b) => a + b.amount, 0)
+      this.formGroup.controls.remainingDebt.setValue(remainingDebt)
+      this.formGroup.controls.amount.addValidators(Validators.max(remainingDebt))
+      this.hasPayments = payments.length > 0
+      const userPayments$ = [... new Set(payments.map(x => x.userId))].map(x => this.doctorApiService.getById(x))
+      return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
+        this.payments = []
+        let remainingDebt = this.invoice.total
+        payments.forEach(payment => {
+          const user = users.find(x => x.id === payment.userId)
+          remainingDebt -= payment.amount
+          const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
+          this.payments.push(paymentItem)
+        })
+        this.loading = false
+      })) : of(this.loading = false)
+    })).subscribe({
+      error: (e) => {
+        this.loading = false
         throw e;
       }
     })
