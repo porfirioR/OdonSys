@@ -4,16 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Jaw } from '../../../../core/enums/jaw.enum';
-import { Quadrant } from '../../../../core/enums/quadrant.enum';
-import { Permission } from '../../../../core/enums/permission.enum';
-import { ToothModel } from '../../../../core/models/tooth/tooth-model';
-import { CreateProcedureRequest } from '../../../../core/models/procedure/create-procedure-request';
-import { UpdateProcedureRequest } from '../../../../core/models/procedure/update-procedure-request';
-import { savingSelector } from '../../../../core/store/saving/saving.selector';
-import { selectProcedures } from '../../../../core/store/procedures/procedure.selectors';
-import * as fromProceduresActions from '../../../../core/store/procedures/procedure.actions';
-import { UserInfoService } from '../../../../core/services/shared/user-info.service';
+import { Jaw } from '../../../core/enums/jaw.enum';
+import { Quadrant } from '../../../core/enums/quadrant.enum';
+import { Permission } from '../../../core/enums/permission.enum';
+import { ToothModel } from '../../../core/models/tooth/tooth-model';
+import { CreateProcedureRequest } from '../../../core/models/procedure/create-procedure-request';
+import { UpdateProcedureRequest } from '../../../core/models/procedure/update-procedure-request';
+import { savingSelector } from '../../../core/store/saving/saving.selector';
+import { selectProcedures } from '../../../core/store/procedures/procedure.selectors';
+import * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
 
 @Component({
   selector: 'app-upsert-procedure',
