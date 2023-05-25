@@ -9,7 +9,7 @@ import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
-import { UpdateUserRequest } from '../../../core/models/users/update-user-request';
+import { UpdateUserRequest } from '../../../core/models/users/api/update-user-request';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { Country } from '../../../core/enums/country.enum';
 import { Permission } from '../../../core/enums/permission.enum';

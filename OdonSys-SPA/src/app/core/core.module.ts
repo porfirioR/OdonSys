@@ -19,7 +19,7 @@ import { SelectInputComponent } from './components/inputs/select-input/select-in
 import { AuthenticateComponent } from './components/authenticate/authenticate.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ClientsComponent } from './components/clients/clients.component';
-import { UpsertClientComponent } from './components/clients/upsert-client/upsert-client.component';
+import { UpsertClientComponent } from './components/upsert-client/upsert-client.component';
 import { AnimationComponent } from './components/animation/animation.component';
 
 import { AuthGuard } from './guards/auth.guard';

@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
-import { UpdateUserApiModel } from '../../models/users/update-user-api-model';
-import { UpdateUserRequest } from '../../models/users/update-user-request';
+import { UpdateUserApiModel } from '../../models/users/api/update-user-api-model';
+import { UpdateUserRequest } from '../../models/users/api/update-user-request';
 import { AssignClientRequest } from '../../models/api/clients/assign-client-request';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
 

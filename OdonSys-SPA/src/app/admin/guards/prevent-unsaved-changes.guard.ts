@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanDeactivate } from '@angular/router';
-import { UpsertClientComponent } from '../../core/components/clients/upsert-client/upsert-client.component';
-import { UpsertProcedureComponent } from '../components/admin-procedure/upsert-procedure/upsert-procedure.component';
-import { UpsertRoleComponent } from '../components/roles/upsert-role/upsert-role.component';
+import { UpsertClientComponent } from '../../core/components/upsert-client/upsert-client.component';
+import { UpsertProcedureComponent } from '../components/upsert-procedure/upsert-procedure.component';
+import { UpsertRoleComponent } from '../components/upsert-role/upsert-role.component';
 import { AlertService } from '../../core/services/shared/alert.service';
 
 @Injectable({

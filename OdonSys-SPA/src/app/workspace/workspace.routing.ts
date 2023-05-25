@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ClientsComponent } from '../core/components/clients/clients.component';
-import { UpsertClientComponent } from '../core/components/clients/upsert-client/upsert-client.component';
+import { UpsertClientComponent } from '../core/components/upsert-client/upsert-client.component';
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
 import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoice.component';

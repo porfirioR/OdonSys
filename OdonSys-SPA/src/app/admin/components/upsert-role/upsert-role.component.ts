@@ -3,15 +3,15 @@ import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, V
 import { Store, select } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
-import { RoleApiService } from '../../../../core/services/api/role-api.service';
-import * as fromRolesActions from '../../../../core/store/roles/roles.actions';
-import { selectRoles } from '../../../../core/store/roles/roles.selectors';
-import { savingSelector } from '../../../../core/store/saving/saving.selector';
-import { PermissionModel } from '../../../../core/models/view/permission-model';
-import { CreateRoleApiRequest } from '../../../../core/models/api/roles/create-role-api-request';
-import { UpdateRoleApiRequest } from '../../../../core/models/api/roles/update-role-api-request';
-import { SubGroupPermissions } from '../../../../core/forms/sub-group-permissions.form';
-import { MethodHandler } from '../../../../core/helpers/method-handler';
+import { RoleApiService } from '../../../core/services/api/role-api.service';
+import * as fromRolesActions from '../../../core/store/roles/roles.actions';
+import { selectRoles } from '../../../core/store/roles/roles.selectors';
+import { savingSelector } from '../../../core/store/saving/saving.selector';
+import { PermissionModel } from '../../../core/models/view/permission-model';
+import { CreateRoleApiRequest } from '../../../core/models/api/roles/create-role-api-request';
+import { UpdateRoleApiRequest } from '../../../core/models/api/roles/update-role-api-request';
+import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.form';
+import { MethodHandler } from '../../../core/helpers/method-handler';
 
 @Component({
   selector: 'app-upsert-role',
