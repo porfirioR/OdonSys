@@ -2,7 +2,7 @@
 {
     public interface IPaymentManager
     {
-        Task<PaymentModel> RegisterPaymentAsync(PaymentRequest accessRequest);
         Task<IEnumerable<PaymentModel>> GetPaymentsByInvoiceIdAsync(string invoiceId);
+        Task<RegisterPaymentModel> RegisterPaymentAsync(PaymentRequest accessRequest);
     }
 }
