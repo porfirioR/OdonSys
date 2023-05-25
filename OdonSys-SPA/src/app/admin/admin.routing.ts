@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { UpsertClientComponent } from '../core/components/clients/upsert-client/upsert-client.component';
+import { UpsertClientComponent } from '../core/components/upsert-client/upsert-client.component';
 import { AdminClientsComponent } from './components/admin-clients/admin-clients.component';
 import { AdminProcedureComponent } from './components/admin-procedure/admin-procedure.component';
-import { UpsertProcedureComponent } from './components/admin-procedure/upsert-procedure/upsert-procedure.component';
+import { UpsertProcedureComponent } from './components/upsert-procedure/upsert-procedure.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
 import { RolesComponent } from './components/roles/roles.component';
-import { UpsertRoleComponent } from './components/roles/upsert-role/upsert-role.component';
+import { UpsertRoleComponent } from './components/upsert-role/upsert-role.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChanges } from './guards/prevent-unsaved-changes.guard';
 import { Permission } from '../core/enums/permission.enum';

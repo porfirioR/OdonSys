@@ -1,4 +1,4 @@
-import { Country } from '../../enums/country.enum';
+import { Country } from '../../../enums/country.enum';
 
 export class UpdateUserRequest {
   constructor(
