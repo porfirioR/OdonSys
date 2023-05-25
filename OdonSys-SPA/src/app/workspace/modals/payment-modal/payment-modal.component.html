@@ -24,7 +24,6 @@
       <div *ngIf="!hasPayments; else allPayments">
         <h5 class="text-center">Sin pagos realizados</h5>
         <br>
-        <br>
       </div>
       <ng-template #allPayments>
         <h5>Pagos realizados</h5>
@@ -41,11 +40,10 @@
           <label class="col-2 text-end">Gs. {{payment.totalDebt | number: '': 'es'}}</label>
         </div>
         <br>
-        <br>
       </ng-template>
       <h5>Registrar Pago</h5>
-      <div class="col-12">
-        <app-text-number-input [label]="'Montó a debitar'" formControlName="amount"></app-text-number-input>
+      <div class="col-6">
+        <app-text-number-input [label]="'Montó a debitar'" formControlName="amount" [type]="'number'"></app-text-number-input>
       </div>
       <br>
       <br>

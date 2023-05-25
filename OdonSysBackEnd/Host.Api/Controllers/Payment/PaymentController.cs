@@ -19,7 +19,7 @@ namespace Host.Api.Controllers.Payment
 
         [HttpPost]
         [Authorize(Policy = Policy.CanRegisterPayment)]
-        public async Task<PaymentModel> RegisterPayment([FromBody] PaymentApiRequest apiRequest)
+        public async Task<RegisterPaymentModel> RegisterPayment([FromBody] PaymentApiRequest apiRequest)
         {
             var request = new PaymentRequest(apiRequest.InvoiceId, apiRequest.UserId, apiRequest.Amount);
             var model = await _paymentManager.RegisterPaymentAsync(request);

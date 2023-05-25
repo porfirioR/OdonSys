@@ -22,17 +22,26 @@ namespace Manager.Payment
             return accessModel.Select(x => new PaymentModel(x.InvoiceId, x.UserId, x.DateCreated, x.Amount));
         }
 
-        public async Task<PaymentModel> RegisterPaymentAsync(PaymentRequest request)
+        public async Task<RegisterPaymentModel> RegisterPaymentAsync(PaymentRequest request)
         {
             var accessRequest = new PaymentAccessRequest(request.InvoiceId, request.UserId, request.Amount);
             var accessModel = await _paymentAccess.RegisterPayment(accessRequest);
             var invoice = await _invoiceAccess.GetInvoiceByIdAsync(request.InvoiceId);
             var invoicePayments = (await _paymentAccess.GetPaymentsByInvoiceIdAsync(request.InvoiceId)).Select(x => x.Amount).Sum();
+            var status = invoice.Status;
             if (invoice.Total == invoicePayments)
             {
-                await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, InvoiceStatus.Completado));
+                status = InvoiceStatus.Completado;
             }
-            return new PaymentModel(accessModel.InvoiceId, accessModel.UserId, accessModel.DateCreated, accessModel.Amount);
+            else if (invoice.Total > invoicePayments)
+            {
+                status = InvoiceStatus.Pendiente;
+            }
+            if (invoice.Status != status)
+            {
+                await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, status));
+            }
+            return new RegisterPaymentModel(accessModel.InvoiceId, accessModel.UserId, accessModel.DateCreated, accessModel.Amount, status);
         }
     }
 }
