@@ -13,7 +13,7 @@ export class InvoiceApiService {
   private baseUrl = `${environment.apiUrl}/invoice`
 
   constructor(
-    private readonly http: HttpClient,
+    private readonly http: HttpClient
   ) { }
 
   public getInvoices = (): Observable<InvoiceApiModel[]> => {

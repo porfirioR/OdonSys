@@ -40,7 +40,7 @@ export class DoctorsComponent implements OnInit {
     private readonly userApiService: UserApiService,
     private readonly agGridService: AgGridService,
     private readonly userInfoService: UserInfoService,
-    private modalService: NgbModal,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {

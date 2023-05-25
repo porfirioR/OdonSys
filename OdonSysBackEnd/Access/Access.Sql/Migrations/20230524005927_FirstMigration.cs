@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Access.Sql.Migrations
 {
-    public partial class RefactorMigration : Migration
+    public partial class FirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -123,11 +123,11 @@ namespace Access.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HeaderBills",
+                name: "Invoices",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BillNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    InvoiceNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Iva10 = table.Column<int>(type: "int", nullable: false),
                     TotalIva = table.Column<int>(type: "int", nullable: false),
                     SubTotal = table.Column<int>(type: "int", nullable: false),
@@ -143,9 +143,9 @@ namespace Access.Sql.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HeaderBills", x => x.Id);
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HeaderBills_Clients_ClientId",
+                        name: "FK_Invoices_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
                         principalColumn: "Id",
@@ -265,22 +265,22 @@ namespace Access.Sql.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HeaderBillId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
+                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
                     UserCreated = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserUpdated = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("PK_Payments", x => new { x.Id, x.InvoiceId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_Payments_HeaderBills_HeaderBillId",
-                        column: x => x.HeaderBillId,
-                        principalTable: "HeaderBills",
+                        name: "FK_Payments_Invoices_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -328,11 +328,11 @@ namespace Access.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BillDetails",
+                name: "InvoiceDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HeaderBillId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    InvoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClientProcedureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProcedurePrice = table.Column<int>(type: "int", nullable: false),
                     FinalPrice = table.Column<int>(type: "int", nullable: false),
@@ -344,31 +344,20 @@ namespace Access.Sql.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BillDetails", x => new { x.Id, x.HeaderBillId, x.ClientProcedureId });
+                    table.PrimaryKey("PK_InvoiceDetails", x => new { x.Id, x.InvoiceId, x.ClientProcedureId });
                     table.ForeignKey(
-                        name: "FK_BillDetails_ClientProcedures_ClientProcedureId",
+                        name: "FK_InvoiceDetails_ClientProcedures_ClientProcedureId",
                         column: x => x.ClientProcedureId,
                         principalTable: "ClientProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BillDetails_HeaderBills_HeaderBillId",
-                        column: x => x.HeaderBillId,
-                        principalTable: "HeaderBills",
+                        name: "FK_InvoiceDetails_Invoices_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BillDetails_ClientProcedureId",
-                table: "BillDetails",
-                column: "ClientProcedureId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BillDetails_HeaderBillId",
-                table: "BillDetails",
-                column: "HeaderBillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientProcedures_Id_ProcedureId_UserClientId",
@@ -405,14 +394,25 @@ namespace Access.Sql.Migrations
                 filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HeaderBills_ClientId",
-                table: "HeaderBills",
+                name: "IX_InvoiceDetails_ClientProcedureId",
+                table: "InvoiceDetails",
+                column: "ClientProcedureId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceDetails_InvoiceId",
+                table: "InvoiceDetails",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_ClientId",
+                table: "Invoices",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_HeaderBillId",
+                name: "IX_Payments_InvoiceId",
                 table: "Payments",
-                column: "HeaderBillId");
+                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_UserId",
@@ -483,7 +483,7 @@ namespace Access.Sql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BillDetails");
+                name: "InvoiceDetails");
 
             migrationBuilder.DropTable(
                 name: "Payments");
@@ -501,7 +501,7 @@ namespace Access.Sql.Migrations
                 name: "ClientProcedures");
 
             migrationBuilder.DropTable(
-                name: "HeaderBills");
+                name: "Invoices");
 
             migrationBuilder.DropTable(
                 name: "Teeth");

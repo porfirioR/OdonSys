@@ -122,6 +122,7 @@ export class UpsertInvoiceComponent implements OnInit {
     this.formGroup.controls.client.patchValue({ country: Country.Paraguay })
     this.formGroup.controls.clientId.setValue('', { emitEvent: false })
     this.formGroup.controls.client.enable()
+    this.formGroup.controls.client.controls.ruc.disable()
   }
 
   protected removeProcedure = (id: string) => {

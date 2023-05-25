@@ -40,7 +40,7 @@ export class GridActionsComponent implements AgRendererComponent {
         }
       })
     }
-    if (this.params.customButton) {
+    if (this.params.customButton && !this.params.customButton.isConditionalButton) {
       this.verifyButtons(ButtonGridActionType.CustomButton)
     }
     this.params.buttonShow.forEach(x => this.verifyButtons(x))

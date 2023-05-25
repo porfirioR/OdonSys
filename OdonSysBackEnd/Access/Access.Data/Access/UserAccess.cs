@@ -39,6 +39,7 @@ namespace Access.Data.Access
                                 .AsNoTracking()
                                 .Where(x => x.UserId == new Guid(accessRequest.UserId))
                                 .ToListAsync();
+
             var currentRoles = userRoles.Select(x => x.Role);
             var roleCodes = currentRoles.Select(x => x.Code);
             var persistRoles = currentRoles.Where(x => accessRequest.Roles.Contains(x.Code));

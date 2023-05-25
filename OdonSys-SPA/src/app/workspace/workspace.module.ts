@@ -7,6 +7,7 @@ import { WorkspaceRoutes } from './workspace.routing';
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
 import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoice.component';
+import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoi
   declarations: [
     MyConfigurationComponent,
     InvoicesComponent,
-    UpsertInvoiceComponent
+    UpsertInvoiceComponent,
+    PaymentModalComponent
   ]
 })
 export class WorkspaceModule { }

@@ -10,6 +10,7 @@ export interface DoctorApiModel {
   country: Country
   email: string
   phone: string
+  userName: string
   active: boolean
   approved: boolean
   roles: string[]
