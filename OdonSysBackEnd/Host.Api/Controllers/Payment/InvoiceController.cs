@@ -13,7 +13,7 @@ namespace Host.Api.Controllers.Payment
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class InvoiceController : ControllerBase
+    public class InvoiceController : OdonSysBaseController
     {
         private readonly IInvoiceManager _invoiceManager;
         public InvoiceController(IInvoiceManager invoiceManager)
@@ -26,6 +26,14 @@ namespace Host.Api.Controllers.Payment
         public async Task<IEnumerable<InvoiceModel>> GetInvoices()
         {
             var model = await _invoiceManager.GetInvoicesAsync();
+            return model;
+        }
+
+        [HttpGet]
+        [Authorize(Policy = Policy.CanAccessMyInvoice)]
+        public async Task<IEnumerable<InvoiceModel>> GetMyInvoice()
+        {
+            var model = await _invoiceManager.GetMyInvoicesAsync(Username);
             return model;
         }
 

@@ -15,5 +15,8 @@ namespace Contract.Pyment.Invoices
         DateTime DateCreated,
         string UserCreated,
         IEnumerable<InvoiceDetailModel> InvoiceDetails
-    );
+    )
+    {
+        public int PaymentAmount { get; set; }
+    }
 }

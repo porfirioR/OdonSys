@@ -39,5 +39,16 @@ namespace Access.Data.Access
 
             return entities.Select(entity => new PaymentAccessModel(entity.InvoiceId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
         }
+
+        public async Task<int> GetPaymentsAmountByInvoiceIdAsync(Guid invoiceId)
+        {
+            var sumPayments = await _context.Payments
+                                .AsNoTracking()
+                                .Where(x => x.InvoiceId == invoiceId)
+                                .Select(x => x.Amount)
+                                .SumAsync();
+
+            return sumPayments;
+        }
     }
 }
