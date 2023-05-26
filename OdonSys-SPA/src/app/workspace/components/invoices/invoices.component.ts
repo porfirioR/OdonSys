@@ -62,14 +62,12 @@ export class InvoicesComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {
       conditionalButtons.push(
         new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual)
       )
     }
-    
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
