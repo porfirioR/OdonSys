@@ -1,3 +1,9 @@
+@import "./colors.scss";
+
 ag-grid-angular {
   height: calc(91vh - 80px);
+}
+.ag-cell-data-changed {
+  // --ag-value-change-value-highlight-background-color: $primaryColor
+  background-color: $primaryColor !important;
 }

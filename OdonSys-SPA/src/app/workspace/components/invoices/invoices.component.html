@@ -1,11 +1,17 @@
 <app-progress *ngIf="!ready || loading"></app-progress>
 <div *ngIf="ready" class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-    <h3>Facturas</h3>
-    <button type="button" class="btn btn-outline-primary" routerLink="registrar" *ngIf="canRegisterInvoice">
-      <i class="fas fa-file-invoice"></i>
-      Registrar
-    </button>
+    <h3>Todas las Facturas</h3>
+    <span id="header-top-buttons">
+      <button type="button" class="btn btn-outline-primary m-r-4" routerLink="../mis-facturas" *ngIf="canAccessMyInvoices">
+        <i class="fas fa-file-invoice-dollar"></i>
+        Mis Facturas
+      </button>
+      <button type="button" class="btn btn-outline-primary" routerLink="registrar" *ngIf="canRegisterInvoice">
+        <i class="fas fa-file-invoice"></i>
+        Registrar
+      </button>
+    </span>
   </div>
   <div class="m-t-16">
     <ng-container *ngIf="gridOptions">

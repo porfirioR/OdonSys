@@ -84,13 +84,13 @@ export class AgGridService {
           new GridBadgeModel(InvoiceStatus.Nuevo, InvoiceStatus.Nuevo, 'info'),
           new GridBadgeModel(InvoiceStatus.Completado, InvoiceStatus.Completado, 'success'),
           new GridBadgeModel(InvoiceStatus.Cancelado, InvoiceStatus.Cancelado, 'danger'),
-          new GridBadgeModel(InvoiceStatus.Pendiente, InvoiceStatus.Pendiente, 'primary'),
+          new GridBadgeModel(InvoiceStatus.Pendiente, InvoiceStatus.Pendiente, 'warning'),
         ]
       }
     },
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
     { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 280, resizable: true },
-    { headerName: 'Monto Pagos', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },
+    { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 280, resizable: true,
       cellRendererFramework: GridActionsComponent }
   ]

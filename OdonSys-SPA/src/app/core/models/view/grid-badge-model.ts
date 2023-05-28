@@ -1,4 +1,4 @@
-import { BadgeType } from "../../constants/badge-type";
+import { ColorCustomType } from "../../constants/color-custom-type";
 import { InvoiceStatus } from "../../enums/invoice-status.enum";
 
 export class GridBadgeModel {
@@ -6,6 +6,6 @@ export class GridBadgeModel {
   constructor(
     public title: string,
     public type: InvoiceStatus | any,
-    public badge: BadgeType
+    public badge: ColorCustomType
   ) { }
 }

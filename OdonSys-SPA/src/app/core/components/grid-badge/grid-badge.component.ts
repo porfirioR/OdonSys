@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-import { InvoiceStatus } from '../../enums/invoice-status.enum';
 import { GridBadgeModel } from '../../models/view/grid-badge-model';
 
 @Component({
@@ -16,17 +15,18 @@ export class GridBadgeComponent implements AgRendererComponent {
   constructor() { }
 
   agInit(params: ICellRendererParams & GridBadgeModel[] & any): void {
+    this.configureCellRenderComponent(params)
+  }
+
+  refresh(params: ICellRendererParams<any, any, any>): boolean {
+    this.configureCellRenderComponent(params)
+    return true
+  }
+
+  private configureCellRenderComponent = (params: ICellRendererParams & GridBadgeModel[] & any) => {
     const gridBadgeModelList: GridBadgeModel[] = params.badgeParams as GridBadgeModel[]
     const gridBadge = gridBadgeModelList.find(x => x.type === params.data[params.colDef.field])
     this.badge = `text-bg-${gridBadge!.badge}`
     this.title = gridBadge!.title
   }
-
-  refresh(params: ICellRendererParams<any, any, any>): boolean {
-    throw new Error('Method not implemented.');
-  }
-
-  ngOnInit() {
-  }
-
 }

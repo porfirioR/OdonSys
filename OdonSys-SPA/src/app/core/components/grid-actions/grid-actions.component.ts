@@ -5,6 +5,7 @@ import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { OperationType } from '../../enums/operation-type.enum';
 import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
+import { ColorCustomType as CustomColorType } from '../../constants/color-custom-type';
 
 @Component({
   selector: 'app-grid-actions',
@@ -21,29 +22,13 @@ export class GridActionsComponent implements AgRendererComponent {
   public canShowDeactivate = false
   public canShowDownload = false
   public canShowCustomButton = false
+  protected customColorButton: string = 'btn-outline-'
+  private customColor: CustomColorType = 'info'
 
   constructor() { }
 
   public agInit = (params: ICellRendererParams & GridActionModel): void => {
-    this.params = params
-    if(this.params.conditionalButtons && this.params.conditionalButtons.length > 0) {
-      this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
-        if (x.principalAttributeAffected) {
-          const principalAttributeValue = params.data[x.principalAttributeAffected]
-          if(x.principalOperator === OperationType.Equal && principalAttributeValue.toString() === x.principalAttributeValue) {
-            this.basicVerifyAttributes(params, x)
-          } else if(x.principalOperator === OperationType.NotEqual && principalAttributeValue.toString() !== x.principalAttributeValue) {
-            this.basicVerifyAttributes(params, x)
-          }
-        } else {
-          this.basicVerifyAttributes(params, x)
-        }
-      })
-    }
-    if (this.params.customButton && !this.params.customButton.isConditionalButton) {
-      this.verifyButtons(ButtonGridActionType.CustomButton)
-    }
-    this.params.buttonShow.forEach(x => this.verifyButtons(x))
+    this.configureCellRenderComponent(params)
   }
 
   public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar)
@@ -63,6 +48,7 @@ export class GridActionsComponent implements AgRendererComponent {
   public customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
 
   public refresh = (params: any): boolean => {
+    this.configureCellRenderComponent(params)
     return true
   }
 
@@ -104,6 +90,32 @@ export class GridActionsComponent implements AgRendererComponent {
       default:
         break
     }
+  }
+
+  private configureCellRenderComponent = (params: ICellRendererParams & GridActionModel) => {
+    this.params = params
+    if(this.params.conditionalButtons && this.params.conditionalButtons.length > 0) {
+      this.params.conditionalButtons.forEach((x: ConditionalGridButtonShow) => {
+        if (x.principalAttributeAffected) {
+          const principalAttributeValue = params.data[x.principalAttributeAffected]
+          if(x.principalOperator === OperationType.Equal && principalAttributeValue.toString() === x.principalAttributeValue) {
+            this.basicVerifyAttributes(params, x)
+          } else if(x.principalOperator === OperationType.NotEqual && principalAttributeValue.toString() !== x.principalAttributeValue) {
+            this.basicVerifyAttributes(params, x)
+          }
+        } else {
+          this.basicVerifyAttributes(params, x)
+        }
+      })
+    }
+    if (this.params.customButton) {
+      if (!this.params.customButton.isConditionalButton) {
+        this.verifyButtons(ButtonGridActionType.CustomButton)
+      }
+      this.customColor = this.params.customButton.customColor
+    }
+    this.customColorButton += this.customColor
+    this.params.buttonShow.forEach(x => this.verifyButtons(x))
   }
 }
 

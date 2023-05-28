@@ -6,6 +6,7 @@ import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { PaymentApiModel } from '../../models/payments/payment-api-model';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
@@ -25,6 +26,7 @@ export class InvoicesComponent implements OnInit {
   protected ready: boolean = false
   protected loading: boolean = false
   protected canRegisterInvoice = false
+  protected canAccessMyInvoices = false
   private canRegisterPayments = false
 
   constructor(
@@ -38,6 +40,7 @@ export class InvoicesComponent implements OnInit {
   ngOnInit() {
     this.canRegisterPayments = this.userInfoService.havePermission(Permission.RegisterPayments)
     this.canRegisterInvoice = this.userInfoService.havePermission(Permission.CreateInvoices)
+    this.canAccessMyInvoices = this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -74,7 +77,7 @@ export class InvoicesComponent implements OnInit {
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
-      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true) : undefined,
+      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true, 'success') : undefined,
       conditionalButtons: conditionalButtons
     }
     columnAction.cellRendererParams = params
@@ -96,7 +99,16 @@ export class InvoicesComponent implements OnInit {
           keyboard: false
         })
         modalRef.componentInstance.invoice = currentRowNode.data
-        modalRef.result.then((result) => {}, () => {})
+        modalRef.result.then((payment: PaymentApiModel | undefined) => {
+          if (!!payment) {
+            currentRowNode.setDataValue('status', payment.status)
+            currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
+            if (payment.status == InvoiceStatus.Completado) {
+              currentRowNode.setDataValue('action', null)
+            }
+            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: [ 'status', 'paymentAmount', 'action' ] })
+          }
+        }, () => {})
         break
       default:
         break
