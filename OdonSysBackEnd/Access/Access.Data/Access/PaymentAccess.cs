@@ -39,5 +39,17 @@ namespace Access.Data.Access
 
             return entities.Select(entity => new PaymentAccessModel(entity.InvoiceId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
         }
+
+        public async Task<IEnumerable<PaymentAmountAccessModel>> GetPaymentsAmountByInvoiceIdAsync(IEnumerable<Guid> invoiceIds)
+        {
+            var groupByList = await _context.Payments
+                                .AsNoTracking()
+                                .Where(x => invoiceIds.Contains(x.InvoiceId))
+                                .GroupBy(x => x.InvoiceId)
+                                .Select(x => new { InvoiceId = x.Key, PaymentAmount = x.Sum(y => y.Amount) })
+                                .ToListAsync();
+            var sumPayments = groupByList.Select(x => new PaymentAmountAccessModel(x.InvoiceId, x.PaymentAmount));
+            return sumPayments;
+        }
     }
 }

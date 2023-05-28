@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Invoices;
+using Access.Contract.Payments;
 using Contract.Pyment.Invoices;
 
 namespace Manager.Payment
@@ -6,10 +7,12 @@ namespace Manager.Payment
     internal class InvoiceManager : IInvoiceManager
     {
         private readonly IInvoiceAccess _invoiceAccess;
+        private readonly IPaymentAccess _paymentAccess;
 
-        public InvoiceManager(IInvoiceAccess invoiceAccess)
+        public InvoiceManager(IInvoiceAccess invoiceAccess, IPaymentAccess paymentAccess)
         {
             _invoiceAccess = invoiceAccess;
+            _paymentAccess = paymentAccess;
         }
 
         public async Task<InvoiceModel> CreateInvoiceAsync(InvoiceRequest request)
@@ -37,6 +40,21 @@ namespace Manager.Payment
         {
             var invoices = await _invoiceAccess.GetInvoicesAsync();
             return invoices.Select(x => GetModel(x));
+        }
+
+        public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string username)
+        {
+            var invoices = await _invoiceAccess.GetInvoicesAsync();
+            var myInvoiceAccessList = invoices.Where(x => x.UserCreated == username);
+            var invoiceIds = myInvoiceAccessList.Select(x => x.Id);
+            var paymentsAmounts = await _paymentAccess.GetPaymentsAmountByInvoiceIdAsync(invoiceIds);
+            var invoiceModelList = myInvoiceAccessList.Select(invoice =>
+            {
+                var invoiceModel = GetModel(invoice);
+                invoiceModel.PaymentAmount = paymentsAmounts.FirstOrDefault(x => x.InvoiceId == invoice.Id)?.PaymentAmount ?? 0;
+                return invoiceModel;
+            });
+            return invoiceModelList;
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)

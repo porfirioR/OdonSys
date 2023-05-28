@@ -95,7 +95,7 @@ namespace Host.Api.Controllers.Admin
         public async Task<IEnumerable<ClientModel>> GetClientsByUserId()
         {
             var id = UserId;
-            var userName = UserName;
+            var userName = Username;
             var model = await _clientManager.GetClientsByUserIdAsync(id, userName);
             return model;
         }

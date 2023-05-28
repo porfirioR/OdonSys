@@ -32,6 +32,7 @@ namespace Access.Data.Access
             var entities = await _context.Invoices
                                     .Include(x => x.InvoiceDetails)
                                     .AsNoTracking()
+                                    .OrderByDescending(x => x.DateCreated)
                                     .ToListAsync();
             var clientProcedureIds = entities.SelectMany(x => x.InvoiceDetails.Select(y => y.ClientProcedureId));
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);

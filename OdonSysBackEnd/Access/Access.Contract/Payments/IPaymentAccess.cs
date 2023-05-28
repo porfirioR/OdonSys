@@ -2,7 +2,8 @@
 {
     public interface IPaymentAccess
     {
-        Task<PaymentAccessModel> RegisterPayment(PaymentAccessRequest accessRequest);
         Task<IEnumerable<PaymentAccessModel>> GetPaymentsByInvoiceIdAsync(string invoiceId);
+        Task<IEnumerable<PaymentAmountAccessModel>> GetPaymentsAmountByInvoiceIdAsync(IEnumerable<Guid> invoiceIds);
+        Task<PaymentAccessModel> RegisterPayment(PaymentAccessRequest accessRequest);
     }
 }
