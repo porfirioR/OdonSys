@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
 import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 import { agGridLocaleEs } from '../../constants/ag-grid-locale';
+import { GridBadgeComponent } from '../../components/grid-badge/grid-badge.component';
+import { GridBadgeModel } from '../../models/view/grid-badge-model';
+import { InvoiceStatus } from '../../enums/invoice-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +77,17 @@ export class AgGridService {
 
   private invoiceColumnDef: ColDef[] = [
     { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 100, maxWidth: 340 },
-    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200 },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200,
+      cellRendererFramework: GridBadgeComponent,
+      cellRendererParams: {
+        badgeParams: [
+          new GridBadgeModel(InvoiceStatus.Nuevo, InvoiceStatus.Nuevo, 'info'),
+          new GridBadgeModel(InvoiceStatus.Completado, InvoiceStatus.Completado, 'success'),
+          new GridBadgeModel(InvoiceStatus.Cancelado, InvoiceStatus.Cancelado, 'danger'),
+          new GridBadgeModel(InvoiceStatus.Pendiente, InvoiceStatus.Pendiente, 'primary'),
+        ]
+      }
+    },
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
     { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 280, resizable: true },
     { headerName: 'Monto Pagos', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },

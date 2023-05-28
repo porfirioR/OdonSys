@@ -35,6 +35,7 @@ import { ProcedureEffects } from './store/procedures/procedure.effects';
 import { ClientEffects } from './store/clients/client.effects';
 import { environment } from '../../environments/environment';
 import { NgxMaskModule } from 'ngx-mask';
+import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 
 @NgModule({
   imports: [
@@ -66,7 +67,8 @@ import { NgxMaskModule } from 'ngx-mask';
     RegisterUserComponent,
     ClientsComponent,
     UpsertClientComponent,
-    AnimationComponent
+    AnimationComponent,
+    GridBadgeComponent
   ],
   exports: [
     FormsModule,
