@@ -77,8 +77,9 @@ export class AgGridService {
     { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200 },
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
     { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 280, resizable: true },
+    { headerName: 'Monto Pagos', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 280, resizable: true,
-    cellRendererFramework: GridActionsComponent }
+      cellRendererFramework: GridActionsComponent }
   ]
 
   private adminClientColumnDef: ColDef[] = [

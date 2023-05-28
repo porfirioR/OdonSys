@@ -15,8 +15,9 @@ export class MenuService {
       new MenuItem('Roles', 'admin/roles', Permission.AccessRoles),
       new MenuItem('Procedimientos', 'admin/procedimientos', Permission.AccessProcedures),
       new MenuItem('Pacientes', 'admin/pacientes', Permission.AccessClients),
-      new MenuItem('Mis Pacientes', 'trabajo/misPacientes', Permission.AccessMyClients),
+      new MenuItem('Mis Pacientes', 'trabajo/mis-pacientes', Permission.AccessMyClients),
       new MenuItem('Facturas', 'trabajo/facturas', Permission.AccessInvoices),
+      new MenuItem('Mis Facturas', 'trabajo/mis-facturas', Permission.AccessMyInvoices),
       new MenuItem('Pagos', 'trabajo/pagos', Permission.AccessPayments),
     ]
   }

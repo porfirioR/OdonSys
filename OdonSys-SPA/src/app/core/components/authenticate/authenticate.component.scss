@@ -1,6 +1,10 @@
 .dot {
-    background: lightblue;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
+  background: lightblue;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+#email, #password {
+  border-radius: var(--bs-border-radius);
 }

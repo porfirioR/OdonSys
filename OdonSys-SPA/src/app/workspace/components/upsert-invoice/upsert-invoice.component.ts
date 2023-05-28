@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, combineLatest, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
@@ -79,8 +79,7 @@ export class UpsertInvoiceComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private userInfoService: UserInfoService,
     private readonly alertService: AlertService,
-    private readonly router: Router,
-    private readonly routeActive: ActivatedRoute
+    private readonly router: Router
   ) {
     this.countries = EnumHandler.getCountries()
   }
@@ -139,7 +138,7 @@ export class UpsertInvoiceComponent implements OnInit {
     this.generateRequest().subscribe({
       next: () => {
         this.saving = false
-        this.alertService.showSuccess('Factura creada con exito')
+        this.alertService.showSuccess('Factura creada con éxito')
         this.formGroup.reset()
         this.exit()
       }, error: (e) => {
@@ -150,8 +149,9 @@ export class UpsertInvoiceComponent implements OnInit {
   }
 
   protected exit = () => {
-    // TODO change path if is myInvoices
-    this.router.navigate(['trabajo/facturas'])
+    const currentUrl = this.router.url.split('/')
+    currentUrl.pop()
+    this.router.navigate([currentUrl.join('/')])
   }
 
   private formGroupValueChanges = () => {
