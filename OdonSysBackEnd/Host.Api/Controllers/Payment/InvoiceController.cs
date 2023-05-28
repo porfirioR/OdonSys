@@ -29,9 +29,9 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
-        [HttpGet]
+        [HttpGet("my-invoices")]
         [Authorize(Policy = Policy.CanAccessMyInvoice)]
-        public async Task<IEnumerable<InvoiceModel>> GetMyInvoice()
+        public async Task<IEnumerable<InvoiceModel>> GetMyInvoices()
         {
             var model = await _invoiceManager.GetMyInvoicesAsync(Username);
             return model;

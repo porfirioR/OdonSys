@@ -46,15 +46,15 @@ namespace Manager.Payment
         {
             var invoices = await _invoiceAccess.GetInvoicesAsync();
             var myInvoiceAccessList = invoices.Where(x => x.UserCreated == username);
-            var invoicesAsync = myInvoiceAccessList.Select(async invoice =>
+            var invoiceIds = myInvoiceAccessList.Select(x => x.Id);
+            var paymentsAmounts = await _paymentAccess.GetPaymentsAmountByInvoiceIdAsync(invoiceIds);
+            var invoiceModelList = myInvoiceAccessList.Select(invoice =>
             {
-                var paymentAmount = await _paymentAccess.GetPaymentsAmountByInvoiceIdAsync(invoice.Id);
-                var model = GetModel(invoice);
-                model.PaymentAmount = paymentAmount;
-                return model;
+                var invoiceModel = GetModel(invoice);
+                invoiceModel.PaymentAmount = paymentsAmounts.FirstOrDefault(x => x.InvoiceId == invoice.Id)?.PaymentAmount ?? 0;
+                return invoiceModel;
             });
-            var myInvoices = (await Task.WhenAll(invoicesAsync)).ToList();
-            return myInvoices;
+            return invoiceModelList;
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)
