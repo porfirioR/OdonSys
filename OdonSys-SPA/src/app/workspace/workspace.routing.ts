@@ -7,15 +7,16 @@ import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoi
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
+import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
     path: '',
     children: [
       { path: 'configuración/datos', component: MyConfigurationComponent, title: 'Mis datos' },
-      { path: 'misPacientes', component: ClientsComponent, title: 'Mis pacientes' },
-      { path: 'misPacientes/registrar', component: UpsertClientComponent, title: 'Registrar paciente' },
-      { path: 'misPacientes/actualizar/:id', component: UpsertClientComponent, title: 'Actualizar paciente' },
+      { path: 'mis-pacientes', component: ClientsComponent, title: 'Mis pacientes' },
+      { path: 'mis-pacientes/registrar', component: UpsertClientComponent, title: 'Registrar paciente' },
+      { path: 'mis-pacientes/actualizar/:id', component: UpsertClientComponent, title: 'Actualizar paciente' },
       {
         path: 'facturas',
         component: InvoicesComponent,
@@ -24,11 +25,26 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.AccessInvoices ] }
       },
       {
+        path: 'mis-facturas',
+        component: MyInvoiceComponent,
+        canActivate: [PermissionGuard],
+        title: 'Mis Facturas',
+        data: { permissions: [ Permission.AccessMyInvoices ] }
+      },
+      {
         path: 'facturas/registrar',
         component: UpsertInvoiceComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],
-        title: 'Registrar Facturas',
+        title: 'Registrar Factura',
+        data: { permissions: [ Permission.CreateInvoices ] }
+      },
+      {
+        path: 'mis-facturas/registrar',
+        component: UpsertInvoiceComponent,
+        canActivate: [PermissionGuard],
+        canDeactivate: [PreventUnsavedChangesWorkspace],
+        title: 'Registrar Factura',
         data: { permissions: [ Permission.CreateInvoices ] }
       }
     ]

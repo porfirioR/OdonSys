@@ -20,6 +20,10 @@ export class InvoiceApiService {
     return this.http.get<InvoiceApiModel[]>(`${this.baseUrl}`)
   }
 
+  public getMyInvoices = (): Observable<InvoiceApiModel[]> => {
+    return this.http.get<InvoiceApiModel[]>(`${this.baseUrl}/my-invoices`)
+  }
+
   public createInvoice = (request: CreateInvoiceRequest): Observable<InvoiceApiModel> => {
     return this.http.post<InvoiceApiModel>(`${this.baseUrl}`, request)
   }

@@ -28,7 +28,7 @@ export class AlertService {
   }
 
 
-  public showSuccess = (title: string = 'Operación exitosa'): void => {
+  public showSuccess = (title: string = 'Operación éxitosa'): void => {
     Swal.mixin({
       title,
       toast: true,
@@ -49,6 +49,9 @@ export class AlertService {
       title: 'Operación fallida',
       text,
       icon: 'error',
+      customClass: {
+        confirmButton: 'btn btn-outline-primary',
+      },
     });
   }
 
@@ -57,6 +60,9 @@ export class AlertService {
       title: 'Información',
       text,
       icon: 'info',
+      customClass: {
+        confirmButton: 'btn btn-outline-primary',
+      },
     });
   }
 }

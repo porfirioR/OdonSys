@@ -2,25 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
-import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
-import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { AgGridService } from '../../../core/services/shared/ag-grid.service';
+import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { InvoiceApiService } from '../../services/invoice-api.service';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
-import { Permission } from '../../../core/enums/permission.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
 import { OperationType } from '../../../core/enums/operation-type.enum';
-import { AgGridService } from '../../../core/services/shared/ag-grid.service';
-import { InvoiceApiService } from '../../services/invoice-api.service';
-import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { Permission } from '../../../core/enums/permission.enum';
+import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
+import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
+import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 
 @Component({
-  selector: 'app-invoices',
-  templateUrl: './invoices.component.html',
-  styleUrls: ['./invoices.component.scss']
+  selector: 'app-my-invoice',
+  templateUrl: './my-invoice.component.html',
+  styleUrls: ['./my-invoice.component.scss']
 })
-export class InvoicesComponent implements OnInit {
+export class MyInvoiceComponent implements OnInit {
   protected gridOptions!: GridOptions
   protected ready: boolean = false
   protected loading: boolean = false
@@ -45,7 +45,7 @@ export class InvoicesComponent implements OnInit {
 
   private getList = () => {
     this.loading = true;
-    this.invoiceApiService.getInvoices().subscribe({
+    this.invoiceApiService.getMyInvoices().subscribe({
       next: (response: InvoiceApiModel[]) => {
         this.gridOptions.api?.setRowData(response)
         this.gridOptions.api?.sizeColumnsToFit()
