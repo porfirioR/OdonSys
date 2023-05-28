@@ -39,22 +39,14 @@ namespace Manager.Payment
         public async Task<IEnumerable<InvoiceModel>> GetInvoicesAsync()
         {
             var invoices = await _invoiceAccess.GetInvoicesAsync();
-            return invoices.Select(x => GetModel(x));
+            return await PrepareInvocesWithPayments(invoices);
         }
 
         public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string username)
         {
             var invoices = await _invoiceAccess.GetInvoicesAsync();
             var myInvoiceAccessList = invoices.Where(x => x.UserCreated == username);
-            var invoiceIds = myInvoiceAccessList.Select(x => x.Id);
-            var paymentsAmounts = await _paymentAccess.GetPaymentsAmountByInvoiceIdAsync(invoiceIds);
-            var invoiceModelList = myInvoiceAccessList.Select(invoice =>
-            {
-                var invoiceModel = GetModel(invoice);
-                invoiceModel.PaymentAmount = paymentsAmounts.FirstOrDefault(x => x.InvoiceId == invoice.Id)?.PaymentAmount ?? 0;
-                return invoiceModel;
-            });
-            return invoiceModelList;
+            return await PrepareInvocesWithPayments(invoices);
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)
@@ -66,6 +58,19 @@ namespace Manager.Payment
         {
             var accessModel = await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, request.Status));
             return GetModel(accessModel);
+        }
+
+        private async Task<IEnumerable<InvoiceModel>> PrepareInvocesWithPayments(IEnumerable<InvoiceAccessModel> invoiceIdsList)
+        {
+            var invoiceIds = invoiceIdsList.Select(x => x.Id);
+            var paymentsAmounts = await _paymentAccess.GetPaymentsAmountByInvoiceIdAsync(invoiceIds);
+            var invoiceModelList = invoiceIdsList.Select(invoice =>
+            {
+                var invoiceModel = GetModel(invoice);
+                invoiceModel.PaymentAmount = paymentsAmounts.FirstOrDefault(x => x.InvoiceId == invoice.Id)?.PaymentAmount ?? 0;
+                return invoiceModel;
+            });
+            return invoiceModelList;
         }
 
         private static InvoiceModel GetModel(InvoiceAccessModel accessModel)
