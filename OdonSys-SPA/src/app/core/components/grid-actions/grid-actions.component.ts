@@ -48,6 +48,7 @@ export class GridActionsComponent implements AgRendererComponent {
   public customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
 
   public refresh = (params: any): boolean => {
+    this.resetAllValues()
     this.configureCellRenderComponent(params)
     return true
   }
@@ -117,6 +118,11 @@ export class GridActionsComponent implements AgRendererComponent {
     this.customColorButton += this.customColor
     this.params.buttonShow.forEach(x => this.verifyButtons(x))
   }
+
+  private resetAllValues = () => {
+    this.canApprove = this.canShowView = this.canRestore = this.canShowEdit = this.canShowDelete =
+    this.canShowDeactivate = this.canShowDownload = this.canShowCustomButton = false
+    this.customColor = 'info'
+  }
+
 }
-
-

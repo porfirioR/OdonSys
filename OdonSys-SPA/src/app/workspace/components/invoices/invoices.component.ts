@@ -103,10 +103,11 @@ export class InvoicesComponent implements OnInit {
           if (!!payment) {
             currentRowNode.setDataValue('status', payment.status)
             currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
+            const columnToRefresh = ['status', 'paymentAmount']
             if (payment.status == InvoiceStatus.Completado) {
-              currentRowNode.setDataValue('action', null)
+              columnToRefresh.push('action')
             }
-            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: [ 'status', 'paymentAmount', 'action' ] })
+            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
           }
         }, () => {})
         break
