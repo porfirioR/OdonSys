@@ -13,7 +13,7 @@
           <app-text-number-input [label]="'Descripción'" formControlName="description"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Precio'" [type]="'number'" formControlName="price"></app-text-number-input>
+          <app-text-number-input [label]="'Precio'" [type]="'number'" formControlName="price" [numberWithSeparator]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6 m-t-18" *ngIf="canRestore">
           <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
