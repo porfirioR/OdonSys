@@ -5,7 +5,7 @@ import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { OperationType } from '../../enums/operation-type.enum';
 import { ConditionalGridButtonShow } from '../../models/view/conditional-grid-button-show';
 import { GridActionModel } from '../../models/view/grid-action-model';
-import { ColorCustomType as CustomColorType } from '../../constants/color-custom-type';
+import { ColorType } from '../../constants/color-type';
 
 @Component({
   selector: 'app-grid-actions',
@@ -23,7 +23,7 @@ export class GridActionsComponent implements AgRendererComponent {
   public canShowDownload = false
   public canShowCustomButton = false
   protected customColorButton: string = 'btn-outline-'
-  private customColor: CustomColorType = 'info'
+  private customColor: ColorType = 'info'
 
   constructor() { }
 
