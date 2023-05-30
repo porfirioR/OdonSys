@@ -14,6 +14,7 @@ import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-butt
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
+import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
 
 @Component({
@@ -27,6 +28,7 @@ export class MyInvoiceComponent implements OnInit {
   protected loading: boolean = false
   protected canRegisterInvoice = false
   private canRegisterPayments = false
+  private canDeactivateInvoice = false
 
   constructor(
     private readonly agGridService: AgGridService,
@@ -39,6 +41,7 @@ export class MyInvoiceComponent implements OnInit {
   ngOnInit() {
     this.canRegisterPayments = this.userInfoService.havePermission(Permission.RegisterPayments)
     this.canRegisterInvoice = this.userInfoService.havePermission(Permission.CreateInvoices)
+    this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -72,6 +75,11 @@ export class MyInvoiceComponent implements OnInit {
         new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.Ver, OperationType.Equal)
       )
     }
+    if (this.canDeactivateInvoice) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow('status', InvoiceStatus.Cancelado, ButtonGridActionType.Desactivar, OperationType.NotEqual, 'status', InvoiceStatus.Completado, OperationType.NotEqual)
+      )
+    }
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
@@ -87,8 +95,16 @@ export class MyInvoiceComponent implements OnInit {
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
-      case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+      case ButtonGridActionType.Desactivar:
+        const status = InvoiceStatus.Cancelado
+        const request = new InvoicePatchRequest(status)
+        this.invoiceApiService.changeStatus(currentRowNode.data.id, request).subscribe({
+          next: () => {
+            currentRowNode.setDataValue('status', status)
+            const columnToRefresh = ['status', 'action']
+            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+          }
+        })
         break
       case ButtonGridActionType.CustomButton:
         const modalRef = this.modalService.open(PaymentModalComponent, {
@@ -101,7 +117,11 @@ export class MyInvoiceComponent implements OnInit {
           if (!!payment) {
             currentRowNode.setDataValue('status', payment.status)
             currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
-            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: [ 'status', 'paymentAmount', 'action' ] })
+            const columnToRefresh = ['status', 'paymentAmount']
+            if (payment.status == InvoiceStatus.Completado) {
+              columnToRefresh.push('action')
+            }
+            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
           }
         }, () => {})
         break
