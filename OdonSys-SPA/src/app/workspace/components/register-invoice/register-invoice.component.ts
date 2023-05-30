@@ -37,11 +37,11 @@ import { AlertService } from '../../../core/services/shared/alert.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 
 @Component({
-  selector: 'app-upsert-invoice',
-  templateUrl: './upsert-invoice.component.html',
-  styleUrls: ['./upsert-invoice.component.scss']
+  selector: 'app-register-invoice',
+  templateUrl: './register-invoice.component.html',
+  styleUrls: ['./register-invoice.component.scss']
 })
-export class UpsertInvoiceComponent implements OnInit {
+export class RegisterInvoiceComponent implements OnInit {
   protected load: boolean = false
   protected saving: boolean = false
   protected clients!: ClientModel[]

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
 import { AlertService } from '../../core/services/shared/alert.service';
-import { UpsertInvoiceComponent } from '../components/upsert-invoice/upsert-invoice.component';
+import { RegisterInvoiceComponent } from '../components/register-invoice/register-invoice.component';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PreventUnsavedChangesWorkspace implements CanDeactivate<UpsertInvoiceComponent> {
+export class PreventUnsavedChangesWorkspace implements CanDeactivate<RegisterInvoiceComponent> {
   constructor(private readonly alertService: AlertService) { }
 
-  canDeactivate(component: UpsertInvoiceComponent,
+  canDeactivate(component: RegisterInvoiceComponent,
     currentRoute: ActivatedRouteSnapshot, 
     currentState: RouterStateSnapshot): boolean | Promise<boolean> {
       console.log(currentRoute);
