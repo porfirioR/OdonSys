@@ -41,7 +41,7 @@ export class AlertService {
         toast.addEventListener('mouseenter', Swal.stopTimer)
         toast.addEventListener('mouseleave', Swal.resumeTimer)
       }
-    }).fire();
+    }).fire()
   }
 
   public showError = (text: string = ''): void => {
@@ -52,7 +52,8 @@ export class AlertService {
       customClass: {
         confirmButton: 'btn btn-outline-primary',
       },
-    });
+      buttonsStyling: false,
+    })
   }
 
   public showInfo = (text: string = ''): void => {
@@ -63,6 +64,7 @@ export class AlertService {
       customClass: {
         confirmButton: 'btn btn-outline-primary',
       },
-    });
+      buttonsStyling: false
+    })
   }
 }

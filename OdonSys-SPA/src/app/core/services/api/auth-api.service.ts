@@ -22,6 +22,7 @@ export class AuthApiService {
   ) { }
 
   public login = (request: LoginRequest): Observable<AuthApiModel> => {
+    this.userInfoService.clearToken()
     const auth = btoa(`${request.email}:${request.password}`)
     const httpOptions = {
       headers: new HttpHeaders(

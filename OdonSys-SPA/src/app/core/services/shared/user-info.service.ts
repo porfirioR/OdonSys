@@ -43,6 +43,9 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.userToken)
     this.localStorageService.clearAll(this.permissionKey)
   }
+  public clearToken = () => {
+    this.localStorageService.clearAll(this.userToken)
+  }
 
   public getUserData = (): UserApiModel => {
     const userData: UserApiModel = JSON.parse(this.localStorageService.getByKey(this.userKey))

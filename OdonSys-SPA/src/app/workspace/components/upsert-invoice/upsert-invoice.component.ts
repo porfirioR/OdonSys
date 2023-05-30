@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, combineLatest, debounceTime, forkJoin, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, debounceTime, filter, forkJoin, switchMap, tap } from 'rxjs';
 
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
@@ -156,7 +156,8 @@ export class UpsertInvoiceComponent implements OnInit {
 
   private formGroupValueChanges = () => {
     this.formGroup.controls.procedure.valueChanges.pipe(
-      debounceTime(500)
+      debounceTime(500),
+      filter(x => !!x)
     ).subscribe({
       next: (procedure) => {
         const currentProcedure = this.procedures.find(x => x.id === procedure)!
@@ -177,7 +178,8 @@ export class UpsertInvoiceComponent implements OnInit {
       }
     })
     this.formGroup.controls.clientId.valueChanges.pipe(
-      debounceTime(500)
+      debounceTime(500),
+      filter(x => !!x)
     ).subscribe({
       next: (clientId) => {
         const client = this.clients.find(x => x.id === clientId)

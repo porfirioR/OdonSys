@@ -12,8 +12,9 @@ import { Permission } from '../../../core/enums/permission.enum';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
+import { PaymentApiModel } from '../../models/payments/payment-api-model';
+import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
 
 @Component({
   selector: 'app-my-invoice',
@@ -74,7 +75,7 @@ export class MyInvoiceComponent implements OnInit {
     const params: GridActionModel = {
       buttonShow: [],
       clicked: this.actionColumnClicked,
-      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true) : undefined,
+      customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true, 'success') : undefined,
       conditionalButtons: conditionalButtons
     }
     columnAction.cellRendererParams = params
@@ -96,7 +97,13 @@ export class MyInvoiceComponent implements OnInit {
           keyboard: false
         })
         modalRef.componentInstance.invoice = currentRowNode.data
-        modalRef.result.then((result) => {}, () => {})
+        modalRef.result.then((payment: PaymentApiModel | undefined) => {
+          if (!!payment) {
+            currentRowNode.setDataValue('status', payment.status)
+            currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
+            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: [ 'status', 'paymentAmount', 'action' ] })
+          }
+        }, () => {})
         break
       default:
         break

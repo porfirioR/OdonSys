@@ -1,4 +1,4 @@
-<span class="btn btn-sm btn-outline-info m-r-8" (click)="customItem()" *ngIf="canShowCustomButton">
+<span class="btn btn-sm m-r-8" (click)="customItem()" *ngIf="canShowCustomButton"  [ngClass]="[customColorButton]">
   <span class="d-flex-center m-r-2">
     <i class="fas" [ngClass]="params.customButton ? params.customButton.icon : 'fa-id-card' "></i>{{params.customButton?.title}}
   </span>
