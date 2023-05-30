@@ -3,7 +3,7 @@ import { ClientsComponent } from '../core/components/clients/clients.component';
 import { UpsertClientComponent } from '../core/components/upsert-client/upsert-client.component';
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
-import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoice.component';
+import { RegisterInvoiceComponent } from './components/register-invoice/register-invoice.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
@@ -33,7 +33,7 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'facturas/registrar',
-        component: UpsertInvoiceComponent,
+        component: RegisterInvoiceComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],
         title: 'Registrar Factura',
@@ -41,7 +41,7 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'mis-facturas/registrar',
-        component: UpsertInvoiceComponent,
+        component: RegisterInvoiceComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],
         title: 'Registrar Factura',

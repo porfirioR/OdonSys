@@ -6,7 +6,7 @@ import { CoreModule } from '../core/core.module';
 import { WorkspaceRoutes } from './workspace.routing';
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
-import { UpsertInvoiceComponent } from './components/upsert-invoice/upsert-invoice.component';
+import { RegisterInvoiceComponent } from './components/register-invoice/register-invoice.component';
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component';
 
@@ -19,7 +19,7 @@ import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component
   declarations: [
     MyConfigurationComponent,
     InvoicesComponent,
-    UpsertInvoiceComponent,
+    RegisterInvoiceComponent,
     PaymentModalComponent,
     MyInvoiceComponent
   ]

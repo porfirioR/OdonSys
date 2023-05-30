@@ -1,5 +1,6 @@
 import { Component, Input, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { InputType } from '../../../../core/constants/input-type';
 
 @Component({
   selector: 'app-text-number-input',
@@ -7,12 +8,13 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./text-number-input.component.scss']
 })
 export class TextNumberComponent implements ControlValueAccessor {
-  @Input() label: string = '';
-  @Input() type: string = 'text';
-  @Input() colClass: string = 'col-lg-8';
+  @Input() label: string = ''
+  @Input() type: InputType = 'text'
+  @Input() colClass: string = 'col-lg-8'
+  @Input() numberWithSeparator: boolean = false
 
   constructor(@Self() public ngControl: NgControl) {
-    this.ngControl.valueAccessor = this;
+    this.ngControl.valueAccessor = this
   }
 
   writeValue(obj: any): void { }
