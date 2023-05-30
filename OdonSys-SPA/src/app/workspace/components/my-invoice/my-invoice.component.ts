@@ -71,8 +71,8 @@ export class MyInvoiceComponent implements OnInit {
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {
       conditionalButtons.push(
-        new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual),
-        new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.Ver, OperationType.Equal)
+        new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual, 'status', InvoiceStatus.Cancelado, OperationType.NotEqual),
+        new ConditionalGridButtonShow('status', InvoiceStatus.Nuevo, ButtonGridActionType.Ver, OperationType.NotEqual, 'status', InvoiceStatus.Pendiente, OperationType.NotEqual),
       )
     }
     if (this.canDeactivateInvoice) {

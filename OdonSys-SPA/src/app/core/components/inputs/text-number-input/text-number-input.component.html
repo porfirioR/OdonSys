@@ -1,9 +1,21 @@
 <div class="form-group" [ngClass]="colClass">
-  <label class="col-form-label">{{label}}</label>
-  <input class="form-control"
-    [type]="type"
-    [class.is-invalid]="ngControl.touched && ngControl.invalid"
-    [formControl]="$any(ngControl).control" placeholder={{label}}>
+  <label class="col-form-label" *ngIf="label">{{label}}</label>
+  <ng-container *ngIf="!numberWithSeparator; else inputNumberSeparator">
+    <input class="form-control"
+      [type]="type"
+      [class.is-invalid]="ngControl.touched && ngControl.invalid"
+      [formControl]="$any(ngControl).control"
+      placeholder={{label}}>
+  </ng-container>
+
+  <ng-template #inputNumberSeparator>
+    <input class="form-control" type="text"
+      [class.is-invalid]="ngControl.touched && ngControl.invalid"
+      [formControl]="$any(ngControl).control"
+      placeholder={{label}}
+      [mask]="'separator.0'"
+      thousandSeparator=".">
+  </ng-template>
 
   <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor ingresar {{label}}</div>
   <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
