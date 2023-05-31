@@ -5,7 +5,7 @@
 </div>
 <div class="modal-body">
   <div class="col-12 row">
-    <h5>Doctor seleccionado: {{name}}</h5>
+    <h5 id="selected-doctor">Doctor seleccionado: {{name}}</h5>
     <br>
     <br>
     <h5>Lista de Roles</h5>
@@ -21,6 +21,10 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()" [disabled]="saving">Cerrar</button>
-  <button type="button" class="btn btn-outline-primary" (click)="save()" [disabled]="saving">Guardar</button>
+  <button type="button" class="btn btn-outline-primary" name="close" [disabled]="saving" (click)="activeModal.close()">
+    Cerrar
+  </button>
+  <button type="submit" class="btn btn-outline-primary" name="save" [disabled]="saving" (click)="save()">
+    Guardar
+  </button>
 </div>

@@ -7,7 +7,6 @@ import { RegisterInvoiceComponent } from './components/register-invoice/register
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
-import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -26,7 +25,7 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'mis-facturas',
-        component: MyInvoiceComponent,
+        component: InvoicesComponent,
         canActivate: [PermissionGuard],
         title: 'Mis Facturas',
         data: { permissions: [ Permission.AccessMyInvoices ] }

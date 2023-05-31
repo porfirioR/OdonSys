@@ -35,16 +35,16 @@ export class RegisterUserComponent implements OnInit {
     private readonly alertService: AlertService,
     private readonly authApiService: AuthApiService
   ) {
-    this.countries = EnumHandler.getCountries();
+    this.countries = EnumHandler.getCountries()
   }
 
   ngOnInit() {
-    this.loadConfiguration();
+    this.loadConfiguration()
   }
 
   protected register = (): void => {
-    if (this.formGroup.invalid) { return; }
-    this.saving = true;
+    if (this.formGroup.invalid) { return }
+    this.saving = true
     const request = new RegisterUserRequest(
       this.formGroup.value.name!,
       this.formGroup.value.surname!,
@@ -68,24 +68,24 @@ export class RegisterUserComponent implements OnInit {
         this.saving = false
         throw error
       }
-    });
+    })
   }
 
   protected close = (): void => {
-    this.router.navigate(['login']);
-  };
+    this.router.navigate(['login'])
+  }
 
   private loadConfiguration = (): void => {
     this.formGroup.controls.repeatPassword.addValidators(this.checkRepeatPassword())
-    this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }});
+    this.formGroup.controls.password.valueChanges.subscribe({ next: () => { this.formGroup.controls.repeatPassword.updateValueAndValidity() }})
   }
 
   private checkRepeatPassword = (): ValidatorFn => {
     return (control: AbstractControl): ValidationErrors | null => {
-      const repeatPassword = (control as FormControl<string | null>).value;
-      if (!repeatPassword) { return null; }
-      const isInvalid = !repeatPassword || this.formGroup.controls.password.value !== repeatPassword;
-      return isInvalid ? { invalidRepeatPassword: isInvalid } : null;
+      const repeatPassword = (control as FormControl<string | null>).value
+      if (!repeatPassword) { return null }
+      const isInvalid = !repeatPassword || this.formGroup.controls.password.value !== repeatPassword
+      return isInvalid ? { invalidRepeatPassword: isInvalid } : null
     }
   }
 }

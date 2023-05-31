@@ -43,7 +43,13 @@
       </ng-template>
       <h5>Registrar Pago</h5>
       <div class="col-6">
-        <app-text-number-input formControlName="amount" [type]="'number'" [numberWithSeparator]="true"></app-text-number-input>
+        <app-text-number-input formControlName="amount"
+          [type]="'number'"
+          [label]="'Pago'"
+          [numberWithSeparator]="true"
+          [showLabel]="false"
+          [autofocus]="true"
+        ></app-text-number-input>
       </div>
       <br>
       <br>

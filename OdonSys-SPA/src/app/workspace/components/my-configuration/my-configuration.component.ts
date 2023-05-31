@@ -59,6 +59,7 @@ export class MyConfigurationComponent implements OnInit {
   }
 
   public save = () => {
+    if (this.formGroup.invalid) { return }
     this.saving = true
     const request = this.getDoctorRequest()
     this.doctorApiService.update(this.id, request).subscribe({

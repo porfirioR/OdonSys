@@ -8,7 +8,6 @@ import { MyConfigurationComponent } from './components/my-configuration/my-confi
 import { InvoicesComponent } from './components/invoices/invoices.component';
 import { RegisterInvoiceComponent } from './components/register-invoice/register-invoice.component';
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
-import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component';
 
 @NgModule({
   imports: [
@@ -21,7 +20,6 @@ import { MyInvoiceComponent } from './components/my-invoice/my-invoice.component
     InvoicesComponent,
     RegisterInvoiceComponent,
     PaymentModalComponent,
-    MyInvoiceComponent
   ]
 })
 export class WorkspaceModule { }
