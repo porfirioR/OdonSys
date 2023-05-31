@@ -27,7 +27,7 @@ export class UpsertProcedureComponent implements OnInit {
     active : new FormControl(true, [Validators.required]),
     price : new FormControl(0, [Validators.required, Validators.min(0)]),
   })
-  public saveData: boolean = false
+  public ignorePreventUnsavedChanges: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected title = 'Crear'
   protected canRestore = false
@@ -49,7 +49,7 @@ export class UpsertProcedureComponent implements OnInit {
   }
 
   protected save = () => {
-    this.saveData = true
+    this.ignorePreventUnsavedChanges = true
     this.id ? this.update() : this.create()
   }
 

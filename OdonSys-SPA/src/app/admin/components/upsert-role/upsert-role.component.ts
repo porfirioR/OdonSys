@@ -24,7 +24,7 @@ export class UpsertRoleComponent implements OnInit {
     code: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-  public saveData: boolean = false
+  public ignorePreventUnsavedChanges: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected title = 'Crear'
   protected loading = true
@@ -63,7 +63,7 @@ export class UpsertRoleComponent implements OnInit {
   }
 
   protected save = () => {
-    this.saveData = true
+    this.ignorePreventUnsavedChanges = true
     this.code ? this.update() : this.create()
   }
 

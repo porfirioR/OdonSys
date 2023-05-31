@@ -4,24 +4,21 @@ import { UpsertClientComponent } from '../../core/components/upsert-client/upser
 import { UpsertProcedureComponent } from '../components/upsert-procedure/upsert-procedure.component';
 import { UpsertRoleComponent } from '../components/upsert-role/upsert-role.component';
 import { AlertService } from '../../core/services/shared/alert.service';
+import { PreventUnsavedChangesGuard } from '../../core/guards/prevent-unsaved-changes.guard';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PreventUnsavedChanges implements CanDeactivate<UpsertRoleComponent | UpsertProcedureComponent | UpsertClientComponent> {
-  constructor(private readonly alertService: AlertService) { }
+export class PreventUnsavedChangesAdmin extends PreventUnsavedChangesGuard implements CanDeactivate<UpsertRoleComponent | UpsertProcedureComponent | UpsertClientComponent> {
+  constructor(protected readonly alertService: AlertService) {
+    super(alertService)
+  }
 
   canDeactivate(component: UpsertRoleComponent | UpsertProcedureComponent | UpsertClientComponent): boolean | Promise<boolean> {
-    if (component.saveData) {
+    if (component.ignorePreventUnsavedChanges) {
       return true
-    } else if (component.formGroup.dirty) {
-      return this.alertService.showQuestionModal(
-        'Salir sin guardar',
-        '¿Estás seguro de que quieres continuar? Cualquier cambio hecho no sera guardado.',
-        'question'
-      ).then((result) => result.value ?? false)
     }
-    return true
+    return component.formGroup.dirty ? this.showQuestionModal() : true
   }
 
 }
