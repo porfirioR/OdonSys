@@ -7,16 +7,16 @@
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row">
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Nombre'" formControlName="name"></app-text-number-input>
+          <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Descripción'" formControlName="description"></app-text-number-input>
+          <app-text-number-input id="description" formControlName="description" [label]="'Descripción'"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input [label]="'Precio'" [type]="'number'" formControlName="price" [numberWithSeparator]="true"></app-text-number-input>
+          <app-text-number-input id="price" formControlName="price" [label]="'Precio'" [type]="'number'" [numberWithSeparator]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6 m-t-18" *ngIf="canRestore">
-          <app-check-input [label]="'Activo'" formControlName="active"></app-check-input>
+          <app-check-input id="active" formControlName="active" [label]="'Activo'"></app-check-input>
         </div>
       </div>
       <!-- <div class="col-lg-12 row m-t-16" formArrayName="teeth">
@@ -37,10 +37,12 @@
         </div>
       </div> -->
       <div class="form-group text-center btn-footer">
-        <button class="btn btn-outline-primary m-r-8" type="button" (click)="close()"
-          [disabled]="(saving$ | async)">Cancelar</button>
-        <button class="btn btn-outline-primary" type="submit"
-          [disabled]="!formGroup.valid || (saving$ | async)">Guardar</button>
+        <button class="btn btn-outline-primary m-r-8" type="button" name="cancel" [disabled]="(saving$ | async)" (click)="close()">
+          Cancelar
+        </button>
+        <button class="btn btn-outline-primary" type="submit" name="save" [disabled]="!formGroup.valid || (saving$ | async)">
+          Guardar
+        </button>
       </div>
     </form>
   </div>

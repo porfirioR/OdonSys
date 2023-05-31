@@ -1,7 +1,8 @@
 <div class="form-group" [ngClass]="colClass">
-  <label class="col-form-label" *ngIf="label">{{label}}</label>
+  <label class="col-form-label" *ngIf="!!label && showLabel">{{label}}</label>
   <ng-container *ngIf="!numberWithSeparator; else inputNumberSeparator">
     <input class="form-control"
+      #principalTextNumberInput
       [type]="type"
       [class.is-invalid]="ngControl.touched && ngControl.invalid"
       [formControl]="$any(ngControl).control"
@@ -10,6 +11,7 @@
 
   <ng-template #inputNumberSeparator>
     <input class="form-control" type="text"
+      #numberInput
       [class.is-invalid]="ngControl.touched && ngControl.invalid"
       [formControl]="$any(ngControl).control"
       placeholder={{label}}

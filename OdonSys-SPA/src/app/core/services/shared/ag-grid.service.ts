@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
-import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 import { agGridLocaleEs } from '../../constants/ag-grid-locale';
+import { GridActionsComponent } from '../../components/grid-actions/grid-actions.component';
 import { GridBadgeComponent } from '../../components/grid-badge/grid-badge.component';
 import { GridBadgeModel } from '../../models/view/grid-badge-model';
 import { InvoiceStatus } from '../../enums/invoice-status.enum';
@@ -27,7 +27,7 @@ export class AgGridService {
     { headerName: 'Fecha Creada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 150, resizable: true },
     { headerName: 'Fecha Modificada', field: 'dateModified', type: 'dateColumn', maxWidth: 175, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 298, maxWidth: 298, resizable: true,
-    cellRendererFramework: GridActionsComponent }
+      cellRendererFramework: GridActionsComponent }
   ]
 
   private roleColumnDef: ColDef[] = [
@@ -38,7 +38,7 @@ export class AgGridService {
     { headerName: 'Fecha Creada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 180, resizable: true },
     { headerName: 'Fecha Modificada', field: 'dateModified', type: 'dateColumn', maxWidth: 175, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 200, maxWidth: 260, resizable: true,
-    cellRendererFramework: GridActionsComponent }
+      cellRendererFramework: GridActionsComponent }
   ]
 
   private doctorColumnDef: ColDef[] = [
@@ -59,7 +59,8 @@ export class AgGridService {
       valueFormatter: this.arrayFormatter
     },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 300, maxWidth: 650, resizable: true,
-    cellRendererFramework: GridActionsComponent }
+      cellRendererFramework: GridActionsComponent
+    }
   ]
 
   private clientColumnDef: ColDef[] = [
@@ -76,7 +77,7 @@ export class AgGridService {
   ]
 
   private invoiceColumnDef: ColDef[] = [
-    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 100, maxWidth: 340 },
+    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 340 },
     { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200,
       cellRendererFramework: GridBadgeComponent,
       cellRendererParams: {
@@ -91,7 +92,7 @@ export class AgGridService {
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
     { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 280, resizable: true },
     { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, maxWidth: 280, resizable: true,
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 160, resizable: true,
       cellRendererFramework: GridActionsComponent }
   ]
 
@@ -113,7 +114,7 @@ export class AgGridService {
   public getGridOptions(): GridOptions {
     const gridOptions: GridOptions = {
       rowSelection: 'single',
-      defaultColDef: { sortable: true, filter: true},
+      defaultColDef: { sortable: true, filter: true },
       overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras cargan las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',

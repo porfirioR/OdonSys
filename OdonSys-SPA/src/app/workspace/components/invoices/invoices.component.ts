@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColDef, GridOptions } from 'ag-grid-community';
+import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
@@ -28,30 +29,37 @@ export class InvoicesComponent implements OnInit {
   protected loading: boolean = false
   protected canRegisterInvoice = false
   protected canAccessMyInvoices = false
+  protected title: string = ''
   private canRegisterPayments = false
   private canDeactivateInvoice = false
+  private isMyPermission: boolean = false
+  private request$!: Observable<InvoiceApiModel[]>
 
   constructor(
     private readonly agGridService: AgGridService,
     private readonly router: Router,
     private readonly invoiceApiService: InvoiceApiService,
     private readonly userInfoService: UserInfoService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.isMyPermission = this.activatedRoute.snapshot.data['permissions'].some((x: Permission) => x === Permission.AccessMyInvoices)
     this.canRegisterPayments = this.userInfoService.havePermission(Permission.RegisterPayments)
     this.canRegisterInvoice = this.userInfoService.havePermission(Permission.CreateInvoices)
-    this.canAccessMyInvoices = this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
+    this.canAccessMyInvoices = !this.isMyPermission && this.userInfoService.havePermission(Permission.AccessMyInvoices)
+    this.request$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
+    this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
     this.setupAgGrid()
     this.ready = true
     this.getList()
   }
 
   private getList = () => {
-    this.loading = true;
-    this.invoiceApiService.getInvoices().subscribe({
+    this.loading = true
+    this.request$.subscribe({
       next: (response: InvoiceApiModel[]) => {
         this.gridOptions.api?.setRowData(response)
         this.gridOptions.api?.sizeColumnsToFit()

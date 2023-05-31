@@ -18,16 +18,16 @@ import { PaymentModel } from '../../models/payments/payment-model';
 })
 export class PaymentModalComponent implements OnInit {
   @Input() invoice!: InvoiceApiModel
-  protected payments: PaymentModel[] = []
-  protected saving = false
-  protected loading = true
-  public formGroup = new FormGroup( {
+  public formGroup = new FormGroup({
     total: new FormControl(0),
     remainingDebt: new FormControl(0),
     amount: new FormControl(0, [Validators.required, Validators.min(0)])
   })
-
+  protected payments: PaymentModel[] = []
+  protected saving = false
+  protected loading = true
   protected hasPayments = false
+
   constructor(
     public activeModal: NgbActiveModal,
     private userInfoService: UserInfoService,
