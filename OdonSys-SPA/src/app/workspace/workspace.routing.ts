@@ -6,6 +6,7 @@ import { InvoicesComponent } from './components/invoices/invoices.component';
 import { RegisterInvoiceComponent } from './components/register-invoice/register-invoice.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
+import { PreventUnsavedChanges } from '../admin/guards/prevent-unsaved-changes.guard';
 import { Permission } from '../core/enums/permission.enum';
 
 export const WorkspaceRoutes: Routes = [
@@ -18,7 +19,12 @@ export const WorkspaceRoutes: Routes = [
         canDeactivate: [PreventUnsavedChangesWorkspace],
       },
       { path: 'mis-pacientes', component: ClientsComponent, title: 'Mis pacientes' },
-      { path: 'mis-pacientes/registrar', component: UpsertClientComponent, title: 'Registrar paciente' },
+      {
+        path: 'mis-pacientes/registrar',
+        component: UpsertClientComponent,
+        title: 'Registrar paciente',
+        canDeactivate: [PreventUnsavedChanges]
+      },
       { path: 'mis-pacientes/actualizar/:id', component: UpsertClientComponent, title: 'Actualizar paciente' },
       {
         path: 'facturas',
@@ -52,4 +58,4 @@ export const WorkspaceRoutes: Routes = [
       }
     ]
   }
-];
+]
