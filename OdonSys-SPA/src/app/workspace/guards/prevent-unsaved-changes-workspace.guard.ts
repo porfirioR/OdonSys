@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot } from '@angular/router';
-import { AlertService } from '../../core/services/shared/alert.service';
 import { RegisterInvoiceComponent } from '../components/register-invoice/register-invoice.component';
+import { MyConfigurationComponent } from '../components/my-configuration/my-configuration.component';
+import { AlertService } from '../../core/services/shared/alert.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PreventUnsavedChangesWorkspace implements CanDeactivate<RegisterInvoiceComponent> {
+
   constructor(private readonly alertService: AlertService) { }
 
-  canDeactivate(component: RegisterInvoiceComponent,
-    currentRoute: ActivatedRouteSnapshot, 
+  canDeactivate(component: RegisterInvoiceComponent | MyConfigurationComponent,
+    currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot): boolean | Promise<boolean> {
-      console.log(currentRoute);
-      console.log(currentState);
-      
     if (component.formGroup.dirty) {
       return this.alertService.showQuestionModal(
         'Salir sin guardar',
