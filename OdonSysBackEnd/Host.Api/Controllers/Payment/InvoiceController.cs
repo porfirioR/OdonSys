@@ -29,6 +29,14 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
+        [HttpGet("{id}")]
+        [Authorize(Policy = Policy.CanAccessInvoice)]
+        public async Task<InvoiceModel> GetInvoiceByIdAsync([FromRoute] InvoiceIdApiRequest invoiceApiRequest)
+        {
+            var model = await _invoiceManager.GetInvoiceByIdAsync(invoiceApiRequest.InvoiceId);
+            return model;
+        }
+
         [HttpGet("my-invoices")]
         [Authorize(Policy = Policy.CanAccessMyInvoice)]
         public async Task<IEnumerable<InvoiceModel>> GetMyInvoices()
@@ -61,12 +69,10 @@ namespace Host.Api.Controllers.Payment
 
         [HttpPatch("{id}")]
         [Authorize(Policy = Policy.CanChangeInvoiceStatus)]
-        public async Task<InvoiceModel> PatchClient(string id, [FromBody] JsonPatchDocument<InvoiceStatusRequest> patchClient)
+        public async Task<InvoiceModel> PatchClient([FromRoute] InvoiceIdApiRequest invoiceApiRequest, [FromBody] JsonPatchDocument<InvoiceStatusRequest> patchClient)
         {
             if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
-            var isValidInvoice = await _invoiceManager.IsValidInvoiceIdAsync(id);
-            if (!isValidInvoice) throw new Exception("La factura no existe.");
-            var invoiceStatusRequest = new InvoiceStatusRequest(id, InvoiceStatus.Nuevo);
+            var invoiceStatusRequest = new InvoiceStatusRequest(invoiceApiRequest.InvoiceId, InvoiceStatus.Nuevo);
             patchClient.ApplyTo(invoiceStatusRequest);
             if (!ModelState.IsValid)
             {
