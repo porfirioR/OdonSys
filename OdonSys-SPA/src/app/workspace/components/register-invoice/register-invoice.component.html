@@ -152,8 +152,12 @@
     <div class="card" id="actions-buttons">
       <div class="card-body">
         <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-primary m-r-8" (click)="exit()" [disabled]="saving">Cancelar</button>
-          <button type="button" class="btn btn-outline-primary" [disabled]="formGroup.invalid || saving" (click)="save()">Guardar</button>
+          <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" [disabled]="saving" (click)="exit()">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-outline-primary" name="save" [disabled]="formGroup.invalid || saving" (click)="save()">
+            Guardar
+          </button>
         </div>
       </div>
     </div>

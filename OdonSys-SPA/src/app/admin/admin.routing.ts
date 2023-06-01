@@ -7,7 +7,7 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { UpsertRoleComponent } from './components/upsert-role/upsert-role.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
-import { PreventUnsavedChanges } from './guards/prevent-unsaved-changes.guard';
+import { PreventUnsavedChangesAdmin } from './guards/prevent-unsaved-changes-admin.guard';
 import { Permission } from '../core/enums/permission.enum';
 
 export const AdminRoutes: Routes = [
@@ -25,7 +25,7 @@ export const AdminRoutes: Routes = [
         path: 'procedimientos/crear',
         component: UpsertProcedureComponent,
         canActivate: [PermissionGuard],
-        canDeactivate: [PreventUnsavedChanges],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Crear Procedimientos',
         data: { permissions: [ Permission.CreateProcedures ] }
       },
@@ -33,7 +33,7 @@ export const AdminRoutes: Routes = [
         path: 'procedimientos/actualizar/:id',
         component: UpsertProcedureComponent,
         canActivate: [PermissionGuard],
-        canDeactivate: [PreventUnsavedChanges],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Actualizar Procedimientos',
         data: { permissions: [ Permission.UpdateProcedures ] } },
       {
@@ -59,7 +59,7 @@ export const AdminRoutes: Routes = [
         path: 'pacientes/registrar',
         component: UpsertClientComponent,
         canActivate: [PermissionGuard],
-        canDeactivate: [PreventUnsavedChanges],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Actualizar pacientes',
         data: { permissions: [ Permission.CreateClients ] }
       },
@@ -81,7 +81,7 @@ export const AdminRoutes: Routes = [
         path: 'roles/crear',
         component: UpsertRoleComponent,
         canActivate: [PermissionGuard],
-        canDeactivate: [PreventUnsavedChanges],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Crear Roles',
         data: { permissions: [ Permission.ManageRoles ] }
       },
@@ -89,7 +89,7 @@ export const AdminRoutes: Routes = [
         path: 'roles/actualizar/:code',
         component: UpsertRoleComponent,
         canActivate: [PermissionGuard],
-        canDeactivate: [PreventUnsavedChanges],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Actualizar Roles',
         data: { permissions: [ Permission.ManageRoles ] }
       }

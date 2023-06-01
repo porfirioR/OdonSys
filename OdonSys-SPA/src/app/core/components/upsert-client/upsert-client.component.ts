@@ -37,7 +37,7 @@ export class UpsertClientComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
-  public saveData: boolean = false
+  public ignorePreventUnsavedChanges: boolean = false
   protected title: string = 'Registrar '
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
   protected saving: boolean = false
@@ -66,7 +66,7 @@ export class UpsertClientComponent implements OnInit {
 
   protected save = (): void => {
     if (this.formGroup.invalid) { return }
-    this.saveData = true
+    this.ignorePreventUnsavedChanges = true
     this.id ? this.update() : this.create()
   }
 

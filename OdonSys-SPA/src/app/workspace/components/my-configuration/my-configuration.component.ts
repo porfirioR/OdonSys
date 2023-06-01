@@ -24,7 +24,7 @@ export class MyConfigurationComponent implements OnInit {
   protected load: boolean = false
   protected saving: boolean = false
   protected canEdit = false
-  protected formGroup = new FormGroup({
+  public formGroup = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
@@ -65,6 +65,7 @@ export class MyConfigurationComponent implements OnInit {
     this.doctorApiService.update(this.id, request).subscribe({
       next: () => {
         this.alertService.showSuccess('Datos guardados.')
+        this.formGroup.reset()
         this.close()
       }, error: (e) => {
         this.saving = false

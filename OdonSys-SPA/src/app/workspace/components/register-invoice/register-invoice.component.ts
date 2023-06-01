@@ -45,7 +45,6 @@ export class RegisterInvoiceComponent implements OnInit {
   protected load: boolean = false
   protected saving: boolean = false
   protected clients!: ClientModel[]
-  private procedures!: ProcedureModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
   protected clientsValues: Map<string, string> = new Map<string, string>()
@@ -61,6 +60,7 @@ export class RegisterInvoiceComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  private procedures!: ProcedureModel[]
 
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
