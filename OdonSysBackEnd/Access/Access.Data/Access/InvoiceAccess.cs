@@ -84,6 +84,7 @@ namespace Access.Data.Access
                     return new InvoiceDetailAccessModel(
                         x.Id,
                         x.InvoiceId,
+                        clientProcedure is null ? new Guid() : clientProcedure.ProcedureId,
                         clientProcedure is null ? string.Empty : clientProcedure.Procedure.Name,
                         x.ProcedurePrice,
                         x.FinalPrice

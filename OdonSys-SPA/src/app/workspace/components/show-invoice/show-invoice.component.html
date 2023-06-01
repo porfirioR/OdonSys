@@ -1,0 +1,134 @@
+<app-progress *ngIf="!load"></app-progress>
+<div class="p-l-10 p-t-10" [formGroup]="formGroup">
+  <main class="row w-100">
+    <aside class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Paciente</h5>
+            <form [formGroup]="clientFormGroup" class="row">
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Nombre'" formControlName="name"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Apellido'" formControlName="surname"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'País'" formControlName="country"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+            <div class="col-lg-6 col-md-6">
+              <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"
+                [colClass]="'col-lg-12'"></app-text-number-input>
+            </div>
+          </form>
+        </div>
+      </div>
+    </aside>
+    <article class="col-9">
+      <section class="col-md-12 p-b-10" id="selected-procedures">
+        <div class="card">
+          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 523 : 551}">
+            <h5 class="card-title">Procedimientos</h5>
+            <div formArrayName="procedures">
+              <span class="row">
+                <div class="col-md-4">
+                  <label for="name" class="fw-bold">Nombre</label>
+                </div>
+                <div class="col-md-3">
+                  <label for="price" class="fw-bold">Precio</label>
+                </div>
+                <div class="col-md-3">
+                  <label for="finalPrice" class="fw-bold">Precio final</label>
+                </div>
+              </span>
+              <div class="row align-center" id="selected-procedures-items">
+                <ng-container [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
+                  <div class="col-md-4">
+                    <label class="form-label">
+                      {{item.controls.name.value}}
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">
+                      Gs. {{item.controls.price.value | number:'' : 'es' }}
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        Gs.
+                      </span>
+                      <!-- TODO generic input-group -->
+                      <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio" [mask]="'separator.0'" thousandSeparator=".">
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="col-md-12 p-b-10">
+        <div class="card">
+          <div class="card-body amount">
+            <div class="row justify-content-end">
+              <div class="col-md-3">
+                <div class="">
+                  <label for="subTotal">Sub Total</label>
+                  <div>
+                    <label class=" m-b-0">
+                      Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <div>
+                  <label for="montoTotal">Monto Total</label>
+                  <div>
+                    <label class=" m-b-0">
+                      Gs. {{formGroup.controls.total.value | number:'' : 'es' }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+  <footer class="row col-12">
+    <div class="card" id="actions-buttons">
+      <div class="card-body">
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
+            Salir
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

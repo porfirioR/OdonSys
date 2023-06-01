@@ -90,9 +90,11 @@ namespace Manager.Payment
                 accessModel.InvoiceDetails.Select(x => new InvoiceDetailModel(
                     x.Id,
                     x.InvoiceId,
+                    x.ProcedureId,
                     x.Procedure,
                     x.ProcedurePrice,
-                    x.FinalPrice))
+                    x.FinalPrice
+                ))
             );
         }
     }
