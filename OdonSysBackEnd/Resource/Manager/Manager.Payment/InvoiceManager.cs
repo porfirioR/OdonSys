@@ -28,7 +28,7 @@ namespace Manager.Payment
                 request.ClientId,
                 request.InvoiceDetails.Select(x => new InvoiceDetailAccessRequest(
                     x.ClientProcedureId,
-                    x.ProducePrice,
+                    x.ProcedurePrice,
                     x.FinalPrice))
             );
             var accessModel = await _invoiceAccess.CreateInvoiceAsync(accessRequest);
@@ -97,7 +97,6 @@ namespace Manager.Payment
                 accessModel.InvoiceDetails.Select(x => new InvoiceDetailModel(
                     x.Id,
                     x.InvoiceId,
-                    x.ProcedureId,
                     x.Procedure,
                     x.ProcedurePrice,
                     x.FinalPrice

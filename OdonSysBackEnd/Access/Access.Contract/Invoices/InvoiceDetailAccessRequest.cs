@@ -2,7 +2,7 @@
 {
     public record InvoiceDetailAccessRequest(
         Guid ClientProcedureId,
-        int ProducePrice,
+        int ProcedurePrice,
         int FinalPrice
     );
 }

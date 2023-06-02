@@ -61,8 +61,9 @@ export class AlertService {
       title: 'Información',
       text,
       icon: 'info',
+      confirmButtonText: 'De acuerdo',
       customClass: {
-        confirmButton: 'btn btn-outline-primary',
+        confirmButton: 'btn btn-outline-primary p-t-12 p-b-12 p-l-18 p-r-18',
       },
       buttonsStyling: false
     })

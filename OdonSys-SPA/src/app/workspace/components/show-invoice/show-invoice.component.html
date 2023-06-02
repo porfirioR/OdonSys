@@ -76,13 +76,9 @@
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <div class="input-group">
-                      <span class="input-group-text">
-                        Gs.
-                      </span>
-                      <!-- TODO generic input-group -->
-                      <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio" [mask]="'separator.0'" thousandSeparator=".">
-                    </div>
+                    <label class="form-label">
+                      Gs. {{item.controls.finalPrice.value | number:'' : 'es' }}
+                    </label>
                   </div>
                 </ng-container>
               </div>
@@ -123,9 +119,9 @@
   <footer class="row col-12">
     <div class="card" id="actions-buttons">
       <div class="card-body">
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-center">
           <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
-            Salir
+            Volver a la lista
           </button>
         </div>
       </div>
