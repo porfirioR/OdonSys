@@ -36,11 +36,6 @@ export const WorkspaceRoutes: Routes = [
         title: 'Actualizar paciente'
       },
       {
-        path: 'mis-pacientes/ver/:id',
-        component: ShowInvoiceComponent,
-        title: 'Actualizar paciente'
-      },
-      {
         path: 'facturas',
         component: InvoicesComponent,
         canActivate: [PermissionGuard],
@@ -55,7 +50,7 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.AccessMyInvoices ] }
       },
       {
-        path: 'facturas/registrar',
+        path: 'mis-facturas/registrar',
         component: RegisterInvoiceComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],
@@ -63,7 +58,12 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.CreateInvoices ] }
       },
       {
-        path: 'mis-facturas/registrar',
+        path: 'mis-facturas/ver/:id',
+        component: ShowInvoiceComponent,
+        title: 'Actualizar paciente'
+      },
+      {
+        path: 'facturas/registrar',
         component: RegisterInvoiceComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],

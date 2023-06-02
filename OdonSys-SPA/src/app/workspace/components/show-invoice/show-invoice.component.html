@@ -1,44 +1,44 @@
 <app-progress *ngIf="!load"></app-progress>
 <div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <main class="row w-100">
-    <aside class="col-3">
+    <aside class="col-2">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Paciente</h5>
             <form [formGroup]="clientFormGroup" class="row">
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Nombre'" formControlName="name"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Apellido'" formControlName="surname"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'País'" formControlName="country"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"
                 [colClass]="'col-lg-12'"></app-text-number-input>
             </div>
@@ -46,10 +46,10 @@
         </div>
       </div>
     </aside>
-    <article class="col-9">
+    <article class="col-6">
       <section class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card">
-          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 523 : 551}">
+          <div class="card-body">
             <h5 class="card-title">Procedimientos</h5>
             <div formArrayName="procedures">
               <span class="row">
@@ -115,9 +115,48 @@
         </div>
       </section>
     </article>
+    <section class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Pagos</h5>
+          <div formArrayName="procedures">
+            <span class="row">
+              <div class="col-md-6">
+                <label for="name" class="fw-bold">Nombre</label>
+              </div>
+              <div class="col-md-3">
+                <label for="price" class="fw-bold">Precio</label>
+              </div>
+              <div class="col-md-3">
+                <label for="finalPrice" class="fw-bold">Precio final</label>
+              </div>
+            </span>
+            <div class="row align-center" id="selected-procedures-items">
+              <ng-container [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
+                <div class="col-md-6">
+                  <label class="form-label">
+                    {{item.controls.name.value}}
+                  </label>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">
+                    Gs. {{item.controls.price.value | number:'' : 'es' }}
+                  </label>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">
+                    Gs. {{item.controls.finalPrice.value | number:'' : 'es' }}
+                  </label>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="row col-12">
-    <div class="card" id="actions-buttons">
+    <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-center">
           <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
