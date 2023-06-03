@@ -49,6 +49,7 @@ export class AlertService {
       title: 'Operación fallida',
       text,
       icon: 'error',
+      confirmButtonText: 'De acuerdo',
       customClass: {
         confirmButton: 'btn btn-outline-primary',
       },

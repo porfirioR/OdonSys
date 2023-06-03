@@ -16,7 +16,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text">@</span>
                 </div>
-                <input id="email" type="email" class="form-control" placeholder="Correo" formControlName="email" aria-label="Correo"
+                <input id="email" type="email" class="form-control" placeholder="Correo" formControlName="email" aria-label="Correo" autocomplete="email"
                   [class.is-invalid]="formGroup.controls.email.touched && formGroup.controls['email'].invalid">
                 <div *ngIf="formGroup.controls.email.errors?.email" class="invalid-feedback">
                   Correo inválido
@@ -29,7 +29,7 @@
                 <div class="input-group-text" placement="top" [ngbTooltip]="currentMessage">
                   <input id="type" class="form-check-input mt-0" type="checkbox" formControlName="type">
                 </div>
-                <input id="password" [type]="currentType" class="form-control" formControlName="password" placeholder="Contraseña"
+                <input id="password" [type]="currentType" class="form-control" formControlName="password" placeholder="Contraseña" autocomplete="current-password"
                   [class.is-invalid]="formGroup.touched && formGroup.controls.password.invalid">
                 <div *ngIf="formGroup.controls.password.errors?.required" class="invalid-feedback text-start">
                   La contraseña es obligatoria
