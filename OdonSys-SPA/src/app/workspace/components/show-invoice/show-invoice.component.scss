@@ -1,0 +1,83 @@
+.p-l-10 {
+  padding-left: 10px !important;
+}
+
+.p-t-10 {
+  padding-top: 10px !important;
+}
+
+.p-l-0 {
+  padding-left: 0 !important;
+}
+
+.col-3, .col-9, footer {
+  padding-right: 0 !important;
+}
+
+.p-b-10 {
+  padding-bottom: 10px !important;
+}
+
+footer {
+  padding-left: 0.75rem !important;
+  padding-top: 10px;
+
+  & .card-body {
+    padding-bottom: 0.5rem !important;
+    padding-top: 0.5rem !important;
+  }
+}
+
+.col-md-4, .col-md-3 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.align-center {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.card-body.amount {
+  padding-bottom: 0.3rem !important;
+  padding-top: 0.3rem !important;
+}
+
+.procedures {
+  overflow-x: hidden;
+  max-height: 530px !important;
+}
+
+#selected-procedure-items {
+  max-height: 38.2rem !important;
+  overflow-x: hidden;
+}
+
+#actions-buttons {
+  margin-left: 25.7%;
+  width: 74.3%;
+}
+
+#procedure-section { 
+  height: 44rem;
+}
+
+#payment-section {
+  height: 48rem;
+}
+
+#payments {
+  max-height: 44rem !important;
+  overflow-x: hidden;
+  & :last-child {
+    font-weight: bold;
+  }
+}
+
+.paid-header, .paid-content-row {
+  margin-right: auto;
+}
+
+#footer-procedures {
+  padding: 4px;
+}

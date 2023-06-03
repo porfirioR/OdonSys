@@ -28,7 +28,7 @@ namespace Manager.Payment
                 request.ClientId,
                 request.InvoiceDetails.Select(x => new InvoiceDetailAccessRequest(
                     x.ClientProcedureId,
-                    x.ProducePrice,
+                    x.ProcedurePrice,
                     x.FinalPrice))
             );
             var accessModel = await _invoiceAccess.CreateInvoiceAsync(accessRequest);
@@ -42,11 +42,18 @@ namespace Manager.Payment
             return await PrepareInvocesWithPayments(invoices);
         }
 
+        public async Task<InvoiceModel> GetInvoiceByIdAsync(string id)
+        {
+            var invoiceAccessModel = await _invoiceAccess.GetInvoiceByIdAsync(id);
+            var invoiceModel = (await PrepareInvocesWithPayments(new List<InvoiceAccessModel> { invoiceAccessModel })).First();
+            return invoiceModel;
+        }
+
         public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string username)
         {
-            var invoices = await _invoiceAccess.GetInvoicesAsync();
-            var myInvoiceAccessList = invoices.Where(x => x.UserCreated == username);
-            return await PrepareInvocesWithPayments(invoices);
+            var invoiceAccessModelList = await _invoiceAccess.GetInvoicesAsync();
+            var myInvoiceAccessList = invoiceAccessModelList.Where(x => x.UserCreated == username);
+            return await PrepareInvocesWithPayments(invoiceAccessModelList);
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)
@@ -92,7 +99,8 @@ namespace Manager.Payment
                     x.InvoiceId,
                     x.Procedure,
                     x.ProcedurePrice,
-                    x.FinalPrice))
+                    x.FinalPrice
+                ))
             );
         }
     }

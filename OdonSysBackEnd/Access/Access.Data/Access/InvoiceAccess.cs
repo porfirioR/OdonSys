@@ -30,13 +30,11 @@ namespace Access.Data.Access
         public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesAsync()
         {
             var entities = await _context.Invoices
-                                    .Include(x => x.InvoiceDetails)
                                     .AsNoTracking()
                                     .OrderByDescending(x => x.DateCreated)
                                     .ToListAsync();
-            var clientProcedureIds = entities.SelectMany(x => x.InvoiceDetails.Select(y => y.ClientProcedureId));
-            var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
-            return entities.Select(x => GetModel(x, clientProcedureEntities));
+
+            return entities.Select(x => GetModel(x, new List<ClientProcedure>()));
         }
 
         public async Task<InvoiceAccessModel> GetInvoiceByIdAsync(string id)
@@ -46,9 +44,9 @@ namespace Access.Data.Access
                                     .Include(x => x.InvoiceDetails)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync(x => x.Id == new Guid(id));
+
             var clientProcedureIds = entity.InvoiceDetails.Select(y => y.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
-
             return GetModel(entity, clientProcedureEntities);
         }
 

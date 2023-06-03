@@ -21,7 +21,8 @@ export class PaymentModalComponent implements OnInit {
   public formGroup = new FormGroup({
     total: new FormControl(0),
     remainingDebt: new FormControl(0),
-    amount: new FormControl(0, [Validators.required, Validators.min(0)])
+    amount: new FormControl(1, [Validators.required, Validators.min(0)]),
+    totalPaid: new FormControl(0)
   })
   protected payments: PaymentModel[] = []
   protected saving = false
@@ -53,6 +54,8 @@ export class PaymentModalComponent implements OnInit {
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           this.payments.push(paymentItem)
         })
+        const totalPaid = this.payments.reduce((sum, currentObject) => sum + currentObject.amount, 0)
+        this.formGroup.controls.totalPaid.setValue(totalPaid)
         this.loading = false
       })) : of(this.loading = false)
     })).subscribe({
