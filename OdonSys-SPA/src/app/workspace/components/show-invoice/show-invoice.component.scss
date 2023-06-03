@@ -6,6 +6,10 @@
   padding-top: 10px !important;
 }
 
+.p-l-0 {
+  padding-left: 0 !important;
+}
+
 .col-3, .col-9, footer {
   padding-right: 0 !important;
 }
@@ -15,12 +19,8 @@
 }
 
 footer {
-  // position: absolute;
-  // bottom: 10px;
-  // padding-right: 10px !important;
   padding-left: 0.75rem !important;
   padding-top: 10px;
-  // margin-right: calc(-0.5 * var(--bs-gutter-x));
 
   & .card-body {
     padding-bottom: 0.5rem !important;
@@ -48,8 +48,8 @@ footer {
   max-height: 530px !important;
 }
 
-#selected-procedures-items {
-  max-height: 1056px !important;
+#selected-procedure-items {
+  max-height: 38.2rem !important;
   overflow-x: hidden;
 }
 
@@ -61,6 +61,23 @@ footer {
 #procedure-section { 
   height: 44rem;
 }
+
 #payment-section {
-  height: 49rem;
+  height: 48rem;
+}
+
+#payments {
+  max-height: 44rem !important;
+  overflow-x: hidden;
+  & :last-child {
+    font-weight: bold;
+  }
+}
+
+.paid-header, .paid-content-row {
+  margin-right: auto;
+}
+
+#footer-procedures {
+  padding: 4px;
 }

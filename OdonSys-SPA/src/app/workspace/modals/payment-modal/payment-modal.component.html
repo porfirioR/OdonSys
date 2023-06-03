@@ -5,53 +5,64 @@
       (click)="activeModal.dismiss('Cross click')">
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body p-l-20 p-r-20">
     <h5>Datos Factura</h5>
     <app-progress *ngIf="loading; else invoiceContent"></app-progress>
     <ng-template class="col-12 row" #invoiceContent>
-      <div class="row">
-        <h6 class="col-4">Quien registró</h6>
-        <h6 class="col-4">Factura total</h6>
-        <h6 class="col-4">Deuda faltante</h6>
-      </div>
-      <div class="row">
-        <label class="col-4" for="userCreated">{{invoice.userCreated}}</label>
-        <label class="col-4" for="totalInvoice">Gs. {{formGroup.value.total | number: '': 'es'}}</label>
-        <label class="col-4" for="remainingDebt">Gs. {{formGroup.value.remainingDebt | number: '': 'es'}}</label>
-      </div>
-      <br>
-      <br>
-      <div *ngIf="!hasPayments; else allPayments">
-        <h5 class="text-center">Sin pagos realizados</h5>
-        <br>
-      </div>
-      <ng-template #allPayments>
-        <h5>Pagos realizados</h5>
+      <header id="header-payments">
         <div class="row">
-          <h6 class="col-4">Quien registró</h6>
-          <h6 class="col-4">Fecha pagada</h6>
-          <h6 class="col-2 text-center">Monto</h6>
-          <h6 class="col-2 text-center">Deuda</h6>
+          <h6 class="col-6">Quien registró la factura</h6>
+          <h6 class="col-3 text-end">Factura total</h6>
+          <h6 class="col-3 text-end">Deuda faltante</h6>
         </div>
-        <div class="row" *ngFor="let payment of payments">
-          <label class="col-4">{{payment.user}}</label>
-          <label class="col-4">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-          <label class="col-2 text-end">Gs. {{payment.amount | number: '': 'es'}}</label>
-          <label class="col-2 text-end">Gs. {{payment.totalDebt | number: '': 'es'}}</label>
+        <div class="row">
+          <label class="col-6" for="userCreated">{{invoice.userCreated}}</label>
+          <label class="col-3 text-end" for="totalInvoice">Gs. {{formGroup.value.total | number: '': 'es'}}</label>
+          <label class="col-3 text-end" for="remainingDebt">Gs. {{formGroup.value.remainingDebt | number: '': 'es'}}</label>
+        </div>
+      </header>
+      <br>
+      <article>
+        <div *ngIf="!hasPayments; else allPayments">
+          <h5 class="text-center">Sin pagos realizados</h5>
+          <br>
+        </div>
+        <ng-template #allPayments>
+          <h5>Pagos realizados</h5>
+          <div id="payments">
+            <div class="row">
+              <h6 class="col-4">Quien registró</h6>
+              <h6 class="col-4">Fecha pagada</h6>
+              <h6 class="col-2 text-end">Monto</h6>
+              <h6 class="col-2 text-end">Deuda</h6>
+            </div>
+            <div class="row" *ngFor="let payment of payments">
+              <label class="col-4">{{payment.user}}</label>
+              <label class="col-4">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+              <label class="col-2 text-end">Gs. {{payment.amount | number: '': 'es'}}</label>
+              <label class="col-2 text-end">Gs. {{payment.totalDebt | number: '': 'es'}}</label>
+            </div>
+          </div>
+          <br>
+        </ng-template>
+      </article>
+      <footer>
+        <div class="row" id="paid-detail">
+          <h6 class="offset-7 col-2 text-end">Total</h6>
+          <label class="col-2 text-start" for="amountPaid">Gs. {{formGroup.value.totalPaid | number: '': 'es'}}</label>
         </div>
         <br>
-      </ng-template>
-      <h5>Registrar Pago</h5>
-      <div class="col-6">
-        <app-text-number-input formControlName="amount"
-          [type]="'number'"
-          [label]="'Pago'"
-          [numberWithSeparator]="true"
-          [showLabel]="false"
-          [autofocus]="true"
-        ></app-text-number-input>
-      </div>
-      <br>
+        <h5>Registrar Pago</h5>
+        <div class="col-6">
+          <app-text-number-input formControlName="amount"
+            [type]="'number'"
+            [label]="'Pago'"
+            [numberWithSeparator]="true"
+            [showLabel]="false"
+            [autofocus]="true"
+          ></app-text-number-input>
+        </div>
+      </footer>
       <br>
     </ng-template>
   </div>

@@ -1,11 +1,11 @@
 <app-progress *ngIf="!load"></app-progress>
 <div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <main class="row w-100">
-    <aside class="col-2">
-      <div class="card">
-        <div class="card-body">
+    <section class="col-2 p-r-0">
+      <aside class="card">
+        <article class="card-body">
           <h5 class="card-title">Paciente</h5>
-            <form [formGroup]="clientFormGroup" class="row">
+          <form [formGroup]="clientFormGroup" class="row">
             <div class="col-lg-12 col-md-6">
               <app-text-number-input [label]="'Nombre'" [colClass]="'col-lg-12'"
                 id="name" formControlName="name"></app-text-number-input>
@@ -43,100 +43,72 @@
               id="email" formControlName="email"></app-text-number-input>
             </div>
           </form>
-        </div>
-      </div>
-    </aside>
-    <article class="col-6">
-      <section class="col-md-12 p-b-10" id="selected-procedures">
+        </article>
+      </aside>
+    </section>
+    <section class="col-6 p-r-0">
+      <article class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card" id="procedure-section">
           <div class="card-body">
             <h5 class="card-title">Procedimientos</h5>
-            <div formArrayName="procedures">
-              <span class="row">
-                <div class="col-md-4">
-                  <label for="name" class="fw-bold">Nombre</label>
+            <main formArrayName="procedures">
+              <header class="row">
+                <label for="name" class="col-md-4 fw-bold">Nombre</label>
+                <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
+                <label for="finalPrice" class="col-md-3 fw-bold text-end">Precio final (Gs.)</label>
+              </header>
+              <div class="row align-center" id="selected-procedure-items">
+                <div [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
+                  <label class="col-md-4 form-label"> {{item.controls.name.value}}</label>
+                  <label class="col-md-3 form-label text-end">
+                    {{item.controls.price.value | number:'' : 'es' }}
+                  </label>
+                  <label class="col-md-3 form-label text-end fw-bold">
+                    {{item.controls.finalPrice.value | number:'' : 'es' }}
+                  </label>
                 </div>
-                <div class="col-md-3">
-                  <label for="price" class="fw-bold">Precio</label>
-                </div>
-                <div class="col-md-3">
-                  <label for="finalPrice" class="fw-bold">Precio final</label>
-                </div>
-              </span>
-              <div class="row align-center" id="selected-procedures-items">
-                <ng-container [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
-                  <div class="col-md-4">
-                    <label class="form-label">
-                      {{item.controls.name.value}}
-                    </label>
-                  </div>
-                  <div class="col-md-3">
-                    <label class="form-label">
-                      Gs. {{item.controls.price.value | number:'' : 'es' }}
-                    </label>
-                  </div>
-                  <div class="col-md-3">
-                    <label class="form-label">
-                      Gs. {{item.controls.finalPrice.value | number:'' : 'es' }}
-                    </label>
-                  </div>
-                </ng-container>
               </div>
-            </div>
+            </main>
           </div>
         </div>
-      </section>
-      <section class="col-md-12 p-b-10">
+      </article>
+      <footer class="col-md-12 p-b-10 p-l-0" id="footer-procedures">
         <div class="card">
           <div class="card-body amount">
             <div class="row justify-content-end">
               <div class="col-md-3">
-                <div class="">
-                  <label for="subTotal">Sub Total</label>
-                  <div>
-                    <label class=" m-b-0">
-                      Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}
-                    </label>
-                  </div>
-                </div>
+                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}</label>
               </div>
-              <div class="col-md-5">
-                <div>
-                  <label for="montoTotal">Monto Total</label>
-                  <div>
-                    <label class=" m-b-0">
-                      Gs. {{formGroup.controls.total.value | number:'' : 'es' }}
-                    </label>
-                  </div>
-                </div>
+              <div class="col-md-3">
+                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' : 'es' }}</label>
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </article>
-    <section class="col-4">
+      </footer>
+    </section>
+    <section class="col-4 p-r-0">
       <div class="card" id="payment-section">
-        <div class="card-body">
-          <h5 class="card-title">Pagos</h5>
+        <div class="card-body" [ngClass]="{'align-items-center d-flex justify-content-center': !hasPayments}">
           <div *ngIf="!hasPayments; else allPayments">
             <h5 class="text-center">Sin pagos realizados</h5>
-            <br>
           </div>
           <ng-template #allPayments>
-            <h5>Pagos realizados</h5>
-            <div class="row">
-              <h6 class="col-4">Quien registró</h6>
-              <h6 class="col-3">Fecha pagada</h6>
-              <h6 class="col-3 text-center">Monto</h6>
-              <h6 class="col-2 text-end">Deuda</h6>
-            </div>
-            <div class="row" *ngFor="let payment of payments">
-              <label class="col-4">{{payment.user}}</label>
-              <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-              <label class="col-3 text-center">Gs. {{payment.amount | number: '': 'es'}}</label>
-              <label class="col-2 text-end">Gs. {{payment.totalDebt | number: '': 'es'}}</label>
-            </div>
+            <section id="payments">
+              <h5>Pagos realizados</h5>
+              <header class="row paid-header">
+                <h6 class="col-3">Quien registró</h6>
+                <h6 class="col-3">Fecha pagada</h6>
+                <h6 class="col-3 text-end">Monto (Gs.)</h6>
+                <h6 class="col-3 text-end">Deuda (Gs.)</h6>
+              </header>
+              <div class="row paid-content-row" *ngFor="let payment of payments">
+                <label class="col-3">{{payment.user}}</label>
+                <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+                <label class="col-3 text-end">{{payment.amount | number: '': 'es'}}</label>
+                <label class="col-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+              </div>
+            </section>
             <br>
           </ng-template>
         </div>
