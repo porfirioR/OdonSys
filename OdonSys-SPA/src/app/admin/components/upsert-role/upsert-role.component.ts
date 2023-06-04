@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import * as fromRolesActions from '../../../core/store/roles/roles.actions';
 import { selectRoles } from '../../../core/store/roles/roles.selectors';
 import { savingSelector } from '../../../core/store/saving/saving.selector';
@@ -34,10 +35,12 @@ export class UpsertRoleComponent implements OnInit {
     private readonly roleApiService: RoleApiService,
     private store: Store,
     private activatedRoute: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly subscriptionService: SubscriptionService
   ) { }
 
   ngOnInit() {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.code = this.activatedRoute.snapshot.params['code']
     const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'
     const role$ = this.store.pipe(

@@ -9,6 +9,7 @@ import * as clientActions from './client.actions';
 import { selectClients } from './client.selectors';
 import { ClientModel } from '../../models/view/client-model';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 
 @Injectable()
 export class ClientEffects {
@@ -17,7 +18,8 @@ export class ClientEffects {
     private readonly clientApiService: ClientAdminApiService,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private readonly subscriptionService: SubscriptionService
   ) {}
 
   getAll$ = createEffect(() => {
@@ -83,7 +85,10 @@ export class ClientEffects {
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(clientActions.clientFailure),
-      tap((x) => {throw x.error})
+      tap((x) => {
+        this.subscriptionService.emitErrorInSave()
+        throw x.error
+      })
     )
   })
 

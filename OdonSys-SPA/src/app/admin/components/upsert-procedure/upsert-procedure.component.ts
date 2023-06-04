@@ -14,6 +14,7 @@ import { savingSelector } from '../../../core/store/saving/saving.selector';
 import { selectProcedures } from '../../../core/store/procedures/procedure.selectors';
 import * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 
 @Component({
   selector: 'app-upsert-procedure',
@@ -25,7 +26,7 @@ export class UpsertProcedureComponent implements OnInit {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),
-    price : new FormControl(0, [Validators.required, Validators.min(0)]),
+    price : new FormControl(1, [Validators.required, Validators.min(0)]),
   })
   public ignorePreventUnsavedChanges: boolean = false
   protected saving$: Observable<boolean> = this.store.select(savingSelector)
@@ -42,9 +43,11 @@ export class UpsertProcedureComponent implements OnInit {
     private readonly router: Router,
     private store: Store,
     private userInfoService: UserInfoService,
+    private readonly subscriptionService: SubscriptionService
   ) { }
 
   ngOnInit() {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.loadValues()
   }
 

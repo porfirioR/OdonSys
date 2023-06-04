@@ -3,7 +3,16 @@
 ag-grid-angular {
   height: calc(91vh - 80px);
 }
+
 .ag-cell-data-changed {
   // --ag-value-change-value-highlight-background-color: $primaryColor
   background-color: $primaryColor !important;
+}
+
+.long-text-cell-ag-grid {
+  line-height: 1 !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  padding-right: 0 !important;
+  word-break: break-word !important;
 }

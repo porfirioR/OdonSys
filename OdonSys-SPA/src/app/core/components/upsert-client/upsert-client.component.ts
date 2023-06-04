@@ -12,6 +12,7 @@ import { selectClients } from '../../store/clients/client.selectors';
 import * as fromClientsActions from '../../store/clients/client.actions';
 import { savingSelector } from '../../store/saving/saving.selector';
 import { UserInfoService } from '../../services/shared/user-info.service';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 import { CustomValidators } from '../../helpers/custom-validators';
 import { MethodHandler } from '../../helpers/method-handler';
 import { EnumHandler } from '../../helpers/enum-handler';
@@ -51,11 +52,13 @@ export class UpsertClientComponent implements OnInit {
     private readonly router: Router,
     private userInfoService: UserInfoService,
     private store: Store,
+    private readonly subscriptionService: SubscriptionService
   ) {
     this.countries = EnumHandler.getCountries()
   }
 
   ngOnInit() {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.fullFieldEdit = this.userInfoService.havePermission(Permission.FullFieldUpdateClients)
     this.loadValues()
   }

@@ -55,8 +55,9 @@ export class AgGridService {
       cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
     { headerName: 'Roles', field: 'roles', filter: 'agTextColumnFilter', resizable: true,
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid',
       cellRenderer: this.arrayFormatter,
-      valueFormatter: this.arrayFormatter
+      valueFormatter: this.arrayFormatter,
     },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 300, maxWidth: 650, resizable: true,
       cellRendererFramework: GridActionsComponent
@@ -65,7 +66,7 @@ export class AgGridService {
 
   private clientColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Apellido', field: 'lastName', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Visible', field: 'active', filter: false, resizable: true, maxWidth: 90,
@@ -77,7 +78,7 @@ export class AgGridService {
   ]
 
   private invoiceColumnDef: ColDef[] = [
-    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 340 },
+    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 200, maxWidth: 340 },
     { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200,
       cellRendererFramework: GridBadgeComponent,
       cellRendererParams: {
@@ -89,8 +90,8 @@ export class AgGridService {
         ]
       }
     },
+    { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 180, resizable: true },
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 120, resizable: true, maxWidth: 240 },
-    { headerName: 'Fecha Registrada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 280, resizable: true },
     { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 150, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 160, resizable: true,
       cellRendererFramework: GridActionsComponent }
