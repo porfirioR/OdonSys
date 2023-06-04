@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
 import { ClientAdminApiService } from '../../services/api/client-admin-api.service';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 import * as clientActions from './client.actions';
 import { selectClients } from './client.selectors';
 import { ClientModel } from '../../models/view/client-model';
@@ -17,7 +18,8 @@ export class ClientEffects {
     private readonly clientApiService: ClientAdminApiService,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private readonly subscriptionService: SubscriptionService
   ) {}
 
   getAll$ = createEffect(() => {
@@ -83,7 +85,10 @@ export class ClientEffects {
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(clientActions.clientFailure),
-      tap((x) => {throw x.error})
+      tap((x) => {
+        this.subscriptionService.emitErrorInSave()
+        throw x.error
+      })
     )
   })
 

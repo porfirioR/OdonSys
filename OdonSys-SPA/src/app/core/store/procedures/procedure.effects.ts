@@ -8,6 +8,7 @@ import { ProcedureModel } from '../../models/procedure/procedure-model';
 import { ProcedureApiModel } from '../../models/procedure/procedure-api-model';
 import { ProcedureApiService } from '../../services/api/procedure-admin-api.service';
 import { AlertService } from '../../services/shared/alert.service';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 import { selectProcedures } from './procedure.selectors';
 
 @Injectable()
@@ -18,7 +19,8 @@ export class ProcedureEffects {
     private readonly procedureApiService: ProcedureApiService,
     private readonly store: Store,
     private readonly router: Router,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private readonly subscriptionService: SubscriptionService
   ) {}
 
   getAll$ = createEffect(() => {
@@ -90,7 +92,10 @@ export class ProcedureEffects {
   errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.procedureFailure),
-      tap((x) => { throw x.error })
+      tap((x) => {
+        this.subscriptionService.emitErrorInSave()
+        throw x.error
+      })
     )
   })
 
