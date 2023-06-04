@@ -8,8 +8,8 @@ import { ProcedureModel } from '../../models/procedure/procedure-model';
 import { ProcedureApiModel } from '../../models/procedure/procedure-api-model';
 import { ProcedureApiService } from '../../services/api/procedure-admin-api.service';
 import { AlertService } from '../../services/shared/alert.service';
-import { selectProcedures } from './procedure.selectors';
 import { SubscriptionService } from '../../services/shared/subscription.service';
+import { selectProcedures } from './procedure.selectors';
 
 @Injectable()
 export class ProcedureEffects {

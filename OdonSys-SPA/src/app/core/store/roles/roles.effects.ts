@@ -7,10 +7,10 @@ import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { RoleApiService } from '../../services/api/role-api.service';
 import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 import { RoleModel } from '../../models/view/role-model';
 import { RoleApiModel } from '../../models/api/roles/role-api-model';
 import { selectRoles } from './roles.selectors';
-import { SubscriptionService } from '../../services/shared/subscription.service';
 
 @Injectable()
 export class RolesEffects {

@@ -5,11 +5,11 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
 import { ClientAdminApiService } from '../../services/api/client-admin-api.service';
+import { SubscriptionService } from '../../services/shared/subscription.service';
 import * as clientActions from './client.actions';
 import { selectClients } from './client.selectors';
 import { ClientModel } from '../../models/view/client-model';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
-import { SubscriptionService } from '../../services/shared/subscription.service';
 
 @Injectable()
 export class ClientEffects {
