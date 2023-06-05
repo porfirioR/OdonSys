@@ -1,25 +1,27 @@
 <header class="header-container">
-  <nav class="nav-main bg-primary">
-    <div class="nav-menu-left">
-      <a class="navbar-brand" routerLink="inicio">
-        <img src="../../../../assets/img/logo.png">
-      </a>
-    </div>
-    <ul class="nav-menu">
-      <li class="nav-item" *ngFor="let item of menuPermissions">
-        <a class="nav-link" [routerLink]="item.link" routerLinkActive="active">{{item.title}}</a>
-      </li>
-    </ul>
-    <div id="my-configuration" class="nav-menu-right m-r-16" ngbDropdown>
-      <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
-      <div ngbDropdownMenu aria-labelledby="dropdownConfig">
-        <p ngbDropdownItem [disabled]="true">
-          <strong>Usuario: </strong>{{userName}}
-        </p>
-        <hr>
-        <button ngbDropdownItem routerLink="trabajo/configuración/datos" *ngIf="canAccessData">Mis datos</button>
-        <button ngbDropdownItem (click)="logOut()">Salir</button>
+  <div class="row">
+    <nav class="nav-main bg-primary">
+      <div class="nav-menu-left">
+        <a class="navbar-brand" routerLink="inicio">
+          <img src="../../../../assets/img/logo.png">
+        </a>
       </div>
-    </div>
-  </nav>
+      <ul class="nav-menu">
+        <li class="nav-item" *ngFor="let item of menuPermissions">
+          <a class="nav-link" [routerLink]="item.link" routerLinkActive="active">{{item.title}}</a>
+        </li>
+      </ul>
+      <div ngbDropdown placement="bottom-end" class="d-inline-block m-r-16">
+        <a type="button" id="dropdownConfig" ngbDropdownToggle>Mi Configuración</a>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+          <p ngbDropdownItem [disabled]="true">
+            <strong>Usuario: </strong>{{userName}}
+          </p>
+          <hr>
+          <button ngbDropdownItem routerLink="trabajo/configuración/datos" *ngIf="canAccessData">Mis datos</button>
+          <button ngbDropdownItem (click)="logOut()">Salir</button>
+        </div>
+      </div>
+    </nav>
+  </div>
 </header>

@@ -9,11 +9,12 @@ import { GridActionModel } from '../../models/view/grid-action-model';
 import { SystemAttributeModel } from '../../models/view/system-attribute-model';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { AgGridService } from '../../services/shared/ag-grid.service';
+import { AlertService } from '../../services/shared/alert.service';
 
 @Component({
   selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.scss']
+  templateUrl: './my-clients.component.html',
+  styleUrls: ['./my-clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
   public loading: boolean = false
@@ -24,7 +25,8 @@ export class ClientsComponent implements OnInit {
   constructor(
     private readonly clientApiService: ClientApiService,
     private readonly agGridService: AgGridService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -66,7 +68,8 @@ export class ClientsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Ver:
-        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        this.alertService.showInfo('No implementado.')
+        // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])

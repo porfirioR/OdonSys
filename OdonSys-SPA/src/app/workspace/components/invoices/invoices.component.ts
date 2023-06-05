@@ -16,6 +16,7 @@ import { OperationType } from '../../../core/enums/operation-type.enum';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
+import { AlertService } from '../../../core/services/shared/alert.service';
 import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
 
 @Component({
@@ -41,7 +42,8 @@ export class InvoicesComponent implements OnInit {
     private readonly invoiceApiService: InvoiceApiService,
     private readonly userInfoService: UserInfoService,
     private modalService: NgbModal,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -106,13 +108,21 @@ export class InvoicesComponent implements OnInit {
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Desactivar:
-        const status = InvoiceStatus.Cancelado
-        const request = new InvoicePatchRequest(status)
-        this.invoiceApiService.changeStatus(currentRowNode.data.id, request).subscribe({
-          next: () => {
-            currentRowNode.setDataValue('status', status)
-            const columnToRefresh = ['status', 'action']
-            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+        this.alertService.showQuestionModal(
+          'Cancelar factura',
+          '¿Estás seguro de que quieres continuar? \nSobre esta factura no se podrán realizar más acciones',
+          'question'
+        ).then((result) => {
+          if (result.value) {
+            const status = InvoiceStatus.Cancelado
+            const request = new InvoicePatchRequest(status)
+            this.invoiceApiService.changeStatus(currentRowNode.data.id, request).subscribe({
+              next: () => {
+                currentRowNode.setDataValue('status', status)
+                const columnToRefresh = ['status', 'action']
+                this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+              }
+            })
           }
         })
         break
