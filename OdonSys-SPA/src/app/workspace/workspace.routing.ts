@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ClientsComponent } from '../core/components/clients/clients.component';
+import { ClientsComponent } from '../core/components/my-clients/my-clients.component';
 import { UpsertClientComponent } from '../core/components/upsert-client/upsert-client.component';
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
@@ -33,7 +33,8 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'mis-pacientes/actualizar/:id',
         component: UpsertClientComponent,
-        title: 'Actualizar paciente'
+        title: 'Actualizar paciente',
+        canDeactivate: [PreventUnsavedChangesAdmin]
       },
       {
         path: 'facturas',

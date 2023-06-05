@@ -32,7 +32,7 @@ export class UpsertClientComponent implements OnInit {
     surname: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     secondSurname: new FormControl('', [Validators.maxLength(25)]),
     document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0), Validators.minLength(6)]),
-    ruc: new FormControl(0, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
+    ruc: new FormControl({ value: 0, disabled: true }, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
     country: new FormControl(Country.Paraguay, [Validators.required]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
@@ -82,9 +82,11 @@ export class UpsertClientComponent implements OnInit {
     )
     client$.subscribe({
       next: (data) => {
-        //todo workspace my patients
         if (isUpdateUrl && !data) {
-          this.router.navigate(['admin/pacientes/registrar'])
+          const adminUrl = '/admin/pacientes'
+          const workspaceUrl = '/trabajo/mis-pacientes'
+          const redirectUrl = this.router.url.startsWith(adminUrl) ? adminUrl : workspaceUrl
+          this.router.navigate([`${redirectUrl}/registrar`])
         }
         this.formGroupValueChanges()
         if (this.id && data) {
@@ -95,11 +97,12 @@ export class UpsertClientComponent implements OnInit {
           this.formGroup.controls.secondSurname.setValue(data.secondSurname)
           this.formGroup.controls.document.setValue(data.document)
           this.formGroup.controls.ruc.setValue(data.ruc)
-          this.formGroup.controls.country.setValue(Country[data.country]! as unknown as Country)
+          this.formGroup.controls.country.setValue(data.country)
           this.formGroup.controls.phone.setValue(data.phone)
           this.formGroup.controls.email.setValue(data.email)
           this.formGroup.controls.active.setValue(data.active)
           this.formGroup.controls.ruc.disable()
+          this.formGroup.controls.country.disable()
           if (!this.fullFieldEdit) {
             this.formGroup.controls.document.disable()
             this.formGroup.controls.country.disable()

@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, debounceTime } from 'rxjs';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
@@ -33,7 +33,8 @@ export class MyConfigurationComponent implements OnInit {
     document: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.min(0)]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
     email: new FormControl({value: '', disabled: true }),
-    country: new FormControl(Country.Paraguay, [Validators.required]),
+    country: new FormControl({ value: Country.Paraguay, disabled: true }, [Validators.required]),
+    ruc: new FormControl({ value: 0, disabled: true }, [Validators.required]),
     active: new FormControl(true, [Validators.required]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
@@ -89,8 +90,10 @@ export class MyConfigurationComponent implements OnInit {
       this.load = true
       return
     }
-    combineLatest([this.doctorApiService.getById(user.id), this.roleApiService.getPermissions()])
-    .subscribe({
+    combineLatest([
+      this.doctorApiService.getById(user.id),
+      this.roleApiService.getPermissions()
+    ]).subscribe({
       next: ([user, allPermissions]) => {
         const rolePermissions = this.userInfoService.getPermissions()
         const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
@@ -105,6 +108,7 @@ export class MyConfigurationComponent implements OnInit {
         this.formGroup.controls.email.setValue(user.email)
         this.formGroup.controls.country.setValue(Country[user.country]! as unknown as Country)
         this.formGroup.controls.active.setValue(user.active)
+        this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user.document, user.country))
         this.load = true
       }
     })
