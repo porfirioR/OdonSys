@@ -62,9 +62,9 @@ namespace Access.Data.Access
             }
             var userId = user.Id;
             var roleCodes = await RoleCodesAsync(userId);
-            var token = CreateToken(user.UserName, userId.ToString(), roleCodes);
+            (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
             var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
-            var userResponse = new AuthAccessModel(userAccessModel, token, JwtBearerDefaults.AuthenticationScheme);
+            var userResponse = new AuthAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
             return userResponse;
         }
 
@@ -102,15 +102,15 @@ namespace Access.Data.Access
             {
                 var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
                 var roleCodes = await RoleCodesAsync(entity.Id);
-                var token = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
+                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
-                var userResponse = new AuthAccessModel(userAccessModel, token, JwtBearerDefaults.AuthenticationScheme);
+                var userResponse = new AuthAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
                 return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");
         }
 
-        private string CreateToken(string userName, string userId, IEnumerable<string> userRoles)
+        private (string token, DateTime expirationDate) CreateToken(string userName, string userId, IEnumerable<string> userRoles)
         {
             var claims = new List<Claim>()
             {
@@ -122,17 +122,17 @@ namespace Access.Data.Access
                 claims.Add(new Claim(Claims.UserRoles, userRole));
             }
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-
+            var expirationDate = DateTime.UtcNow.AddMinutes(120);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(120),
+                Expires = expirationDate,
                 SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            return (tokenHandler.WriteToken(token), expirationDate);
         }
 
         private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)

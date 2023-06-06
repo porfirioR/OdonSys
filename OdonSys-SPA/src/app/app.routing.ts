@@ -4,6 +4,7 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
 import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 import { RegisterUserComponent } from './core/components/register-user/register-user.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { PublicGuard } from './core/guards/public.guard';
 
 export const AppRoutes: Routes = [
   {
@@ -24,8 +25,16 @@ export const AppRoutes: Routes = [
       { path: 'inicio', redirectTo: '' }
     ]
   },
-  { path: 'login', component: AuthenticateComponent, title: 'Autenticación' },
-  { path: 'registrar', component: RegisterUserComponent, title: 'Registro' },
+  { path: 'login',
+    component: AuthenticateComponent,
+    title: 'Autenticación',
+    canActivate: [PublicGuard]
+  },
+  { path: 'registrar',
+    component: RegisterUserComponent,
+    title: 'Registro',
+    canActivate: [PublicGuard]
+  },
   { path: 'página-no-encontrada', component: NotFoundComponent, title: 'página no encontrada' },
   { path: '**', redirectTo: '/página-no-encontrada' },
 ]

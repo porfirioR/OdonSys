@@ -10,6 +10,7 @@ import { SubscriptionService } from './subscription.service';
 })
 export class UserInfoService {
   private userKey = 'userData'
+  private tokenExpirationKey = 'tokenExpiration'
   private userToken = 'token'
   private permissionKey = 'permissions'
 
@@ -24,6 +25,7 @@ export class UserInfoService {
 
   public setUserLogin = (auth: AuthApiModel): void => {
     this.localStorageService.setData(this.userToken, auth.token, true)
+    this.localStorageService.setData(this.tokenExpirationKey, auth.expirationDate, true)
     this.localStorageService.setData(this.userKey, JSON.stringify(auth.user))
   }
 
@@ -42,7 +44,9 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.userKey)
     this.localStorageService.clearAll(this.userToken)
     this.localStorageService.clearAll(this.permissionKey)
+    this.localStorageService.clearAll(this.tokenExpirationKey)
   }
+
   public clearToken = () => {
     this.localStorageService.clearAll(this.userToken)
   }
@@ -62,5 +66,14 @@ export class UserInfoService {
   public havePermissions = (pagePermissions: Permission[]): boolean => {
     const permissions = this.getPermissions()
     return pagePermissions.every(x => permissions.includes(x))
+  }
+
+  public hasUserTokenExpired = (): boolean => {
+    const tokenExpiration = this.localStorageService.getByKey(this.tokenExpirationKey, false)
+    if (!tokenExpiration) {
+      return true
+    }
+    const expirationDate = new Date(tokenExpiration)
+    return expirationDate <= new Date()
   }
 }
