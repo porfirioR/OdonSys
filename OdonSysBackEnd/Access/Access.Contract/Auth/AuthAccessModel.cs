@@ -6,6 +6,7 @@ namespace Access.Contract.Auth
     (
         UserDataAccessModel User,
         string Token,
+        DateTime ExpirationDate,
         string Scheme
     );
 }

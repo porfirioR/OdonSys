@@ -19,9 +19,9 @@ export class AuthGuard implements CanActivate {
     const user = this.userInfoService.getUserData()
     const token = this.userInfoService.getToken()
     const permissions = this.userInfoService.getPermissions()
+    const hasTokenExpired = this.userInfoService.hasUserTokenExpired()
     const isValidUser = user && user.active && user.approved
-    // todo expired token
-    if (token && isValidUser && permissions.length > 0) {
+    if (token && isValidUser && permissions.length > 0 && !hasTokenExpired) {
       return true
     }
     if(permissions.length === 0) {
