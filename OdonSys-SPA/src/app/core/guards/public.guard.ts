@@ -20,10 +20,10 @@ export class PublicGuard implements CanActivate {
     ]
     const token = this.userInfoService.getToken()
     const hasTokenExpired = this.userInfoService.hasUserTokenExpired()
-    if (token && !hasTokenExpired && state.url.includes('autenticacion/ingresar')) {
+    if (token && !hasTokenExpired && publicRouters.some(x => state.url.includes(x))) {
       return this.zone.run(() => this.router.createUrlTree(['/inicio']))
     }
-    return publicRouters.some(x => state.url.includes(x))
+    return true
   }
 }
 
