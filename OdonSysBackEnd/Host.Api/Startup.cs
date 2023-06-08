@@ -22,9 +22,9 @@ namespace Host.Api
             {
                 options.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
-            
+
             AddConfigurations(services);
-            
+
             services.AddSwaggerGen();
 
             services.AddCors(options =>

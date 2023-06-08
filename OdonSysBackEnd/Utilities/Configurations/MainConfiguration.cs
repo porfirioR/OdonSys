@@ -2,7 +2,7 @@
 {
     public class MainConfiguration
     {
-        public CloudinarySettings CloudinarySettings { get; set; }
-        public DataAccessSettings DataAccessSettings { get; set; }
+        public CloudinarySettings Cloudinary { get; set; }
+        public DataAccessSettings ConnectionStrings { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace Access.Sql
     {
         public static void ConfigureServices(IServiceCollection services, MainConfiguration mainConfiguration)
         {
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(mainConfiguration.DataAccessSettings.DefaultConnection));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(mainConfiguration.ConnectionStrings.DefaultConnection));
         }
     }
 }
