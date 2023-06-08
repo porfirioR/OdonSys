@@ -40,9 +40,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract.Workspace", "Resou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Workspace", "Resource\Manager\Manager.Workspace\Manager.Workspace.csproj", "{0F273631-D62F-4B76-A11E-0D48D9566FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager.Payment", "Resource\Manager\Manager.Payment\Manager.Payment.csproj", "{AB99103D-ACB9-4CB5-8A07-9BA94AC87646}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Payment", "Resource\Manager\Manager.Payment\Manager.Payment.csproj", "{AB99103D-ACB9-4CB5-8A07-9BA94AC87646}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract.Pyment", "Resource\Contract\Contract.Pyment\Contract.Pyment.csproj", "{DC43B127-4399-4141-9B09-8325446500B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access.File", "Access\Access.File\Access.File.csproj", "{DC237B5E-E7A0-4569-B4E2-0924A06EBADF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +100,10 @@ Global
 		{DC43B127-4399-4141-9B09-8325446500B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC43B127-4399-4141-9B09-8325446500B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC43B127-4399-4141-9B09-8325446500B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC237B5E-E7A0-4569-B4E2-0924A06EBADF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC237B5E-E7A0-4569-B4E2-0924A06EBADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC237B5E-E7A0-4569-B4E2-0924A06EBADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC237B5E-E7A0-4569-B4E2-0924A06EBADF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{0F273631-D62F-4B76-A11E-0D48D9566FED} = {7A1A1FFE-7921-4800-A953-20503B3559EE}
 		{AB99103D-ACB9-4CB5-8A07-9BA94AC87646} = {7A1A1FFE-7921-4800-A953-20503B3559EE}
 		{DC43B127-4399-4141-9B09-8325446500B8} = {38A706A6-4D3E-4C33-949B-B344C2164B2A}
+		{DC237B5E-E7A0-4569-B4E2-0924A06EBADF} = {15528C3F-7D2C-4002-B104-DDD7889F507F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {843D313E-18CF-4719-89C6-3525B4DCAA42}

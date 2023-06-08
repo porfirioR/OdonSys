@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access\Access.Data\Access.Data.csproj" />
+    <ProjectReference Include="..\Access\Access.File\Access.File.csproj" />
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
