@@ -1,19 +1,19 @@
-using Access.Sql;
 using Host.Api.Middleware;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Newtonsoft.Json.Converters;
+using Utilities.Configurations;
 
 namespace Host.Api
 {
     public partial class Startup
     {
+        public IConfiguration Configuration { get; }
+        public MainConfiguration MainConfiguration { get; set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -22,6 +22,8 @@ namespace Host.Api
             {
                 options.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
+
+            AddConfigurations(services);
 
             services.AddSwaggerGen();
 
@@ -43,7 +45,6 @@ namespace Host.Api
             // Configura all Authorization Handlers
             ConfigureAuthorizationHandlers(services);
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
