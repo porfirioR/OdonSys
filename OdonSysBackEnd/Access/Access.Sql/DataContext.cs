@@ -33,6 +33,7 @@ namespace Access.Sql
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<FileStorage> Files { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
