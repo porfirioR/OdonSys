@@ -6,19 +6,11 @@ using Utilities.Extensions;
 
 namespace Access.Sql.Configurations
 {
-    public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
+    public class InvoiceConfiguration : BaseEntityTypeConfiguration<Invoice>
     {
-        public void Configure(EntityTypeBuilder<Invoice> builder)
+        public override void Configure(EntityTypeBuilder<Invoice> builder)
         {
-            builder.HasKey(x => x.Id);
-
-            builder
-                .Property(x => x.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(x => x.DateModified)
-                .HasDefaultValueSql("GetDate()");
+            base.Configure(builder);
 
             builder
                 .Property(x => x.InvoiceNumber)

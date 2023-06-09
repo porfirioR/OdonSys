@@ -1,8 +1,11 @@
-﻿namespace Contract.Workspace.ClientProcedures
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Contract.Workspace.ClientProcedures
 {
     public record CreateClientProcedureRequest(
         string UserId,
         string ClientId,
-        string ProcedureId
+        string ProcedureId,
+        IEnumerable<IFormFile> Files
     );
 }

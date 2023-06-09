@@ -29,8 +29,7 @@ namespace Access.File
                 UseFilename = true,
                 UniqueFilename = true,
                 Overwrite = true,
-                Folder = accessRequest.Folder,
-                Format = accessRequest.Format
+                Folder = accessRequest.Folder
             };
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
             var url = uploadResult.Url.ToString();

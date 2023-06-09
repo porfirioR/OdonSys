@@ -1,25 +1,16 @@
 ﻿using Access.Sql.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class UserClientConfiguration : IEntityTypeConfiguration<UserClient>
+    public class UserClientConfiguration : BaseEntityTypeConfiguration<UserClient>
     {
-        public void Configure(EntityTypeBuilder<UserClient> builder)
+        public override void Configure(EntityTypeBuilder<UserClient> builder)
         {
-            builder.HasKey(x => x.Id);
+            base.Configure(builder);
             builder
                 .HasIndex(x => new {x.Id, x.UserId, x.ClientId })
                 .IsUnique();
-
-            builder
-                .Property(x => x.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(x => x.DateModified)
-                .HasDefaultValueSql("GetDate()");
 
             builder
                 .HasOne(x => x.User)

@@ -2,6 +2,7 @@
 {
     public record CreateClientProcedureAccessRequest(
         string UserClientId,
-        string ProcedureId
+        string ProcedureId,
+        IEnumerable<string> Urls
     );
 }

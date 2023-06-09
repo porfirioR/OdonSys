@@ -20,6 +20,8 @@ namespace Access.Data.Access
         public async Task<ClientProcedureAccessModel> CreateClientProcedureAsync(CreateClientProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<ClientProcedure>(accessRequest);
+            accessRequest.Urls.ToList().ForEach(url => _context.Files.Add(new FileStorage { Url = url }));
+
             _context.ClientProcedures.Add(entity);
             await _context.SaveChangesAsync();
             var result = new ClientProcedureAccessModel(

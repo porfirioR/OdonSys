@@ -1,24 +1,15 @@
 ﻿using Access.Sql.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Utilities.Enums;
 using Utilities.Extensions;
 
 namespace Access.Sql.Configurations
 {
-    public class ClientConfiguration : IEntityTypeConfiguration<Client>
+    public class ClientConfiguration : BaseEntityTypeConfiguration<Client>
     {
-        public void Configure(EntityTypeBuilder<Client> builder)
+        public override void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.HasKey(x => x.Id);
-
-            builder
-                .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetDate()");
+            base.Configure(builder);
 
             builder
                 .Property(x => x.Name)

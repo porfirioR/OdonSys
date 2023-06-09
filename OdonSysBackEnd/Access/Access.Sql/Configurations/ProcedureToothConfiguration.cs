@@ -1,23 +1,13 @@
 ﻿using Access.Sql.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class ProcedureToothConfiguration : IEntityTypeConfiguration<ProcedureTooth>
+    public class ProcedureToothConfiguration : BaseEntityTypeConfiguration<ProcedureTooth>
     {
-        public void Configure(EntityTypeBuilder<ProcedureTooth> builder)
+        public override void Configure(EntityTypeBuilder<ProcedureTooth> builder)
         {
-
-            builder.HasKey(x => x.Id);
-
-            builder
-                .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetDate()");
+            base.Configure(builder);
 
             builder
                 .HasOne(x => x.Procedure)

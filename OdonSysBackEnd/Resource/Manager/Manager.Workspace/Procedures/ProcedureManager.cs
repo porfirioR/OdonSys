@@ -1,9 +1,11 @@
 ﻿using Access.Contract.ClientProcedure;
 using Access.Contract.Procedure;
 using Access.Contract.Users;
+using Access.File.Contract;
 using AutoMapper;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
+using Microsoft.AspNetCore.Http;
 
 namespace Manager.Workspace.Procedures
 {
@@ -13,13 +15,19 @@ namespace Manager.Workspace.Procedures
         private readonly IClientProcedureAccess _clientProcedureAccess;
         private readonly IUserDataAccess _userDataAccess;
         private readonly IMapper _mapper;
+        private readonly IFileAccess _fileAccess;
 
-        public ProcedureManager(IProcedureAccess procedureAccess, IMapper mapper, IClientProcedureAccess clientProcedureAccess, IUserDataAccess userDataAccess)
+        public ProcedureManager(
+            IProcedureAccess procedureAccess,
+            IMapper mapper,
+            IClientProcedureAccess clientProcedureAccess,
+            IUserDataAccess userDataAccess, IFileAccess fileAccess)
         {
             _procedureAccess = procedureAccess;
             _mapper = mapper;
             _clientProcedureAccess = clientProcedureAccess;
             _userDataAccess = userDataAccess;
+            _fileAccess = fileAccess;
         }
 
         public async Task<ProcedureModel> CreateAsync(CreateProcedureRequest request)
@@ -78,7 +86,16 @@ namespace Manager.Workspace.Procedures
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
-            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId);
+            var urls = new List<string>();
+            request.Files.ToList().ForEach(async file =>
+            {
+                var extension = Path.GetExtension(file.FileName);
+                var fileName = $"{Guid.NewGuid()}-{Guid.NewGuid()}{extension}".ToLower();
+                var url = await UploadFileAsync(file, fileName, request.UserId);
+                urls.Add(url);
+            });
+
+            var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId, urls);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 
             return new ClientProcedureModel(
@@ -107,6 +124,14 @@ namespace Manager.Workspace.Procedures
         public async Task<bool> CheckExistsClientProcedureAsync(string clientProcedureId)
         {
             return await _clientProcedureAccess.CheckExistsClientProcedureAsync(clientProcedureId);
+        }
+
+        private async Task<string> UploadFileAsync(IFormFile file, string fileName, string folder)
+        {
+            using var stream = file.OpenReadStream();
+            var fileAccessRequest = new UploadFileAccessRequest(stream, fileName, true, folder);
+            var blobUrl = await _fileAccess.UploadAsync(fileAccessRequest);
+            return blobUrl;
         }
     }
 }
