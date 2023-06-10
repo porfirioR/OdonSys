@@ -1,6 +1,6 @@
 ﻿namespace Access.File.Contract
 {
-    public record UploadFileAccessRequest(
+    public record UploadFileStorageRequest(
         Stream Stream,
         string Filename,
         bool Private,

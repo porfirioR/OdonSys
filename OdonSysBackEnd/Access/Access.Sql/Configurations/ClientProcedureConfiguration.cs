@@ -22,11 +22,6 @@ namespace Access.Sql.Configurations
                 .HasOne(x => x.Procedure)
                 .WithMany(x => x.ClientProcedures)
                 .HasForeignKey(x => x.ProcedureId);
-
-            builder
-                .HasMany(x => x.FileStorages)
-                .WithOne(x => x.ClientProcedure)
-                .HasForeignKey(x => x.ClientProcedureId);
         }
     }
 }

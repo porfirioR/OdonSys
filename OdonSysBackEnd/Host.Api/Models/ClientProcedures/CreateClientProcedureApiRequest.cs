@@ -13,7 +13,6 @@ namespace Host.Api.Models.ClientProcedures
         //[Required]
         //[Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un precio válido")]
         //public int Price { get; set; }
-        public IEnumerable<IFormFile> Files { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

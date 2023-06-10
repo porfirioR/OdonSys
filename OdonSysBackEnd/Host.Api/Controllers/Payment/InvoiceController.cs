@@ -1,6 +1,8 @@
 ﻿using Contract.Pyment.Invoices;
+using Contract.Workspace.Files;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
+using Host.Api.Models.Files;
 using Host.Api.Models.Invoices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -16,9 +18,12 @@ namespace Host.Api.Controllers.Payment
     public class InvoiceController : OdonSysBaseController
     {
         private readonly IInvoiceManager _invoiceManager;
-        public InvoiceController(IInvoiceManager invoiceManager)
+        private readonly IFileManager _fileManager;
+
+        public InvoiceController(IInvoiceManager invoiceManager, IFileManager fileManager)
         {
             _invoiceManager = invoiceManager;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -79,6 +84,15 @@ namespace Host.Api.Controllers.Payment
                 throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "Valor inválido.")));
             }
             var model = await _invoiceManager.UpdateInvoiceStatusIdAsync(invoiceStatusRequest);
+            return model;
+        }
+
+        [HttpPost]
+        [Authorize(Policy = Policy.CanCreateInvoice)]
+        public async Task<IEnumerable<string>> UploadInvoiceFiles([FromForm] UploadFileApiRequest apiRequest)
+        {
+            var request = new UploadFileRequest(apiRequest.Id, apiRequest.Files, UserId);
+            var model = await _fileManager.UploadFileAsync(request);
             return model;
         }
     }

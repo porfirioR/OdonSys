@@ -6,10 +6,10 @@ using Utilities.Configurations;
 
 namespace Access.File
 {
-    public class FileAccess : IFileAccess
+    public class UploadFileStorage : IUploadFileStorage
     {
         private readonly Cloudinary _cloudinary;
-        public FileAccess(IOptions<CloudinarySettings> cloudinarySettingsOption)
+        public UploadFileStorage(IOptions<CloudinarySettings> cloudinarySettingsOption)
         {
             var cloudinarySettings = cloudinarySettingsOption.Value;
 
@@ -21,7 +21,7 @@ namespace Access.File
             _cloudinary = new Cloudinary(accountCloudinary);
         }
 
-        public async Task<string> UploadAsync(UploadFileAccessRequest accessRequest)
+        public async Task<string> UploadAsync(UploadFileStorageRequest accessRequest)
         {
             var uploadParams = new ImageUploadParams()
             {

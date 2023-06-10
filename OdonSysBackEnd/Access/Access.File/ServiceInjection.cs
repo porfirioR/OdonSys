@@ -7,7 +7,7 @@ namespace Access.File
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IFileAccess, FileAccess>();
+            services.AddTransient<IUploadFileStorage, UploadFileStorage>();
         }
     }
 }
