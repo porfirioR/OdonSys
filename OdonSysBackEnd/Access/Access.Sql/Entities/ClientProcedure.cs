@@ -8,6 +8,5 @@
         public virtual UserClient UserClient { get; set; }
         public virtual Procedure Procedure { get; set; }
         public virtual InvoiceDetail InvoiceDetail { get; set; }
-        public virtual IEnumerable<FileStorage> FileStorages { get; set; }
     }
 }

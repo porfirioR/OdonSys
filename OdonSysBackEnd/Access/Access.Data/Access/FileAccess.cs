@@ -20,7 +20,7 @@ namespace Access.Data.Access
                 ReferenceId = accessRequest.ReferenceId,
                 Url = accessRequest.Url
             };
-            _context.Files.Add(entity);
+            _context.FileStorages.Add(entity);
             await _context.SaveChangesAsync();
             return accessRequest.Url;
         }
@@ -32,7 +32,7 @@ namespace Access.Data.Access
                 ReferenceId = x.ReferenceId,
                 Url = x.Url
             });
-            await _context.Files.AddRangeAsync(entities);
+            await _context.FileStorages.AddRangeAsync(entities);
             await _context.SaveChangesAsync();
             return entities.Select(x => x.Url);
         }

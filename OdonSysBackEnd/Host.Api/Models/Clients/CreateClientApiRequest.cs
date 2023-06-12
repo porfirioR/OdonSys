@@ -13,7 +13,6 @@ namespace Host.Api.Models.Clients
         public string Surname { get; set; }
         public string SecondSurname { get; set; }
         [Required]
-        [StringLength(10, MinimumLength = 5, ErrorMessage = "Longitud mínima de documento es 5.")]
         public string Document { get; set; }
         public string Ruc { get; set; }
         [Required]
@@ -25,6 +24,14 @@ namespace Host.Api.Models.Clients
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
+            var documentLength = Document.Length;
+            if (documentLength < 5)
+            {
+                results.Add(new ValidationResult($"Longitud mínima de documento es 5."));
+            } else if (documentLength > 10)
+            {
+                results.Add(new ValidationResult($"Longitud máxima de documento es 10."));
+            }
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
             if (clientManager.GetByDocumentAsync(Document).GetAwaiter().GetResult() != null)
             {

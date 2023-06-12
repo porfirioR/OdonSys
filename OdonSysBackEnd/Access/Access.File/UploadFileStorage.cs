@@ -23,6 +23,7 @@ namespace Access.File
 
         public async Task<string> UploadAsync(UploadFileStorageRequest accessRequest)
         {
+            // TODO create public id
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(accessRequest.Filename, accessRequest.Stream),

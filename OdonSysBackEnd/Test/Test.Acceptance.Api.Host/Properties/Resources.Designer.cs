@@ -22,7 +22,7 @@ namespace AcceptanceTest.Host.Api.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace AcceptanceTest.Host.Api.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AcceptanceTest.Host.Api.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace AcceptanceTest.Host.Api.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -62,15 +62,23 @@ namespace AcceptanceTest.Host.Api.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to --First quadrant
-        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 11, &apos;Incisivo Central&apos;, 1, 1, 1, 1);
-        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 12, &apos;Incisivo Lateral&apos;, 1, 1, 1, 1);
-        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 13, &apos;Canino&apos;, 1, 1, 1, 2);
-        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group]) values(newid(), 14, &apos;Primer Premolar&apos;, 1, 1, 1, 3);
-        ///inser [rest of string was truncated]&quot;;.
+        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 11, &apos;Incisivo Central&apos;, 1, 1, 1, 1, GETDATE(), GETDATE(), &apos;system&apos;, &apos;system&apos;);
+        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 12, &apos;Incisivo Lateral&apos;, 1, 1, 1, 1, GETDATE(), GETDATE(), &apos;system&apos;, &apos;system&apos;);
+        ///insert into Teeth (Id, Number, [Name], Jaw, Quadrant,  [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string BasicSql {
+        public static string BasicSql {
             get {
                 return ResourceManager.GetString("BasicSql", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] ImageTest {
+            get {
+                object obj = ResourceManager.GetObject("ImageTest", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

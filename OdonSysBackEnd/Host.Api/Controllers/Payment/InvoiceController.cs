@@ -87,7 +87,7 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
-        [HttpPost]
+        [HttpPost("upload-invoice-files")]
         [Authorize(Policy = Policy.CanCreateInvoice)]
         public async Task<IEnumerable<string>> UploadInvoiceFiles([FromForm] UploadFileApiRequest apiRequest)
         {

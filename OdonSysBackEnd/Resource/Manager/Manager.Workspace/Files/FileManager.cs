@@ -18,13 +18,13 @@ namespace Manager.Workspace.Files
         public async Task<IEnumerable<string>> UploadFileAsync(UploadFileRequest request)
         {
             var urls = new List<string>();
-            request.Files.ToList().ForEach(async file =>
+            foreach (var file in request.Files)
             {
                 var extension = Path.GetExtension(file.FileName);
                 var fileName = $"{Guid.NewGuid()}-{Guid.NewGuid()}{extension}".ToLower();
                 var url = await UploadFileAsync(file, fileName, request.UserId);
                 urls.Add(url);
-            });
+            }
             if (urls.Count == 1)
             {
                 var single = await _fileAccess.UploadFile(new UploadFileAccessRequest(urls.First(), request.Id));

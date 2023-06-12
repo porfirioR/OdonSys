@@ -1,11 +1,8 @@
 using Contract.Workspace.Procedures;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace AcceptanceTest.Host.Api.Procedures
 {
@@ -22,11 +19,14 @@ namespace AcceptanceTest.Host.Api.Procedures
 
             var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            Assert.That(request.Name, Is.EqualTo(actual.Name));
-            Assert.That(request.Description, Is.EqualTo(actual.Description));
-            Assert.That(request.Price, Is.EqualTo(actual.Price));
-            Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+                Assert.That(request.Name, Is.EqualTo(actual.Name));
+                Assert.That(request.Description, Is.EqualTo(actual.Description));
+                Assert.That(request.Price, Is.EqualTo(actual.Price));
+                Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
+            });
         }
 
         [Test]
@@ -42,10 +42,13 @@ namespace AcceptanceTest.Host.Api.Procedures
 
             var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            Assert.That(request.Id, Is.EqualTo(model.Id));
-            Assert.That(request.Description, Is.EqualTo(model.Description));
-            Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(model.ProcedureTeeth.Count()));
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+                Assert.That(request.Id, Is.EqualTo(model.Id));
+                Assert.That(request.Description, Is.EqualTo(model.Description));
+                Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(model.ProcedureTeeth.Count()));
+            });
         }
 
         [Test]
@@ -59,9 +62,12 @@ namespace AcceptanceTest.Host.Api.Procedures
             var response = await _client.GetAsync($"{_uri}/{createModel.Id}/{true}");
             var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            Assert.That(createModel.Id, Is.EqualTo(model.Id));
-            Assert.That(createModel.Description, Is.EqualTo(model.Description));
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+                Assert.That(createModel.Id, Is.EqualTo(model.Id));
+                Assert.That(createModel.Description, Is.EqualTo(model.Description));
+            });
         }
 
         [Test]
@@ -74,8 +80,11 @@ namespace AcceptanceTest.Host.Api.Procedures
             var response = await _client.GetAsync(_uri);
             var model = JsonConvert.DeserializeObject<IEnumerable<ProcedureModel>>(await response.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            CollectionAssert.IsNotEmpty(model);
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+                CollectionAssert.IsNotEmpty(model);
+            });
         }
 
         [Test]
@@ -90,10 +99,13 @@ namespace AcceptanceTest.Host.Api.Procedures
 
             var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-            Assert.That(createModel.Id, Is.EqualTo(model.Id));
-            Assert.That(createModel.Description, Is.EqualTo(model.Description));
-            Assert.AreNotEqual(createModel.Active, Is.EqualTo(model.Active));
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+                Assert.That(createModel.Id, Is.EqualTo(model.Id));
+                Assert.That(createModel.Description, Is.EqualTo(model.Description));
+                Assert.AreNotEqual(createModel.Active, Is.EqualTo(model.Active));
+            });
         }
 
         [Test]
@@ -110,10 +122,13 @@ namespace AcceptanceTest.Host.Api.Procedures
             var restoreResponse = await _client.PostAsync($"{_uri}/restore/{deleteModel.Id}", null);
             var model = JsonConvert.DeserializeObject<ProcedureModel>(await restoreResponse.Content.ReadAsStringAsync());
 
-            Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
-            Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
-            Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
-            Assert.AreNotEqual(deleteModel.Active, model.Active);
+            Assert.Multiple(() =>
+            {
+                Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
+                Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
+                Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
+                Assert.AreNotEqual(deleteModel.Active, model.Active);
+            });
         }
     }
 }
