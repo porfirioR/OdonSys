@@ -2,6 +2,7 @@
 {
     public record UploadFileAccessRequest(
         string Url,
-        string ReferenceId
+        string ReferenceId,
+        string Format
     );
 }

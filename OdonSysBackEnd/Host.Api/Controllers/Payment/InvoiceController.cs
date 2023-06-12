@@ -95,5 +95,21 @@ namespace Host.Api.Controllers.Payment
             var model = await _fileManager.UploadFileAsync(request);
             return model;
         }
+
+        [HttpGet("preview-invoice-files/{id}")]
+        [Authorize(Policy = Policy.CanAccessInvoiceFiles)]
+        public async Task<IEnumerable<FileModel>> PreviewInvoiceFiles([FromRoute] InvoiceIdApiRequest apiRequest)
+        {
+            var fileModelList = await _fileManager.GetFilesByReferenceIdAsync(apiRequest.InvoiceId);
+            return fileModelList;
+        }
+
+        [HttpGet("full-invoice-files/{id}")]
+        [Authorize(Policy = Policy.CanAccessInvoiceFiles)]
+        public async Task<IEnumerable<FileModel>> FullInvoiceFiles([FromRoute] InvoiceIdApiRequest apiRequest)
+        {
+            var fileModelList = await _fileManager.GetFilesByReferenceIdAsync(apiRequest.InvoiceId, false);
+            return fileModelList;
+        }
     }
 }

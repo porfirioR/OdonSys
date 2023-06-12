@@ -81,5 +81,15 @@ namespace AcceptanceTest.Host.Api.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] TestPdf {
+            get {
+                object obj = ResourceManager.GetObject("TestPdf", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

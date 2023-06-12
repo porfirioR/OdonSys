@@ -4,5 +4,6 @@
     {
         public string Url { get; set; }
         public string ReferenceId { get; set; }
+        public string Format { get; set; }
     }
 }

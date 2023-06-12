@@ -14,7 +14,15 @@ namespace Access.Sql.Configurations
                 .IsRequired();
 
             builder
+                .HasIndex(x => x.Url)
+                .IsUnique();
+
+            builder
                 .Property(x => x.ReferenceId)
+                .IsRequired();
+
+            builder
+                .Property(x => x.Format)
                 .IsRequired();
         }
     }
