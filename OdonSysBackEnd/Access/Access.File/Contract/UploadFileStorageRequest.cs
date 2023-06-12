@@ -2,8 +2,9 @@
 {
     public record UploadFileStorageRequest(
         Stream Stream,
-        string Filename,
+        string FileName,
         bool Private,
-        string Folder
+        string Folder,
+        string DisplayName
     );
 }

@@ -1,6 +1,7 @@
 ﻿using Contract.Admin.Clients;
 using Contract.Pyment.Invoices;
 using Contract.Workspace.ClientProcedures;
+using Contract.Workspace.Files;
 using Contract.Workspace.Procedures;
 using Host.Api.Models.ClientProcedures;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace AcceptanceTest.Host.Api.Payments
 
         [Test]
         [Order(1)]
-        public async Task CreateInvoiceReturnOk()
+        public async Task ShouldCreateInvoiceReturnOk()
         {
             var procedureRequest = CreateProcedureApiRequest;
             var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
@@ -63,7 +64,7 @@ namespace AcceptanceTest.Host.Api.Payments
 
         [Test]
         [Order(2)]
-        public async Task UploadInvoiceFilesReturnOk()
+        public async Task ShouldUploadInvoiceFilesReturnOk()
         {
             var procedureRequest = CreateProcedureApiRequest;
             var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
@@ -97,6 +98,50 @@ namespace AcceptanceTest.Host.Api.Payments
             var response = await _client.PostAsync($"{_uri}/upload-invoice-files", request);
             var actual = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(!string.IsNullOrEmpty(actual));
+        }
+
+        [Test]
+        [Order(3)]
+        public async Task ShouldGetInvoiceFilesReturnOk()
+        {
+            var procedureRequest = CreateProcedureApiRequest;
+            var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
+            var procedureContent = await procedureResponse.Content.ReadAsStringAsync();
+            var procedureActual = JsonConvert.DeserializeObject<ProcedureModel>(procedureContent);
+            Assert.IsNotNull(procedureActual);
+
+            var clientRequet = CreateClientApiRequest;
+            var clientResponse = await _client.PostAsJsonAsync(_clientUri, clientRequet);
+            var content = await clientResponse.Content.ReadAsStringAsync();
+            var clientActual = JsonConvert.DeserializeObject<ClientModel>(content);
+            Assert.IsNotNull(clientActual);
+
+            var clientProcedureRequet = new CreateClientProcedureApiRequest
+            {
+                ClientId = clientActual.Id,
+                ProcedureId = procedureActual.Id
+            };
+            var clientProcedureResponse = await _client.PostAsJsonAsync(_clientProcedureUri, clientProcedureRequet);
+            var clientProcedureContent = await clientProcedureResponse.Content.ReadAsStringAsync();
+            var clientProcedureActual = JsonConvert.DeserializeObject<ClientProcedureModel>(clientProcedureContent);
+            Assert.IsNotNull(clientProcedureActual);
+
+            var invoiceRequest = CreateInvoiceApiRequest(clientActual.Id, clientProcedureActual.Id);
+            var invoiceResponse = await _client.PostAsJsonAsync(_uri, invoiceRequest);
+            var invoiceContent = await invoiceResponse.Content.ReadAsStringAsync();
+            var invoiceActual = JsonConvert.DeserializeObject<InvoiceModel>(invoiceContent);
+            Assert.IsNotNull(invoiceActual);
+
+            var request = InvoiceFormDataWithPdf(invoiceActual.Id.ToString());
+            var fileResponse = await _client.PostAsync($"{_uri}/upload-invoice-files", request);
+            var fileContent = await fileResponse.Content.ReadAsStringAsync();
+            var fileActual = JsonConvert.DeserializeObject<IEnumerable<string>>(fileContent);
+            CollectionAssert.IsNotEmpty(fileActual);
+
+            var response = await _client.GetAsync($"{_uri}/preview-invoice-files/{invoiceActual.Id}");
+            var previewContent = await response.Content.ReadAsStringAsync();
+            var actual = JsonConvert.DeserializeObject<IEnumerable<FileModel>>(previewContent);
+            CollectionAssert.IsNotEmpty(actual);
         }
     }
 }

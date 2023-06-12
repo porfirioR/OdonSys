@@ -1,7 +1,6 @@
 ﻿using Host.Api.Models.Clients;
 using Host.Api.Models.Invoices;
 using Host.Api.Models.Procedures;
-using Newtonsoft.Json;
 using Utilities.Enums;
 
 namespace AcceptanceTest.Host.Api.Payments
@@ -53,6 +52,13 @@ namespace AcceptanceTest.Host.Api.Payments
         {
             { new StringContent(invoiceId), "Id" },
             { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{Guid.NewGuid().ToString()[..10]}.png" },
+        };
+
+        static MultipartFormDataContent InvoiceFormDataWithPdf(string invoiceId) => new()
+        {
+            { new StringContent(invoiceId), "Id" },
+            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{Guid.NewGuid().ToString()[..10]}.png" },
+            { new ByteArrayContent(Properties.Resources.TestPdf), "Files", $"{Guid.NewGuid().ToString()[..10]}.pdf" },
         };
     }
 }

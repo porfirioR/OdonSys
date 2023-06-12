@@ -95,5 +95,13 @@ namespace Host.Api.Controllers.Payment
             var model = await _fileManager.UploadFileAsync(request);
             return model;
         }
+
+        [HttpGet("preview-invoice-files/{id}")]
+        [Authorize(Policy = Policy.CanCreateInvoice)]
+        public async Task<IEnumerable<FileModel>> UploadInvoiceFiles([FromRoute] InvoiceIdApiRequest apiRequest)
+        {
+            var fileModelList = await _fileManager.GetFilesByReferenceIdAsync(apiRequest.InvoiceId);
+            return fileModelList;
+        }
     }
 }
