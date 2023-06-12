@@ -23,7 +23,6 @@ namespace Host.Api.Models.Invoices
             {
                 results.Add(new ValidationResult($"Id del cliente procedimiento {ClientProcedureId} ingresado es inválido."));
             }
-
             if (FinalPrice > ProcedurePrice)
             {
                 results.Add(new ValidationResult($"El valor final del procedimiento {FinalPrice} es mayor al precio referencia {ProcedurePrice}."));

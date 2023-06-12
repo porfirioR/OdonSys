@@ -1,5 +1,4 @@
 ﻿using Host.Api.Models.Procedures;
-using System;
 
 namespace AcceptanceTest.Host.Api.Procedures
 {

@@ -14,7 +14,11 @@ namespace Manager.Workspace.Procedures
         private readonly IUserDataAccess _userDataAccess;
         private readonly IMapper _mapper;
 
-        public ProcedureManager(IProcedureAccess procedureAccess, IMapper mapper, IClientProcedureAccess clientProcedureAccess, IUserDataAccess userDataAccess)
+        public ProcedureManager(
+            IProcedureAccess procedureAccess,
+            IMapper mapper,
+            IClientProcedureAccess clientProcedureAccess,
+            IUserDataAccess userDataAccess)
         {
             _procedureAccess = procedureAccess;
             _mapper = mapper;
@@ -78,6 +82,8 @@ namespace Manager.Workspace.Procedures
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
+            
+
             var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);
 

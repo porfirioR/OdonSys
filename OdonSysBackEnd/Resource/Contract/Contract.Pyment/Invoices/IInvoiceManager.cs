@@ -1,4 +1,6 @@
-﻿namespace Contract.Pyment.Invoices
+﻿using Contract.Workspace.Files;
+
+namespace Contract.Pyment.Invoices
 {
     public interface IInvoiceManager
     {

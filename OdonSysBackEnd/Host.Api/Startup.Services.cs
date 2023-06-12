@@ -6,8 +6,9 @@
         {
             //Access
             Access.Data.ServiceInjection.ConfigureServices(services);
+            Access.File.ServiceInjection.ConfigureServices(services);
             Access.Sql.ServiceInjection.ConfigureServices(services, MainConfiguration);
-            
+
             //Manager
             Manager.Admin.ServiceInjection.ConfigureServices(services);
             Manager.Payment.ServiceInjection.ConfigureServices(services);

@@ -4,19 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Access.Sql.Configurations
 {
-    public class InvoiceDetailConfiguration : IEntityTypeConfiguration<InvoiceDetail>
+    public class InvoiceDetailConfiguration : BaseEntityTypeConfiguration<InvoiceDetail>
     {
-        public void Configure(EntityTypeBuilder<InvoiceDetail> builder)
+        public override void Configure(EntityTypeBuilder<InvoiceDetail> builder)
         {
+            base.Configure(builder);
+
             builder.HasKey(x => new { x.Id, x.InvoiceId, x.ClientProcedureId });
-
-            builder
-                .Property(d => d.DateCreated)
-                .HasDefaultValueSql("GetDate()");
-
-            builder
-                .Property(d => d.DateModified)
-                .HasDefaultValueSql("GetDate()");
 
             builder
                 .HasOne(x => x.Invoice)

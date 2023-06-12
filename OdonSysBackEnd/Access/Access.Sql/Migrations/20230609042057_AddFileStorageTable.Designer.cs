@@ -4,6 +4,7 @@ using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Access.Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230609042057_AddFileStorageTable")]
+    partial class AddFileStorageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,22 +161,16 @@ namespace Access.Sql.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("ClientProcedureId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<string>("ReferenceId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserCreated")
@@ -185,7 +181,9 @@ namespace Access.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FileStorages");
+                    b.HasIndex("ClientProcedureId");
+
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
@@ -717,6 +715,17 @@ namespace Access.Sql.Migrations
                     b.Navigation("UserClient");
                 });
 
+            modelBuilder.Entity("Access.Sql.Entities.FileStorage", b =>
+                {
+                    b.HasOne("Access.Sql.Entities.ClientProcedure", "ClientProcedure")
+                        .WithMany("FileStorages")
+                        .HasForeignKey("ClientProcedureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClientProcedure");
+                });
+
             modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
                 {
                     b.HasOne("Access.Sql.Entities.Client", "Client")
@@ -843,6 +852,8 @@ namespace Access.Sql.Migrations
 
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
                 {
+                    b.Navigation("FileStorages");
+
                     b.Navigation("InvoiceDetail");
                 });
 
