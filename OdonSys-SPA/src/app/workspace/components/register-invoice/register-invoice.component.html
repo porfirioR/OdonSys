@@ -2,59 +2,62 @@
 <div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <main class="row w-100">
     <aside class="col-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Pacientes</h5>
-            <div class="d-flex justify-content-between">
-              <div class="col-lg-9 col-md-6">
-                <select class="form-select" formControlName="clientId">
-                  <option [value]="''" disabled>Pacientes existentes</option>
-                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
-                </select>
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Pacientes</h5>
+              <div class="d-flex justify-content-between">
+                <div class="col-lg-9 col-md-6">
+                  <select class="form-select" formControlName="clientId">
+                    <option [value]="''" disabled>Pacientes existentes</option>
+                    <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
+                  </select>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                  <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
+                </div>
               </div>
-              <div class="col-lg-2 col-md-6">
-                <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
+              <form [formGroup]="clientFormGroup" class="row">
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Nombre'" formControlName="name"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
               </div>
-            </div>
-            <form [formGroup]="clientFormGroup" class="row">
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Nombre'" formControlName="name"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Apellido'" formControlName="surname"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-select-input [label]="'País'" formControlName="country" [options]="countries"
-                [colClass]="'col-lg-12'"></app-select-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"
-                [colClass]="'col-lg-12'"></app-text-number-input>
-            </div>
-          </form>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Segundo Nombre'" formControlName="middleName"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Apellido'" formControlName="surname"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Segundo Apellido'" formControlName="secondSurname"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'N° de teléfono'" formControlName="phone"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-select-input [label]="'País'" formControlName="country" [options]="countries"
+                  [colClass]="'col-lg-12'"></app-select-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Documento'" formControlName="document" [type]="'number'"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Ruc'" formControlName="ruc" [type]="'number'"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <app-text-number-input [label]="'Correo'" formControlName="email" [type]="'email'"
+                  [colClass]="'col-lg-12'"></app-text-number-input>
+              </div>
+            </form>
+          </div>
         </div>
+        <app-upload-file [uploadFileConfig]="uploadFileConfig"></app-upload-file>
       </div>
     </aside>
     <article class="col-9">

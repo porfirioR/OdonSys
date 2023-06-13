@@ -1,0 +1,18 @@
+<div class="form-group m-b-16">
+  <fieldset>
+    <label class="font-15 m-b-4 font-normal color-black">{{uploadFileConfig.title}}:</label>
+    <ngx-dropzone class="custom-dropzone"
+      [multiple]="uploadFileConfig.multiple"
+      [accept]="uploadFileConfig.accept" class="custom-dropzone"
+      (change)="onSelect($event)"
+      [maxFileSize]="uploadFileConfig.maxFileSize">
+      <ngx-dropzone-label class="m-t-0 m-b-0 file-label">Drop the file here or click to upload </ngx-dropzone-label>
+      <ngx-dropzone-preview class="file-preview" 
+        *ngFor="let f of files" [removable]="uploadFileConfig.removable" 
+        (removed)="onRemove(f)">
+        <ngx-dropzone-label class="m-t-0 m-b-0 file-label">{{f.name}}</ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </ngx-dropzone>
+  </fieldset>
+</div>
+

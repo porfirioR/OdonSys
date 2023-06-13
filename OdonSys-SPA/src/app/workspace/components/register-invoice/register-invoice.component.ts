@@ -35,6 +35,7 @@ import { DoctorApiService } from '../../../core/services/api/doctor-api.service'
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { SelectModel } from '../../../core/models/view/select-model';
+import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 
 @Component({
   selector: 'app-register-invoice',
@@ -60,6 +61,13 @@ export class RegisterInvoiceComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  protected uploadFileConfig: UploadFileModel = new UploadFileModel(
+    'Subir archivo',
+    true,
+    'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
+    true,
+    5000000
+  )
   private procedures!: ProcedureModel[]
 
   public formGroup = new FormGroup({
