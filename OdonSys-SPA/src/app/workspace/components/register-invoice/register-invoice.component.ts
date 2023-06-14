@@ -66,7 +66,9 @@ export class RegisterInvoiceComponent implements OnInit {
     true,
     'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
     true,
-    5000000
+    5000000,
+    '293px',
+    'm-b-0'
   )
   private procedures!: ProcedureModel[]
 

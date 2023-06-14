@@ -1,18 +1,37 @@
-<div class="form-group m-b-16">
+<div class="form-group" [ngClass]="uploadFileConfig.formGroupClass">
   <fieldset>
-    <label class="font-15 m-b-4 font-normal color-black">{{uploadFileConfig.title}}:</label>
-    <ngx-dropzone class="custom-dropzone"
+    <h5 class="font-15 m-b-4 font-normal color-black">{{uploadFileConfig.title}}:</h5>
+    <ngx-dropzone class="custom-dropzone" [style.height]="uploadFileConfig.height"
       [multiple]="uploadFileConfig.multiple"
-      [accept]="uploadFileConfig.accept" class="custom-dropzone"
+      [accept]="uploadFileConfig.accept"
       (change)="onSelect($event)"
       [maxFileSize]="uploadFileConfig.maxFileSize">
-      <ngx-dropzone-label class="m-t-0 m-b-0 file-label">Drop the file here or click to upload </ngx-dropzone-label>
-      <ngx-dropzone-preview class="file-preview" 
-        *ngFor="let f of files" [removable]="uploadFileConfig.removable" 
-        (removed)="onRemove(f)">
-        <ngx-dropzone-label class="m-t-0 m-b-0 file-label">{{f.name}}</ngx-dropzone-label>
-      </ngx-dropzone-preview>
+      <ngx-dropzone-label class="m-t-0 m-b-0 file-label">Arrastre el archivo aquí o haga clic para cargar </ngx-dropzone-label>
+      <ng-container *ngFor="let f of files">
+        <ng-container
+          [ngTemplateOutlet]=" f.type === 'application/pdf' ? pdfFile : imageFile"
+          [ngTemplateOutletContext]="{file:f}">
+        </ng-container>
+      </ng-container>
     </ngx-dropzone>
   </fieldset>
 </div>
+
+<ng-template #pdfFile let-file="file">
+  <ngx-dropzone-preview
+    class="file-preview"
+    [removable]="uploadFileConfig.removable" 
+    (removed)="onRemove(file)">
+    <ngx-dropzone-label class="m-t-0 m-b-0 file-label">{{file.name}}</ngx-dropzone-label>
+  </ngx-dropzone-preview>
+</ng-template>
+
+<ng-template #imageFile let-file="file">
+  <ngx-dropzone-image-preview
+    class="file-preview"
+    [file]="file"
+    [removable]="true"
+    (removed)="onRemove(file)">
+  </ngx-dropzone-image-preview>
+</ng-template>
 

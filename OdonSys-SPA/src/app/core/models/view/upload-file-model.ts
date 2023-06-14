@@ -4,6 +4,8 @@ export class UploadFileModel {
     public multiple: boolean = true,
     public accept: string = '*',
     public removable: boolean = true,
-    public maxFileSize: number
+    public maxFileSize: number,
+    public height = 'auto',
+    public formGroupClass = 'm-b-16'
   ) { }
 }

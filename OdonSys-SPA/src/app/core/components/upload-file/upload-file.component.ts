@@ -30,9 +30,9 @@ export class UploadFileComponent implements OnInit {
       let messageError = ''
       event.rejectedFiles.forEach((file, i) => {
         if (file['reason'] === 'type') {
-          messageError = `${messageError}Invalid attachment "${file.name}" please make sure it's a valid type`
+          messageError = `${messageError} Archivo no válido "${file.name}" asegúrese de que su tipo de dato válido`
         } else if (file['reason'] === 'size') {
-          messageError = `${messageError}Attachment "${file.name}" needs to be less than ${(this.uploadFileConfig.maxFileSize / 1048576)} Mb. \n`
+          messageError = `${messageError} Archivo "${file.name}" debe ser ${Math.floor(this.uploadFileConfig.maxFileSize / 1048576)} Mb. mas pequeño\n`
         }
       })
       if(messageError && messageError !== '') {

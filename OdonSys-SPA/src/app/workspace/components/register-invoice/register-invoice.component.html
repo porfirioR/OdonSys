@@ -2,22 +2,22 @@
 <div class="p-l-10 p-t-10" [formGroup]="formGroup">
   <main class="row w-100">
     <aside class="col-3">
-      <div class="row">
+      <div class="p-b-10">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Pacientes</h5>
-              <div class="d-flex justify-content-between">
-                <div class="col-lg-9 col-md-6">
-                  <select class="form-select" formControlName="clientId">
-                    <option [value]="''" disabled>Pacientes existentes</option>
-                    <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
-                  </select>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                  <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
-                </div>
+            <div class="d-flex justify-content-between">
+              <div class="col-lg-9 col-md-6">
+                <select class="form-select" formControlName="clientId">
+                  <option [value]="''" disabled>Pacientes existentes</option>
+                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
+                </select>
               </div>
-              <form [formGroup]="clientFormGroup" class="row">
+              <div class="col-lg-2 col-md-6">
+                <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
+              </div>
+            </div>
+            <form [formGroup]="clientFormGroup" class="row">
               <div class="col-lg-6 col-md-6">
                 <app-text-number-input [label]="'Nombre'" formControlName="name"
                   [colClass]="'col-lg-12'"></app-text-number-input>
@@ -57,7 +57,11 @@
             </form>
           </div>
         </div>
-        <app-upload-file [uploadFileConfig]="uploadFileConfig"></app-upload-file>
+      </div>
+      <div class="card upload-files-height">
+        <div class="card-body">
+          <app-upload-file [uploadFileConfig]="uploadFileConfig"></app-upload-file>
+        </div>
       </div>
     </aside>
     <article class="col-9">
@@ -66,8 +70,8 @@
           <div class="card-body">
             <h5 class="card-title">Procedimientos</h5>
             <div class="col-lg-6 col-md-6">
-              <app-select-input [label]="'Lista de procedimientos'" formControlName="procedure"
-                [options]="proceduresValues"></app-select-input>
+              <app-select-input [label]="'Lista de procedimientos'" [options]="proceduresValues"
+                formControlName="procedure"></app-select-input>
               <div class="invalid-feedback-check-box" *ngIf="formGroup.get('procedures')?.hasError('noneSelected')">
                 Debe seleccionar al menos un procedimiento.
               </div>
@@ -77,7 +81,8 @@
       </div>
       <section class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card">
-          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 523 : 551}">
+          <div class="card-body"
+            [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 523 : 551}">
             <h5 class="card-title">Procedimientos seleccionados</h5>
             <div formArrayName="procedures">
               <span class="row">
@@ -109,11 +114,13 @@
                         Gs.
                       </span>
                       <!-- TODO generic input-group -->
-                      <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio" [mask]="'separator.0'" thousandSeparator=".">
+                      <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
+                        [mask]="'separator.0'" thousandSeparator=".">
                     </div>
                   </div>
                   <div class="col-md-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-outline-primary" (click)="removeProcedure(item.controls.id.value!)">Cancelar</button>
+                    <button class="btn btn-outline-primary"
+                      (click)="removeProcedure(item.controls.id.value!)">Cancelar</button>
                   </div>
                 </ng-container>
               </div>
@@ -149,20 +156,22 @@
           </div>
         </div>
       </section>
+      <footer class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" [disabled]="saving"
+                (click)="exit()">
+                Cancelar
+              </button>
+              <button type="button" class="btn btn-outline-primary" name="save" [disabled]="formGroup.invalid || saving"
+                (click)="save()">
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
     </article>
   </main>
-  <footer class="row col-12">
-    <div class="card" id="actions-buttons">
-      <div class="card-body">
-        <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" [disabled]="saving" (click)="exit()">
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-outline-primary" name="save" [disabled]="formGroup.invalid || saving" (click)="save()">
-            Guardar
-          </button>
-        </div>
-      </div>
-    </div>
-  </footer>
 </div>
