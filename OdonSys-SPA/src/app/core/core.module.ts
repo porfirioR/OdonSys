@@ -7,6 +7,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AgGridModule } from 'ag-grid-angular';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -21,6 +22,8 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ClientsComponent } from './components/my-clients/my-clients.component';
 import { UpsertClientComponent } from './components/upsert-client/upsert-client.component';
 import { AnimationComponent } from './components/animation/animation.component';
+import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { PermissionGuard } from './guards/permission.guard';
@@ -34,8 +37,7 @@ import { RolesEffects } from './store/roles/roles.effects';
 import { ProcedureEffects } from './store/procedures/procedure.effects';
 import { ClientEffects } from './store/clients/client.effects';
 import { environment } from '../../environments/environment';
-import { NgxMaskModule } from 'ngx-mask';
-import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   imports: [
@@ -52,7 +54,8 @@ import { GridBadgeComponent } from './components/grid-badge/grid-badge.component
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
     EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects]),
-    NgxMaskModule.forChild()
+    NgxMaskModule.forChild(),
+    NgxDropzoneModule
   ],
   declarations: [
     HeaderComponent,
@@ -68,7 +71,8 @@ import { GridBadgeComponent } from './components/grid-badge/grid-badge.component
     ClientsComponent,
     UpsertClientComponent,
     AnimationComponent,
-    GridBadgeComponent
+    GridBadgeComponent,
+    UploadFileComponent
   ],
   exports: [
     FormsModule,
@@ -88,7 +92,8 @@ import { GridBadgeComponent } from './components/grid-badge/grid-badge.component
     AuthenticateComponent,
     ClientsComponent,
     UpsertClientComponent,
-    AnimationComponent
+    AnimationComponent,
+    UploadFileComponent
   ],
   providers:[
     AuthGuard,

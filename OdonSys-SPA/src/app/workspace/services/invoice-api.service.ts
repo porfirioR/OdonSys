@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { CreateInvoiceRequest } from '../models/invoices/api/create-invoice-request';
 import { InvoicePatchRequest } from '../models/invoices/api/invoice-patch-request';
 import { InvoiceApiModel } from '../models/invoices/api/invoice-api-model';
+import { UploadFileRequest } from '../../core/models/api/upload-file-request';
 
 @Injectable({
   providedIn: 'root'
@@ -36,4 +37,10 @@ export class InvoiceApiService {
     return this.http.patch<InvoiceApiModel>(`${this.baseUrl}/${id}`, [request]);
   }
 
+  public uploadInvoiceFiles = (request: UploadFileRequest): Observable<string[]> => {
+    const formData = new FormData()
+    formData.append('id', request.referenceId)
+    request.files.forEach((file) => formData.append(`files`, file))
+    return this.http.post<string[]>(`${this.baseUrl}/upload-invoice-files`, formData)
+  }
 }

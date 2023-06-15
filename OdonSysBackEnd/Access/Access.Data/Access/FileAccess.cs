@@ -20,7 +20,8 @@ namespace Access.Data.Access
             var entity = new FileStorage
             {
                 ReferenceId = accessRequest.ReferenceId,
-                Url = accessRequest.Url
+                Url = accessRequest.Url,
+                Format = accessRequest.Format
             };
             _context.FileStorages.Add(entity);
             await _context.SaveChangesAsync();
