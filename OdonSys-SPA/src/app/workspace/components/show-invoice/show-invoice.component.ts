@@ -48,7 +48,6 @@ export class ShowInvoiceComponent implements OnInit {
     subTotal: new FormControl({ value: 0, disabled: true}),
     total: new FormControl({ value: 0, disabled: true})
   })
-
   constructor(
     private store: Store,
     private readonly invoiceApiService: InvoiceApiService,

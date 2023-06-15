@@ -59,11 +59,16 @@ footer {
 }
 
 #procedure-section { 
-  height: 44rem;
+  height: 45.5rem;
 }
 
-#payment-section {
-  height: 48rem;
+#paid-section {
+  height: 16rem;
+  margin-bottom: 10px !important;
+}
+
+#file-preview {
+  height: 32.8rem;
 }
 
 #payments {
@@ -79,5 +84,12 @@ footer {
 }
 
 #footer-procedures {
-  padding: 4px;
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#paid-items {
+  max-height: 11rem !important;
+  overflow-x: hidden;
 }

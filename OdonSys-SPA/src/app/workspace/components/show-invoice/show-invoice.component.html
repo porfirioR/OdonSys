@@ -46,7 +46,7 @@
         </article>
       </aside>
     </section>
-    <section class="col-6 p-r-0">
+    <section class="col-5 p-r-0">
       <article class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card" id="procedure-section">
           <div class="card-body">
@@ -72,14 +72,14 @@
           </div>
         </div>
       </article>
-      <footer class="col-md-12 p-b-10 p-l-0" id="footer-procedures">
+      <footer class="col-md-12 p-l-0" id="footer-procedures">
         <div class="card">
           <div class="card-body amount">
-            <div class="row justify-content-end">
-              <div class="col-md-3">
+            <div class="row">
+              <div class=" offset-4 col-md-4">
                 <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}</label>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' : 'es' }}</label>
               </div>
             </div>
@@ -87,8 +87,8 @@
         </div>
       </footer>
     </section>
-    <section class="col-4 p-r-0">
-      <div class="card" id="payment-section">
+    <section class="col-5 p-r-0">
+      <div class="card" id="paid-section">
         <div class="card-body" [ngClass]="{'align-items-center d-flex justify-content-center': !hasPayments}">
           <div *ngIf="!hasPayments; else allPayments">
             <h5 class="text-center">Sin pagos realizados</h5>
@@ -102,15 +102,40 @@
                 <h6 class="col-3 text-end">Monto (Gs.)</h6>
                 <h6 class="col-3 text-end">Deuda (Gs.)</h6>
               </header>
-              <div class="row paid-content-row" *ngFor="let payment of payments">
-                <label class="col-3">{{payment.user}}</label>
-                <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-                <label class="col-3 text-end">{{payment.amount | number: '': 'es'}}</label>
-                <label class="col-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+              <div id="paid-items">
+                <div class="row paid-content-row" *ngFor="let payment of payments">
+                  <label class="col-3">{{payment.user}}</label>
+                  <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+                  <label class="col-3 text-end">{{payment.amount | number: '': 'es'}}</label>
+                  <label class="col-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+                </div>
               </div>
             </section>
             <br>
           </ng-template>
+        </div>
+      </div>
+      <div id="file-preview" class="card">
+        <div class="card-body">
+          <nav ngbNav #nav="ngbNav" class="nav-tabs">
+            <ng-container ngbNavItem>
+              <a ngbNavLink>Imagenes</a>
+              <ng-template ngbNavContent>
+                <p>
+                  Imagenes
+                </p>
+              </ng-template>
+            </ng-container>
+            <ng-container ngbNavItem>
+              <a ngbNavLink>Pdfs</a>
+              <ng-template ngbNavContent>
+                <p>
+                  pdfs
+                </p>
+              </ng-template>
+            </ng-container>
+          </nav>
+          <div [ngbNavOutlet]="nav" class="mt-2"></div>
         </div>
       </div>
     </section>
