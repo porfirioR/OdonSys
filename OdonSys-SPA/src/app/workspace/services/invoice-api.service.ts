@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { CreateInvoiceRequest } from '../models/invoices/api/create-invoice-request';
 import { InvoicePatchRequest } from '../models/invoices/api/invoice-patch-request';
 import { InvoiceApiModel } from '../models/invoices/api/invoice-api-model';
-import { UploadFileRequest } from 'src/app/core/models/api/upload-file-request';
+import { UploadFileRequest } from '../../core/models/api/upload-file-request';
 
 @Injectable({
   providedIn: 'root'
