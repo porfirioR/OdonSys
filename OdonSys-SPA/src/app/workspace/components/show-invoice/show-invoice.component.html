@@ -121,9 +121,20 @@
             <ng-container ngbNavItem>
               <a ngbNavLink>Imagenes</a>
               <ng-template ngbNavContent>
-                <p>
-                  Imagenes
-                </p>
+                <div class="row invoice-file">
+                  <ng-container *ngFor="let imageFile of invoiceImageFiles">
+                    <div class="col-5 gallery">
+                      <a [href]="imageFile.url" target="_blank">
+                        <img class="pictures" [src]="imageFile.url"/>
+                      </a>
+                      <div class="legend align-items-end">
+                        <span>
+                          Add a description of the image here
+                        </span>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
               </ng-template>
             </ng-container>
             <ng-container ngbNavItem>

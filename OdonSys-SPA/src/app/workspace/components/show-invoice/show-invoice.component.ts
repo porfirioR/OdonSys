@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentModel } from '../../models/payments/payment-model';
 import { SelectModel } from '../../../core/models/view/select-model';
+import { FileModel } from '../../../core/models/view/file-model';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import { Country } from '../../../core/enums/country.enum';
@@ -42,12 +44,16 @@ export class ShowInvoiceComponent implements OnInit {
   })
   protected payments: PaymentModel[] = []
   protected hasPayments = false
+  protected invoicePdfFiles: FileModel[] = []
+  protected invoiceImageFiles: FileModel[] = []
+
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
     procedures: new FormArray<FormGroup<ProcedureFormGroup>>([]),
     subTotal: new FormControl({ value: 0, disabled: true}),
     total: new FormControl({ value: 0, disabled: true})
   })
+
   constructor(
     private store: Store,
     private readonly invoiceApiService: InvoiceApiService,
@@ -56,6 +62,7 @@ export class ShowInvoiceComponent implements OnInit {
     private readonly activeRoute: ActivatedRoute,
     private readonly paymentApiService: PaymentApiService,
     private readonly doctorApiService: DoctorApiService,
+    private domSanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -71,24 +78,37 @@ export class ShowInvoiceComponent implements OnInit {
     combineLatest([
       this.invoiceApiService.getInvoiceById(invoiceId),
       clientRowData$,
-      this.paymentApiService.getPaymentsByInvoiceId(invoiceId)
-    ]).pipe(switchMap(([invoice, clients, paymentList]) => {
-        this.invoice = invoice
-        const client = clients.find(x => x.id === this.invoice.clientId)!
-        this.setClient(client)
-        this.setInvoiceProcedures(invoice)
-        const userPayments$ = [... new Set(paymentList.map(x => x.userId))].map(x => this.doctorApiService.getById(x))
-        const payments: PaymentModel[] = []
-        return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
-          let remainingDebt = this.invoice.total
-          paymentList.forEach(payment => {
-            const user = users.find(x => x.id === payment.userId)
-            remainingDebt -= payment.amount
-            const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
-            payments.push(paymentItem)
-          })
-          return payments
-        })) : of(payments)
+      this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
+      this.invoiceApiService.previewInvoiceFile(invoiceId)
+    ]).pipe(switchMap(([invoice, clients, paymentList, invoiceFiles]) => {
+      const invoiceImageFiles = invoiceFiles.filter(x => x.format !== 'pdf')
+      if (invoiceImageFiles.length > 0) {
+        this.invoiceImageFiles = invoiceImageFiles
+          .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
+          .map(x => new FileModel(this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated))
+      }
+      const invoicePdfFiles = invoiceFiles.filter(x => x.format === 'pdf')
+      if (invoicePdfFiles.length > 0) {
+        this.invoicePdfFiles = invoicePdfFiles
+          .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
+          .map(x => new FileModel(this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated))
+      }
+      this.invoice = invoice
+      const client = clients.find(x => x.id === this.invoice.clientId)!
+      this.setClient(client)
+      this.setInvoiceProcedures(invoice)
+      const userPayments$ = [... new Set(paymentList.map(x => x.userId))].map(x => this.doctorApiService.getById(x))
+      const payments: PaymentModel[] = []
+      return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
+        let remainingDebt = this.invoice.total
+        paymentList.forEach(payment => {
+          const user = users.find(x => x.id === payment.userId)
+          remainingDebt -= payment.amount
+          const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
+          payments.push(paymentItem)
+        })
+        return payments
+      })) : of(payments)
     }))
     .subscribe({
       next: (paymentList: PaymentModel[]) => {

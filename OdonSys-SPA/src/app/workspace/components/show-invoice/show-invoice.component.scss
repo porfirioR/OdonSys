@@ -93,3 +93,33 @@ footer {
   max-height: 11rem !important;
   overflow-x: hidden;
 }
+
+.pictures {
+  width: 250px;
+  padding: 20px;
+  align-self: center;
+}
+
+.invoice-file {
+  overflow-x: hidden;
+  max-height: 440px;
+}
+
+.legend {
+  padding: 15px;
+  text-align: center;
+}
+
+.gallery {
+  border: 1px solid #ccc;
+  margin-left: 43px !important;
+  margin-right: 8px !important;
+  margin-bottom: 10px !important;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    border: 1px solid #777;
+  }
+}
