@@ -129,7 +129,7 @@
                       </a>
                       <div class="legend align-items-end">
                         <span>
-                          Add a description of the image here
+                          Add image name here
                         </span>
                       </div>
                     </div>
@@ -140,9 +140,18 @@
             <ng-container ngbNavItem>
               <a ngbNavLink>Pdfs</a>
               <ng-template ngbNavContent>
-                <p>
-                  pdfs
-                </p>
+                <ng-container *ngFor="let pdfFile of invoicePdfFiles">
+                  <div class="col-5 gallery-pdf">
+                    <a [href]="pdfFile.url" target="_blank">
+                      <i class="fas fa-file-pdf pdf"></i>
+                    </a>
+                    <div class="legend align-items-end">
+                      <span>
+                        Add pdf name here
+                      </span>
+                    </div>
+                  </div>
+                </ng-container>
               </ng-template>
             </ng-container>
           </nav>

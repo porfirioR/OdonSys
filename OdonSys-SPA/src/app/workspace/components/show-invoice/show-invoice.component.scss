@@ -123,3 +123,36 @@ footer {
     border: 1px solid #777;
   }
 }
+
+.gallery-pdf {
+  border: 1px solid #ccc;
+  margin-left: 43px !important;
+  margin-right: 8px !important;
+  margin-bottom: 10px !important;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    background: linear-gradient(to bottom, #b5e0ed, #a2bad5);
+    height: 200px;
+    .pdf {
+      color: #b30c0021;
+    }
+  }
+
+  &:hover:after {
+    content: "\f381";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 50px;
+    color: #0000ff;
+    position: absolute;
+  }
+}
+
+.pdf {
+  font-size: 8rem;
+  padding-top: 1rem;
+  color: #b30b00;
+}
