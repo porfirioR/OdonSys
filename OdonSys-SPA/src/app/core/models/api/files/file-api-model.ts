@@ -1,5 +1,6 @@
 export interface FileApiModel {
   url: string
   format: string
-  dateCreated: Date
+  dateCreated: Date,
+  name: string
 }

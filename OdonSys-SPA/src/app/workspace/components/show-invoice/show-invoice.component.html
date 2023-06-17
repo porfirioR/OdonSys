@@ -7,40 +7,40 @@
           <h5 class="card-title">Paciente</h5>
           <form [formGroup]="clientFormGroup" class="row">
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Nombre'" [colClass]="'col-lg-12'"
-                id="name" formControlName="name"></app-text-number-input>
+              <app-text-number-input [label]="'Nombre'" [colClass]="'col-lg-12'" id="name"
+                formControlName="name"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Segundo Nombre'" [colClass]="'col-lg-12'"
-                id="middleName" formControlName="middleName"></app-text-number-input>
+              <app-text-number-input [label]="'Segundo Nombre'" [colClass]="'col-lg-12'" id="middleName"
+                formControlName="middleName"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Apellido'" [colClass]="'col-lg-12'"
-                id="surname" formControlName="surname"></app-text-number-input>
+              <app-text-number-input [label]="'Apellido'" [colClass]="'col-lg-12'" id="surname"
+                formControlName="surname"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Segundo Apellido'" [colClass]="'col-lg-12'"
-                id="secondSurname" formControlName="secondSurname"></app-text-number-input>
+              <app-text-number-input [label]="'Segundo Apellido'" [colClass]="'col-lg-12'" id="secondSurname"
+                formControlName="secondSurname"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'N° de teléfono'" [colClass]="'col-lg-12'"
-                id="phone" formControlName="phone"></app-text-number-input>
+              <app-text-number-input [label]="'N° de teléfono'" [colClass]="'col-lg-12'" id="phone"
+                formControlName="phone"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'País'" [colClass]="'col-lg-12'"
-                id="country" formControlName="country"></app-text-number-input>
+              <app-text-number-input [label]="'País'" [colClass]="'col-lg-12'" id="country"
+                formControlName="country"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Documento'" [type]="'number'" [colClass]="'col-lg-12'"
-                id="document" formControlName="document"></app-text-number-input>
+              <app-text-number-input [label]="'Documento'" [type]="'number'" [colClass]="'col-lg-12'" id="document"
+                formControlName="document"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Ruc'" [type]="'number'" [colClass]="'col-lg-12'"
-                id="ruc" formControlName="ruc"></app-text-number-input>
+              <app-text-number-input [label]="'Ruc'" [type]="'number'" [colClass]="'col-lg-12'" id="ruc"
+                formControlName="ruc"></app-text-number-input>
             </div>
             <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Correo'" [type]="'email'" [colClass]="'col-lg-12'"
-              id="email" formControlName="email"></app-text-number-input>
+              <app-text-number-input [label]="'Correo'" [type]="'email'" [colClass]="'col-lg-12'" id="email"
+                formControlName="email"></app-text-number-input>
             </div>
           </form>
         </article>
@@ -53,13 +53,13 @@
             <h5 class="card-title">Procedimientos</h5>
             <main formArrayName="procedures">
               <header class="row">
-                <label for="name" class="col-md-4 fw-bold">Nombre</label>
+                <label for="name" class="col-md-6 fw-bold">Nombre</label>
                 <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
                 <label for="finalPrice" class="col-md-3 fw-bold text-end">Precio final (Gs.)</label>
               </header>
               <div class="row align-center" id="selected-procedure-items">
                 <div [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
-                  <label class="col-md-4 form-label"> {{item.controls.name.value}}</label>
+                  <label class="col-md-6 form-label"> {{item.controls.name.value}}</label>
                   <label class="col-md-3 form-label text-end">
                     {{item.controls.price.value | number:'' : 'es' }}
                   </label>
@@ -77,10 +77,12 @@
           <div class="card-body amount">
             <div class="row">
               <div class=" offset-4 col-md-4">
-                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}</label>
+                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' :
+                  'es' }}</label>
               </div>
               <div class="col-md-4">
-                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' : 'es' }}</label>
+                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' :
+                  'es' }}</label>
               </div>
             </div>
           </div>
@@ -119,39 +121,75 @@
         <div class="card-body">
           <nav ngbNav #nav="ngbNav" class="nav-tabs">
             <ng-container ngbNavItem>
-              <a ngbNavLink>Imagenes</a>
+              <a ngbNavLink>Imágenes</a>
               <ng-template ngbNavContent>
-                <div class="row invoice-file">
-                  <ng-container *ngFor="let imageFile of invoiceImageFiles">
-                    <div class="col-5 gallery">
-                      <a [href]="imageFile.url" target="_blank">
-                        <img class="pictures" [src]="imageFile.url"/>
-                      </a>
-                      <div class="legend align-items-end">
-                        <span>
-                          Add image name here
-                        </span>
-                      </div>
+                <ng-container *ngIf="invoiceImageFiles.length === 0; else pictureFiles">
+                  <div class="no-file">
+                    <div>
+                      <h5>Sin imágenes</h5>
                     </div>
-                  </ng-container>
-                </div>
+                  </div>
+                </ng-container>
+                <ng-template #pictureFiles>
+                  <div class="invoice-file d-flex flex-wrap">
+                    <ng-container *ngFor="let imageFile of invoiceImageFiles">
+                      <div class="col-5 gallery d-flex flex-column justify-content-space-between">
+                        <div id="picture-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
+                          <a (click)="downloadFile(imageFile)" title="Descargar">
+                            <i class="fas fa-cloud-download-alt text-end icon-file"></i>
+                          </a>
+                          <a [href]="imageFile.url" target="_blank" title="Abrir en otra ventana">
+                            <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
+                          </a>
+                        </div>
+                          <div class="d-flex justify-content-center mt-auto mb-auto">
+                            <img class="pictures" [src]="imageFile.safeUrl" />
+                          </div>
+                          <div class="legend align-items-end">
+                            <span>
+                              {{imageFile.name}}
+                            </span>
+                          </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </ng-template>
               </ng-template>
             </ng-container>
             <ng-container ngbNavItem>
               <a ngbNavLink>Pdfs</a>
               <ng-template ngbNavContent>
-                <ng-container *ngFor="let pdfFile of invoicePdfFiles">
-                  <div class="col-5 gallery-pdf">
-                    <a [href]="pdfFile.url" target="_blank">
-                      <i class="fas fa-file-pdf pdf"></i>
-                    </a>
-                    <div class="legend align-items-end">
-                      <span>
-                        Add pdf name here
-                      </span>
+                <ng-container *ngIf="invoicePdfFiles.length === 0; else pdfFiles">
+                  <div class="no-file">
+                    <div>
+                      <h5>Sin Pdfs</h5>
                     </div>
                   </div>
                 </ng-container>
+                <ng-template #pdfFiles>
+                  <div class="invoice-file d-flex flex-wrap">
+                    <ng-container *ngFor="let pdfFile of invoicePdfFiles">
+                      <div class="col-3 gallery">
+                        <div id="pdf-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
+                          <a (click)="downloadFile(pdfFile)" title="Descargar">
+                            <i class="fas fa-cloud-download-alt text-end icon-file"></i>
+                          </a>
+                          <a [href]="pdfFile.url" target="_blank" title="Abrir en otra ventana">
+                            <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
+                          </a>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                          <i class="fas fa-file-pdf pdf"></i>
+                        </div>
+                        <div class="legend align-items-end">
+                          <span>
+                            {{pdfFile.name}}
+                          </span>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </ng-template>
               </ng-template>
             </ng-container>
           </nav>

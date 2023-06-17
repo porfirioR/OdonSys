@@ -85,13 +85,13 @@ export class ShowInvoiceComponent implements OnInit {
       if (invoiceImageFiles.length > 0) {
         this.invoiceImageFiles = invoiceImageFiles
           .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
-          .map(x => new FileModel(this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated))
+          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name))
       }
       const invoicePdfFiles = invoiceFiles.filter(x => x.format === 'pdf')
       if (invoicePdfFiles.length > 0) {
         this.invoicePdfFiles = invoicePdfFiles
           .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
-          .map(x => new FileModel(this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated))
+          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name))
       }
       this.invoice = invoice
       const client = clients.find(x => x.id === this.invoice.clientId)!
@@ -120,6 +120,19 @@ export class ShowInvoiceComponent implements OnInit {
         this.exit()
         throw e
       }
+    })
+  }
+
+  protected downloadFile = (file: FileModel) => {
+    fetch(file.url)
+    .then(response => response.blob())
+    .then(blob => {
+      const downloadUrl = URL.createObjectURL(blob)
+      const anchor: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement
+      anchor.href = downloadUrl
+      anchor.download = file.name
+      anchor.click()
+      URL.revokeObjectURL(downloadUrl)
     })
   }
 

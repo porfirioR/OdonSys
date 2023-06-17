@@ -34,7 +34,8 @@ namespace Access.Data.Access
             {
                 ReferenceId = x.ReferenceId,
                 Url = x.Url,
-                Format = x.Format
+                Format = x.Format,
+                FileName = x.Name
             });
             await _context.FileStorages.AddRangeAsync(entities);
             await _context.SaveChangesAsync();
@@ -48,7 +49,7 @@ namespace Access.Data.Access
                                     .Where(x => x.ReferenceId == referenceId)
                                     .ToListAsync();
 
-            return entity.Select(x => new FileAccessModel(x.Url, x.Format, x.DateCreated));
+            return entity.Select(x => new FileAccessModel(x.FileName, x.Url, x.Format, x.DateCreated));
         }
     }
 }
