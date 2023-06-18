@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
+    <ProjectReference Include="..\Resource\Contract\Contract.Payment\Contract.Payment.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Payment\Manager.Payment.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Workspace\Manager.Workspace.csproj" />

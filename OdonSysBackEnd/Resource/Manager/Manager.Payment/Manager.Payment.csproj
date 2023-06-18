@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Access\Access.Contract\Access.Contract.csproj" />
-    <ProjectReference Include="..\..\Contract\Contract.Pyment\Contract.Pyment.csproj" />
+    <ProjectReference Include="..\..\Contract\Contract.Payment\Contract.Payment.csproj" />
   </ItemGroup>
 
 </Project>

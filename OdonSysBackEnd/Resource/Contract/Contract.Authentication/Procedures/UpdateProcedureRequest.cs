@@ -7,5 +7,6 @@
         public bool Active { get; set; }
         public int Price { get; set; }
         public IEnumerable<string> ProcedureTeeth { get; set; }
+        public bool XRay { get; set; }
     }
 }

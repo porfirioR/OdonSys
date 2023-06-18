@@ -26,6 +26,7 @@ export class UpsertProcedureComponent implements OnInit {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),
+    xRay : new FormControl(false),
     price : new FormControl(1, [Validators.required, Validators.min(0)]),
   })
   public ignorePreventUnsavedChanges: boolean = false
@@ -78,6 +79,7 @@ export class UpsertProcedureComponent implements OnInit {
           this.formGroup.controls.description.setValue(data.description)
           this.formGroup.controls.price.setValue(data.price)
           this.formGroup.controls.active.setValue(data.active)
+          this.formGroup.controls.xRay.setValue(data.xRay)
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }
@@ -139,7 +141,8 @@ export class UpsertProcedureComponent implements OnInit {
       this.formGroup.value.description!,
       this.formGroup.value.price!,
       this.formGroup.controls.active.value!,
-      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string)
+      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string),
+      this.formGroup.value.xRay!
     )
     this.store.dispatch(fromProceduresActions.updateProcedure({ procedure: request }))
   }
@@ -149,7 +152,8 @@ export class UpsertProcedureComponent implements OnInit {
       this.formGroup.value.name!,
       this.formGroup.value.description!,
       this.formGroup.value.price!,
-      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string)
+      (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string),
+      this.formGroup.value.xRay!
     )
     this.store.dispatch(fromProceduresActions.addProcedure({ procedure: request }))
   }

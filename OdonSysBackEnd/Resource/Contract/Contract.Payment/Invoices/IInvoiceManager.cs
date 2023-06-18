@@ -1,6 +1,6 @@
 ﻿using Contract.Workspace.Files;
 
-namespace Contract.Pyment.Invoices
+namespace Contract.Payment.Invoices
 {
     public interface IInvoiceManager
     {

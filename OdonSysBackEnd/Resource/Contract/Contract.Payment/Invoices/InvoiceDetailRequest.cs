@@ -1,4 +1,4 @@
-﻿namespace Contract.Pyment.Invoices
+﻿namespace Contract.Payment.Invoices
 {
     public record InvoiceDetailRequest(
         Guid ClientProcedureId,

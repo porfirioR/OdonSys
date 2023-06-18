@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Contract.Pyment.Invoices
+namespace Contract.Payment.Invoices
 {
     public record InvoiceStatusRequest(
         string InvoiceId,

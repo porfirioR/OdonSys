@@ -1,6 +1,6 @@
 ﻿using Access.Contract.Invoices;
 using Access.Contract.Payments;
-using Contract.Pyment.Invoices;
+using Contract.Payment.Invoices;
 
 namespace Manager.Payment
 {
