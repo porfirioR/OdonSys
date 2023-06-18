@@ -6,6 +6,7 @@ export class FileModel {
     public safeUrl: SafeUrl,
     public format: string,
     public dateCreated: Date,
-    public name: string
+    public name: string,
+    public fullUrl: string
   ) { }
 }

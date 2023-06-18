@@ -4,6 +4,7 @@
         string Name,
         string Url,
         string Format,
-        DateTime DateCreated
+        DateTime DateCreated,
+        string FullUrl
     );
 }

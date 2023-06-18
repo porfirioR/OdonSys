@@ -85,13 +85,13 @@ export class ShowInvoiceComponent implements OnInit {
       if (invoiceImageFiles.length > 0) {
         this.invoiceImageFiles = invoiceImageFiles
           .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
-          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name))
+          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name, x.fullUrl))
       }
       const invoicePdfFiles = invoiceFiles.filter(x => x.format === 'pdf')
       if (invoicePdfFiles.length > 0) {
         this.invoicePdfFiles = invoicePdfFiles
           .sort((a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime())
-          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name))
+          .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name, x.fullUrl))
       }
       this.invoice = invoice
       const client = clients.find(x => x.id === this.invoice.clientId)!
@@ -124,7 +124,7 @@ export class ShowInvoiceComponent implements OnInit {
   }
 
   protected downloadFile = (file: FileModel) => {
-    fetch(file.url)
+    fetch(file.fullUrl)
     .then(response => response.blob())
     .then(blob => {
       const downloadUrl = URL.createObjectURL(blob)
@@ -184,4 +184,5 @@ export class ShowInvoiceComponent implements OnInit {
     })
     this.formGroup.controls.client.disable()
   }
+
 }

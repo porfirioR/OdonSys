@@ -49,4 +49,8 @@ export class InvoiceApiService {
     return this.http.get<FileApiModel[]>(`${this.baseUrl}/preview-invoice-files/${id}`)
   }
 
+  public fullInvoiceFile = (id: string): Observable<FileApiModel[]> => {
+    return this.http.get<FileApiModel[]>(`${this.baseUrl}/full-invoice-files/${id}`)
+  }
+
 }
