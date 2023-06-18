@@ -23,12 +23,12 @@ namespace Access.Data.Access
 
             _context.ClientProcedures.Add(entity);
             await _context.SaveChangesAsync();
-            var result = new ClientProcedureAccessModel(
+            var accessModel = new ClientProcedureAccessModel(
                 entity.Id.ToString(),
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString()
             );
-            return result;
+            return accessModel;
         }
 
         public async Task<IEnumerable<ClientProcedureAccessModel>> GetClientProceduresByUserClientIdAsync(IEnumerable<Guid> userClientIds)
@@ -36,11 +36,11 @@ namespace Access.Data.Access
             var entities = await _context.ClientProcedures
                             .AsNoTracking()
                             .Where(x => userClientIds.Contains(x.UserClientId)).ToListAsync();
-            var respose = entities.Select(x => new ClientProcedureAccessModel(
+            var accessModel = entities.Select(x => new ClientProcedureAccessModel(
                 x.Id.ToString(),
                 x.ProcedureId.ToString(),
                 x.UserClientId.ToString()));
-            return respose;
+            return accessModel;
         }
 
         public async Task<ClientProcedureAccessModel> UpdateClientProcedureAsync(UpdateClientProcedureAccessRequest accessRequest)
@@ -49,12 +49,12 @@ namespace Access.Data.Access
                             .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserClientId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
             entity = _mapper.Map(accessRequest, entity);
             await _context.SaveChangesAsync();
-            var result = new ClientProcedureAccessModel(
+            var accessModel = new ClientProcedureAccessModel(
                 entity.Id.ToString(),
                 entity.ProcedureId.ToString(),
                 entity.UserClientId.ToString()
             );
-            return result;
+            return accessModel;
         }
 
         public async Task<bool> CheckExistsClientProcedureAsync(string userClientId, string procedureId)
@@ -69,6 +69,18 @@ namespace Access.Data.Access
             var entity = await _context.ClientProcedures
                             .SingleOrDefaultAsync(x => x.Id == new Guid(clientProcedureId));
             return entity != null;
+        }
+
+        public async Task<ClientProcedureAccessModel> GetClientProcedureByIdAsync(string clientProcedureId)
+        {
+            var entity = await _context.ClientProcedures
+                            .SingleAsync(x => x.Id == new Guid(clientProcedureId));
+            var accessModel = new ClientProcedureAccessModel(
+                entity.Id.ToString(),
+                entity.ProcedureId.ToString(),
+                entity.UserClientId.ToString()
+            );
+            return accessModel;
         }
     }
 }

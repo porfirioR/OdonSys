@@ -27,7 +27,7 @@ namespace AcceptanceTest.Host.Api
         public async Task OneTimeSetUp()
         {
             var config = new ConfigurationBuilder();
-            config.AddJsonFile("auth.json", optional: true, reloadOnChange: false);
+            config.AddJsonFile("Resources/auth.json", optional: true, reloadOnChange: false);
             var configurationRoot = config.Build();
             _testPassword = configurationRoot.GetSection("Password").Value;
             _testUser = configurationRoot.GetSection("User").Value;

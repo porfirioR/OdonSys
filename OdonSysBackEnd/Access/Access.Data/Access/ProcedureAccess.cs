@@ -44,18 +44,17 @@ namespace Access.Data.Access
 
         public async Task<ProcedureAccessModel> GetByIdAsync(string id, bool active)
         {
-            var entity = active ? await _context.Procedures
-                                        .Include(x => x.ProcedureTeeth)
-                                        .AsNoTracking()
-                                        .SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
+            var entity = (active ?
                 await _context.Procedures
                             .Include(x => x.ProcedureTeeth)
                             .AsNoTracking()
-                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
-            if (entity is null)
-            {
+                            .SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
+                await _context.Procedures
+                            .Include(x => x.ProcedureTeeth)
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id))) ??
                 throw new KeyNotFoundException($"id {id}");
-            }
+
             var respose = _mapper.Map<ProcedureAccessModel>(entity);
             return respose;
         }
