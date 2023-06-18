@@ -7,7 +7,7 @@ import localEs from '@angular/common/locales/es';
 
 import { CoreModule } from './core/core.module';
 import { EffectsModule } from '@ngrx/effects';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
@@ -31,11 +31,12 @@ registerLocaleData(localEs, 'es')
     HttpClientModule,
     RouterModule.forRoot(AppRoutes),
     NgbModule,
+    NgbNavModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !environment.production }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },

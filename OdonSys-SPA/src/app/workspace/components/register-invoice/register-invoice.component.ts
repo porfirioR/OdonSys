@@ -36,7 +36,7 @@ import { UserInfoService } from '../../../core/services/shared/user-info.service
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
-import { UploadFileRequest } from '../../../core/models/api/upload-file-request';
+import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 
 @Component({

@@ -1,3 +1,5 @@
+@import "../../../../assets/scss/colors.scss";
+
 .p-l-10 {
   padding-left: 10px !important;
 }
@@ -59,11 +61,16 @@ footer {
 }
 
 #procedure-section { 
-  height: 44rem;
+  height: 44.9rem;
 }
 
-#payment-section {
-  height: 48rem;
+#paid-section {
+  height: 16rem;
+  margin-bottom: 10px !important;
+}
+
+#file-preview {
+  height: 32.2rem;
 }
 
 #payments {
@@ -79,5 +86,80 @@ footer {
 }
 
 #footer-procedures {
-  padding: 4px;
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#paid-items {
+  max-height: 11rem !important;
+  overflow-x: hidden;
+}
+
+.pictures {
+  width: 250px;
+  // padding: 20px;
+  align-self: center;
+}
+
+.invoice-file {
+  overflow-x: hidden;
+  max-height: 440px;
+}
+
+.legend {
+  padding: 15px;
+  text-align: center;
+}
+
+.gallery {
+  border: 1px solid #ccc;
+  margin-left: 43px !important;
+  margin-right: 8px !important;
+  margin-bottom: 10px !important;
+  border-radius: 10px;
+
+  &:hover {
+    border: 1px solid #777;
+    .icon-file {
+      display: flex;
+    }
+    .row-icons {
+      background-color: #d1f2ff;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+
+      & > a {
+        text-decoration: none;
+      }
+    }
+    .legend {
+      background-color: #d1f2ff;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+}
+
+.pdf {
+  font-size: 8rem;
+  padding-top: 0.6rem;
+  color: #b30b00;
+}
+
+.icon-file {
+  height: 30px;
+  display: none;
+  font-size: 1.2rem;
+  color: $primaryColor;
+  margin-left: 1rem;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.no-file {
+  height: 25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
