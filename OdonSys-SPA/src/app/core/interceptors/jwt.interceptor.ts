@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 import { UserInfoService } from '../services/shared/user-info.service';
 
 @Injectable()
@@ -20,8 +20,8 @@ export class JwtInterceptor implements HttpInterceptor {
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
-      });
+      })
     }
-    return next.handle(request);
+    return next.handle(request).pipe(retry(1))
   }
 }

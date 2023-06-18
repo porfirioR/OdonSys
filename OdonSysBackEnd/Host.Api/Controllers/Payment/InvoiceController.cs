@@ -1,4 +1,4 @@
-﻿using Contract.Pyment.Invoices;
+﻿using Contract.Payment.Invoices;
 using Contract.Workspace.Files;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;

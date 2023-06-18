@@ -107,6 +107,7 @@ export class ProcedureEffects {
     data.name,
     data.description,
     data.procedureTeeth,
-    data.price
+    data.price,
+    data.xRay
   )
 }

@@ -1,4 +1,4 @@
-﻿using Contract.Pyment.Payments;
+﻿using Contract.Payment.Payments;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Payments;
 using Microsoft.AspNetCore.Authorization;

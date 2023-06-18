@@ -1,5 +1,5 @@
 ﻿using Contract.Admin.Clients;
-using Contract.Pyment.Invoices;
+using Contract.Payment.Invoices;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Files;
 using Contract.Workspace.Procedures;

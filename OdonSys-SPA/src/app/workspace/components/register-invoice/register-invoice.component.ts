@@ -61,7 +61,7 @@ export class RegisterInvoiceComponent implements OnInit {
     ruc: new FormControl({ value: 0, disabled: true}, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
     country: new FormControl(Country.Paraguay, [Validators.required]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-    email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+    email: new FormControl('', [Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
   protected uploadFileConfig: UploadFileModel = new UploadFileModel(
@@ -70,7 +70,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
     true,
     5000000,
-    '293px',
+    '285px',
     'm-b-0'
   )
   private procedures!: ProcedureModel[]

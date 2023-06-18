@@ -18,7 +18,8 @@ export class AgGridService {
 
   private procedureColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200, resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200,
+      wrapText: true, width:200, resizable: true, cellClass: 'long-text-cell-ag-grid' },
     { headerName: 'Precio', field: 'price', type: 'moneyColumn', filter: 'agNumberColumnFilter', minWidth: 40, maxWidth: 120, resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter,

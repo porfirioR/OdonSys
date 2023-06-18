@@ -1,6 +1,6 @@
 ﻿using Utilities.Enums;
 
-namespace Contract.Pyment.Payments
+namespace Contract.Payment.Payments
 {
     public record RegisterPaymentModel(
         string InvoiceId,

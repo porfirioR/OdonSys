@@ -1,5 +1,5 @@
-﻿using Contract.Pyment.Invoices;
-using Contract.Pyment.Payments;
+﻿using Contract.Payment.Invoices;
+using Contract.Payment.Payments;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Manager.Payment
