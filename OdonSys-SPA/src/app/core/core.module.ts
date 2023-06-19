@@ -38,6 +38,8 @@ import { ProcedureEffects } from './store/procedures/procedure.effects';
 import { ClientEffects } from './store/clients/client.effects';
 import { environment } from '../../environments/environment';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import * as fromDoctor from './store/doctors/doctor.reducer';
+import { DoctorEffects } from './store/doctors/doctor.effects';
 
 @NgModule({
   imports: [
@@ -53,9 +55,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
-    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects]),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects]),
     NgxMaskModule.forChild(),
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer)
   ],
   declarations: [
     HeaderComponent,
