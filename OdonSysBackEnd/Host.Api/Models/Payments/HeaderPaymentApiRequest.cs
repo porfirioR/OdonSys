@@ -1,4 +1,4 @@
-﻿using Contract.Pyment.Invoices;
+﻿using Contract.Payment.Invoices;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 

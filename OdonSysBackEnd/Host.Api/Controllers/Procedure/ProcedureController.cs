@@ -80,13 +80,13 @@ namespace Host.Api.Controllers.Procedure
             {
                 response = await _procedureManager.GetByIdAsync(id, false);
             }
-            var updateDoctorRequest = _mapper.Map<UpdateProcedureRequest>(response);
-            patchProcedure.ApplyTo(updateDoctorRequest);
+            var updateProcedureRequest = _mapper.Map<UpdateProcedureRequest>(response);
+            patchProcedure.ApplyTo(updateProcedureRequest);
             if (!ModelState.IsValid)
             {
                 throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "Valor inválido.")));
             }
-            var model = await _procedureManager.UpdateAsync(updateDoctorRequest);
+            var model = await _procedureManager.UpdateAsync(updateProcedureRequest);
             return model;
         }
     }

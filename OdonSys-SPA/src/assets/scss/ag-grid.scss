@@ -16,3 +16,7 @@ ag-grid-angular {
   padding-right: 0 !important;
   word-break: break-word !important;
 }
+
+.ag-root-wrapper.ag-layout-normal {
+  border-radius: var(--bs-border-radius) !important;
+}

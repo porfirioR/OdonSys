@@ -7,7 +7,7 @@ import { CheckFormGroup } from '../../../core/forms/check-form-group';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { UserApiService } from '../../services/user-api.service';
+import { UserApiService } from '../../../core/services/api/user-api.service';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 
 @Component({

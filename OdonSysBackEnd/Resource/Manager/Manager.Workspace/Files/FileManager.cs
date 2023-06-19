@@ -17,22 +17,23 @@ namespace Manager.Workspace.Files
 
         public async Task<IEnumerable<string>> UploadFileAsync(UploadFileRequest request)
         {
-            var urls = new List<string>();
+            var fileRequestList = new List<FileRequest>();
             foreach (var file in request.Files)
             {
                 var extension = Path.GetExtension(file.FileName);
                 var fileName = $"{Guid.NewGuid().ToString()[..5]}-{Guid.NewGuid().ToString()[..5]}{extension}".ToLower();
                 var url = await UploadFileAsync(file, fileName, request.UserId);
-                urls.Add(url);
+                var fileRequest = new FileRequest(file.FileName, url);
+                fileRequestList.Add(fileRequest);
             }
-            if (urls.Count == 1)
+            if (fileRequestList.Count == 1)
             {
-                var url = urls.First();
-                var format = Path.GetExtension(url)[1..];
-                var single = await _fileAccess.UploadFile(new UploadFileAccessRequest(url, request.Id, format));
+                var fileRequest = fileRequestList.First();
+                var format = Path.GetExtension(fileRequest.Name)[1..];
+                var single = await _fileAccess.UploadFile(new UploadFileAccessRequest(fileRequest.Name, fileRequest.Url, request.Id, format));
                 return new List<string> { single };
             }
-            var accessRequest = urls.Select(url => new UploadFileAccessRequest(url, request.Id, Path.GetExtension(url)[1..]));
+            var accessRequest = fileRequestList.Select(fileRequest => new UploadFileAccessRequest(fileRequest.Name, fileRequest.Url, request.Id, Path.GetExtension(fileRequest.Name)[1..]));
             return await _fileAccess.UploadFile(accessRequest);
         }
 
@@ -41,12 +42,15 @@ namespace Manager.Workspace.Files
             var files = await _fileAccess.GetFilesByReferenceIdAsync(referenceId);
             var pdfFiles = files.Where(x => x.Format == "pdf");
             var pictureFiles = files.Where(x => x.Format != "pdf");
-            var expiringLinks = pictureFiles.Select(x => {
+            var expiringImageLinks = pictureFiles.Select(x => {
                 var url = preview ? _uploadFileStorage.ResizeImage(x.Url, 300, 300) : x.Url;
-                return new FileModel(_uploadFileStorage.GenerateExpiringLink(url, TimeSpan.FromHours(1)), x.Format, x.DateCreated);
+                return new FileModel(x.Name, _uploadFileStorage.GenerateExpiringLink(url, TimeSpan.FromHours(1)), x.Format, x.DateCreated, x.Url);
              });
-            expiringLinks = expiringLinks.Concat(pdfFiles.Select(x => new FileModel(_uploadFileStorage.GenerateExpiringLink(x.Url, TimeSpan.FromHours(1)), x.Format, x.DateCreated)));
-            return expiringLinks;
+            if (preview)
+            {
+                expiringImageLinks = expiringImageLinks.Concat(pdfFiles.Select(x => new FileModel(x.Name, _uploadFileStorage.GenerateExpiringLink(x.Url, TimeSpan.FromHours(1)), x.Format, x.DateCreated, x.Url)));
+            }
+            return expiringImageLinks;
         }
 
         private async Task<string> UploadFileAsync(IFormFile file, string fileName, string folder)

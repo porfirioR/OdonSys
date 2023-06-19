@@ -169,6 +169,10 @@ namespace Access.Sql.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GetDate()");
 
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Format")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -422,6 +426,9 @@ namespace Access.Sql.Migrations
 
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("XRay")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

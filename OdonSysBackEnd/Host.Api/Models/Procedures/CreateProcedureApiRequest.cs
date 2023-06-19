@@ -14,6 +14,7 @@ namespace Host.Api.Models.Procedures
         [Required]
         public int Price { get; set; }
         public IEnumerable<string> ProcedureTeeth { get; set; }
+        public bool XRay { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

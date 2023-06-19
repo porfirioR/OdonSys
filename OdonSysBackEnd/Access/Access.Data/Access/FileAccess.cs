@@ -20,7 +20,8 @@ namespace Access.Data.Access
             var entity = new FileStorage
             {
                 ReferenceId = accessRequest.ReferenceId,
-                Url = accessRequest.Url
+                Url = accessRequest.Url,
+                Format = accessRequest.Format
             };
             _context.FileStorages.Add(entity);
             await _context.SaveChangesAsync();
@@ -33,7 +34,8 @@ namespace Access.Data.Access
             {
                 ReferenceId = x.ReferenceId,
                 Url = x.Url,
-                Format = x.Format
+                Format = x.Format,
+                FileName = x.Name
             });
             await _context.FileStorages.AddRangeAsync(entities);
             await _context.SaveChangesAsync();
@@ -47,7 +49,7 @@ namespace Access.Data.Access
                                     .Where(x => x.ReferenceId == referenceId)
                                     .ToListAsync();
 
-            return entity.Select(x => new FileAccessModel(x.Url, x.Format, x.DateCreated));
+            return entity.Select(x => new FileAccessModel(x.FileName, x.Url, x.Format, x.DateCreated));
         }
     }
 }

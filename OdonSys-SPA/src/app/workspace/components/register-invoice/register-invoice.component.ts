@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable, combineLatest, debounceTime, filter, forkJoin, switchMap, tap } from 'rxjs';
+import { Observable, combineLatest, debounceTime, filter, forkJoin, of, switchMap, tap } from 'rxjs';
 
 import { ClientModel } from '../../../core/models/view/client-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
@@ -36,6 +36,8 @@ import { UserInfoService } from '../../../core/services/shared/user-info.service
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
+import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
+import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-register-invoice',
@@ -43,6 +45,7 @@ import { UploadFileModel } from '../../../core/models/view/upload-file-model';
   styleUrls: ['./register-invoice.component.scss']
 })
 export class RegisterInvoiceComponent implements OnInit {
+  @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent;
   protected load: boolean = false
   protected saving: boolean = false
   protected clients!: ClientModel[]
@@ -58,7 +61,7 @@ export class RegisterInvoiceComponent implements OnInit {
     ruc: new FormControl({ value: 0, disabled: true}, [Validators.required, Validators.maxLength(1), Validators.min(0), Validators.max(9)]),
     country: new FormControl(Country.Paraguay, [Validators.required]),
     phone: new FormControl('', [Validators.required, Validators.maxLength(15), CustomValidators.checkPhoneValue()]),
-    email: new FormControl('', [Validators.required, Validators.maxLength(20), Validators.email]),
+    email: new FormControl('', [Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
   protected uploadFileConfig: UploadFileModel = new UploadFileModel(
@@ -67,7 +70,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
     true,
     5000000,
-    '293px',
+    '285px',
     'm-b-0'
   )
   private procedures!: ProcedureModel[]
@@ -145,7 +148,7 @@ export class RegisterInvoiceComponent implements OnInit {
   protected save = () => {
     if (this.formGroup.invalid) { return }
     this.saving = true
-    this.generateRequest().subscribe({
+    this.generateRequest().pipe(switchMap((x: InvoiceApiModel) => this.saveFiles(x.id))).subscribe({
       next: () => {
         this.saving = false
         this.alertService.showSuccess('Factura creada con éxito')
@@ -261,7 +264,7 @@ export class RegisterInvoiceComponent implements OnInit {
     ).pipe(switchMap(client => this.createInvoice(client.id)))
   }
 
-  private createInvoice = (clientId: string) => {
+  private createInvoice = (clientId: string): Observable<InvoiceApiModel> => {
     // Create Client Procedure
     const procedures = this.formGroup.controls.procedures.controls
     const clientProcedures$ = procedures.map(x => this.clientProcedureApiService.createClientProcedure(new CreateClientProcedureRequest(x.controls.id.value!, clientId)))
@@ -274,5 +277,14 @@ export class RegisterInvoiceComponent implements OnInit {
       const invoice = new CreateInvoiceRequest('invoiceNumber', 1, 1, this.formGroup.controls.subTotal.value!, this.formGroup.controls.total.value!, 'timbrado', InvoiceStatus.Nuevo, clientId, invoiceDetails)
       return this.invoiceApiService.createInvoice(invoice)
     }))
+  }
+
+  private saveFiles = (invoiceId: string): Observable<string[]> => {
+    const files = this.uploadFileComponentRef.files
+    if (files.length > 0) {
+      const request = new UploadFileRequest(invoiceId, this.uploadFileComponentRef.files)
+      return this.invoiceApiService.uploadInvoiceFiles(request)
+    }
+    return of(new Array<string>())
   }
 }

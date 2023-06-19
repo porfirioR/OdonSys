@@ -1,4 +1,4 @@
-﻿namespace Contract.Pyment.Payments
+﻿namespace Contract.Payment.Payments
 {
     public interface IPaymentManager
     {

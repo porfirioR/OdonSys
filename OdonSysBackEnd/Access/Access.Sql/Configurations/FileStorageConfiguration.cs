@@ -10,6 +10,10 @@ namespace Access.Sql.Configurations
             base.Configure(builder);
 
             builder
+                .Property(x => x.FileName)
+                .IsRequired();
+
+            builder
                 .Property(x => x.Url)
                 .IsRequired();
 

@@ -18,7 +18,8 @@ export class AgGridService {
 
   private procedureColumnDef: ColDef[] = [
     { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200, resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200,
+      wrapText: true, width:200, resizable: true, cellClass: 'long-text-cell-ag-grid' },
     { headerName: 'Precio', field: 'price', type: 'moneyColumn', filter: 'agNumberColumnFilter', minWidth: 40, maxWidth: 120, resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter,
@@ -42,9 +43,9 @@ export class AgGridService {
   ]
 
   private doctorColumnDef: ColDef[] = [
-    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true, initialWidth: 150 },
+    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true, initialWidth: 150 },
+    { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true, initialWidth: 170 },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
       cellRenderer: this.booleanFormatter,
@@ -55,11 +56,12 @@ export class AgGridService {
       cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
     },
     { headerName: 'Roles', field: 'roles', filter: 'agTextColumnFilter', resizable: true,
-      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid',
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 200,
       cellRenderer: this.arrayFormatter,
       valueFormatter: this.arrayFormatter,
     },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 300, maxWidth: 650, resizable: true,
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 200,
+      maxWidth: 650, resizable: true,
       cellRendererFramework: GridActionsComponent
     }
   ]

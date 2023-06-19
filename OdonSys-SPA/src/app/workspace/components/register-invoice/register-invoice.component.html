@@ -6,14 +6,15 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Pacientes</h5>
-            <div class="d-flex justify-content-between">
-              <div class="col-lg-9 col-md-6">
+            <div class="row">
+              <div class="col-lg-9 col-md-10 col-sm-10">
                 <select class="form-select" formControlName="clientId">
                   <option [value]="''" disabled>Pacientes existentes</option>
-                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}</option>
+                  <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}
+                  </option>
                 </select>
               </div>
-              <div class="col-lg-2 col-md-6">
+              <div class="col-lg-3 col-md-3 col-sm-3 text-end ">
                 <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
               </div>
             </div>

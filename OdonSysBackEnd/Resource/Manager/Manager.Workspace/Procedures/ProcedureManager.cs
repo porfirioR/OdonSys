@@ -114,5 +114,12 @@ namespace Manager.Workspace.Procedures
         {
             return await _clientProcedureAccess.CheckExistsClientProcedureAsync(clientProcedureId);
         }
+
+        public async Task<ProcedureModel> GetProcedureByClientProcedureIdAsync(string clientProcedureId)
+        {
+            var clientProcedureAccessModel = await _clientProcedureAccess.GetClientProcedureByIdAsync(clientProcedureId);
+            var model = await GetByIdAsync(clientProcedureAccessModel.ProcedureId, true);
+            return model;
+        }
     }
 }

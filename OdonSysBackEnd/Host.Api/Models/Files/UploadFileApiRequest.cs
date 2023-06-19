@@ -1,4 +1,4 @@
-﻿using Contract.Pyment.Invoices;
+﻿using Contract.Payment.Invoices;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Models.Files
