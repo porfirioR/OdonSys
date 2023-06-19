@@ -35,7 +35,7 @@ export const updateClient = createAction(
 )
 
 export const deleteClient = createAction(
-  '[Client/API] Delete Client',
+  '[Client ] Delete Client',
   props<{ id: string }>()
 )
 
@@ -53,7 +53,7 @@ export const changeClientVisibilitySuccess = createAction(
 )
 
 export const clearClients = createAction(
-  '[Client/API] Clear Clients'
+  '[Client] Clear Clients'
 )
 
 export const clientFailure = createAction(

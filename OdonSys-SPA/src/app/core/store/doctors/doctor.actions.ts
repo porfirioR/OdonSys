@@ -3,7 +3,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DoctorModel } from '../../models/view/doctor-model';
 import { PatchRequest } from '../../models/api/patch-request';
 
-
 export const loadDoctors = createAction(
   '[Doctors Component] Load Doctors'
 )
@@ -42,12 +41,12 @@ export const changeDoctorVisibility = createAction(
 )
 
 export const changeDoctorVisibilitySuccess = createAction(
-  '[Doctor Component] Change Visibility Doctor Success',
+  '[Doctor Effect] Change Visibility Doctor Success',
   props<{ doctor: DoctorModel }>()
 )
 
 export const updateDoctorSuccess = createAction(
-  '[Doctor Component] Update Doctor Success',
+  '[Doctor Effect] Update Doctor Success',
   props<{ doctor: DoctorModel }>()
 )
 
@@ -57,5 +56,5 @@ export const doctorFailure = createAction(
 )
 
 export const clearDoctors = createAction(
-  '[Doctor Component] Clear Doctors'
+  '[Doctor] Clear Doctors'
 )
