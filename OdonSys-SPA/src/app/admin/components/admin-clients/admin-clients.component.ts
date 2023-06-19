@@ -120,8 +120,8 @@ export class AdminClientsComponent implements OnInit {
 
   private changeSelectedClientVisibility = (client: ClientApiModel): void => {
     const message = client.active ?
-                    '¿Está seguro de deshabilitar al paciente, no será visible para los doctores?' :
-                    '¿Está seguro de habilitar al paciente, será visible para los doctores?'
+      '¿Está seguro de deshabilitar al paciente, no será visible para los doctores?' :
+      '¿Está seguro de habilitar al paciente, será visible para los doctores?'
     this.alertService.showQuestionModal(message).then((result) => {
       if (result.value) {
         const request = new PatchRequest(!client.active)

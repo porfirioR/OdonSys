@@ -1,6 +1,4 @@
-# OdonSysSPA
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.1.
+# SPA
 
 ## Development server
 
@@ -25,3 +23,12 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Ngrx Store
+
+[Ngrx](https://ngrx.io/)
+
+Example:
+ng g en core/store/procedure/procedure -m ../../core.module.ts --reducers ../index.ts --skip-tests true --dry-run
+ng g se core/store/procedure/procedure --skip-tests true --dry-run
+ng g ef core/store/procedure/procedure -m core/core.module.ts -a true --skip-tests true

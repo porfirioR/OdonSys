@@ -1,14 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DoctorApiModel } from '../../core/models/api/doctor/doctor-api-model';
-import { PatchRequest } from '../../core/models/api/patch-request';
-import { UserRoleApiRequest } from '../../core/models/api/roles/user-role-api-request';
-import { BasicServiceModule } from '../../basic-service.module';
-import { environment } from '../../../environments/environment';
+import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
+import { PatchRequest } from '../../models/api/patch-request';
+import { UserRoleApiRequest } from '../../models/api/roles/user-role-api-request';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: BasicServiceModule
+  providedIn: 'root'
 })
 export class UserApiService {
   private baseUrl = `${environment.apiUrl}/users`
