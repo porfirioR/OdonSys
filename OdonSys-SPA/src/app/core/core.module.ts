@@ -24,6 +24,7 @@ import { UpsertClientComponent } from './components/upsert-client/upsert-client.
 import { AnimationComponent } from './components/animation/animation.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
+import { ClientDetailComponent } from './components/client-detail/client-detail.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { PermissionGuard } from './guards/permission.guard';
@@ -75,7 +76,8 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
     UpsertClientComponent,
     AnimationComponent,
     GridBadgeComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ClientDetailComponent
   ],
   exports: [
     FormsModule,
