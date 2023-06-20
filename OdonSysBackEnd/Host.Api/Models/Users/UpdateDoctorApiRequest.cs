@@ -3,7 +3,7 @@ using Utilities.Enums;
 
 namespace Host.Api.Models.Users
 {
-    public class UpdateDoctorApiRequest
+    public class UpdateDoctorApiRequest : IValidatableObject
     {
         [Required]
         public string Id { get; set; }
@@ -30,5 +30,11 @@ namespace Host.Api.Models.Users
         [Required]
         public Country Country { get; set; }
         public bool Active { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+            return results;
+        }
     }
 }
