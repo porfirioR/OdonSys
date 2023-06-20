@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { SubscriptionService } from '../../services/shared/subscription.service';
@@ -46,7 +46,7 @@ export class DoctorEffects {
           return of(doctorActions.loadDoctorSuccess({ doctor: doctor! }))
         }
         return this.doctorApiService.getById(action.doctorId).pipe(
-          map((doctor) => doctorActions.loadDoctorSuccess({ doctor: this.getModel(doctor) })),
+          map((x) => doctorActions.loadDoctorSuccess({ doctor: this.getModel(x) })),
           catchError(error => of(doctorActions.doctorFailure({ error })))
         )
       })

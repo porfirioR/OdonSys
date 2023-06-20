@@ -1,15 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { forkJoin, map, of, switchMap, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { debounceTime, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
-import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { PaymentApiService } from '../../services/payment-api.service';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
 import { PaymentRequest } from '../../models/payments/payment-request';
 import { PaymentModel } from '../../models/payments/payment-model';
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
 
 @Component({
   selector: 'app-payment-modal',
@@ -33,8 +35,8 @@ export class PaymentModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private userInfoService: UserInfoService,
     private alertService: AlertService,
-    private readonly doctorApiService: DoctorApiService,
-    private readonly paymentApiService: PaymentApiService
+    private readonly paymentApiService: PaymentApiService,
+    private readonly store: Store,
   ) { }
 
   ngOnInit() {
@@ -44,12 +46,16 @@ export class PaymentModalComponent implements OnInit {
       this.formGroup.controls.remainingDebt.setValue(remainingDebt)
       this.formGroup.controls.amount.addValidators(Validators.max(remainingDebt))
       this.hasPayments = payments.length > 0
-      const userPayments$ = [... new Set(payments.map(x => x.userId))].map(x => this.doctorApiService.getById(x))
+      const userPayments = [... new Set(payments.map(x => x.userId))]
+      const userPayments$ = userPayments.map(userId => {
+        this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: userId }))
+        return this.store.select(selectDoctor(userId)).pipe(debounceTime(500))
+      })
       return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
         this.payments = []
         let remainingDebt = this.invoice.total
         payments.forEach(payment => {
-          const user = users.find(x => x.id === payment.userId)
+          const user = users.find(x => x!.id === payment.userId)
           remainingDebt -= payment.amount
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           this.payments.push(paymentItem)

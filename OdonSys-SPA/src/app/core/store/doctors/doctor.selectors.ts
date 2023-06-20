@@ -10,6 +10,6 @@ export const selectDoctors = createSelector(
 
 export const selectDoctor = (doctorId: string) => createSelector(
   selectDoctors,
-  (doctors) => doctors.find(x => x.id === doctorId) 
+  (doctors) => doctors.find(x => x.id === doctorId)
 )
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { combineLatest, take, tap } from 'rxjs';
+import { combineLatest, debounceTime, take } from 'rxjs';
 import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
 import { CheckFormGroup } from '../../../core/forms/check-form-group';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
@@ -36,13 +36,8 @@ export class UserRoleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let loading = true
-    const user$ = this.store.select(selectDoctor(this.userId)).pipe(tap(x => {
-      if(loading && !x) {
-        this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: this.userId })) 
-        loading = false
-      }
-    }))
+    this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: this.userId }))
+    const user$ = this.store.select(selectDoctor(this.userId)).pipe(debounceTime(500))
     combineLatest([this.rolesApiService.getAll(), user$]).pipe(take(1)).subscribe({
       next: ([roles, user]) => {
         const userRoles = user!.roles

@@ -1,6 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { combineLatest, debounceTime } from 'rxjs';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
@@ -14,6 +15,8 @@ import { SelectModel } from '../../../core/models/view/select-model';
 import { Country } from '../../../core/enums/country.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.form';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
 
 @Component({
   selector: 'app-my-configuration',
@@ -48,7 +51,8 @@ export class MyConfigurationComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService,
     private readonly zone: NgZone,
-    private readonly roleApiService: RoleApiService
+    private readonly roleApiService: RoleApiService,
+    private readonly store: Store,
   ) {
     this.countries = EnumHandler.getCountries()
     this.canEdit = userInfoService.havePermission(Permission.UpdateDoctors)
@@ -90,25 +94,27 @@ export class MyConfigurationComponent implements OnInit {
       this.load = true
       return
     }
+    this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: user.id })) 
+    const user$ = this.store.select(selectDoctor(user.id)).pipe(debounceTime(500))
     combineLatest([
-      this.doctorApiService.getById(user.id),
+      user$,
       this.roleApiService.getPermissions()
     ]).subscribe({
       next: ([user, allPermissions]) => {
         const rolePermissions = this.userInfoService.getPermissions()
         const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
         MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
-        this.formGroup.controls.id.setValue(user.id)
-        this.formGroup.controls.name.setValue(user.name)
-        this.formGroup.controls.middleName.setValue(user.middleName)
-        this.formGroup.controls.surname.setValue(user.surname)
-        this.formGroup.controls.secondSurname.setValue(user.secondSurname)
-        this.formGroup.controls.document.setValue(user.document)
-        this.formGroup.controls.phone.setValue(user.phone)
-        this.formGroup.controls.email.setValue(user.email)
-        this.formGroup.controls.country.setValue(Country[user.country]! as unknown as Country)
-        this.formGroup.controls.active.setValue(user.active)
-        this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user.document, user.country))
+        this.formGroup.controls.id.setValue(user!.id)
+        this.formGroup.controls.name.setValue(user!.name)
+        this.formGroup.controls.middleName.setValue(user!.middleName)
+        this.formGroup.controls.surname.setValue(user!.surname)
+        this.formGroup.controls.secondSurname.setValue(user!.secondSurname)
+        this.formGroup.controls.document.setValue(user!.document)
+        this.formGroup.controls.phone.setValue(user!.phone)
+        this.formGroup.controls.email.setValue(user!.email)
+        this.formGroup.controls.country.setValue(Country[user!.country]! as unknown as Country)
+        this.formGroup.controls.active.setValue(user!.active)
+        this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
         this.load = true
       }
     })
