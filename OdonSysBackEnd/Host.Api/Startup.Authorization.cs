@@ -67,6 +67,7 @@ namespace Host.Api
                 new PolicyModel(Policy.CanUpdateDoctor, new AuthRequirement(PermissionName.UpdateDoctors)),
                 new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(
                     new List<PermissionName> {
+                        PermissionName.AccessMyData,
                         PermissionName.AccessDoctors,
                         PermissionName.RegisterPayments
                     }

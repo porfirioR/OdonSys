@@ -1,14 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { combineLatest, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { combineLatest, take, tap } from 'rxjs';
 import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
 import { CheckFormGroup } from '../../../core/forms/check-form-group';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserApiService } from '../../../core/services/api/user-api.service';
-import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
 
 @Component({
   selector: 'app-user-role',
@@ -20,7 +22,7 @@ export class UserRoleComponent implements OnInit {
   @Input() name!: string
 
   protected saving = false
-  public formGroup = new FormGroup( {
+  public formGroup = new FormGroup({
     roles: new FormArray<FormGroup<CheckFormGroup>>([])
   })
 
@@ -30,13 +32,20 @@ export class UserRoleComponent implements OnInit {
     private userInfoService: UserInfoService,
     private alertService: AlertService,
     private readonly userApiService: UserApiService,
-    private readonly doctorApiService: DoctorApiService,
+    private readonly store: Store,
   ) { }
 
   ngOnInit() {
-    combineLatest([this.rolesApiService.getAll(), this.doctorApiService.getById(this.userId)]).pipe(take(1)).subscribe({
+    let loading = true
+    const user$ = this.store.select(selectDoctor(this.userId)).pipe(tap(x => {
+      if(loading && !x) {
+        this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: this.userId })) 
+        loading = false
+      }
+    }))
+    combineLatest([this.rolesApiService.getAll(), user$]).pipe(take(1)).subscribe({
       next: ([roles, user]) => {
-        const userRoles = user.roles
+        const userRoles = user!.roles
         roles.forEach(x => {
           const formGroup = new FormGroup<CheckFormGroup>({
             name: new FormControl(x.name),
@@ -46,9 +55,6 @@ export class UserRoleComponent implements OnInit {
           this.formGroup.controls.roles.push(formGroup)
         })
         this.formGroup.controls.roles.addValidators(this.minimumOneSelectedValidator)
-      },
-      error: (e) => {
-        throw e;
       }
     })
   }

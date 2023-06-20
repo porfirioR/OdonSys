@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
+import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { SubscriptionService } from '../../services/shared/subscription.service';
 import { UserApiService } from '../../services/api/user-api.service';
 import * as doctorActions from './doctor.actions';
@@ -18,6 +19,7 @@ export class DoctorEffects {
     private readonly alertService: AlertService,
     private readonly subscriptionService: SubscriptionService,
     private readonly userApiService: UserApiService,
+    private readonly doctorApiService: DoctorApiService,
   ) {}
 
   protected getAll$ = createEffect(() => {
@@ -31,6 +33,23 @@ export class DoctorEffects {
           catchError(error => of(doctorActions.doctorFailure({ error })))
         )
       )
+    )
+  })
+
+  protected getDoctorById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(doctorActions.loadDoctor),
+      withLatestFrom(this.store.select(selectDoctors)),
+      switchMap(([action, doctors]) => {
+        const doctor = doctors.find(x => x.id === action.doctorId)
+        if (doctors.length > 0 && !!doctor) {
+          return of(doctorActions.loadDoctorSuccess({ doctor: doctor! }))
+        }
+        return this.doctorApiService.getById(action.doctorId).pipe(
+          map((doctor) => doctorActions.loadDoctorSuccess({ doctor: this.getModel(doctor) })),
+          catchError(error => of(doctorActions.doctorFailure({ error })))
+        )
+      })
     )
   })
 

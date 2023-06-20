@@ -54,8 +54,8 @@ namespace Host.Api.Controllers.Workspace
             var model = await _userManager.UpdateAsync(updateDoctorRequest);
             return model;
         }
-        // TODO hard delete if not associated with patients and other references
 
+        // TODO hard delete if not associated with patients and other references
         [HttpPost("user-roles")]
         [Authorize(Policy = Policy.CanAssignDoctorRoles)]
         public async Task<IEnumerable<string>> UserRoles([FromBody] UserRolesApiRequest apiRequest)

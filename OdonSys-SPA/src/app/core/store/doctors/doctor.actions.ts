@@ -12,11 +12,19 @@ export const allDoctorsLoaded = createAction(
   props<{ doctors: DoctorModel[] }>()
 )
 
+export const loadDoctor = createAction(
+  '[Doctor Component] Load Doctor',
+  props<{ doctorId: string }>()
+)
+
+export const loadDoctorSuccess = createAction(
+  '[Doctor Effect] Load Doctor Success',
+  props<{ doctor: DoctorModel }>()
+)
+
 export const approveDoctor = createAction(
   '[Doctors Component] Approve Doctor',
-  props<{
-    doctorId: string
-  }>()
+  props<{ doctorId: string }>()
 )
 
 export const approveDoctorSuccess = createAction(

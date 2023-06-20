@@ -8,3 +8,8 @@ export const selectDoctors = createSelector(
   fromDoctor.selectAll
 )
 
+export const selectDoctor = (doctorId: string) => createSelector(
+  selectDoctors,
+  (doctors) => doctors.find(x => x.id === doctorId) 
+)
+

@@ -60,6 +60,7 @@ namespace Manager.Admin
                 new PermissionModel("Inhabilitar", PermissionName.DeactivateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
 
                 new PermissionModel("Ingresar", PermissionName.AccessDoctors, PermissionGroup.Work, PermissionSubGroup.Doctor),
+                new PermissionModel("Ver mis datos", PermissionName.AccessMyData, PermissionGroup.Work, PermissionSubGroup.Doctor),
                 new PermissionModel("Aprobar ingresar", PermissionName.ApproveDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Actualizar", PermissionName.UpdateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Borrar", PermissionName.DeleteDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
