@@ -4,11 +4,10 @@ import { UpsertClientComponent } from '../core/components/upsert-client/upsert-c
 import { MyConfigurationComponent } from './components/my-configuration/my-configuration.component';
 import { InvoicesComponent } from './components/invoices/invoices.component';
 import { RegisterInvoiceComponent } from './components/register-invoice/register-invoice.component';
+import { ShowInvoiceComponent } from './components/show-invoice/show-invoice.component';
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
-import { PreventUnsavedChangesAdmin } from '../admin/guards/prevent-unsaved-changes-admin.guard';
 import { Permission } from '../core/enums/permission.enum';
-import { ShowInvoiceComponent } from './components/show-invoice/show-invoice.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -28,13 +27,13 @@ export const WorkspaceRoutes: Routes = [
         path: 'mis-pacientes/registrar',
         component: UpsertClientComponent,
         title: 'Registrar paciente',
-        canDeactivate: [PreventUnsavedChangesAdmin]
+        canDeactivate: [PreventUnsavedChangesWorkspace]
       },
       {
         path: 'mis-pacientes/actualizar/:id',
         component: UpsertClientComponent,
         title: 'Actualizar paciente',
-        canDeactivate: [PreventUnsavedChangesAdmin]
+        canDeactivate: [PreventUnsavedChangesWorkspace]
       },
       {
         path: 'facturas',

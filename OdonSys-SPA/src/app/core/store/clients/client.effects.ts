@@ -82,7 +82,7 @@ export class ClientEffects {
     )
   })
 
-  errorHandler$ = createEffect(() => {
+  private errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(clientActions.clientFailure),
       tap((x) => {

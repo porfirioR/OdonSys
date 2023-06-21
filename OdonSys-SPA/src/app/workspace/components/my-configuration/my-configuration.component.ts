@@ -6,6 +6,7 @@ import { combineLatest, debounceTime } from 'rxjs';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
@@ -24,8 +25,10 @@ import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions
 })
 export class MyConfigurationComponent implements OnInit {
   protected load: boolean = false
-  protected saving: boolean = false
   protected canEdit = false
+  protected id!: string
+  protected countries: SelectModel[] = []
+  public saving: boolean = false
   public formGroup = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -40,8 +43,7 @@ export class MyConfigurationComponent implements OnInit {
     active: new FormControl(true, [Validators.required]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-  protected id!: string
-  protected countries: SelectModel[] = []
+  public ignorePreventUnsavedChanges: boolean = false
   private canAccessData = false
 
   constructor(
@@ -51,7 +53,9 @@ export class MyConfigurationComponent implements OnInit {
     private readonly zone: NgZone,
     private readonly roleApiService: RoleApiService,
     private readonly store: Store,
+    private readonly subscriptionService: SubscriptionService
   ) {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.saving = false } })
     this.countries = EnumHandler.getCountries()
     this.canEdit = userInfoService.havePermission(Permission.UpdateDoctors)
     this.canAccessData = userInfoService.havePermission(Permission.AccessDoctors)
@@ -63,6 +67,7 @@ export class MyConfigurationComponent implements OnInit {
 
   public save = () => {
     if (this.formGroup.invalid) { return }
+    this.ignorePreventUnsavedChanges = true
     this.saving = true
     const request = this.getDoctorRequest()
     this.store.dispatch(fromDoctorsActions.updateDoctor({ user: request }))

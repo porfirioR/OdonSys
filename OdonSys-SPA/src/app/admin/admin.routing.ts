@@ -67,6 +67,7 @@ export const AdminRoutes: Routes = [
         path: 'pacientes/actualizar/:id',
         component: UpsertClientComponent,
         canActivate: [PermissionGuard],
+        canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Actualizar pacientes',
         data: { permissions: [ Permission.UpdateClients ] }
       },

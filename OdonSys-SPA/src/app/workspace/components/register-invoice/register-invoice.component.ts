@@ -34,6 +34,7 @@ import { ClientProcedureApiService } from '../../services/client-procedure-api.s
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
@@ -47,7 +48,6 @@ import { UploadFileComponent } from '../../../core/components/upload-file/upload
 export class RegisterInvoiceComponent implements OnInit {
   @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent;
   protected load: boolean = false
-  protected saving: boolean = false
   protected clients!: ClientModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
@@ -74,7 +74,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'm-b-0'
   )
   private procedures!: ProcedureModel[]
-
+  public saving: boolean = false
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
     procedure: new FormControl(''),
@@ -92,12 +92,14 @@ export class RegisterInvoiceComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private userInfoService: UserInfoService,
     private readonly alertService: AlertService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly subscriptionService: SubscriptionService
   ) {
     this.countries = EnumHandler.getCountries()
   }
 
   ngOnInit() {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.saving = false } })
     let loadingClient = true
     const clientRowData$ = this.store.select(selectActiveClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanDeactivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanDeactivate, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AlertService } from '../services/shared/alert.service';
 
@@ -7,7 +7,6 @@ import { AlertService } from '../services/shared/alert.service';
   providedIn: 'root'
 })
 export class PreventUnsavedChangesGuard implements CanDeactivate<unknown> {
-
   constructor(protected readonly alertService: AlertService) { }
 
   canDeactivate(component: unknown): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
