@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DoctorModel } from '../../models/view/doctor-model';
 import { PatchRequest } from '../../models/api/patch-request';
+import { UpdateUserRequest } from '../../models/users/api/update-user-request';
 
 export const loadDoctors = createAction(
   '[Doctors Component] Load Doctors'
@@ -33,7 +34,12 @@ export const approveDoctorSuccess = createAction(
 )
 
 export const updateDoctor = createAction(
-  '[Doctor Component] Update Doctor',
+  '[My Configuration Component] Update Doctor',
+  props<{ user: UpdateUserRequest }>()
+)
+
+export const updateDoctorRoles = createAction(
+  '[Doctor Component] Update Doctor Roles',
   props<{
     doctor: DoctorModel,
     doctorRoles?: string[]

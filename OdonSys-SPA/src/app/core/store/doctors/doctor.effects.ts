@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
@@ -20,6 +21,9 @@ export class DoctorEffects {
     private readonly subscriptionService: SubscriptionService,
     private readonly userApiService: UserApiService,
     private readonly doctorApiService: DoctorApiService,
+    private readonly zone: NgZone,
+    private readonly router: Router,
+
   ) {}
 
   protected getAll$ = createEffect(() => {
@@ -83,9 +87,9 @@ export class DoctorEffects {
     )
   })
 
-  protected updateDoctor$ = createEffect(() => {
+  protected updateDoctorRoles$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(doctorActions.updateDoctor),
+      ofType(doctorActions.updateDoctorRoles),
       map((x) => {
         let doctor = {...x.doctor}
         if (x.doctorRoles) {
@@ -93,6 +97,20 @@ export class DoctorEffects {
         }
         return doctorActions.updateDoctorSuccess({ doctor: doctor })
       })
+    )
+  })
+
+  protected updateDoctor$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(doctorActions.updateDoctor),
+      switchMap((x) => this.doctorApiService.update(x.user.id, x.user).pipe(
+        map((data: DoctorApiModel) => {
+          this.zone.run(() => this.router.navigate(['']))
+          this.alertService.showSuccess('Datos actualizados correctamente.')
+          return doctorActions.updateDoctorSuccess({ doctor: this.getModel(data) })
+        }),
+        catchError(error => of(doctorActions.doctorFailure({ error })))
+      ))
     )
   })
 

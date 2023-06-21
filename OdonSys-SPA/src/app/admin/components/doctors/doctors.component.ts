@@ -108,7 +108,7 @@ export class DoctorsComponent implements OnInit {
         modalRef.componentInstance.name = currentRowNode.data.name
         modalRef.result.then((result: string[]) => {
           if(result) {
-            this.store.dispatch(fromDoctorsActions.updateDoctor({ doctor: currentRowNode.data, doctorRoles: result }))
+            this.store.dispatch(fromDoctorsActions.updateDoctorRoles({ doctor: currentRowNode.data, doctorRoles: result }))
             setTimeout(() => this.gridOptions.api?.refreshCells({ force: true, columns: ['roles'] }))
           }
         }, () => {})

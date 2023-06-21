@@ -3,7 +3,6 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, debounceTime } from 'rxjs';
-import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
@@ -48,7 +47,6 @@ export class MyConfigurationComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly alertService: AlertService,
-    private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService,
     private readonly zone: NgZone,
     private readonly roleApiService: RoleApiService,
@@ -67,16 +65,7 @@ export class MyConfigurationComponent implements OnInit {
     if (this.formGroup.invalid) { return }
     this.saving = true
     const request = this.getDoctorRequest()
-    this.doctorApiService.update(this.id, request).subscribe({
-      next: () => {
-        this.alertService.showSuccess('Datos guardados.')
-        this.formGroup.reset()
-        this.close()
-      }, error: (e) => {
-        this.saving = false
-        throw e
-      }
-    })
+    this.store.dispatch(fromDoctorsActions.updateDoctor({ user: request }))
   }
 
   public close = () => {
@@ -112,7 +101,7 @@ export class MyConfigurationComponent implements OnInit {
         this.formGroup.controls.document.setValue(user!.document)
         this.formGroup.controls.phone.setValue(user!.phone)
         this.formGroup.controls.email.setValue(user!.email)
-        this.formGroup.controls.country.setValue(Country[user!.country]! as unknown as Country)
+        this.formGroup.controls.country.setValue(user!.country)
         this.formGroup.controls.active.setValue(user!.active)
         this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
         this.load = true
@@ -128,7 +117,7 @@ export class MyConfigurationComponent implements OnInit {
       this.formGroup.value.surname!,
       this.formGroup.value.secondSurname!,
       this.formGroup.value.document!,
-      this.formGroup.value.country!,
+      this.formGroup.controls.country.value!,
       this.formGroup.value.phone!,
       this.formGroup.value.active!
     )
