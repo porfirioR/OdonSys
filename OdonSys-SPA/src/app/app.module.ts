@@ -17,7 +17,6 @@ import { CustomErrorHandler } from './core/helpers/custom-error-handler';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
-import { NgxMaskModule } from 'ngx-mask';
 
 registerLocaleData(localEs, 'es')
 
@@ -35,8 +34,7 @@ registerLocaleData(localEs, 'es')
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !environment.production }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([]),
-    NgxMaskModule.forRoot(),
+    EffectsModule.forRoot([])
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },

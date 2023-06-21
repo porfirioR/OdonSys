@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AgRendererComponent } from 'ag-grid-angular';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { OperationType } from '../../enums/operation-type.enum';
@@ -12,7 +12,7 @@ import { ColorType } from '../../constants/color-type';
   templateUrl: './grid-actions.component.html',
   styleUrls: ['./grid-actions.component.scss']
 })
-export class GridActionsComponent implements AgRendererComponent {
+export class GridActionsComponent implements ICellRendererAngularComp {
   public params!: GridActionModel
   public canApprove = false
   public canShowView = false
@@ -27,7 +27,7 @@ export class GridActionsComponent implements AgRendererComponent {
 
   constructor() { }
 
-  public agInit = (params: ICellRendererParams & GridActionModel): void => {
+  public agInit = (params: ICellRendererParams<any, any, any> & GridActionModel): void => {
     this.configureCellRenderComponent(params)
   }
 

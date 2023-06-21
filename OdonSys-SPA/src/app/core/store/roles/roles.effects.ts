@@ -25,7 +25,7 @@ export class RolesEffects {
     private readonly subscriptionService: SubscriptionService
   ) {}
 
-  getRoles$ = createEffect(() => {
+  protected getRoles$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.loadRoles),
       withLatestFrom(this.store.select(selectRoles)),
@@ -52,7 +52,7 @@ export class RolesEffects {
     )
   })
 
-  create$ = createEffect(() => {
+  protected create$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.createRole),
       switchMap((action) =>
@@ -68,7 +68,7 @@ export class RolesEffects {
     )
   })
 
-  update$ = createEffect(() => {
+  protected update$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.updateRole),
       switchMap((action) =>
@@ -91,7 +91,7 @@ export class RolesEffects {
     )
   })
 
-  errorHandler$ = createEffect(() => {
+  protected errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.rolesFailure),
       tap((x) => {

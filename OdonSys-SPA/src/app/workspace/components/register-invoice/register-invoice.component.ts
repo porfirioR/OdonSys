@@ -141,7 +141,7 @@ export class RegisterInvoiceComponent implements OnInit {
 
   protected removeProcedure = (id: string) => {
     const formArray = this.formGroup.controls.procedures as FormArray
-    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls.id.value === id)
+    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls['id'].value === id)
     formArray.removeAt(index)
     this.proceduresValues.find(x => x.key === id)!.disabled = false
     this.calculatePrices()
@@ -177,7 +177,7 @@ export class RegisterInvoiceComponent implements OnInit {
       next: (procedure) => {
         const currentProcedure = this.procedures.find(x => x.id === procedure)!
         const formArray = this.formGroup.controls.procedures as FormArray
-        if (!formArray.controls.find((x) => (x as FormGroup).controls.id.value === currentProcedure.id)) {
+        if (!formArray.controls.find((x) => (x as FormGroup).controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
             name: new FormControl(currentProcedure.name),
