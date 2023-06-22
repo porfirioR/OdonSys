@@ -8,6 +8,6 @@ export class ProcedureModel {
     public description: string,
     public procedureTeeth: string[],
     public price: number,
-    public xRay: boolean
+    public xRays: boolean
   ) {}
 }

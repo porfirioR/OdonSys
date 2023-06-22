@@ -158,7 +158,8 @@ export class ShowInvoiceComponent implements OnInit {
         id: new FormControl(procedure.id),
         name: new FormControl(procedure.procedure),
         price: new FormControl(procedure.procedurePrice),
-        finalPrice: new FormControl(procedure.finalPrice)
+        finalPrice: new FormControl(procedure.finalPrice),
+        xRays: new FormControl(false)
       })
       procedureFormGroup.disable()
       formArray.push(procedureFormGroup)

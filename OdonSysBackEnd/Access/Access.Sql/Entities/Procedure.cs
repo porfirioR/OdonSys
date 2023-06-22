@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public int Price { get; set; }
-        public bool XRay { get; set; }
+        public bool XRays { get; set; }
         virtual public IEnumerable<ProcedureTooth> ProcedureTeeth { get; set; }
         virtual public IEnumerable<ClientProcedure> ClientProcedures { get; set; }
     }

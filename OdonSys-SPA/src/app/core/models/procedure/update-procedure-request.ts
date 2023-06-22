@@ -5,6 +5,6 @@ export class UpdateProcedureRequest {
     public price: number,
     public active: boolean,
     public procedureTeeth: string[],
-    public xRay: boolean
+    public xRays: boolean
     ) {}
 }

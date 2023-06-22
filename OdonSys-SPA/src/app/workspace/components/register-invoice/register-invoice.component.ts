@@ -176,14 +176,16 @@ export class RegisterInvoiceComponent implements OnInit {
     ).subscribe({
       next: (procedure) => {
         const currentProcedure = this.procedures.find(x => x.id.toLowerCase() === procedure!.toLowerCase())!
-        const formArray = this.formGroup.controls.procedures as FormArray
-        if (!formArray.controls.find((x) => (x as FormGroup).controls['id'].value === currentProcedure.id)) {
+        const formArray = this.formGroup.controls.procedures as FormArray<FormGroup<ProcedureFormGroup>>
+        if (!formArray.controls.find((x: FormGroup<ProcedureFormGroup>) => x.controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
             name: new FormControl(currentProcedure.name),
             price: new FormControl(currentProcedure.price),
-            finalPrice: new FormControl(currentProcedure.price, Validators.min(0))
+            finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
+            xRays: new FormControl(currentProcedure.xRays)
           })
+          procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)
           this.proceduresValues.find(x => x.key === currentProcedure.id)!.disabled = true
           procedureFormGroup.valueChanges.subscribe({ next: () => this.calculatePrices() })
@@ -238,6 +240,11 @@ export class RegisterInvoiceComponent implements OnInit {
   private minimumOneSelectedValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
     const procedures = abstractControl as FormArray<FormGroup<ProcedureFormGroup>>
     return procedures.controls.some(x => x) ? null : { noneSelected : true }
+  }
+
+  private finalPriceCheckValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
+    const procedure = abstractControl as FormGroup<ProcedureFormGroup>
+    return (procedure.value.xRays || procedure.value.finalPrice! <= procedure.value.price!) ? null : { invalidFinalPrice : true }
   }
 
   private generateRequest = (): Observable<InvoiceApiModel> => {
