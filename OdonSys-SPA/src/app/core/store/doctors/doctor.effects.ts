@@ -45,7 +45,7 @@ export class DoctorEffects {
       ofType(doctorActions.loadDoctor),
       withLatestFrom(this.store.select(selectDoctors)),
       switchMap(([action, doctors]) => {
-        const doctor = doctors.find(x => x.id.toLowerCase() === action.doctorId.toLowerCase())
+        const doctor = doctors.find(x => x.id.compareString(action.doctorId))
         if (doctors.length > 0 && !!doctor) {
           return of(doctorActions.loadDoctorSuccess({ doctor: doctor! }))
         }

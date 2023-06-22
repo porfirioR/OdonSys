@@ -55,7 +55,7 @@ export class PaymentModalComponent implements OnInit {
         this.payments = []
         let remainingDebt = this.invoice.total
         payments.forEach(payment => {
-          const user = users.find(x => x!.id.toLowerCase() === payment.userId.toLowerCase())
+          const user = users.find(x => x!.id.compareString(payment.userId))
           remainingDebt -= payment.amount
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           this.payments.push(paymentItem)
