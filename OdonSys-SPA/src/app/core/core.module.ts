@@ -25,9 +25,6 @@ import { GridBadgeComponent } from './components/grid-badge/grid-badge.component
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import { ClientDetailComponent } from './components/client-detail/client-detail.component';
 
-import { AuthGuard } from './guards/auth.guard';
-import { PermissionGuard } from './guards/permission.guard';
-
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
 import * as fromProcedure from './store/procedures/procedure.reducer';
@@ -103,8 +100,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-ma
     UploadFileComponent
   ],
   providers:[
-    AuthGuard,
-    PermissionGuard,
     provideEnvironmentNgxMask()
   ]
 })

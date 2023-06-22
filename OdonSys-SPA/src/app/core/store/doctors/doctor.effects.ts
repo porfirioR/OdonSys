@@ -30,8 +30,8 @@ export class DoctorEffects {
     return this.actions$.pipe(
       ofType(doctorActions.loadDoctors),
       withLatestFrom(this.store.select(selectDoctors)),
-      switchMap(([_, doctors]) => doctors.length > 0 ?
-      of(doctorActions.allDoctorsLoaded({ doctors: doctors })) :
+      switchMap(([_, doctors]) => doctors.length > 1 ?
+        of(doctorActions.allDoctorsLoaded({ doctors: doctors })) :
         this.userApiService.getAll().pipe(
           map(data => doctorActions.allDoctorsLoaded({ doctors: data.map(this.getModel) })),
           catchError(error => of(doctorActions.doctorFailure({ error })))
@@ -45,7 +45,7 @@ export class DoctorEffects {
       ofType(doctorActions.loadDoctor),
       withLatestFrom(this.store.select(selectDoctors)),
       switchMap(([action, doctors]) => {
-        const doctor = doctors.find(x => x.id === action.doctorId)
+        const doctor = doctors.find(x => x.id.toLowerCase() === action.doctorId.toLowerCase())
         if (doctors.length > 0 && !!doctor) {
           return of(doctorActions.loadDoctorSuccess({ doctor: doctor! }))
         }
@@ -125,7 +125,7 @@ export class DoctorEffects {
   })
 
   private getModel = (data: DoctorApiModel) => new DoctorModel(
-    data.id,
+    data.id.toUpperCase(),
     data.name,
     data.middleName,
     data.surname,

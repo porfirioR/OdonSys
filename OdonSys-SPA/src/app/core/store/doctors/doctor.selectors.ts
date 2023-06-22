@@ -9,7 +9,7 @@ export const selectDoctors = createSelector(
 )
 
 export const selectDoctor = (doctorId: string) => createSelector(
-  selectDoctors,
-  (doctors) => doctors.find(x => x.id === doctorId)
+  selectDoctorsFeature,
+  state => state.entities[doctorId.toUpperCase()]!
 )
 

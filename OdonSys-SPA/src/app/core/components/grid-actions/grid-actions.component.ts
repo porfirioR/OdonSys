@@ -25,9 +25,7 @@ export class GridActionsComponent implements ICellRendererAngularComp {
   protected customColorButton: string = 'btn-outline-'
   private customColor: ColorType = 'info'
 
-  constructor() { }
-
-  public agInit = (params: ICellRendererParams<any, any, any> & GridActionModel): void => {
+  public agInit(params: ICellRendererParams<any, any, any> & GridActionModel): void {
     this.configureCellRenderComponent(params)
   }
 
@@ -47,7 +45,7 @@ export class GridActionsComponent implements ICellRendererAngularComp {
 
   public customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
 
-  public refresh = (params: any): boolean => {
+  public refresh(params: ICellRendererParams<any, any, any> & GridActionModel): boolean {
     this.resetAllValues()
     this.configureCellRenderComponent(params)
     return true
@@ -123,6 +121,7 @@ export class GridActionsComponent implements ICellRendererAngularComp {
     this.canApprove = this.canShowView = this.canRestore = this.canShowEdit = this.canShowDelete =
     this.canShowDeactivate = this.canShowDownload = this.canShowCustomButton = false
     this.customColor = 'info'
+    this.customColorButton = 'btn-outline-'
   }
 
 }

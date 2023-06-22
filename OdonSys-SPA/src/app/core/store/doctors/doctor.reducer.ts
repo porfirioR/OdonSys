@@ -25,7 +25,7 @@ export const reducer = createReducer(
     state => adapter.removeAll(state)
   ),
   on(DoctorActions.loadDoctorSuccess,
-    (state, action) => adapter.setOne(action.doctor, state)
+    (state, action) => adapter.addOne(action.doctor, state)
   )
 )
 

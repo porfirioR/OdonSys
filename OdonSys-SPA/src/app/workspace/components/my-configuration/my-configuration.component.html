@@ -1,64 +1,73 @@
 <app-progress *ngIf="!load || saving"></app-progress>
 <div *ngIf="load" class="container">
-  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+  <header class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>Configuración</h3>
-  </div>
-  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
-    <h3 class="m-l-12">Datos Personales</h3>
-    <form [formGroup]="formGroup" (ngSubmit)="save()">
-      <div class="row m-l-12">
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="middleName" formControlName="middleName" [label]="'Segundo Nombre'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="surname" formControlName="surname" [label]="'Apellido'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="secondSurname" formControlName="secondSurname" [label]="'Segundo Apellido'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="document" formControlName="document" [label]="'Documento'" [type]="'number'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="phone" formControlName="phone" [label]="'N° de teléfono'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="email" formControlName="email" [label]="'Correo'" [type]="'email'"></app-text-number-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-select-input id="country" formControlName="country" [label]="'País'" [options]="countries"></app-select-input>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="ruc" formControlName="ruc" [label]="'Ruc'" [type]="'number'"></app-text-number-input>
-        </div>
-      </div>
-      <div class="col-12 row m-t-16 m-b-12 m-l-12">
-        <h3 class="p-0">Permisos</h3>
-        <ng-container *ngFor="let subGroupPermissions of formGroup.controls.subGroupPermissions.controls; let i = index">
-          <div class="form-check col-6">
-            <h5 class="offset-3">{{subGroupPermissions.value.subGroup}}</h5>
-            <ng-container class="row" *ngFor="let permissions of subGroupPermissions.controls.permissions.controls">
-              <label class="form-check-label m-r-2 col-lg-5 p-l-5 col-md-6 col-sm-8">- {{permissions.controls.name.value}}</label>
-            </ng-container>
+  </header>
+  <form [formGroup]="formGroup" (ngSubmit)="save()">
+    <section class="card m-t-16">
+      <h3 class="card-title p-l-10 p-t-5">Datos Personales</h3>
+      <article class="card-body">
+        <main class="row m-l-12">
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
           </div>
-        </ng-container>
-        <div class="invalid-feedback-check-box" *ngIf="formGroup.get('subGroupPermissions')?.hasError('noneSelected')">
-          Debe seleccionar al menos un permiso.
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="middleName" formControlName="middleName" [label]="'Segundo Nombre'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="surname" formControlName="surname" [label]="'Apellido'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="secondSurname" formControlName="secondSurname" [label]="'Segundo Apellido'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="document" formControlName="document" [label]="'Documento'" [type]="'number'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="phone" formControlName="phone" [label]="'N° de teléfono'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="email" formControlName="email" [label]="'Correo'" [type]="'email'"></app-text-number-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-select-input id="country" formControlName="country" [label]="'País'" [options]="countries"></app-select-input>
+          </div>
+          <div class="col-lg-6 col-md-6">
+            <app-text-number-input id="ruc" formControlName="ruc" [label]="'Ruc'" [type]="'number'"></app-text-number-input>
+          </div>
+        </main>
+      </article>
+    </section>
+    <section class="card m-t-16">
+      <h3 class="card-title p-l-10 p-t-5">Permisos</h3>
+      <article class="card-body">
+        <div class="col-12 row m-b-12 m-l-12">
+          <ng-container *ngFor="let subGroupPermissions of formGroup.controls.subGroupPermissions.controls; let i = index">
+            <div class="form-check col-6">
+              <h5 class="offset-3">{{subGroupPermissions.value.subGroup}}</h5>
+              <ng-container class="row" *ngFor="let permissions of subGroupPermissions.controls.permissions.controls">
+                <label class="form-check-label m-r-2 col-lg-5 p-l-5 col-md-6 col-sm-8">- {{permissions.controls.name.value}}</label>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </article>
+    </section>
+    <footer class="m-b-16 m-t-16">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-group text-center btn-footer">
+            <button class="btn btn-outline-primary m-r-8" name="close" type="button" [disabled]="saving" (click)="close()">
+              Cerrar
+            </button>
+            <button class="btn btn-outline-primary" name="save" type="submit"
+              [disabled]="!formGroup.valid || saving" *ngIf="canEdit"
+              (keydown.enter)="save()">
+              Guardar
+            </button>
+          </div>
         </div>
       </div>
-      <div class="form-group text-center btn-footer m-t-16">
-        <button class="btn btn-outline-primary m-r-8" name="close" type="button" [disabled]="saving" (click)="close()">
-          Cerrar
-        </button>
-        <button class="btn btn-outline-primary" name="save" type="submit"
-          [disabled]="!formGroup.valid || saving" *ngIf="canEdit"
-          (keydown.enter)="save()">
-          Guardar
-        </button>
-      </div>
-    </form>
-  </div>
+    </footer>
+  </form>
 </div>

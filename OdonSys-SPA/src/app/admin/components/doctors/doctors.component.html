@@ -1,4 +1,4 @@
-<app-progress *ngIf="load"></app-progress>
+<app-progress *ngIf="saving$ | async"></app-progress>
 <div class="container">
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>Doctores</h3>

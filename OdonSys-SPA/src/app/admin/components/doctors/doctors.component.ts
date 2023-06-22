@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
@@ -21,6 +21,7 @@ import { Permission } from '../../../core/enums/permission.enum';
 import { selectDoctors } from '../../../core/store/doctors/doctor.selectors';
 import { UserRoleComponent } from '../../modals/user-role/user-role.component';
 import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
+import { savingSelector } from '../../../core/store/saving/saving.selector';
 
 @Component({
   selector: 'app-doctors',
@@ -28,7 +29,7 @@ import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions
   styleUrls: ['./doctors.component.scss']
 })
 export class DoctorsComponent implements OnInit {
-  public load: boolean = false
+  public saving$: Observable<boolean> = of(true)
   public gridOptions!: GridOptions
   protected rowData$!: Observable<DoctorModel[]>
   private attributeActive!: string
@@ -48,6 +49,7 @@ export class DoctorsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.saving$ = this.store.select(savingSelector)
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.attributeId = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Id)?.value!
     this.attributeApproved = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Approved)?.value!
@@ -56,13 +58,8 @@ export class DoctorsComponent implements OnInit {
     this.canApprove = this.userInfoService.havePermission(Permission.ApproveDoctors)
     this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
-    let loading = true
-    this.rowData$ = this.store.select(selectDoctors).pipe(tap(x => {
-      if(loading && x.length === 0) {
-        this.store.dispatch(fromDoctorsActions.loadDoctors()) 
-        loading = false
-      }
-    }))
+    this.store.dispatch(fromDoctorsActions.loadDoctors())
+    this.rowData$ = this.store.select(selectDoctors)
   }
 
   private setupAgGrid = (): void => {
@@ -124,7 +121,6 @@ export class DoctorsComponent implements OnInit {
       '¿Está seguro de habilitar al doctor?, será visible para los doctores y podra acceder al sistema'
     this.alertService.showQuestionModal(message).then((result) => {
       if (result.value) {
-        this.load = true
         const request = new PatchRequest(!doctor.active)
         this.store.dispatch(fromDoctorsActions.changeDoctorVisibility({ id: doctor.id, model: request }))
       }
@@ -132,7 +128,6 @@ export class DoctorsComponent implements OnInit {
   }
 
   private approveDoctor = (): void => {
-    this.load = true
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     this.store.dispatch(fromDoctorsActions.approveDoctor({ doctorId: currentRowNode.data.id }))
     setTimeout(() => this.gridOptions.api?.refreshCells({ force: true, columns: ['approved'] }))

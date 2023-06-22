@@ -88,30 +88,32 @@ export class MyConfigurationComponent implements OnInit {
       this.load = true
       return
     }
-    this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: user.id })) 
-    const user$ = this.store.select(selectDoctor(user.id)).pipe(debounceTime(500))
-    combineLatest([
-      user$,
-      this.roleApiService.getPermissions()
-    ]).subscribe({
-      next: ([user, allPermissions]) => {
-        const rolePermissions = this.userInfoService.getPermissions()
-        const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
-        MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
-        this.formGroup.controls.id.setValue(user!.id)
-        this.formGroup.controls.name.setValue(user!.name)
-        this.formGroup.controls.middleName.setValue(user!.middleName)
-        this.formGroup.controls.surname.setValue(user!.surname)
-        this.formGroup.controls.secondSurname.setValue(user!.secondSurname)
-        this.formGroup.controls.document.setValue(user!.document)
-        this.formGroup.controls.phone.setValue(user!.phone)
-        this.formGroup.controls.email.setValue(user!.email)
-        this.formGroup.controls.country.setValue(user!.country)
-        this.formGroup.controls.active.setValue(user!.active)
-        this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
-        this.load = true
-      }
-    })
+    this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: user.id }))
+    setTimeout(() => {
+      const user$ = this.store.select(selectDoctor(user.id)).pipe(debounceTime(500))
+      combineLatest([
+        user$,
+        this.roleApiService.getPermissions()
+      ]).subscribe({
+        next: ([user, allPermissions]) => {
+          const rolePermissions = this.userInfoService.getPermissions()
+          const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
+          MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
+          this.formGroup.controls.id.setValue(user!.id)
+          this.formGroup.controls.name.setValue(user!.name)
+          this.formGroup.controls.middleName.setValue(user!.middleName)
+          this.formGroup.controls.surname.setValue(user!.surname)
+          this.formGroup.controls.secondSurname.setValue(user!.secondSurname)
+          this.formGroup.controls.document.setValue(user!.document)
+          this.formGroup.controls.phone.setValue(user!.phone)
+          this.formGroup.controls.email.setValue(user!.email)
+          this.formGroup.controls.country.setValue(user!.country)
+          this.formGroup.controls.active.setValue(user!.active)
+          this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
+          this.load = true
+        }
+      })
+    }, 1)
   }
 
   private getDoctorRequest = (): UpdateUserRequest => {

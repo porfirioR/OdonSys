@@ -47,7 +47,7 @@ export const updateDoctorRoles = createAction(
 )
 
 export const changeDoctorVisibility = createAction(
-  '[Doctor Component] Change Visibility Doctors',
+  '[Doctor Component] Change Visibility Doctor',
   props<{
     id: string,
     model: PatchRequest

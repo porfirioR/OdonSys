@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { debounceTime, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, debounceTime, map, of, switchMap, take } from 'rxjs';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { PaymentApiService } from '../../services/payment-api.service';
@@ -51,11 +51,11 @@ export class PaymentModalComponent implements OnInit {
         this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: userId }))
         return this.store.select(selectDoctor(userId)).pipe(debounceTime(500))
       })
-      return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
+      return userPayments$.length > 0 ? combineLatest(userPayments$).pipe(take(1), map(users => {
         this.payments = []
         let remainingDebt = this.invoice.total
         payments.forEach(payment => {
-          const user = users.find(x => x!.id === payment.userId)
+          const user = users.find(x => x!.id.toLowerCase() === payment.userId.toLowerCase())
           remainingDebt -= payment.amount
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           this.payments.push(paymentItem)

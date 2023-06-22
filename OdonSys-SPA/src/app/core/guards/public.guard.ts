@@ -1,30 +1,22 @@
-import { Injectable, NgZone } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { NgZone, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanActivateFn } from '@angular/router';
 import { UserInfoService } from '../services/shared/user-info.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class PublicGuard implements CanActivate {
+export const PublicGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const userInfoService = inject(UserInfoService)
+  const router = inject(Router)
+  const zone = inject(NgZone)
 
-  constructor(
-    private router: Router,
-    private readonly userInfoService: UserInfoService,
-    private readonly zone: NgZone,
-  ) { }
-
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const publicRouters = [
-      'registrar',
-      'login'
-    ]
-    const token = this.userInfoService.getToken()
-    const hasTokenExpired = this.userInfoService.hasUserTokenExpired()
-    if (token && !hasTokenExpired && publicRouters.some(x => state.url.includes(x))) {
-      return this.zone.run(() => this.router.createUrlTree(['/inicio']))
-    }
-    return true
+  const publicRouters = [
+    'registrar',
+    'login'
+  ]
+  const token = userInfoService.getToken()
+  const hasTokenExpired = userInfoService.hasUserTokenExpired()
+  if (token && !hasTokenExpired && publicRouters.some(x => state.url.includes(x))) {
+    return zone.run(() => router.createUrlTree(['/inicio']))
   }
+  return true
 }
 
 

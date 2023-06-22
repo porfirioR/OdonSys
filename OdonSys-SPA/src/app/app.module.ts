@@ -17,6 +17,7 @@ import { CustomErrorHandler } from './core/helpers/custom-error-handler';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
+import { AgGridModule } from 'ag-grid-angular';
 
 registerLocaleData(localEs, 'es')
 
@@ -34,7 +35,8 @@ registerLocaleData(localEs, 'es')
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !environment.production }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    AgGridModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },

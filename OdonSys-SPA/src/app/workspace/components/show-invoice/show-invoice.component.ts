@@ -76,7 +76,6 @@ export class ShowInvoiceComponent implements OnInit {
         loadingClient = false
       }
     }))
-
     combineLatest([
       this.invoiceApiService.getInvoiceById(invoiceId),
       clientRowData$,
@@ -96,7 +95,7 @@ export class ShowInvoiceComponent implements OnInit {
           .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name, x.fullUrl))
       }
       this.invoice = invoice
-      const client = clients.find(x => x.id === this.invoice.clientId)!
+      const client = clients.find(x => x.id.toLowerCase() === this.invoice.clientId.toLowerCase())!
       this.setClient(client)
       this.setInvoiceProcedures(invoice)
       const userPayments = [... new Set(paymentList.map(x => x.userId))]
@@ -108,10 +107,10 @@ export class ShowInvoiceComponent implements OnInit {
         this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: userId }))
         return this.store.select(selectDoctor(userId)).pipe(debounceTime(500))
       })
-      return forkJoin(userPayments$).pipe(map(users => {
+      return combineLatest(userPayments$).pipe(map(users => {
         let remainingDebt = this.invoice.total
         paymentList.forEach(payment => {
-          const user = users.find(x => x!.id === payment.userId)
+          const user = users.find(x => x!.id.toLowerCase() === payment.userId.toLowerCase())
           remainingDebt -= payment.amount
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           payments.push(paymentItem)
