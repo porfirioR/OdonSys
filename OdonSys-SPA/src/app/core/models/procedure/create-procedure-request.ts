@@ -4,6 +4,6 @@ export class CreateProcedureRequest {
     public description: string,
     public price: number,
     public procedureTeeth: string[],
-    public xRay: boolean
+    public xRays: boolean
   ) {}
 }

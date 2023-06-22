@@ -7,5 +7,5 @@ export interface ProcedureApiModel {
   description: string
   procedureTeeth: string[]
   price: number
-  xRay: boolean
+  xRays: boolean
 }

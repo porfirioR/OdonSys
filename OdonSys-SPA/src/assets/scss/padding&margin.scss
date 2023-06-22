@@ -22,3 +22,61 @@ $properties: (top, bottom, left, right);
     padding: #{$length}px !important;
   }
 }
+
+@each $length in $lengths {
+  .m-t-b-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-t-r-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-right: #{$length}px !important;
+  }
+  .m-t-l-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-left: #{$length}px !important;
+  }
+  .m-r-b#{$length} {
+    margin-right: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-l-b-#{$length} {
+    margin-left: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-r-l-#{$length} {
+    margin-right: #{$length}px !important;
+    margin-left: #{$length}px !important;
+  }
+  // padding
+  .p-t-b-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-t-r-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-right: #{$length}px !important;
+  }
+  .p-t-l-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-left: #{$length}px !important;
+  }
+  .p-r-b#{$length} {
+    padding-right: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-l-b-#{$length} {
+    padding-left: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-r-l-#{$length} {
+    padding-right: #{$length}px !important;
+    padding-left: #{$length}px !important;
+  }
+}
+
+@each $length in $lengths {
+  .f-s-#{$length} {
+    font-size: #{$length}px !important;
+  }
+}
