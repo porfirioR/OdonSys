@@ -19,26 +19,26 @@
       thousandSeparator=".">
   </ng-template>
 
-  <div *ngIf="ngControl.control?.errors?.required" class="invalid-feedback">Favor ingresar {{label}}</div>
-  <div *ngIf="ngControl.control?.errors?.minlength" class="invalid-feedback">
-    {{label}} debe tener como mínimo {{ngControl.control?.errors?.minlength?.requiredLength}} dígitos y/o letras
+  <div *ngIf="ngControl.control?.errors?.['required']" class="invalid-feedback">Favor ingresar {{label}}</div>
+  <div *ngIf="ngControl.control?.errors?.['minlength']" class="invalid-feedback">
+    {{label}} debe tener como mínimo {{ngControl.control?.errors?.['minlength']?.requiredLength}} dígitos y/o letras
   </div>
-  <div *ngIf="ngControl.control?.errors?.maxlength" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.maxlength?.requiredLength}} dígitos y/o letras
+  <div *ngIf="ngControl.control?.errors?.['maxlength']" class="invalid-feedback">
+    {{label}} debe ser menor que {{ngControl.control?.errors?.['maxlength']?.requiredLength}} dígitos y/o letras
   </div>
-  <div *ngIf="ngControl.control?.errors?.invalidRepeatPassword" class="invalid-feedback">
+  <div *ngIf="ngControl.control?.errors?.['invalidRepeatPassword']" class="invalid-feedback">
     La contraseña no coincide
   </div>
-  <div *ngIf="ngControl.control?.errors?.email" class="invalid-feedback">
+  <div *ngIf="ngControl.control?.errors?.['email']" class="invalid-feedback">
     Correo inválido
   </div>
-  <div *ngIf="ngControl.control?.errors?.min" class="invalid-feedback">
-    {{label}} debe ser mayor que {{ngControl.control?.errors?.min?.min | number: '': 'es'}}
+  <div *ngIf="ngControl.control?.errors?.['min']" class="invalid-feedback">
+    {{label}} debe ser mayor que {{ngControl.control?.errors?.['min']?.min | number: '': 'es'}}
   </div>
-  <div *ngIf="ngControl.control?.errors?.max" class="invalid-feedback">
-    {{label}} debe ser menor que {{ngControl.control?.errors?.max?.max | number: '': 'es'}}
+  <div *ngIf="ngControl.control?.errors?.['max']" class="invalid-feedback">
+    {{label}} debe ser menor que {{ngControl.control?.errors?.['max']?.max | number: '': 'es'}}
   </div>
-  <div *ngIf="ngControl.control?.errors?.invalidPhone" class="invalid-feedback">
+  <div *ngIf="ngControl.control?.errors?.['invalidPhone']" class="invalid-feedback">
     {{label}} inválido, solo soporta signo '+' y números
   </div>
 </div>

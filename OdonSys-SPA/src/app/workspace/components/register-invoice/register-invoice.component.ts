@@ -34,6 +34,7 @@ import { ClientProcedureApiService } from '../../services/client-procedure-api.s
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
@@ -47,7 +48,6 @@ import { UploadFileComponent } from '../../../core/components/upload-file/upload
 export class RegisterInvoiceComponent implements OnInit {
   @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent;
   protected load: boolean = false
-  protected saving: boolean = false
   protected clients!: ClientModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
@@ -74,7 +74,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'm-b-0'
   )
   private procedures!: ProcedureModel[]
-
+  public saving: boolean = false
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
     procedure: new FormControl(''),
@@ -92,12 +92,14 @@ export class RegisterInvoiceComponent implements OnInit {
     private readonly doctorApiService: DoctorApiService,
     private userInfoService: UserInfoService,
     private readonly alertService: AlertService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly subscriptionService: SubscriptionService
   ) {
     this.countries = EnumHandler.getCountries()
   }
 
   ngOnInit() {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.saving = false } })
     let loadingClient = true
     const clientRowData$ = this.store.select(selectActiveClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {
@@ -139,7 +141,7 @@ export class RegisterInvoiceComponent implements OnInit {
 
   protected removeProcedure = (id: string) => {
     const formArray = this.formGroup.controls.procedures as FormArray
-    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls.id.value === id)
+    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls['id'].value === id)
     formArray.removeAt(index)
     this.proceduresValues.find(x => x.key === id)!.disabled = false
     this.calculatePrices()
@@ -173,9 +175,9 @@ export class RegisterInvoiceComponent implements OnInit {
       filter(x => !!x)
     ).subscribe({
       next: (procedure) => {
-        const currentProcedure = this.procedures.find(x => x.id === procedure)!
+        const currentProcedure = this.procedures.find(x => x.id.toLowerCase() === procedure!.toLowerCase())!
         const formArray = this.formGroup.controls.procedures as FormArray
-        if (!formArray.controls.find((x) => (x as FormGroup).controls.id.value === currentProcedure.id)) {
+        if (!formArray.controls.find((x) => (x as FormGroup).controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
             name: new FormControl(currentProcedure.name),
@@ -243,7 +245,7 @@ export class RegisterInvoiceComponent implements OnInit {
     if (clientId) {
       const selectedClient = this.clients.find(x => x.id === clientId)!
       const userId = this.userInfoService.getUserData().id
-      if (selectedClient.doctors.find(x => x.id === userId)) {
+      if (selectedClient.doctors.find(x => x.id.toLowerCase() === userId.toLowerCase())) {
         return this.createInvoice(clientId)
       }
       return this.doctorApiService.assignClientToUser(new AssignClientRequest(userId, clientId)).pipe(switchMap(x => this.createInvoice(clientId)))

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Jaw } from '../../../core/enums/jaw.enum';
 import { Quadrant } from '../../../core/enums/quadrant.enum';
@@ -30,7 +30,7 @@ export class UpsertProcedureComponent implements OnInit {
     price : new FormControl(1, [Validators.required, Validators.min(0)]),
   })
   public ignorePreventUnsavedChanges: boolean = false
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected saving$: Observable<boolean> = of(false)
   protected title = 'Crear'
   protected canRestore = false
   protected teethList: ToothModel[] = []
@@ -48,6 +48,7 @@ export class UpsertProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.saving$ = this.store.select(savingSelector)
     this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.loadValues()
   }

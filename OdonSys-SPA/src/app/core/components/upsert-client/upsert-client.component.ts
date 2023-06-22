@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { Store, select } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { CreateClientRequest } from '../../models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../models/api/clients/update-client-request';
@@ -38,10 +38,10 @@ export class UpsertClientComponent implements OnInit {
     email: new FormControl('', [Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
+  public saving: boolean = false
   public ignorePreventUnsavedChanges: boolean = false
   protected title: string = 'Registrar '
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
-  protected saving: boolean = false
+  protected saving$: Observable<boolean> = of(false)
   protected countries: SelectModel[] = []
   private id = ''
   private fullFieldEdit = false
@@ -58,7 +58,11 @@ export class UpsertClientComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
+    this.saving$ = this.store.select(savingSelector)
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => {
+      this.saving = false
+      this.ignorePreventUnsavedChanges = false
+    } })
     this.fullFieldEdit = this.userInfoService.havePermission(Permission.FullFieldUpdateClients)
     this.loadValues()
   }
@@ -69,6 +73,7 @@ export class UpsertClientComponent implements OnInit {
 
   protected save = (): void => {
     if (this.formGroup.invalid) { return }
+    this.saving = true
     this.ignorePreventUnsavedChanges = true
     this.id ? this.update() : this.create()
   }

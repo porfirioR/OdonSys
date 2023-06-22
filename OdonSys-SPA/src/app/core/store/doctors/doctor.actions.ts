@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DoctorModel } from '../../models/view/doctor-model';
 import { PatchRequest } from '../../models/api/patch-request';
+import { UpdateUserRequest } from '../../models/users/api/update-user-request';
 
 export const loadDoctors = createAction(
   '[Doctors Component] Load Doctors'
@@ -12,11 +13,19 @@ export const allDoctorsLoaded = createAction(
   props<{ doctors: DoctorModel[] }>()
 )
 
+export const loadDoctor = createAction(
+  '[Doctor Component] Load Doctor',
+  props<{ doctorId: string }>()
+)
+
+export const loadDoctorSuccess = createAction(
+  '[Doctor Effect] Load Doctor Success',
+  props<{ doctor: DoctorModel }>()
+)
+
 export const approveDoctor = createAction(
   '[Doctors Component] Approve Doctor',
-  props<{
-    doctorId: string
-  }>()
+  props<{ doctorId: string }>()
 )
 
 export const approveDoctorSuccess = createAction(
@@ -25,7 +34,12 @@ export const approveDoctorSuccess = createAction(
 )
 
 export const updateDoctor = createAction(
-  '[Doctor Component] Update Doctor',
+  '[My Configuration Component] Update Doctor',
+  props<{ user: UpdateUserRequest }>()
+)
+
+export const updateDoctorRoles = createAction(
+  '[Doctor Component] Update Doctor Roles',
   props<{
     doctor: DoctorModel,
     doctorRoles?: string[]
@@ -33,7 +47,7 @@ export const updateDoctor = createAction(
 )
 
 export const changeDoctorVisibility = createAction(
-  '[Doctor Component] Change Visibility Doctors',
+  '[Doctor Component] Change Visibility Doctor',
   props<{
     id: string,
     model: PatchRequest

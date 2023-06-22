@@ -17,7 +17,7 @@ import { CustomErrorHandler } from './core/helpers/custom-error-handler';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
-import { NgxMaskModule } from 'ngx-mask';
+import { AgGridModule } from 'ag-grid-angular';
 
 registerLocaleData(localEs, 'es')
 
@@ -36,7 +36,7 @@ registerLocaleData(localEs, 'es')
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
-    NgxMaskModule.forRoot(),
+    AgGridModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },

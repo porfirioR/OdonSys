@@ -10,7 +10,7 @@ import { ClientApiService } from './client-api.service';
 })
 export class ClientAdminApiService extends ClientApiService {
 
-  constructor(readonly http: HttpClient) {
+  constructor(override readonly http: HttpClient) {
     super(http);
   }
 
@@ -20,10 +20,6 @@ export class ClientAdminApiService extends ClientApiService {
 
   public hardDelete = (id: string): Observable<ClientApiModel> => {
     return this.http.delete<ClientApiModel>(`${this.baseUrl}/${id}`);
-  }
-
-  public getById = (id: string): Observable<ClientApiModel> => {
-    return this.http.get<ClientApiModel>(`${this.baseUrl}/${id}`);
   }
 
   public getAll = (): Observable<ClientApiModel[]> => {

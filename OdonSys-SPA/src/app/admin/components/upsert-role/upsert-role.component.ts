@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map, of } from 'rxjs';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import * as fromRolesActions from '../../../core/store/roles/roles.actions';
@@ -26,7 +26,7 @@ export class UpsertRoleComponent implements OnInit {
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
   public ignorePreventUnsavedChanges: boolean = false
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected saving$: Observable<boolean> = of(false)
   protected title = 'Crear'
   protected loading = true
   private code = ''
@@ -40,6 +40,7 @@ export class UpsertRoleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.saving$ = this.store.select(savingSelector)
     this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.code = this.activatedRoute.snapshot.params['code']
     const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'

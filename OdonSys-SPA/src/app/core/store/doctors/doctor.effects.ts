@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
+import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { SubscriptionService } from '../../services/shared/subscription.service';
 import { UserApiService } from '../../services/api/user-api.service';
 import * as doctorActions from './doctor.actions';
@@ -18,19 +20,40 @@ export class DoctorEffects {
     private readonly alertService: AlertService,
     private readonly subscriptionService: SubscriptionService,
     private readonly userApiService: UserApiService,
+    private readonly doctorApiService: DoctorApiService,
+    private readonly zone: NgZone,
+    private readonly router: Router,
+
   ) {}
 
   protected getAll$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(doctorActions.loadDoctors),
       withLatestFrom(this.store.select(selectDoctors)),
-      switchMap(([_, doctors]) => doctors.length > 0 ?
-      of(doctorActions.allDoctorsLoaded({ doctors: doctors })) :
+      switchMap(([_, doctors]) => doctors.length > 1 ?
+        of(doctorActions.allDoctorsLoaded({ doctors: doctors })) :
         this.userApiService.getAll().pipe(
           map(data => doctorActions.allDoctorsLoaded({ doctors: data.map(this.getModel) })),
           catchError(error => of(doctorActions.doctorFailure({ error })))
         )
       )
+    )
+  })
+
+  protected getDoctorById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(doctorActions.loadDoctor),
+      withLatestFrom(this.store.select(selectDoctors)),
+      switchMap(([action, doctors]) => {
+        const doctor = doctors.find(x => x.id.toLowerCase() === action.doctorId.toLowerCase())
+        if (doctors.length > 0 && !!doctor) {
+          return of(doctorActions.loadDoctorSuccess({ doctor: doctor! }))
+        }
+        return this.doctorApiService.getById(action.doctorId).pipe(
+          map((x) => doctorActions.loadDoctorSuccess({ doctor: this.getModel(x) })),
+          catchError(error => of(doctorActions.doctorFailure({ error })))
+        )
+      })
     )
   })
 
@@ -64,9 +87,9 @@ export class DoctorEffects {
     )
   })
 
-  protected updateDoctor$ = createEffect(() => {
+  protected updateDoctorRoles$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(doctorActions.updateDoctor),
+      ofType(doctorActions.updateDoctorRoles),
       map((x) => {
         let doctor = {...x.doctor}
         if (x.doctorRoles) {
@@ -74,6 +97,20 @@ export class DoctorEffects {
         }
         return doctorActions.updateDoctorSuccess({ doctor: doctor })
       })
+    )
+  })
+
+  protected updateDoctor$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(doctorActions.updateDoctor),
+      switchMap((x) => this.doctorApiService.update(x.user.id, x.user).pipe(
+        map((data: DoctorApiModel) => {
+          this.zone.run(() => this.router.navigate(['']))
+          this.alertService.showSuccess('Datos actualizados correctamente.')
+          return doctorActions.updateDoctorSuccess({ doctor: this.getModel(data) })
+        }),
+        catchError(error => of(doctorActions.doctorFailure({ error })))
+      ))
     )
   })
 
@@ -88,7 +125,7 @@ export class DoctorEffects {
   })
 
   private getModel = (data: DoctorApiModel) => new DoctorModel(
-    data.id,
+    data.id.toUpperCase(),
     data.name,
     data.middleName,
     data.surname,

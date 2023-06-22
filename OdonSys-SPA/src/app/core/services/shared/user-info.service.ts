@@ -47,7 +47,7 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.tokenExpirationKey)
   }
 
-  public clearToken = () => {
+  public clearToken = (): void => {
     this.localStorageService.clearAll(this.userToken)
   }
 
