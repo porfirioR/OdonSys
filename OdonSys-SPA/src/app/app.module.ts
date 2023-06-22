@@ -18,6 +18,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
 import { AgGridModule } from 'ag-grid-angular';
+import "./extensions/implement-extensions";
 
 registerLocaleData(localEs, 'es')
 

@@ -175,7 +175,7 @@ export class RegisterInvoiceComponent implements OnInit {
       filter(x => !!x)
     ).subscribe({
       next: (procedure) => {
-        const currentProcedure = this.procedures.find(x => x.id.toLowerCase() === procedure!.toLowerCase())!
+        const currentProcedure = this.procedures.find(x => x.id.compareString(procedure!))!
         const formArray = this.formGroup.controls.procedures as FormArray<FormGroup<ProcedureFormGroup>>
         if (!formArray.controls.find((x: FormGroup<ProcedureFormGroup>) => x.controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
@@ -252,7 +252,7 @@ export class RegisterInvoiceComponent implements OnInit {
     if (clientId) {
       const selectedClient = this.clients.find(x => x.id === clientId)!
       const userId = this.userInfoService.getUserData().id
-      if (selectedClient.doctors.find(x => x.id.toLowerCase() === userId.toLowerCase())) {
+      if (selectedClient.doctors.find(x => x.id.compareString(userId))) {
         return this.createInvoice(clientId)
       }
       return this.doctorApiService.assignClientToUser(new AssignClientRequest(userId, clientId)).pipe(switchMap(x => this.createInvoice(clientId)))
