@@ -60,7 +60,7 @@ export class RegisterUserComponent implements OnInit {
     this.authApiService.register(request).subscribe({
       next: () => {
         this.formGroup.enable()
-        this.alertService.showSuccess('Datos guardados.')
+        this.alertService.showSuccess('Usuario registrado con éxito.')
         this.router.navigate(['login'])
       },
       error: (error) => {

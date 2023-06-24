@@ -1,6 +1,5 @@
 import { Country } from "../../enums/country.enum";
 import { DoctorApiModel } from "../api/doctor/doctor-api-model";
-import { UserModel } from "./user-model";
 
 export class ClientModel {
   constructor(

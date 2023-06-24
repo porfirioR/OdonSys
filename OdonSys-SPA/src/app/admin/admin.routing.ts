@@ -53,7 +53,7 @@ export const AdminRoutes: Routes = [
         path: 'pacientes/ver/:id',
         component: AdminClientsComponent,
         title: 'Ver pacientes',
-        data: { permissions: [ Permission.CreateProcedures ] }
+        data: { permissions: [ Permission.AccessClients ] }
       },
       {
         path: 'pacientes/registrar',
