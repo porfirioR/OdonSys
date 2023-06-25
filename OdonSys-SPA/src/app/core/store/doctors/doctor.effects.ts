@@ -11,6 +11,7 @@ import * as doctorActions from './doctor.actions';
 import { selectDoctors } from './doctor.selectors';
 import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
 import { DoctorModel } from '../../models/view/doctor-model';
+import { UserApiModel } from '../../models/users/api/user-api-model';
 
 @Injectable()
 export class DoctorEffects {
@@ -75,11 +76,14 @@ export class DoctorEffects {
   protected approveDoctor$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(doctorActions.approveDoctor),
-      switchMap((x) =>
-        this.userApiService.approve(x.doctorId).pipe(
-          map((data: DoctorApiModel) => {
+      withLatestFrom(this.store.select(selectDoctors)),
+      switchMap(([action, doctors]) =>
+        this.userApiService.approve(action.doctorId).pipe(
+          map((data: UserApiModel) => {
             this.alertService.showSuccess(`El doctor ha sido habilitado para ingresar al sistema.`)
-            return doctorActions.approveDoctorSuccess({ doctor: this.getModel(data) })
+            let doctor = {...doctors.find(x => x.id.compareString(data.id))!}
+            doctor.approved = data.approved
+            return doctorActions.approveDoctorSuccess({ doctor: this.getModel(doctor) })
           }),
           catchError(error => of(doctorActions.doctorFailure({ error })))
         )

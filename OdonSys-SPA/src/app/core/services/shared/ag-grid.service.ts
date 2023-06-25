@@ -17,10 +17,11 @@ export class AgGridService {
   private redColor = '#FF6565'
 
   private procedureColumnDef: ColDef[] = [
-    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 200,
-      wrapText: true, width:200, resizable: true, cellClass: 'long-text-cell-ag-grid' },
-    { headerName: 'Precio', field: 'price', type: 'moneyColumn', filter: 'agNumberColumnFilter', minWidth: 40, maxWidth: 120, resizable: true },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', minWidth: 260, resizable: true, maxWidth: 300 },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', initialWidth: 200,
+      wrapText: true, autoHeight: true, resizable: true, cellClass: 'long-text-cell-ag-grid' },
+    { headerName: 'Precio', field: 'price', type: 'moneyColumn', filter: 'agNumberColumnFilter', minWidth: 40,
+      maxWidth: 120, resizable: true },
     { headerName: 'Activo', field: 'active', filter: false, resizable: true, minWidth: 20, maxWidth: 83,
       cellRenderer: this.booleanFormatter,
       cellStyle: params => ({ color: params.data.active === true ? this.greenColor : this.redColor })
@@ -28,7 +29,7 @@ export class AgGridService {
     { headerName: 'Fecha Creada', field: 'dateCreated', type: 'dateColumn', minWidth: 105, maxWidth: 150, resizable: true },
     { headerName: 'Fecha Modificada', field: 'dateModified', type: 'dateColumn', maxWidth: 175, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, minWidth: 298, maxWidth: 298, resizable: true,
-    cellRenderer: GridActionsComponent }
+      cellRenderer: GridActionsComponent }
   ]
 
   private roleColumnDef: ColDef[] = [
@@ -43,10 +44,12 @@ export class AgGridService {
   ]
 
   private doctorColumnDef: ColDef[] = [
-    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true, initialWidth: 182 },
-    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true, initialWidth: 182 },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true,
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 182 },
+    { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true,
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 182 },
     { headerName: 'Correo', field: 'email', filter: 'agTextColumnFilter', resizable: true, initialWidth: 180 },
-    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true, initialWidth: 160 },
+    { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true, initialWidth: 140 },
     { headerName: 'Aprobado', field: 'approved', filter: false, resizable: true, maxWidth: 125,
       cellRenderer: this.booleanFormatter,
       cellStyle: params => ({ color: params.data.approved === true ? this.greenColor : this.redColor })
@@ -60,8 +63,7 @@ export class AgGridService {
       cellRenderer: this.arrayFormatter,
       valueFormatter: this.arrayFormatter,
     },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 225,
-      maxWidth: 650, resizable: true,
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 225, resizable: true,
       cellRenderer: GridActionsComponent
     }
   ]
@@ -126,6 +128,7 @@ export class AgGridService {
       columnDefs: this.columnDef,
       pagination: true,
       localeText: agGridLocaleEs,
+      enableCellTextSelection: true,
       columnTypes: {
         dateColumn: {
           filter: 'agDateColumnFilter',
