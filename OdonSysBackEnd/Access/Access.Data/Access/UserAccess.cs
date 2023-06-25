@@ -62,7 +62,9 @@ namespace Access.Data.Access
             }
             await _context.SaveChangesAsync();
             var rolesIds = newUserRoles.Select(x => x.RoleId).Concat(persistRoles.Select(x => x.Id));
-            return allRoles.Where(x => rolesIds.Contains(x.Id)).Select(x => x.Code);
+            var userRoleCodes = allRoles.Where(x => rolesIds.Contains(x.Id)).Select(x => x.Code);
+
+            return userRoleCodes;
         }
 
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()

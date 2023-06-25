@@ -56,6 +56,7 @@ export class AdminProcedureComponent implements OnInit {
         this.store.dispatch(fromProceduresActions.loadProcedures()) 
         loading = false
       }
+      this.gridOptions.api?.sizeColumnsToFit()
     }))
     this.load = true
   }

@@ -3,10 +3,13 @@ using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
 using Host.Api.Models.Roles;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace Host.Api.Controllers.Workspace
 {
@@ -56,12 +59,13 @@ namespace Host.Api.Controllers.Workspace
         }
 
         // TODO hard delete if not associated with patients and other references
+
         [HttpPost("user-roles")]
         [Authorize(Policy = Policy.CanAssignDoctorRoles)]
-        public async Task<IEnumerable<string>> UserRoles([FromBody] UserRolesApiRequest apiRequest)
+        public async Task<IEnumerable<string>> UpdateUserRoles([FromBody] UserRolesApiRequest apiRequest)
         {
             var request = new UserRolesRequest(apiRequest.UserId, apiRequest.Roles);
-            var roles = await _userManager.SetUserRolesAsync(request);
+            var roles = await _userManager.SetUserRolesAsync(request, User);
             return roles;
         }
     }

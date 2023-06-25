@@ -42,8 +42,8 @@ namespace Host.Api.Controllers.Workspace
         public async Task<DoctorModel> Update([FromBody] UpdateDoctorApiRequest apiRequest)
         {
             var user = _mapper.Map<UpdateDoctorRequest>(apiRequest);
-            var response = await _userManager.UpdateAsync(user);
-            return response;
+            var model = await _userManager.UpdateAsync(user);
+            return model;
         }
 
         [HttpGet("{id}")]
