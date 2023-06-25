@@ -4,12 +4,14 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { FieldId } from '../../enums/field-id.enum';
+import { Permission } from '../../enums/permission.enum';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
 import { GridActionModel } from '../../models/view/grid-action-model';
 import { SystemAttributeModel } from '../../models/view/system-attribute-model';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { AgGridService } from '../../services/shared/ag-grid.service';
 import { AlertService } from '../../services/shared/alert.service';
+import { UserInfoService } from '../../services/shared/user-info.service';
 
 @Component({
   selector: 'app-clients',
@@ -21,16 +23,19 @@ export class ClientsComponent implements OnInit {
   public ready: boolean = false
   public gridOptions!: GridOptions
   private attributeActive!: string
+  protected canCreate: boolean = false
 
   constructor(
     private readonly clientApiService: ClientApiService,
     private readonly agGridService: AgGridService,
     private readonly router: Router,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private userInfoService: UserInfoService,
   ) { }
 
   ngOnInit() {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
+    this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.setupAgGrid()
     this.ready = true
     this.getList()

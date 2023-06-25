@@ -46,15 +46,7 @@ export class AuthApiService {
   }
 
   public register = (request: RegisterUserRequest): Observable<AuthApiModel> => {
-    return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request).pipe(
-      switchMap(authApiModel => {
-        this.userInfoService.setUserLogin(authApiModel)
-        return this.roleApiService.getMyPermissions().pipe(map(permissions => {
-          this.userInfoService.setUserPermissions(permissions)
-          return authApiModel
-        }))
-      })
-    )
+    return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request)
   }
 
   public logout = (): Observable<LogoutApiModel> => {

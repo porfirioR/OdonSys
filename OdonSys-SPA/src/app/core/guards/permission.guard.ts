@@ -12,7 +12,7 @@ export const PermissionGuard: CanActivateFn = (route: ActivatedRouteSnapshot, st
   const permissions = userInfoService.getPermissions()
   const invalidPermission = routePermissions.filter(x => !permissions.includes(x))
   if (invalidPermission.length > 0) {
-    alertService.showError(`No tienes los permisos necesarios para acceder a esta página ${invalidPermission.join(',')}`)
+    alertService.showError(`No tienes los permisos necesarios para acceder a esta página`)
     return false
   }
   return true

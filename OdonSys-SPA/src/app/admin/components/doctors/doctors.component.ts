@@ -76,9 +76,15 @@ export class DoctorsComponent implements OnInit {
     if (this.canApprove) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeApproved, false.toString(), ButtonGridActionType.Aprobar))
     }
+    columnAction.hide = !(this.canApprove || this.canRestore || this.canDeactivate)
     const buttons = conditionalButtons.length
     if (buttons > 2) {
-      columnAction.maxWidth = 310
+      columnAction.maxWidth = 360
+      columnAction.initialWidth = 310
+      const columnName = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'name') as ColDef
+      columnName.initialWidth = 150
+      const columnSurname = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'surname') as ColDef
+      columnSurname.initialWidth = 150
     }
     const params: GridActionModel = {
       buttonShow: [],

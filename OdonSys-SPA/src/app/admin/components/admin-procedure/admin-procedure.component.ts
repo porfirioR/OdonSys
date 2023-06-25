@@ -64,7 +64,7 @@ export class AdminProcedureComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getProcedureGridOptions()
     const columnAction: ColDef = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action')!
-    if (!this.canEdit && this.canDelete) {
+    if (!(this.canEdit || this.canDelete)) {
       columnAction.hide = true
       return
     }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
 import { PatchRequest } from '../../models/api/patch-request';
 import { UserRoleApiRequest } from '../../models/api/roles/user-role-api-request';
+import { UserApiModel } from '../../models/users/api/user-api-model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
@@ -16,8 +17,8 @@ export class UserApiService {
     private readonly http: HttpClient
   ) {}
 
-  public approve = (id: string): Observable<DoctorApiModel> => {
-    return this.http.post<DoctorApiModel>(`${this.baseUrl}/approve/${id}`, null)
+  public approve = (id: string): Observable<UserApiModel> => {
+    return this.http.post<UserApiModel>(`${this.baseUrl}/approve/${id}`, null)
   }
 
   public getAll = (): Observable<DoctorApiModel[]> => {
