@@ -2,8 +2,6 @@
 using Contract.Admin.Auth;
 using Contract.Admin.Users;
 using Host.Api.Models.Auth;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +9,7 @@ namespace Host.Api.Controllers.Authentication
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : OdonSysBaseController
+    public sealed class AuthenticationController : OdonSysBaseController
     {
         private readonly IMapper _mapper;
         private readonly IUserManager _userManager;

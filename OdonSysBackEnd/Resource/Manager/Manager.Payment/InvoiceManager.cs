@@ -4,7 +4,7 @@ using Contract.Payment.Invoices;
 
 namespace Manager.Payment
 {
-    internal class InvoiceManager : IInvoiceManager
+    internal sealed class InvoiceManager : IInvoiceManager
     {
         private readonly IInvoiceAccess _invoiceAccess;
         private readonly IPaymentAccess _paymentAccess;

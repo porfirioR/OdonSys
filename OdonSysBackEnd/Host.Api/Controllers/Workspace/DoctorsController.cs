@@ -12,7 +12,7 @@ namespace Host.Api.Controllers.Workspace
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class DoctorsController : ControllerBase
+    public sealed class DoctorsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;

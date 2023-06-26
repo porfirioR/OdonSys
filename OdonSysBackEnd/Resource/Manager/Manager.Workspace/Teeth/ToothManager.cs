@@ -4,7 +4,7 @@ using Contract.Workspace.Teeth;
 
 namespace Manager.Workspace.Teeth
 {
-    internal class ToothManager : IToothManager
+    internal sealed class ToothManager : IToothManager
     {
         private readonly IToothAccess _toothAccess;
         private readonly IMapper _mapper;

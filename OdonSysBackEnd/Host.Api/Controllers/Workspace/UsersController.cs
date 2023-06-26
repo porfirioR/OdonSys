@@ -3,20 +3,17 @@ using Contract.Admin.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Error;
 using Host.Api.Models.Roles;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Security.Claims;
-using System.Security.Principal;
 
 namespace Host.Api.Controllers.Workspace
 {
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class UsersController : ControllerBase
+    public sealed class UsersController : OdonSysBaseController
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
@@ -65,7 +62,7 @@ namespace Host.Api.Controllers.Workspace
         public async Task<IEnumerable<string>> UpdateUserRoles([FromBody] UserRolesApiRequest apiRequest)
         {
             var request = new UserRolesRequest(apiRequest.UserId, apiRequest.Roles);
-            var roles = await _userManager.SetUserRolesAsync(request, User);
+            var roles = await _userManager.SetUserRolesAsync(request);
             return roles;
         }
     }

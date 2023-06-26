@@ -57,11 +57,10 @@ namespace Manager.Admin
             return response;
         }
 
-        public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request, ClaimsPrincipal claimsPrincipal)
+        public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request)
         {
             var accessRequest = new UserRolesAccessRequest(request.UserId, request.Roles);
             var userRoles = await _userDataAccess.SetUserRolesAsync(accessRequest);
-            _authDataAccess.UpdateUserRolesClaims(userRoles, claimsPrincipal);
             return userRoles;
         }
 

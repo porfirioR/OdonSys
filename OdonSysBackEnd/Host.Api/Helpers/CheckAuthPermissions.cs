@@ -16,8 +16,8 @@ namespace Host.Api.Helpers
         protected override async Task CheckRequirementAsync(AuthorizationHandlerContext context, AuthRequirement requirement)
         {
             // Get all of a user's roles
-            var roles = context.User.FindAll(x => x.Type == Claims.UserRoles).Select(x => x.Value).ToList();
-            var permissions = await _roleManager.GetPermissonsByRolesAsync(roles);
+            var userId = context.User.FindFirst(x => x.Type == Claims.UserId).Value;
+            var permissions = await _roleManager.GetPermissionsByUserIdAsync(userId);
             var requirementPermissions = requirement.Permissions.Select(x => x.ToString()).ToList();
 
             // Check to see if the use has the function required

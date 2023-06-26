@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class ToothAccess : IToothAccess
+    internal sealed class ToothAccess : IToothAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;

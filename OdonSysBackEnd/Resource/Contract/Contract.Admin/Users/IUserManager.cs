@@ -8,7 +8,7 @@ namespace Contract.Admin.Users
         Task<UserModel> ApproveNewUserAsync(string id);
         Task<IEnumerable<string>> CheckUsersExistsAsync(IEnumerable<string> users);
         Task<IEnumerable<DoctorModel>> GetAllAsync();
-        Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request, ClaimsPrincipal claimsPrincipal);
+        Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request);
         Task<DoctorModel> GetByIdAsync(string id);
         Task<UserClientModel> GetUserClientAsync(string userId, string clientId);
         Task<AuthModel> LoginAsync(string authorization);

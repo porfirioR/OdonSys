@@ -110,22 +110,9 @@ namespace Access.Data.Access
         public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
         {
             var identity = claimsPrincipal.Identity as ClaimsIdentity;
-            var oldUserRoles = claimsPrincipal.FindAll(Claims.UserRoles);
-            oldUserRoles.ToList().ForEach(x => identity.RemoveClaim(x));
             identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserId));
             identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserName));
             return true;
-        }
-
-        public void UpdateUserRolesClaims(IEnumerable<string> newUserRoles, ClaimsPrincipal claimsPrincipal)
-        {
-            var oldUserRoles = claimsPrincipal.FindAll(Claims.UserRoles);
-            var identity = claimsPrincipal.Identity as ClaimsIdentity;
-            oldUserRoles.ToList().ForEach(x =>
-            {
-                identity.RemoveClaim(x);
-            });
-            identity.AddClaims(newUserRoles.Select(userRole => new Claim(Claims.UserRoles, userRole)));
         }
 
         private (string token, DateTime expirationDate) CreateToken(string userName, string userId, IEnumerable<string> userRoles)

@@ -8,7 +8,7 @@ namespace Host.Api.Controllers.Workspace
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class TeethController : ControllerBase
+    public sealed class TeethController : ControllerBase
     {
         private readonly IToothManager _toothManager;
 
