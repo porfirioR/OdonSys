@@ -48,17 +48,6 @@ export class HeaderComponent implements OnInit {
   private checkMenuItems = () => {
     this.canAccessData = this.userInfoService.havePermission(Permission.AccessMyData)
     const permissions = this.userInfoService.getPermissions()
-    this.reloadHeader = true
-    setTimeout(() => {
-      this.menuPermissions = MenuService.getPrincipalItems().filter(x => {
-        const result = permissions.includes(x.permission)
-        if (result) {
-          console.log(x)
-          
-        }
-        return result
-      })
-      this.reloadHeader = false
-    }, 1000);
+    this.menuPermissions = MenuService.getPrincipalItems().filter(x => permissions.includes(x.permission))
   }
 }
