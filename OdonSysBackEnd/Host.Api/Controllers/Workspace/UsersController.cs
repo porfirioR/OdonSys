@@ -13,7 +13,7 @@ namespace Host.Api.Controllers.Workspace
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class UsersController : ControllerBase
+    public sealed class UsersController : OdonSysBaseController
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
@@ -56,9 +56,10 @@ namespace Host.Api.Controllers.Workspace
         }
 
         // TODO hard delete if not associated with patients and other references
+
         [HttpPost("user-roles")]
         [Authorize(Policy = Policy.CanAssignDoctorRoles)]
-        public async Task<IEnumerable<string>> UserRoles([FromBody] UserRolesApiRequest apiRequest)
+        public async Task<IEnumerable<string>> UpdateUserRoles([FromBody] UserRolesApiRequest apiRequest)
         {
             var request = new UserRolesRequest(apiRequest.UserId, apiRequest.Roles);
             var roles = await _userManager.SetUserRolesAsync(request);

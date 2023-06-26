@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthApiModel } from '../../models/users/api/auth-api-model';
 import { LoginRequest } from '../../models/users/api/login-request';
 import { RegisterUserRequest } from '../../models/users/api/register-user-request';
+import { LogoutApiModel } from '../../models/users/api/logout-api-model';
 import { UserInfoService } from '../shared/user-info.service';
 import { RoleApiService } from './role-api.service';
 
@@ -46,5 +47,9 @@ export class AuthApiService {
 
   public register = (request: RegisterUserRequest): Observable<AuthApiModel> => {
     return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request)
+  }
+
+  public logout = (): Observable<LogoutApiModel> => {
+    return this.http.get<LogoutApiModel>(`${this.baseUrl}/logout`)
   }
 }

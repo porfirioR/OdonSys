@@ -60,6 +60,7 @@ export class AdminClientsComponent implements OnInit {
         this.store.dispatch(fromClientsActions.loadClients()) 
         loading = false
       }
+      this.gridOptions.api?.sizeColumnsToFit()
     }))
     this.load = true
   }

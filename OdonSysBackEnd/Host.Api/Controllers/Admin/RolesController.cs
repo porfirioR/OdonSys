@@ -10,7 +10,7 @@ namespace Host.Api.Controllers.Admin
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class RolesController : OdonSysBaseController
+    public sealed class RolesController : OdonSysBaseController
     {
         private readonly IMapper _mapper;
         private readonly IRoleManager _roleManager;
@@ -58,8 +58,7 @@ namespace Host.Api.Controllers.Admin
         [HttpGet("permissions-role")]
         public async Task<IEnumerable<string>> GetPermissionsByRoleCodes()
         {
-            var roles = Roles;
-            var model = await _roleManager.GetPermissonsByRolesAsync(roles);
+            var model = await _roleManager.GetPermissionsByUserIdAsync(UserId);
             return model;
         }
 

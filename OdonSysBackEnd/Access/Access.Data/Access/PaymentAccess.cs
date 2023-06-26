@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class PaymentAccess : IPaymentAccess
+    internal sealed class PaymentAccess : IPaymentAccess
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;

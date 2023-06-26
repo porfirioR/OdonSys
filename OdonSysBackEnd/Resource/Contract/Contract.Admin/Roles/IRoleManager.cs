@@ -2,7 +2,7 @@
 {
     public interface IRoleManager
     {
-        Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles);
+        Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId);
         IEnumerable<PermissionModel> GetAllPermissions();
         Task<RoleModel> CreateAsync(CreateRoleRequest request);
         Task<RoleModel> UpdateAsync(UpdateRoleRequest request);

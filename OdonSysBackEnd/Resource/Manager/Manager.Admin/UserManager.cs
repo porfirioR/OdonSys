@@ -3,11 +3,12 @@ using Access.Contract.Users;
 using AutoMapper;
 using Contract.Admin.Auth;
 using Contract.Admin.Users;
+using System.Security.Claims;
 using System.Text;
 
 namespace Manager.Admin
 {
-    internal class UserManager : IUserManager
+    internal sealed class UserManager : IUserManager
     {
         private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
@@ -59,8 +60,14 @@ namespace Manager.Admin
         public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesRequest request)
         {
             var accessRequest = new UserRolesAccessRequest(request.UserId, request.Roles);
-            var roles = await _userDataAccess.SetUserRolesAsync(accessRequest);
-            return roles;
+            var userRoles = await _userDataAccess.SetUserRolesAsync(accessRequest);
+            return userRoles;
+        }
+
+        public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
+        {
+            var success = _authDataAccess.RemoveAllClaims(claimsPrincipal);
+            return success;
         }
 
         public async Task<DoctorModel> GetByIdAsync(string id)

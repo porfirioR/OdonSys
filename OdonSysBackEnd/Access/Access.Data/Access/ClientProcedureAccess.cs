@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    public class ClientProcedureAccess : IClientProcedureAccess
+    public sealed class ClientProcedureAccess : IClientProcedureAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;

@@ -59,7 +59,7 @@ export class DoctorsComponent implements OnInit {
     this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
     this.store.dispatch(fromDoctorsActions.loadDoctors())
-    this.rowData$ = this.store.select(selectDoctors).pipe(tap(x => this.gridOptions?.api?.sizeColumnsToFit()))
+    this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridOptions.api?.sizeColumnsToFit()))
   }
 
   private setupAgGrid = (): void => {

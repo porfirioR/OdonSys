@@ -12,6 +12,8 @@ import { selectDoctors } from './doctor.selectors';
 import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
 import { DoctorModel } from '../../models/view/doctor-model';
 import { UserApiModel } from '../../models/users/api/user-api-model';
+import { RoleApiService } from '../../services/api/role-api.service';
+import { UserInfoService } from '../../services/shared/user-info.service';
 
 @Injectable()
 export class DoctorEffects {
@@ -24,7 +26,8 @@ export class DoctorEffects {
     private readonly doctorApiService: DoctorApiService,
     private readonly zone: NgZone,
     private readonly router: Router,
-
+    private readonly roleApiService: RoleApiService,
+    private readonly userInfoService: UserInfoService,
   ) {}
 
   protected getAll$ = createEffect(() => {
@@ -94,13 +97,17 @@ export class DoctorEffects {
   protected updateDoctorRoles$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(doctorActions.updateDoctorRoles),
-      map((x) => {
-        let doctor = {...x.doctor}
-        if (x.doctorRoles) {
-          doctor.roles = x.doctorRoles
-        }
-        return doctorActions.updateDoctorSuccess({ doctor: doctor })
-      })
+      switchMap((action) => 
+        this.roleApiService.getMyPermissions().pipe(map(permissions => {
+          let doctor = {...action.doctor}
+          if (action.doctorRoles) {
+            doctor.roles = action.doctorRoles
+          }
+          this.userInfoService.setRoles(doctor.roles)
+          this.userInfoService.setUserPermissions(permissions)
+          return doctorActions.updateDoctorSuccess({ doctor: doctor })
+        }))
+      )
     )
   })
 

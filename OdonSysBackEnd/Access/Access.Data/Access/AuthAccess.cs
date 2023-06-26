@@ -15,7 +15,7 @@ using Utilities;
 
 namespace Access.Data.Access
 {
-    internal class AuthAccess : IAuthAccess
+    internal sealed class AuthAccess : IAuthAccess
     {
         private readonly IMapper _mapper;
         private readonly SymmetricSecurityKey _key;
@@ -36,12 +36,9 @@ namespace Access.Data.Access
             var user = await _context.Users
                             .Include(x => x.UserRoles)
                             .ThenInclude(x => x.Role)
-                            .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email);
+                            .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email) ??
+                            throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
 
-            if (user is null)
-            {
-                throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
-            }
             if (!user.Approved)
             {
                 throw new UnauthorizedAccessException("Cuenta aún no ha sido aprobada, contacte con el administrador e intente devuelta.");
@@ -73,7 +70,7 @@ namespace Access.Data.Access
             var entity = _mapper.Map<User>(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
             userName = userName.Length > 20 ? userName[..20] : userName;
-             using var hmac = new HMACSHA512();
+            using var hmac = new HMACSHA512();
 
             entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
             entity.PasswordSalt = hmac.Key;
@@ -108,6 +105,14 @@ namespace Access.Data.Access
                 return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");
+        }
+
+        public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
+        {
+            var identity = claimsPrincipal.Identity as ClaimsIdentity;
+            identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserId));
+            identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserName));
+            return true;
         }
 
         private (string token, DateTime expirationDate) CreateToken(string userName, string userId, IEnumerable<string> userRoles)

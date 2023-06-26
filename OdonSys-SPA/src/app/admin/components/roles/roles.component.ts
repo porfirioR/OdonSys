@@ -38,11 +38,10 @@ export class RolesComponent implements OnInit {
     let loading = true;
     this.rowData$ = this.store.select(selectRoles).pipe(tap(x => {
       if(loading && x.length === 0) {
-        // this.gridOptions.api?.showLoadingOverlay()
         this.store.dispatch(fromRolesActions.loadRoles())
         loading = false
       }
-      // this.gridOptions.api?.sizeColumnsToFit()
+      this.gridOptions.api?.sizeColumnsToFit()
     }))
     this.load = true
   }
