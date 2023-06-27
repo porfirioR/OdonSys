@@ -10,14 +10,17 @@ namespace Access.Data.Mapper
         {
             CreateMap<CreateProcedureAccessRequest, Procedure>()
                 .ForMember(dest => dest.Active, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.ProcedureTeeth, opt => opt.Ignore());
+                //.ForMember(dest => dest.ProcedureTeeth, opt => opt.Ignore())
+                ;
 
             CreateMap<UpdateProcedureAccessRequest, Procedure>()
-                .ForMember(dest => dest.ProcedureTeeth, opt => opt.Ignore());
+                //.ForMember(dest => dest.ProcedureTeeth, opt => opt.Ignore())
+                ;
 
             CreateMap<Procedure, ProcedureAccessModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.ProcedureTeeth, opt => opt.MapFrom(src => src.ProcedureTeeth.Select(x => x.ToothId.ToString())));
+                //.ForMember(dest => dest.ProcedureTeeth, opt => opt.MapFrom(src => src.ProcedureTeeth.Select(x => x.ToothId.ToString())))
+                ;
         }
     }
 }
