@@ -2,6 +2,6 @@
 {
     public interface IToothAccess
     {
-        Task<IEnumerable<ToothAccessResponse>> GetAllAsync();
+        //Task<IEnumerable<ToothAccessResponse>> GetAllAsync();
     }
 }

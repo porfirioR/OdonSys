@@ -20,7 +20,7 @@ namespace Access.Data.Access
         public async Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
             var entity = _mapper.Map<Procedure>(accessRequest);
-            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
+            //entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
             _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
             return _mapper.Map<ProcedureAccessModel>(entity);
@@ -46,11 +46,11 @@ namespace Access.Data.Access
         {
             var entity = (active ?
                 await _context.Procedures
-                            .Include(x => x.ProcedureTeeth)
+                            //.Include(x => x.ProcedureTeeth)
                             .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Active == active && x.Id == new Guid(id)) :
                 await _context.Procedures
-                            .Include(x => x.ProcedureTeeth)
+                            //.Include(x => x.ProcedureTeeth)
                             .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id))) ??
                 throw new KeyNotFoundException($"id {id}");
@@ -62,10 +62,10 @@ namespace Access.Data.Access
         public async Task<ProcedureAccessModel> UpdateAsync(UpdateProcedureAccessRequest accessRequest)
         {
             var entity = await _context.Procedures
-                            .Include(x => x.ProcedureTeeth)
+                            //.Include(x => x.ProcedureTeeth)
                             .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.Id));
             entity = _mapper.Map(accessRequest, entity);
-            entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
+            //entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             var respose = _mapper.Map<ProcedureAccessModel>(entity);
@@ -78,11 +78,11 @@ namespace Access.Data.Access
             return existProcedure is null;
         }
 
-        public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
-        {
-            var procedureTeeth = (await _context.Teeth.ToListAsync()).Select(x => x.Id.ToString());
-            var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
-            return invalidIds;
-        }
+        //public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
+        //{
+        //    var procedureTeeth = (await _context.Teeth.ToListAsync()).Select(x => x.Id.ToString());
+        //    var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
+        //    return invalidIds;
+        //}
     }
 }

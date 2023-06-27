@@ -27,7 +27,7 @@ namespace Access.Data
             services.AddTransient<IPaymentAccess, PaymentAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IRoleAccess, RoleAccess>();
-            services.AddTransient<IToothAccess, ToothAccess>();
+            //services.AddTransient<IToothAccess, ToothAccess>();
             services.AddTransient<IUserDataAccess, UserAccess>();
             services.AddHttpContextAccessor();
         }

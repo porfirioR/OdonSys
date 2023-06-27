@@ -27,8 +27,8 @@ namespace Access.Sql
         public DbSet<Client> Clients { get; set; }
         public DbSet<UserClient> UserClients { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
-        public DbSet<Tooth> Teeth { get; set; }
-        public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
+        //public DbSet<Tooth> Teeth { get; set; }
+        //public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
         public DbSet<ClientProcedure> ClientProcedures { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
@@ -46,7 +46,7 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
-            modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
+            //modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserClientConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());

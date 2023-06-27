@@ -9,14 +9,14 @@ namespace AcceptanceTest.Host.Api.Procedures
             Name = Guid.NewGuid().ToString()[30..],
             Description = Guid.NewGuid().ToString()[30..],
             Price = 0,
-            ProcedureTeeth = TeethIds
+            //ProcedureTeeth = TeethIds
         };
 
         UpdateProcedureApiRequest UpdateProcedureApiRequest(string Id) => new()
         {
             Id = Id,
             Description = Guid.NewGuid().ToString()[30..],
-            ProcedureTeeth = TeethIds
+            //ProcedureTeeth = TeethIds
         };
     }
 }

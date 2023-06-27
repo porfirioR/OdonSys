@@ -63,10 +63,10 @@ namespace Manager.Workspace.Procedures
             return await _procedureAccess.ValidateIdNameAsync(name);
         }
 
-        public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids)
-        {
-            return await _procedureAccess.ValidateProcedureTeethAsync(ids);
-        }
+        //public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids)
+        //{
+        //    return await _procedureAccess.ValidateProcedureTeethAsync(ids);
+        //}
 
         public async Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id)
         {
