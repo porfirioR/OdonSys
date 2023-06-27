@@ -8,6 +8,6 @@
         Task<ProcedureAccessModel> GetByIdAsync(string id, bool active);
         Task<ProcedureAccessModel> DeleteAsync(string id);
         Task<bool> ValidateIdNameAsync(string name);
-        Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds);
+        //Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds);
     }
 }

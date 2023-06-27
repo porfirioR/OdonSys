@@ -21,7 +21,7 @@ namespace AcceptanceTest.Host.Api
         protected HostApiFactory _factory;
         protected HttpClient _client;
         protected DataContext _context;
-        public IEnumerable<string> TeethIds;
+        //public IEnumerable<string> TeethIds;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
@@ -77,7 +77,7 @@ namespace AcceptanceTest.Host.Api
             adminRoleSqlStatement = string.Concat(adminRoleSqlStatement, permissions, "SELECT * from Permissions;");
             var permissionList = await _context.Permissions.FromSqlRaw(adminRoleSqlStatement).ToListAsync();
 
-            TeethIds = (await _context.Teeth.FromSqlRaw(Properties.Resources.BasicSql).ToListAsync()).Select(x => x.Id.ToString());
+            _context.Database.ExecuteSqlRaw(Properties.Resources.BasicSql);
         }
 
         private async Task<AuthModel> RegisterTestClient(HttpClient client)

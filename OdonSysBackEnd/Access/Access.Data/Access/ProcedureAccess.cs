@@ -78,11 +78,11 @@ namespace Access.Data.Access
             return existProcedure is null;
         }
 
-        public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
-        {
-            var procedureTeeth = (await _context.Teeth.ToListAsync()).Select(x => x.Id.ToString());
-            var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
-            return invalidIds;
-        }
+        //public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> theetIds)
+        //{
+        //    var procedureTeeth = (await _context.Teeth.ToListAsync()).Select(x => x.Id.ToString());
+        //    var invalidIds = theetIds.Where(x => !procedureTeeth.Contains(x));
+        //    return invalidIds;
+        //}
     }
 }

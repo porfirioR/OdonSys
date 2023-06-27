@@ -11,7 +11,6 @@ namespace Access.Sql.Configurations
         {
             base.Configure(builder);
 
-            // custom Properties
             builder
                 .Property(x => x.Name)
                 .HasMaxLength(25)
@@ -57,7 +56,6 @@ namespace Access.Sql.Configurations
                .HasConversion(
                    s => s.GetDescription(),
                    s => (Country)Enum.Parse(typeof(Country), s));
-
         }
     }
 }

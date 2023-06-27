@@ -15,11 +15,11 @@ namespace Access.Data.Access
             _context = context;
         }
 
-        public async Task<IEnumerable<ToothAccessResponse>> GetAllAsync()
-        {
-            var entities = await _context.Teeth.AsNoTracking().ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ToothAccessResponse>>(entities);
-            return respose;
-        }
+        //public async Task<IEnumerable<ToothAccessResponse>> GetAllAsync()
+        //{
+        //    var entities = await _context.Teeth.AsNoTracking().ToListAsync();
+        //    var respose = _mapper.Map<IEnumerable<ToothAccessResponse>>(entities);
+        //    return respose;
+        //}
     }
 }
