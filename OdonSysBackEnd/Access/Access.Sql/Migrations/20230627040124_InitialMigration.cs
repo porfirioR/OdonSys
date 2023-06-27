@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Access.Sql.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,6 +36,26 @@ namespace Access.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FileStorages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReferenceId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Format = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
+                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
+                    UserCreated = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserUpdated = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileStorages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Procedures",
                 columns: table => new
                 {
@@ -43,6 +63,7 @@ namespace Access.Sql.Migrations
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
+                    XRays = table.Column<bool>(type: "bit", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
                     DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
@@ -70,27 +91,6 @@ namespace Access.Sql.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teeth",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Number = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Jaw = table.Column<int>(type: "int", nullable: false),
-                    Quadrant = table.Column<int>(type: "int", nullable: false),
-                    Group = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserCreated = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserUpdated = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teeth", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -172,36 +172,6 @@ namespace Access.Sql.Migrations
                         name: "FK_Permissions_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProcedureTeeth",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ToothId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProcedureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
-                    DateModified = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GetDate()"),
-                    UserCreated = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserUpdated = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProcedureTeeth", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProcedureTeeth_Procedures_ProcedureId",
-                        column: x => x.ProcedureId,
-                        principalTable: "Procedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProcedureTeeth_Teeth_ToothId",
-                        column: x => x.ToothId,
-                        principalTable: "Teeth",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -394,6 +364,12 @@ namespace Access.Sql.Migrations
                 filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FileStorages_Url",
+                table: "FileStorages",
+                column: "Url",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvoiceDetails_ClientProcedureId",
                 table: "InvoiceDetails",
                 column: "ClientProcedureId",
@@ -423,16 +399,6 @@ namespace Access.Sql.Migrations
                 name: "IX_Permissions_RoleId",
                 table: "Permissions",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProcedureTeeth_ProcedureId",
-                table: "ProcedureTeeth",
-                column: "ProcedureId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProcedureTeeth_ToothId_ProcedureId",
-                table: "ProcedureTeeth",
-                columns: new[] { "ToothId", "ProcedureId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Code",
@@ -483,6 +449,9 @@ namespace Access.Sql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "FileStorages");
+
+            migrationBuilder.DropTable(
                 name: "InvoiceDetails");
 
             migrationBuilder.DropTable(
@@ -492,9 +461,6 @@ namespace Access.Sql.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
-                name: "ProcedureTeeth");
-
-            migrationBuilder.DropTable(
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
@@ -502,9 +468,6 @@ namespace Access.Sql.Migrations
 
             migrationBuilder.DropTable(
                 name: "Invoices");
-
-            migrationBuilder.DropTable(
-                name: "Teeth");
 
             migrationBuilder.DropTable(
                 name: "Roles");

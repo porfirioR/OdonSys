@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Manager.Workspace.Files
 {
-    internal class FileManager : IFileManager
+    internal sealed class FileManager : IFileManager
     {
         private readonly IUploadFileStorage _uploadFileStorage;
         private readonly IFileAccess _fileAccess;

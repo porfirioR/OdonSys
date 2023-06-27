@@ -13,7 +13,7 @@ namespace AcceptanceTest.Host.Api.Payments
             Name = Guid.NewGuid().ToString()[..30],
             Description = Guid.NewGuid().ToString()[..30],
             Price = 10,
-            ProcedureTeeth = TeethIds
+            //ProcedureTeeth = TeethIds
         };
 
         static CreateClientApiRequest CreateClientApiRequest => new()

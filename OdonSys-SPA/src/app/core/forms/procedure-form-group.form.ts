@@ -5,4 +5,5 @@ export interface ProcedureFormGroup {
   name: FormControl<string | null>
   price: FormControl<number | null>
   finalPrice: FormControl<number | null>
+  xRays: FormControl<boolean | null>
 }

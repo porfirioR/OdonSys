@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Jaw } from '../../../core/enums/jaw.enum';
 import { Quadrant } from '../../../core/enums/quadrant.enum';
@@ -26,11 +26,11 @@ export class UpsertProcedureComponent implements OnInit {
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),
-    xRay : new FormControl(false),
+    xRays : new FormControl(false),
     price : new FormControl(1, [Validators.required, Validators.min(0)]),
   })
   public ignorePreventUnsavedChanges: boolean = false
-  protected saving$: Observable<boolean> = this.store.select(savingSelector)
+  protected saving$: Observable<boolean> = of(false)
   protected title = 'Crear'
   protected canRestore = false
   protected teethList: ToothModel[] = []
@@ -48,6 +48,7 @@ export class UpsertProcedureComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.saving$ = this.store.select(savingSelector)
     this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.ignorePreventUnsavedChanges = false } })
     this.loadValues()
   }
@@ -79,7 +80,7 @@ export class UpsertProcedureComponent implements OnInit {
           this.formGroup.controls.description.setValue(data.description)
           this.formGroup.controls.price.setValue(data.price)
           this.formGroup.controls.active.setValue(data.active)
-          this.formGroup.controls.xRay.setValue(data.xRay)
+          this.formGroup.controls.xRays.setValue(data.xRays)
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }
@@ -142,7 +143,7 @@ export class UpsertProcedureComponent implements OnInit {
       this.formGroup.value.price!,
       this.formGroup.controls.active.value!,
       (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string),
-      this.formGroup.value.xRay!
+      this.formGroup.value.xRays!
     )
     this.store.dispatch(fromProceduresActions.updateProcedure({ procedure: request }))
   }
@@ -153,7 +154,7 @@ export class UpsertProcedureComponent implements OnInit {
       this.formGroup.value.description!,
       this.formGroup.value.price!,
       (this.teethFormArray.controls as FormGroup[]).filter((x: FormGroup) => x.get('value')?.value).map(x => x.get('id')?.value as string),
-      this.formGroup.value.xRay!
+      this.formGroup.value.xRays!
     )
     this.store.dispatch(fromProceduresActions.addProcedure({ procedure: request }))
   }

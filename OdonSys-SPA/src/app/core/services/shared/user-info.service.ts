@@ -36,6 +36,7 @@ export class UserInfoService {
   }
 
   public setUserPermissions = (permissions: string[]): void => {
+    this.localStorageService.clearAll(this.permissionKey)
     this.localStorageService.setData(this.permissionKey, permissions)
     this.subscriptionService.emitCheckMenu(true)
   }
@@ -47,7 +48,7 @@ export class UserInfoService {
     this.localStorageService.clearAll(this.tokenExpirationKey)
   }
 
-  public clearToken = () => {
+  public clearToken = (): void => {
     this.localStorageService.clearAll(this.userToken)
   }
 

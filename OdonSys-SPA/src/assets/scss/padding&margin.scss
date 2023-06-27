@@ -1,4 +1,4 @@
-$lengths: (2, 4, 6, 8, 12, 16, 18, 24, 32, 36, 44, 48, 56, 0);
+$lengths: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 36, 44, 48, 56, 0);
 $properties: (top, bottom, left, right);
 
 @each $length in $lengths {
@@ -20,5 +20,63 @@ $properties: (top, bottom, left, right);
 
   .p-#{$length} {
     padding: #{$length}px !important;
+  }
+}
+
+@each $length in $lengths {
+  .m-t-b-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-t-r-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-right: #{$length}px !important;
+  }
+  .m-t-l-#{$length} {
+    margin-top: #{$length}px !important;
+    margin-left: #{$length}px !important;
+  }
+  .m-r-b#{$length} {
+    margin-right: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-l-b-#{$length} {
+    margin-left: #{$length}px !important;
+    margin-bottom: #{$length}px !important;
+  }
+  .m-r-l-#{$length} {
+    margin-right: #{$length}px !important;
+    margin-left: #{$length}px !important;
+  }
+  // padding
+  .p-t-b-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-t-r-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-right: #{$length}px !important;
+  }
+  .p-t-l-#{$length} {
+    padding-top: #{$length}px !important;
+    padding-left: #{$length}px !important;
+  }
+  .p-r-b#{$length} {
+    padding-right: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-l-b-#{$length} {
+    padding-left: #{$length}px !important;
+    padding-bottom: #{$length}px !important;
+  }
+  .p-r-l-#{$length} {
+    padding-right: #{$length}px !important;
+    padding-left: #{$length}px !important;
+  }
+}
+
+@each $length in $lengths {
+  .f-s-#{$length} {
+    font-size: #{$length}px !important;
   }
 }

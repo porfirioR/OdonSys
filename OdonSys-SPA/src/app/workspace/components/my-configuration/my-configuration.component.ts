@@ -1,11 +1,12 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { combineLatest, debounceTime } from 'rxjs';
-import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
@@ -14,6 +15,8 @@ import { SelectModel } from '../../../core/models/view/select-model';
 import { Country } from '../../../core/enums/country.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.form';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
 
 @Component({
   selector: 'app-my-configuration',
@@ -22,8 +25,10 @@ import { SubGroupPermissions } from '../../../core/forms/sub-group-permissions.f
 })
 export class MyConfigurationComponent implements OnInit {
   protected load: boolean = false
-  protected saving: boolean = false
   protected canEdit = false
+  protected id!: string
+  protected countries: SelectModel[] = []
+  public saving: boolean = false
   public formGroup = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -38,18 +43,19 @@ export class MyConfigurationComponent implements OnInit {
     active: new FormControl(true, [Validators.required]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-  protected id!: string
-  protected countries: SelectModel[] = []
+  public ignorePreventUnsavedChanges: boolean = false
   private canAccessData = false
 
   constructor(
     private readonly router: Router,
     private readonly alertService: AlertService,
-    private readonly doctorApiService: DoctorApiService,
     private readonly userInfoService: UserInfoService,
     private readonly zone: NgZone,
-    private readonly roleApiService: RoleApiService
+    private readonly roleApiService: RoleApiService,
+    private readonly store: Store,
+    private readonly subscriptionService: SubscriptionService
   ) {
+    this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.saving = false } })
     this.countries = EnumHandler.getCountries()
     this.canEdit = userInfoService.havePermission(Permission.UpdateDoctors)
     this.canAccessData = userInfoService.havePermission(Permission.AccessDoctors)
@@ -61,18 +67,10 @@ export class MyConfigurationComponent implements OnInit {
 
   public save = () => {
     if (this.formGroup.invalid) { return }
+    this.ignorePreventUnsavedChanges = true
     this.saving = true
     const request = this.getDoctorRequest()
-    this.doctorApiService.update(this.id, request).subscribe({
-      next: () => {
-        this.alertService.showSuccess('Datos guardados.')
-        this.formGroup.reset()
-        this.close()
-      }, error: (e) => {
-        this.saving = false
-        throw e
-      }
-    })
+    this.store.dispatch(fromDoctorsActions.updateDoctor({ user: request }))
   }
 
   public close = () => {
@@ -90,28 +88,32 @@ export class MyConfigurationComponent implements OnInit {
       this.load = true
       return
     }
-    combineLatest([
-      this.doctorApiService.getById(user.id),
-      this.roleApiService.getPermissions()
-    ]).subscribe({
-      next: ([user, allPermissions]) => {
-        const rolePermissions = this.userInfoService.getPermissions()
-        const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
-        MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
-        this.formGroup.controls.id.setValue(user.id)
-        this.formGroup.controls.name.setValue(user.name)
-        this.formGroup.controls.middleName.setValue(user.middleName)
-        this.formGroup.controls.surname.setValue(user.surname)
-        this.formGroup.controls.secondSurname.setValue(user.secondSurname)
-        this.formGroup.controls.document.setValue(user.document)
-        this.formGroup.controls.phone.setValue(user.phone)
-        this.formGroup.controls.email.setValue(user.email)
-        this.formGroup.controls.country.setValue(Country[user.country]! as unknown as Country)
-        this.formGroup.controls.active.setValue(user.active)
-        this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user.document, user.country))
-        this.load = true
-      }
-    })
+    this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: user.id }))
+    setTimeout(() => {
+      const user$ = this.store.select(selectDoctor(user.id)).pipe(debounceTime(500))
+      combineLatest([
+        user$,
+        this.roleApiService.getPermissions()
+      ]).subscribe({
+        next: ([user, allPermissions]) => {
+          const rolePermissions = this.userInfoService.getPermissions()
+          const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
+          MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
+          this.formGroup.controls.id.setValue(user!.id)
+          this.formGroup.controls.name.setValue(user!.name)
+          this.formGroup.controls.middleName.setValue(user!.middleName)
+          this.formGroup.controls.surname.setValue(user!.surname)
+          this.formGroup.controls.secondSurname.setValue(user!.secondSurname)
+          this.formGroup.controls.document.setValue(user!.document)
+          this.formGroup.controls.phone.setValue(user!.phone)
+          this.formGroup.controls.email.setValue(user!.email)
+          this.formGroup.controls.country.setValue(user!.country)
+          this.formGroup.controls.active.setValue(user!.active)
+          this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
+          this.load = true
+        }
+      })
+    }, 1)
   }
 
   private getDoctorRequest = (): UpdateUserRequest => {
@@ -122,7 +124,7 @@ export class MyConfigurationComponent implements OnInit {
       this.formGroup.value.surname!,
       this.formGroup.value.secondSurname!,
       this.formGroup.value.document!,
-      this.formGroup.value.country!,
+      this.formGroup.controls.country.value!,
       this.formGroup.value.phone!,
       this.formGroup.value.active!
     )

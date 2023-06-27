@@ -1,23 +1,7 @@
 @import "../../../../assets/scss/colors.scss";
 
-.p-l-10 {
-  padding-left: 10px !important;
-}
-
-.p-t-10 {
-  padding-top: 10px !important;
-}
-
-.p-l-0 {
-  padding-left: 0 !important;
-}
-
 .col-3, .col-9, footer {
   padding-right: 0 !important;
-}
-
-.p-b-10 {
-  padding-bottom: 10px !important;
 }
 
 footer {
@@ -61,7 +45,7 @@ footer {
 }
 
 #procedure-section { 
-  height: 44.9rem;
+  height: 44.8rem;
 }
 
 #paid-section {
@@ -76,9 +60,6 @@ footer {
 #payments {
   max-height: 44rem !important;
   overflow-x: hidden;
-  & :last-child {
-    font-weight: bold;
-  }
 }
 
 .paid-header, .paid-content-row {

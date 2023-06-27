@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class ToothAccess : IToothAccess
+    internal sealed class ToothAccess : IToothAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
@@ -15,11 +15,11 @@ namespace Access.Data.Access
             _context = context;
         }
 
-        public async Task<IEnumerable<ToothAccessResponse>> GetAllAsync()
-        {
-            var entities = await _context.Teeth.AsNoTracking().ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ToothAccessResponse>>(entities);
-            return respose;
-        }
+        //public async Task<IEnumerable<ToothAccessResponse>> GetAllAsync()
+        //{
+        //    var entities = await _context.Teeth.AsNoTracking().ToListAsync();
+        //    var respose = _mapper.Map<IEnumerable<ToothAccessResponse>>(entities);
+        //    return respose;
+        //}
     }
 }

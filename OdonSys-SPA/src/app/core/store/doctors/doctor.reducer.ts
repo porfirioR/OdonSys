@@ -19,11 +19,15 @@ export const reducer = createReducer(
   on(
     DoctorActions.changeDoctorVisibilitySuccess,
     DoctorActions.updateDoctorSuccess,
+    DoctorActions.approveDoctorSuccess,
     (state, action) => adapter.upsertOne(action.doctor, state)
   ),
   on(DoctorActions.clearDoctors,
     state => adapter.removeAll(state)
   ),
+  on(DoctorActions.loadDoctorSuccess,
+    (state, action) => adapter.addOne(action.doctor, state)
+  )
 )
 
 export const {

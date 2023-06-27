@@ -1,12 +1,11 @@
 ﻿using Access.Contract.Files;
-using Access.Contract.Invoices;
 using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class FileAccess : IFileAccess
+    internal sealed class FileAccess : IFileAccess
     {
         private readonly DataContext _context;
 

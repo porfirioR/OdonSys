@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AgRendererComponent } from 'ag-grid-angular';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { OperationType } from '../../enums/operation-type.enum';
@@ -12,7 +12,7 @@ import { ColorType } from '../../constants/color-type';
   templateUrl: './grid-actions.component.html',
   styleUrls: ['./grid-actions.component.scss']
 })
-export class GridActionsComponent implements AgRendererComponent {
+export class GridActionsComponent implements ICellRendererAngularComp {
   public params!: GridActionModel
   public canApprove = false
   public canShowView = false
@@ -25,9 +25,7 @@ export class GridActionsComponent implements AgRendererComponent {
   protected customColorButton: string = 'btn-outline-'
   private customColor: ColorType = 'info'
 
-  constructor() { }
-
-  public agInit = (params: ICellRendererParams & GridActionModel): void => {
+  public agInit(params: ICellRendererParams<any, any, any> & GridActionModel): void {
     this.configureCellRenderComponent(params)
   }
 
@@ -47,7 +45,7 @@ export class GridActionsComponent implements AgRendererComponent {
 
   public customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
 
-  public refresh = (params: any): boolean => {
+  public refresh(params: ICellRendererParams<any, any, any> & GridActionModel): boolean {
     this.resetAllValues()
     this.configureCellRenderComponent(params)
     return true
@@ -123,6 +121,7 @@ export class GridActionsComponent implements AgRendererComponent {
     this.canApprove = this.canShowView = this.canRestore = this.canShowEdit = this.canShowDelete =
     this.canShowDeactivate = this.canShowDownload = this.canShowCustomButton = false
     this.customColor = 'info'
+    this.customColorButton = 'btn-outline-'
   }
 
 }

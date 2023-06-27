@@ -9,7 +9,7 @@ namespace Host.Api.Controllers.Payment
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class PaymentController : ControllerBase
+    public sealed class PaymentController : ControllerBase
     {
         private readonly IPaymentManager _paymentManager;
         public PaymentController(IPaymentManager paymentManager)

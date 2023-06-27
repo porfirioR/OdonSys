@@ -13,7 +13,7 @@ namespace Host.Api.Controllers.Procedure
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ProcedureController : ControllerBase
+    public sealed class ProcedureController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IProcedureManager _procedureManager;

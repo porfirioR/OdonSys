@@ -43,6 +43,7 @@
         #endregion
 
         #region Doctors
+        AccessMyData,
         AccessDoctors,
         UpdateDoctors,
         DeleteDoctors,

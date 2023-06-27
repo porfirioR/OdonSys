@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AgRendererComponent } from 'ag-grid-angular';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
 import { GridBadgeModel } from '../../models/view/grid-badge-model';
 
@@ -8,7 +8,7 @@ import { GridBadgeModel } from '../../models/view/grid-badge-model';
   templateUrl: './grid-badge.component.html',
   styleUrls: ['./grid-badge.component.scss']
 })
-export class GridBadgeComponent implements AgRendererComponent {
+export class GridBadgeComponent implements ICellRendererAngularComp {
   protected badge: string = 'text-bg-primary'
   protected title: string = ''
 

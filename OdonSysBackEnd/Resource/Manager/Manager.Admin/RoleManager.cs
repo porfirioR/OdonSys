@@ -5,7 +5,7 @@ using Utilities.Enums;
 
 namespace Manager.Admin
 {
-    internal class RoleManager : IRoleManager
+    internal sealed class RoleManager : IRoleManager
     {
         private readonly IMapper _mapper;
         private readonly IRoleAccess _roleAccess;
@@ -60,6 +60,7 @@ namespace Manager.Admin
                 new PermissionModel("Inhabilitar", PermissionName.DeactivateProcedures, PermissionGroup.Admin, PermissionSubGroup.Procedure),
 
                 new PermissionModel("Ingresar", PermissionName.AccessDoctors, PermissionGroup.Work, PermissionSubGroup.Doctor),
+                new PermissionModel("Ver mis datos", PermissionName.AccessMyData, PermissionGroup.Work, PermissionSubGroup.Doctor),
                 new PermissionModel("Aprobar ingresar", PermissionName.ApproveDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Actualizar", PermissionName.UpdateDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
                 new PermissionModel("Borrar", PermissionName.DeleteDoctors, PermissionGroup.Admin, PermissionSubGroup.Doctor),
@@ -72,8 +73,9 @@ namespace Manager.Admin
             };
         }
 
-        public async Task<IEnumerable<string>> GetPermissonsByRolesAsync(IEnumerable<string> roles)
+        public async Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId)
         {
+            var roles = (await _roleAccess.GetRolesByUserIdAsync(userId)).Select(x => x.Code);
             var allPermissions = (await GetAllAsync()).Where(x => roles.Contains(x.Code)).SelectMany(x => x.RolePermissions);
             return allPermissions.Distinct();
         }

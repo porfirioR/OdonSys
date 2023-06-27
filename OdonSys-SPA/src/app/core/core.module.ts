@@ -7,7 +7,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AgGridModule } from 'ag-grid-angular';
-import { NgxMaskModule } from 'ngx-mask';
 
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -24,9 +23,7 @@ import { UpsertClientComponent } from './components/upsert-client/upsert-client.
 import { AnimationComponent } from './components/animation/animation.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
-
-import { AuthGuard } from './guards/auth.guard';
-import { PermissionGuard } from './guards/permission.guard';
+import { ClientDetailComponent } from './components/client-detail/client-detail.component';
 
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
@@ -40,6 +37,7 @@ import { environment } from '../../environments/environment';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import * as fromDoctor from './store/doctors/doctor.reducer';
 import { DoctorEffects } from './store/doctors/doctor.effects';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
 
 @NgModule({
   imports: [
@@ -56,9 +54,10 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
     EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects]),
-    NgxMaskModule.forChild(),
     NgxDropzoneModule,
-    StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer)
+    StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
+    NgxMaskDirective,
+    NgxMaskPipe
   ],
   declarations: [
     HeaderComponent,
@@ -75,7 +74,8 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
     UpsertClientComponent,
     AnimationComponent,
     GridBadgeComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ClientDetailComponent
   ],
   exports: [
     FormsModule,
@@ -83,7 +83,8 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
     CommonModule,
     AgGridModule,
     NgbModule,
-    NgxMaskModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     HeaderComponent,
     PrincipalPageComponent,
     NotFoundComponent,
@@ -99,8 +100,7 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
     UploadFileComponent
   ],
   providers:[
-    AuthGuard,
-    PermissionGuard
+    provideEnvironmentNgxMask()
   ]
 })
 export class CoreModule { }

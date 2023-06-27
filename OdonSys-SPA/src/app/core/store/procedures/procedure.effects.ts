@@ -23,11 +23,11 @@ export class ProcedureEffects {
     private readonly subscriptionService: SubscriptionService
   ) {}
 
-  getAll$ = createEffect(() => {
+  protected getAll$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.loadProcedures),
       withLatestFrom(this.store.select(selectProcedures)),
-      switchMap(([action, procedures]) => procedures.length > 0 ?
+      switchMap(([_, procedures]) => procedures.length > 0 ?
       of(procedureActions.allProceduresLoaded({ procedures: procedures })) :
         this.procedureApiService.getAll().pipe(
           map(data => procedureActions.allProceduresLoaded({ procedures: data.map(this.getModel) })),
@@ -37,7 +37,7 @@ export class ProcedureEffects {
     )
   })
 
-  create$ = createEffect(() => {
+  protected create$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.addProcedure),
       switchMap((action) =>
@@ -55,7 +55,7 @@ export class ProcedureEffects {
     )
   })
 
-  update$ = createEffect(() => {
+  protected update$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.updateProcedure),
       switchMap((action) =>
@@ -73,7 +73,7 @@ export class ProcedureEffects {
     )
   })
 
-  patchProcedure$ = createEffect(() => {
+  protected patchProcedure$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.changeProcedureVisibility),
       switchMap((x) =>
@@ -89,7 +89,7 @@ export class ProcedureEffects {
     )
   })
 
-  errorHandler$ = createEffect(() => {
+  private errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(procedureActions.procedureFailure),
       tap((x) => {
@@ -108,6 +108,6 @@ export class ProcedureEffects {
     data.description,
     data.procedureTeeth,
     data.price,
-    data.xRay
+    data.xRays
   )
 }

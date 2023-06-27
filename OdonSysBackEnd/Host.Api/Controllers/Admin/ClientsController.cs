@@ -13,7 +13,7 @@ namespace Host.Api.Controllers.Admin
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class ClientsController : OdonSysBaseController
+    public sealed class ClientsController : OdonSysBaseController
     {
         private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;

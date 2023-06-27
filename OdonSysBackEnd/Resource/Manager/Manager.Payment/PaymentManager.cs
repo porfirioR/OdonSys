@@ -5,7 +5,7 @@ using Utilities.Enums;
 
 namespace Manager.Payment
 {
-    internal class PaymentManager : IPaymentManager
+    internal sealed class PaymentManager : IPaymentManager
     {
         private readonly IPaymentAccess _paymentAccess;
         private readonly IInvoiceAccess _invoiceAccess;

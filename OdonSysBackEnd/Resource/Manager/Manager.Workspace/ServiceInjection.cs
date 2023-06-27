@@ -14,7 +14,7 @@ namespace Manager.Workspace
         {
             services.AddTransient<IFileManager, FileManager>();
             services.AddTransient<IProcedureManager, ProcedureManager>();
-            services.AddTransient<IToothManager, ToothManager>();
+            //services.AddTransient<IToothManager, ToothManager>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Contract.Admin.Auth;
+using System.Security.Claims;
 
 namespace Contract.Admin.Users
 {
@@ -13,5 +14,6 @@ namespace Contract.Admin.Users
         Task<AuthModel> LoginAsync(string authorization);
         Task<AuthModel> RegisterUserAsync(RegisterUserRequest createUserRequest);
         Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);
+        bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal);
     }
 }

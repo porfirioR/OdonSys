@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Access.Sql.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230612010310_UpdateTableFileStogare")]
-    partial class UpdateTableFileStogare
+    [Migration("20230627040124_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,13 +171,21 @@ namespace Access.Sql.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GetDate()");
 
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ReferenceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserCreated")
                         .HasColumnType("nvarchar(max)");
@@ -186,6 +194,9 @@ namespace Access.Sql.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Url")
+                        .IsUnique();
 
                     b.ToTable("FileStorages");
                 });
@@ -418,49 +429,12 @@ namespace Access.Sql.Migrations
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("XRays")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Procedures");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.ProcedureTooth", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<Guid>("ProcedureId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ToothId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProcedureId");
-
-                    b.HasIndex("ToothId", "ProcedureId");
-
-                    b.ToTable("ProcedureTeeth");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Role", b =>
@@ -507,47 +481,6 @@ namespace Access.Sql.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Group")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Jaw")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quadrant")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teeth");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.User", b =>
@@ -779,25 +712,6 @@ namespace Access.Sql.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Access.Sql.Entities.ProcedureTooth", b =>
-                {
-                    b.HasOne("Access.Sql.Entities.Procedure", "Procedure")
-                        .WithMany("ProcedureTeeth")
-                        .HasForeignKey("ProcedureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Access.Sql.Entities.Tooth", "Tooth")
-                        .WithMany("ProcedureTeeth")
-                        .HasForeignKey("ToothId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Procedure");
-
-                    b.Navigation("Tooth");
-                });
-
             modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
                 {
                     b.HasOne("Access.Sql.Entities.Client", "Client")
@@ -858,8 +772,6 @@ namespace Access.Sql.Migrations
             modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
                 {
                     b.Navigation("ClientProcedures");
-
-                    b.Navigation("ProcedureTeeth");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Role", b =>
@@ -867,11 +779,6 @@ namespace Access.Sql.Migrations
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
-                {
-                    b.Navigation("ProcedureTeeth");
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.User", b =>

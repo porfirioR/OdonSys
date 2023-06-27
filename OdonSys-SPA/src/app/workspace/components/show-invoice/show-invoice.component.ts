@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, debounceTime, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentModel } from '../../models/payments/payment-model';
@@ -18,6 +18,8 @@ import { InvoiceApiService } from '../../services/invoice-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { PaymentApiService } from '../../services/payment-api.service';
 import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
+import { selectDoctor } from 'src/app/core/store/doctors/doctor.selectors';
 
 @Component({
   selector: 'app-show-invoice',
@@ -74,7 +76,6 @@ export class ShowInvoiceComponent implements OnInit {
         loadingClient = false
       }
     }))
-
     combineLatest([
       this.invoiceApiService.getInvoiceById(invoiceId),
       clientRowData$,
@@ -94,21 +95,28 @@ export class ShowInvoiceComponent implements OnInit {
           .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name, x.fullUrl))
       }
       this.invoice = invoice
-      const client = clients.find(x => x.id === this.invoice.clientId)!
+      const client = clients.find(x => x.id.compareString(this.invoice.clientId))!
       this.setClient(client)
       this.setInvoiceProcedures(invoice)
-      const userPayments$ = [... new Set(paymentList.map(x => x.userId))].map(x => this.doctorApiService.getById(x))
+      const userPayments = [... new Set(paymentList.map(x => x.userId))]
       const payments: PaymentModel[] = []
-      return userPayments$.length > 0 ? forkJoin(userPayments$).pipe(take(1), map(users => {
+      if (userPayments.length === 0) {
+        return of(payments)
+      }
+      const userPayments$ = userPayments.map(userId => {
+        this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: userId }))
+        return this.store.select(selectDoctor(userId)).pipe(debounceTime(500))
+      })
+      return combineLatest(userPayments$).pipe(map(users => {
         let remainingDebt = this.invoice.total
         paymentList.forEach(payment => {
-          const user = users.find(x => x.id === payment.userId)
+          const user = users.find(x => x!.id.compareString(payment.userId))
           remainingDebt -= payment.amount
           const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
           payments.push(paymentItem)
         })
         return payments
-      })) : of(payments)
+      }))
     }))
     .subscribe({
       next: (paymentList: PaymentModel[]) => {
@@ -150,7 +158,8 @@ export class ShowInvoiceComponent implements OnInit {
         id: new FormControl(procedure.id),
         name: new FormControl(procedure.procedure),
         price: new FormControl(procedure.procedurePrice),
-        finalPrice: new FormControl(procedure.finalPrice)
+        finalPrice: new FormControl(procedure.finalPrice),
+        xRays: new FormControl(false)
       })
       procedureFormGroup.disable()
       formArray.push(procedureFormGroup)

@@ -15,7 +15,7 @@ namespace Host.Api.Controllers.Payment
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class InvoiceController : OdonSysBaseController
+    public sealed class InvoiceController : OdonSysBaseController
     {
         private readonly IInvoiceManager _invoiceManager;
         private readonly IFileManager _fileManager;

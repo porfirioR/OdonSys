@@ -17,7 +17,7 @@ namespace Host.Api
                 typeof(PaymentAccessRequest),
                 typeof(ProcedureAccessProfile),
                 typeof(RoleAccessProfile),
-                typeof(ToothAccessProfile),
+                //typeof(ToothAccessProfile),
                 typeof(UserDataAccessProfile),
 
                 typeof(ProcedureManagerProfile),

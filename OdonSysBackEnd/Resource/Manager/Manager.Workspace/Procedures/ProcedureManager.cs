@@ -7,7 +7,7 @@ using Contract.Workspace.Procedures;
 
 namespace Manager.Workspace.Procedures
 {
-    internal class ProcedureManager : IProcedureManager
+    internal sealed class ProcedureManager : IProcedureManager
     {
         private readonly IProcedureAccess _procedureAccess;
         private readonly IClientProcedureAccess _clientProcedureAccess;
@@ -63,10 +63,10 @@ namespace Manager.Workspace.Procedures
             return await _procedureAccess.ValidateIdNameAsync(name);
         }
 
-        public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids)
-        {
-            return await _procedureAccess.ValidateProcedureTeethAsync(ids);
-        }
+        //public async Task<IEnumerable<string>> ValidateProcedureTeethAsync(IEnumerable<string> ids)
+        //{
+        //    return await _procedureAccess.ValidateProcedureTeethAsync(ids);
+        //}
 
         public async Task<IEnumerable<ProcedureModel>> GetProceduresByUserIdAsync(string id)
         {
@@ -82,7 +82,7 @@ namespace Manager.Workspace.Procedures
         {
             var userClient = await _userDataAccess.GetUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
             userClient ??= await _userDataAccess.CreateUserClientAsync(new UserClientAccessRequest(request.ClientId, request.UserId));
-            
+
 
             var accessRequest = new CreateClientProcedureAccessRequest(userClient.Id.ToString(), request.ProcedureId);
             var accessResponse = await _clientProcedureAccess.CreateClientProcedureAsync(accessRequest);

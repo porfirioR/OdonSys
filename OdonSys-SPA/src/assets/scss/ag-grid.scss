@@ -1,7 +1,8 @@
 @import "./colors.scss";
 
 ag-grid-angular {
-  height: calc(91vh - 80px);
+  height: calc(83vh - 17px);
+  margin-bottom: 16px;
 }
 
 .ag-cell-data-changed {

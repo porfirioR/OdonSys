@@ -1,24 +1,37 @@
 export enum Permission {
+  // Clients
+  AccessClients = 'AccessClients',
+  CreateClients = 'CreateClients',
+  UpdateClients = 'UpdateClients',
+  AssignClients = 'AssignClients',
+  DeleteClients = 'DeleteClients',
+  AccessMyClients = 'AccessMyClients',
+  FullFieldUpdateClients = 'FullFieldUpdateClients',
+  RestoreClients = 'RestoreClients',
+  DeactivateClients = 'DeactivateClients',
 
-  AccessRoles = 'AccessRoles',
-  ManageRoles = 'ManageRoles',
-  AssignRoleDoctors = 'AssignRoleDoctors',
+  // Doctors
+  AccessDoctors = 'AccessDoctors',
+  AccessMyData = 'AccessMyData',
+  ApproveDoctors = 'ApproveDoctors',
+  UpdateDoctors = 'UpdateDoctors',
+  DeleteDoctors = 'DeleteDoctors',
+  AssignDoctorRoles = 'AssignDoctorRoles',
+  DeactivateDoctors = 'DeactivateDoctors',
+  RestoreDoctors = 'RestoreDoctors',
 
+  //Invoices
   AccessInvoices = 'AccessInvoices',
   AccessMyInvoices = 'AccessMyInvoices',
   CreateInvoices = 'CreateInvoices',
   ChangeInvoiceStatus = 'ChangeInvoiceStatus',
 
-  AccessClients = 'AccessClients',
-  CreateClients = 'CreateClients',
-  UpdateClients = 'UpdateClients',
-  DeactivateClients = 'DeactivateClients',
-  RestoreClients = 'RestoreClients',
-  DeleteClients = 'DeleteClients',
-  AssignClients = 'AssignClients',
-  AccessMyClients = 'AccessMyClients',
-  FullFieldUpdateClients = 'FullFieldUpdateClients',
+  // Payments
 
+  AccessPayments = 'AccessPayments',
+  RegisterPayments = 'RegisterPayments',
+
+  // Procedures
   AccessProcedures = 'AccessProcedures',
   CreateProcedures = 'CreateProcedures',
   UpdateProcedures = 'UpdateProcedures',
@@ -26,18 +39,12 @@ export enum Permission {
   DeactivateProcedures = 'DeactivateProcedures',
   RestoreProcedures = 'RestoreProcedures',
 
+  // Role
+  AccessRoles = 'AccessRoles',
+  ManageRoles = 'ManageRoles',
+  AssignRoleDoctors = 'AssignRoleDoctors',
+
   AccessClientProcedures = 'AccessClientProcedures',
   CreateClientProcedures = 'CreateClientProcedures',
   UpdateClientProcedures = 'UpdateClientProcedures',
-
-  AccessDoctors = 'AccessDoctors',
-  UpdateDoctors = 'UpdateDoctors',
-  DeleteDoctors = 'DeleteDoctors',
-  RestoreDoctors = 'RestoreDoctors',
-  DeactivateDoctors = 'DeactivateDoctors',
-  ApproveDoctors = 'ApproveDoctors',
-  AssignDoctorRoles = 'AssignDoctorRoles',
-
-  AccessPayments = 'AccessPayments',
-  RegisterPayments = 'RegisterPayments'
 }

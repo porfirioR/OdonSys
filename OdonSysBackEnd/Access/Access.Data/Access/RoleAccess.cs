@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
-    internal class RoleAccess : IRoleAccess
+    internal sealed class RoleAccess : IRoleAccess
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;
@@ -38,8 +38,18 @@ namespace Access.Data.Access
         public async Task<RoleAccessModel> GetRoleByCodeAccessAsync(string code)
         {
             var entity = await GetRoleByCodeAsync(code);
-            var respose = _mapper.Map<RoleAccessModel>(entity);
-            return respose;
+            var response = _mapper.Map<RoleAccessModel>(entity);
+            return response;
+        }
+
+        public async Task<IEnumerable<RoleAccessModel>> GetRolesByUserIdAsync(string userId)
+        {
+            var userRoles = await _context.UserRoles
+                                .Include(x => x.Role)
+                                .Where(x => x.UserId == new Guid(userId))
+                                .ToListAsync();
+            var roles = userRoles.Any() ? userRoles.Select(x => _mapper.Map<RoleAccessModel>(x.Role)) : throw new ArgumentException($"Usuario Id: {userId}");
+            return roles;
         }
 
         public async Task<RoleAccessModel> UpdateAccessAsync(UpdateRoleAccessRequest accessRequest)

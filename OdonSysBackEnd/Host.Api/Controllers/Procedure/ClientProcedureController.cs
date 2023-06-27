@@ -10,10 +10,10 @@ namespace Host.Api.Controllers.Procedure
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ClientProcedureController : OdonSysBaseController
+    public sealed class ClientProcedureController : OdonSysBaseController
     {
         private readonly IProcedureManager _procedureManager;
-        
+
         public ClientProcedureController(IProcedureManager procedureManager)
         {
             _procedureManager = procedureManager;

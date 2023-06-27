@@ -5,7 +5,7 @@ using Contract.Admin.Users;
 
 namespace Manager.Admin
 {
-    internal class ClientManager : IClientManager
+    internal sealed class ClientManager : IClientManager
     {
         private readonly IClientAccess _clientAccess;
         private readonly IMapper _mapper;
