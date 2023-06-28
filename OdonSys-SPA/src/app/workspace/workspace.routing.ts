@@ -16,24 +16,32 @@ export const WorkspaceRoutes: Routes = [
       { path: 'configuración/datos',
         component: MyConfigurationComponent,
         title: 'Mis datos',
+        canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesWorkspace],
+        data: { permissions: [ Permission.AccessMyData ] }
       },
       {
         path: 'mis-pacientes',
         component: ClientsComponent,
-        title: 'Mis pacientes'
+        title: 'Mis pacientes',
+        canActivate: [PermissionGuard],
+        data: { permissions: [ Permission.AccessMyClients ] }
       },
       {
         path: 'mis-pacientes/registrar',
         component: UpsertClientComponent,
         title: 'Registrar paciente',
-        canDeactivate: [PreventUnsavedChangesWorkspace]
+        canDeactivate: [PreventUnsavedChangesWorkspace],
+        canActivate: [PermissionGuard],
+        data: { permissions: [ Permission.AccessMyClients, Permission.CreateClients ] }
       },
       {
         path: 'mis-pacientes/actualizar/:id',
         component: UpsertClientComponent,
         title: 'Actualizar paciente',
-        canDeactivate: [PreventUnsavedChangesWorkspace]
+        canDeactivate: [PreventUnsavedChangesWorkspace],
+        canActivate: [PermissionGuard],
+        data: { permissions: [ Permission.AccessMyClients, Permission.UpdateClients ] }
       },
       {
         path: 'facturas',
