@@ -44,7 +44,6 @@ export class MyConfigurationComponent implements OnInit {
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
   public ignorePreventUnsavedChanges: boolean = false
-  private canAccessData = false
 
   constructor(
     private readonly router: Router,
@@ -58,7 +57,6 @@ export class MyConfigurationComponent implements OnInit {
     this.subscriptionService.onErrorInSave.subscribe({ next: () => { this.saving = false } })
     this.countries = EnumHandler.getCountries()
     this.canEdit = userInfoService.havePermission(Permission.UpdateDoctors)
-    this.canAccessData = userInfoService.havePermission(Permission.AccessDoctors)
   }
 
   ngOnInit() {
@@ -81,12 +79,6 @@ export class MyConfigurationComponent implements OnInit {
     const user = this.userInfoService.getUserData()
     if (!user || !user.id) {
       this.zone.run(() => this.router.createUrlTree(['/login']))
-    }
-    if (!this.canAccessData) {
-      this.alertService.showInfo('No tiene permisos para acceder a estos datos.')
-      this.close()
-      this.load = true
-      return
     }
     this.store.dispatch(fromDoctorsActions.loadDoctor({ doctorId: user.id }))
     setTimeout(() => {
