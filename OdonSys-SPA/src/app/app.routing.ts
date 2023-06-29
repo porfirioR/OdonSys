@@ -35,6 +35,13 @@ export const AppRoutes: Routes = [
     title: 'Registro',
     canActivate: [PublicGuard]
   },
-  { path: 'página-no-encontrada', component: NotFoundComponent, title: 'página no encontrada' },
-  { path: '**', redirectTo: '/página-no-encontrada' },
+  {
+    path: 'página-no-encontrada',
+    component: NotFoundComponent,
+    title: 'página no encontrada'
+  },
+  {
+    path: '**',
+    redirectTo: '/página-no-encontrada'
+  }
 ]
