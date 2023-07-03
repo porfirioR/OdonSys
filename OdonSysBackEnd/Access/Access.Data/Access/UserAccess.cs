@@ -1,21 +1,22 @@
-﻿using Access.Contract.Users;
+﻿using Access.Contract.Clients;
+using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     public sealed class UserAccess : IUserDataAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly IUserDataBuilder _userDataBuilder;
+        private readonly IClientDataBuilder _clientDataBuilder;
 
-        public UserAccess(IMapper mapper, DataContext context)
+        public UserAccess(DataContext context, IUserDataBuilder userDataBuilder, IClientDataBuilder clientDataBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _userDataBuilder = userDataBuilder;
+            _clientDataBuilder = clientDataBuilder;
         }
 
         public async Task<UserDataAccessModel> ApproveNewUserAsync(string id)
@@ -25,7 +26,7 @@ namespace Access.Data.Access
 
             entity.Approved = true;
             await _context.SaveChangesAsync();
-            return _mapper.Map<UserDataAccessModel>(entity);
+            return _userDataBuilder.MapUserToUserDataAccessModel(entity);
         }
 
         public async Task<IEnumerable<string>> SetUserRolesAsync(UserRolesAccessRequest accessRequest)
@@ -73,23 +74,22 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
-            var response = await _context.Set<User>()
-                                .ProjectTo<DoctorDataAccessModel>(_mapper.ConfigurationProvider)
-                                .ToListAsync();
-            return response;
+            var response = await _context.Set<User>().ToListAsync();
+            var doctorDataAccessModelList = response.Select(_userDataBuilder.MapUserToDoctorDataAccessModel);
+            return doctorDataAccessModelList;
         }
 
         public async Task<IEnumerable<UserDataAccessModel>> GetAllUserAsync()
         {
-            var entity = await _context.Set<User>().ToListAsync();
-            return _mapper.Map<IEnumerable<UserDataAccessModel>>(entity);
+            var entities = await _context.Set<User>().ToListAsync();
+            return entities.Select(_userDataBuilder.MapUserToUserDataAccessModel);
         }
 
         public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetUserByIdAsync(id);
-            var response = _mapper.Map<DoctorDataAccessModel>(entity);
-            return response;
+            var doctorDataAccessModelList = _userDataBuilder.MapUserToDoctorDataAccessModel(entity);
+            return doctorDataAccessModelList;
         }
 
         public async Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest)
@@ -97,7 +97,7 @@ namespace Access.Data.Access
             var entity = await _context.Set<UserClient>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.UserId) && x.ClientId == new Guid(accessRequest.ClientId));
 
-            return entity is null ? null : new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
+            return entity is not null ? new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId) : null;
         }
 
         public async Task<IEnumerable<UserClientAccessModel>> GetUserClientsByUserIdAsync(string userId)
@@ -112,7 +112,7 @@ namespace Access.Data.Access
 
         public async Task<UserClientAccessModel> CreateUserClientAsync(UserClientAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<UserClient>(accessRequest);
+            var entity = _clientDataBuilder.MapUserClientAccessRequestToUserClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return new UserClientAccessModel(entity.Id, entity.ClientId, entity.UserId);
@@ -121,10 +121,10 @@ namespace Access.Data.Access
         public async Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess)
         {
             var entity = await GetUserByIdAsync(dataAccess.Id);
-            entity = _mapper.Map(dataAccess, entity);
+            entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var model = _mapper.Map<DoctorDataAccessModel>(entity);
+            var model = _userDataBuilder.MapUserToDoctorDataAccessModel(entity);
             return model;
         }
 

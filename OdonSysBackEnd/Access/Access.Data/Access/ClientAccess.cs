@@ -1,25 +1,23 @@
 ﻿using Access.Contract.Clients;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class ClientAccess : IClientAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
-
-        public ClientAccess(IMapper mapper, DataContext context)
+        private readonly IClientDataBuilder _clientDataBuilder;
+        public ClientAccess(DataContext context, IClientDataBuilder clientDataBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _clientDataBuilder = clientDataBuilder;
         }
 
         public async Task<ClientAccessModel> CreateClientAsync(CreateClientAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Client>(accessRequest);
+            var entity = _clientDataBuilder.MapCreateClientAccessRequestToClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return _mapper.Map<ClientAccessModel>(entity);
@@ -82,7 +80,7 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<ClientAccessModel>> AssignClientToUserAsync(AssignClientAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<UserClient>(accessRequest);
+            var entity = _clientDataBuilder.MapAssignClientAccessRequestToUserClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return await GetClientsByUserIdAsync(accessRequest.UserId, entity.UserCreated);

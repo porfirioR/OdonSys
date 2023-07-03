@@ -2,7 +2,6 @@
 using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,16 +16,16 @@ namespace Access.Data.Access
 {
     internal sealed class AuthAccess : IAuthAccess
     {
-        private readonly IMapper _mapper;
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
+        private readonly IUserDataBuilder _userDataBuilder;
         private readonly string _roleCode;
         private readonly string _adminRole;
-        public AuthAccess(IMapper mapper, IConfiguration configuration, DataContext context)
+        public AuthAccess(IConfiguration configuration, DataContext context, IUserDataBuilder userDataBuilder)
         {
-            _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
+            _userDataBuilder = userDataBuilder;
             _roleCode = configuration["Role"];
             _adminRole = configuration["RoleAdmin"];
         }
@@ -60,14 +59,14 @@ namespace Access.Data.Access
             var userId = user.Id;
             var roleCodes = await RoleCodesAsync(userId);
             (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
-            var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
-            var userResponse = new AuthAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
-            return userResponse;
+            var userDataAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(user);
+            var authAccessModel = new AuthAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+            return authAccessModel;
         }
 
         public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = _mapper.Map<User>(dataAccess);
+            var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
             userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
@@ -97,7 +96,7 @@ namespace Access.Data.Access
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {
-                var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
+                var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
                 var roleCodes = await RoleCodesAsync(entity.Id);
                 (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
