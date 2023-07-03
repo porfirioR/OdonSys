@@ -12,13 +12,11 @@ namespace Host.Api
         {
             services.AddAutoMapper(
                 typeof(InvoiceAccessProfile),
-                typeof(ClientAccessProfile),
                 typeof(ClientProcedureAccessProfile),
                 typeof(PaymentAccessRequest),
                 typeof(ProcedureAccessProfile),
                 typeof(RoleAccessProfile),
                 //typeof(ToothAccessProfile),
-                typeof(UserDataAccessProfile),
 
                 typeof(ProcedureManagerProfile),
                 typeof(UserManagerProfile),

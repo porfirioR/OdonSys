@@ -20,7 +20,7 @@ namespace Access.Data.Access
             var entity = _clientDataBuilder.MapCreateClientAccessRequestToClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ClientAccessModel>(entity);
+            return _clientDataBuilder.MapClientToClientAccessModel(entity);
         }
 
         public async Task<ClientAccessModel> DeleteAsync(string id)
@@ -30,7 +30,7 @@ namespace Access.Data.Access
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ClientAccessModel>(entity);
+            return _clientDataBuilder.MapClientToClientAccessModel(entity);
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetAllAsync()
@@ -39,15 +39,15 @@ namespace Access.Data.Access
                                     .Include(x => x.UserClients).ThenInclude(x => x.User)
                                     .AsNoTracking()
                                     .ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
-            return respose;
+            var modelList = entities.Select(_clientDataBuilder.MapClientToClientAccessModel);
+            return modelList;
         }
 
         public async Task<ClientAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetClientByIdAsync(id);
-            var respose = _mapper.Map<ClientAccessModel>(entity);
-            return respose;
+            var accessModel = _clientDataBuilder.MapClientToClientAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string userId, string userName)
@@ -56,25 +56,25 @@ namespace Access.Data.Access
                             .Include(x => x.UserClients)
                             .ThenInclude(x => x.User)
                             .Where(x => x.UserClients.Any(y => y.UserId == new Guid(userId)) || x.UserCreated == userName).ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
-            return respose;
+            var accessModel = entities.Select(_clientDataBuilder.MapClientToClientAccessModel);
+            return accessModel;
         }
 
         public async Task<ClientAccessModel> UpdateClientAsync(UpdateClientAccessRequest accessRequest)
         {
             var entity = await GetClientByIdAsync(accessRequest.Id);
-            entity = _mapper.Map(accessRequest, entity);
+            entity = _clientDataBuilder.MapUpdateClientAccessRequestToClient(accessRequest, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ClientAccessModel>(entity);
-            return respose;
+            var accessModel = _clientDataBuilder.MapClientToClientAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)
         {
             var entity = await _context.Set<Client>()
                             .SingleOrDefaultAsync(x => x.Document == document);
-            var respose = _mapper.Map<ClientAccessModel>(entity);
+            var respose = _clientDataBuilder.MapClientToClientAccessModel(entity);
             return respose;
         }
 
