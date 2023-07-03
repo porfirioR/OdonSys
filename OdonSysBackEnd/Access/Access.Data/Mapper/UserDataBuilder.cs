@@ -15,7 +15,10 @@ namespace Access.Data.Mapper
         {
             user ??= new User();
             user.Email = string.IsNullOrEmpty(request.Email) ? user.Email : request.Email;
-            user.Id = new Guid(request.Id);
+            if (!string.IsNullOrEmpty(request.Id))
+            {
+                user.Id = new Guid(request.Id);
+            }
             user.Name = request.Name;
             user.MiddleName = request.MiddleName;
             user.Surname = request.Surname;
