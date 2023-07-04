@@ -3,7 +3,7 @@ using Access.Sql.Entities;
 
 namespace Access.Contract.Clients
 {
-    public interface IClientDataBuilder
+    public interface IClientDataAccessBuilder
     {
         Client MapCreateClientAccessRequestToClient(CreateClientAccessRequest createClientAccessRequest);
         Client MapUpdateClientAccessRequestToClient(UpdateClientAccessRequest updateClientAccessRequest, Client client = null);

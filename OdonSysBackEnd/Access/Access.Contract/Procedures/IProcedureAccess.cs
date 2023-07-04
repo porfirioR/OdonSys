@@ -1,4 +1,4 @@
-﻿namespace Access.Contract.Procedure
+﻿namespace Access.Contract.Procedures
 {
     public interface IProcedureAccess
     {

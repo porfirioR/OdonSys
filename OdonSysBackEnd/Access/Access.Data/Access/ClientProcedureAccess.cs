@@ -1,6 +1,5 @@
-﻿using Access.Contract.ClientProcedure;
+﻿using Access.Contract.ClientProcedures;
 using Access.Sql;
-using Access.Sql.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,26 +7,21 @@ namespace Access.Data.Access
 {
     public sealed class ClientProcedureAccess : IClientProcedureAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly IClientProcedureDataAccessBuilder _clientProcedureDataAccessBuilder;
 
-        public ClientProcedureAccess(IMapper mapper, DataContext context)
+        public ClientProcedureAccess(DataContext context, IClientProcedureDataAccessBuilder clientProcedureDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _clientProcedureDataAccessBuilder = clientProcedureDataAccessBuilder;
         }
 
         public async Task<ClientProcedureAccessModel> CreateClientProcedureAsync(CreateClientProcedureAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<ClientProcedure>(accessRequest);
-
+            var entity = _clientProcedureDataAccessBuilder.MapCreateClientProcedureAccessRequestToClientProcedure(accessRequest);
             _context.ClientProcedures.Add(entity);
             await _context.SaveChangesAsync();
-            var accessModel = new ClientProcedureAccessModel(
-                entity.Id.ToString(),
-                entity.ProcedureId.ToString(),
-                entity.UserClientId.ToString()
-            );
+            var accessModel = _clientProcedureDataAccessBuilder.MapClientProcedureToClientProcedureAccessModel(entity);
             return accessModel;
         }
 
@@ -36,10 +30,7 @@ namespace Access.Data.Access
             var entities = await _context.ClientProcedures
                             .AsNoTracking()
                             .Where(x => userClientIds.Contains(x.UserClientId)).ToListAsync();
-            var accessModel = entities.Select(x => new ClientProcedureAccessModel(
-                x.Id.ToString(),
-                x.ProcedureId.ToString(),
-                x.UserClientId.ToString()));
+            var accessModel = entities.Select(_clientProcedureDataAccessBuilder.MapClientProcedureToClientProcedureAccessModel);
             return accessModel;
         }
 
@@ -47,13 +38,9 @@ namespace Access.Data.Access
         {
             var entity = await _context.ClientProcedures
                             .FirstAsync(x => x.UserClientId == new Guid(accessRequest.UserClientId) && x.ProcedureId == new Guid(accessRequest.ProcedureId));
-            entity = _mapper.Map(accessRequest, entity);
+            entity = _clientProcedureDataAccessBuilder.MapUpdateClientProcedureAccessRequestToClientProcedure(accessRequest, entity);
             await _context.SaveChangesAsync();
-            var accessModel = new ClientProcedureAccessModel(
-                entity.Id.ToString(),
-                entity.ProcedureId.ToString(),
-                entity.UserClientId.ToString()
-            );
+            var accessModel = _clientProcedureDataAccessBuilder.MapClientProcedureToClientProcedureAccessModel(entity);
             return accessModel;
         }
 
@@ -75,11 +62,7 @@ namespace Access.Data.Access
         {
             var entity = await _context.ClientProcedures
                             .SingleAsync(x => x.Id == new Guid(clientProcedureId));
-            var accessModel = new ClientProcedureAccessModel(
-                entity.Id.ToString(),
-                entity.ProcedureId.ToString(),
-                entity.UserClientId.ToString()
-            );
+            var accessModel = _clientProcedureDataAccessBuilder.MapClientProcedureToClientProcedureAccessModel(entity);
             return accessModel;
         }
     }

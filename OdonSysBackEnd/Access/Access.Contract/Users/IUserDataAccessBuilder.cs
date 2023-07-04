@@ -2,7 +2,7 @@
 
 namespace Access.Contract.Users
 {
-    public interface IUserDataBuilder
+    public interface IUserDataAccessBuilder
     {
         User MapUserDataAccessRequestToUser(UserDataAccessRequest request, User user = null);
         DoctorDataAccessModel MapUserToDoctorDataAccessModel(User user);

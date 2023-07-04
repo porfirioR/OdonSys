@@ -18,10 +18,10 @@ namespace Access.Data.Access
     {
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
-        private readonly IUserDataBuilder _userDataBuilder;
+        private readonly IUserDataAccessBuilder _userDataBuilder;
         private readonly string _roleCode;
         private readonly string _adminRole;
-        public AuthAccess(IConfiguration configuration, DataContext context, IUserDataBuilder userDataBuilder)
+        public AuthAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;

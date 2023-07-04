@@ -3,7 +3,7 @@ using Access.Sql.Entities;
 
 namespace Access.Data.Mapper
 {
-    internal class UserDataBuilder : IUserDataBuilder
+    internal class UserDataAccessBuilder : IUserDataAccessBuilder
     {
         public UserClientAccessModel MapUserClientToUserClientAccessModel(UserClient userClient) => new(
             userClient.Id,

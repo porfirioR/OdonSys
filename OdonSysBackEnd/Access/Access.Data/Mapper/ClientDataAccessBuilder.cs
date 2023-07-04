@@ -4,7 +4,7 @@ using Access.Sql.Entities;
 
 namespace Access.Data.Mapper
 {
-    internal class ClientDataBuilder : IClientDataBuilder
+    internal class ClientDataAccessBuilder : IClientDataAccessBuilder
     {
         public UserClient MapAssignClientAccessRequestToUserClient(AssignClientAccessRequest assignClientAccessRequest)
         {

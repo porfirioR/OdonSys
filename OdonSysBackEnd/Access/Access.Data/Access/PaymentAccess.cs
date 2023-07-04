@@ -1,7 +1,5 @@
 ﻿using Access.Contract.Payments;
 using Access.Sql;
-using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
@@ -9,25 +7,20 @@ namespace Access.Data.Access
     internal sealed class PaymentAccess : IPaymentAccess
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
+        private readonly IPaymentDataAccessBuilder _paymentDataAccessBuilder;
 
-        public PaymentAccess(IMapper mapper, DataContext context)
+        public PaymentAccess(DataContext context, IPaymentDataAccessBuilder paymentDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _paymentDataAccessBuilder = paymentDataAccessBuilder;
         }
 
         public async Task<PaymentAccessModel> RegisterPayment(PaymentAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Payment>(accessRequest);
+            var entity = _paymentDataAccessBuilder.MapPaymentAccessRequestToPayment(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return new PaymentAccessModel(
-                entity.InvoiceId.ToString(),
-                entity.UserId.ToString(),
-                entity.DateCreated,
-                entity.Amount
-            );
+            return _paymentDataAccessBuilder.MapPaymentToPaymentAccessModel(entity);
         }
 
         public async Task<IEnumerable<PaymentAccessModel>> GetPaymentsByInvoiceIdAsync(string invoiceId)
@@ -37,7 +30,7 @@ namespace Access.Data.Access
                                 .Where(x => x.InvoiceId == new Guid(invoiceId))
                                 .ToListAsync();
 
-            return entities.Select(entity => new PaymentAccessModel(entity.InvoiceId.ToString(), entity.UserId.ToString(), entity.DateCreated, entity.Amount));
+            return entities.Select(_paymentDataAccessBuilder.MapPaymentToPaymentAccessModel);
         }
 
         public async Task<IEnumerable<PaymentAmountAccessModel>> GetPaymentsAmountByInvoiceIdAsync(IEnumerable<Guid> invoiceIds)

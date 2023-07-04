@@ -1,10 +1,10 @@
 ﻿using Access.Contract.Auth;
-using Access.Contract.ClientProcedure;
+using Access.Contract.ClientProcedures;
 using Access.Contract.Clients;
 using Access.Contract.Files;
 using Access.Contract.Invoices;
 using Access.Contract.Payments;
-using Access.Contract.Procedure;
+using Access.Contract.Procedures;
 using Access.Contract.Roles;
 using Access.Contract.Users;
 using Access.Data.Access;
@@ -28,8 +28,13 @@ namespace Access.Data
             //services.AddTransient<IToothAccess, ToothAccess>();
             services.AddTransient<IUserDataAccess, UserAccess>();
 
-            services.AddTransient<IClientDataBuilder, ClientDataBuilder>();
-            services.AddTransient<IUserDataBuilder, UserDataBuilder>();
+            services.AddTransient<IClientDataAccessBuilder, ClientDataAccessBuilder>();
+            services.AddTransient<IClientProcedureDataAccessBuilder, ClientProcedureDataAccessBuilder>();
+            services.AddTransient<IInvoiceDataAccessBuilder, InvoiceDataAccessBuilder>();
+            services.AddTransient<IPaymentDataAccessBuilder, PaymentDataAccessBuilder>();
+            services.AddTransient<IProcedureDataAccessBuilder, ProcedureDataAccessBuilder>();
+            services.AddTransient<IRoleDataAccessBuilder, RoleDataAccessBuilder>();
+            services.AddTransient<IUserDataAccessBuilder, UserDataAccessBuilder>();
 
             services.AddHttpContextAccessor();
         }
