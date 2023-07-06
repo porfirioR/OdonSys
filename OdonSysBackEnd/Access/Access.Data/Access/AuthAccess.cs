@@ -19,15 +19,20 @@ namespace Access.Data.Access
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
         private readonly IUserDataAccessBuilder _userDataBuilder;
-        private readonly string _roleCode;
-        private readonly string _adminRole;
+        private readonly string _doctorRoleCode;
+        private readonly string _doctorRoleName;
+        private readonly string _adminRoleCode;
+        private readonly string _adminRoleName;
+
         public AuthAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
             _userDataBuilder = userDataBuilder;
-            _roleCode = configuration["Role"];
-            _adminRole = configuration["RoleAdmin"];
+            _doctorRoleCode = configuration["Role.code"];
+            _doctorRoleName = configuration["Role.name"];
+            _adminRoleCode = configuration["RoleAdmin.code"];
+            _adminRoleName = configuration["RoleAdmin.name"];
         }
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -77,22 +82,52 @@ namespace Access.Data.Access
             entity.Approved = false;
             entity.IsDoctor = true;
             entity.Active = true;
-            var existUser = await _context.Users.AsNoTracking().AnyAsync();
-            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
+            var existUser = await _context.Users
+                                    .AsNoTracking()
+                                    .AnyAsync();
+
+            var doctorRole = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
+            doctorRole ??= new Role()
+            {
+                Id = Guid.NewGuid(),
+                Active = true,
+                Code = _doctorRoleCode,
+                Name = _doctorRoleName
+            };
             if (!existUser)
             {
                 entity.Approved = true;
-                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRole);
+                var adminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode);
+                adminRole ??= new Role()
+                {
+                    Id = Guid.NewGuid(),
+                    Active = true,
+                    Code = _adminRoleCode,
+                    Name = _adminRoleName
+                };
+                await _context.Roles.AddAsync(adminRole);
+                entity.UserRoles = new List<UserRole>
+                {
+                    new UserRole
+                    {
+                        User = entity,
+                        RoleId = adminRole.Id
+                    }
+                };
+            }
+            else
+            {
+                await _context.Roles.AddAsync(doctorRole);
+                entity.UserRoles = new List<UserRole>
+                {
+                    new UserRole
+                    {
+                        User = entity,
+                        RoleId = doctorRole.Id
+                    }
+                };
             }
 
-            entity.UserRoles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    User = entity,
-                    Role = role
-                }
-            };
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {
