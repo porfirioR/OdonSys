@@ -17,7 +17,7 @@ namespace Access.Data
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAuthAccess, AuthAccess>();
+            services.AddTransient<IAuthAccess, AuthenticationAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
             services.AddTransient<IFileAccess, Access.FileAccess>();

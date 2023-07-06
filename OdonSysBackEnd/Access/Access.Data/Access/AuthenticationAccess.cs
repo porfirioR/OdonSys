@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,25 +15,21 @@ using Utilities;
 
 namespace Access.Data.Access
 {
-    internal sealed class AuthAccess : IAuthAccess
+    internal sealed class AuthenticationAccess : IAuthAccess
     {
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
         private readonly IUserDataAccessBuilder _userDataBuilder;
         private readonly string _doctorRoleCode;
-        private readonly string _doctorRoleName;
         private readonly string _adminRoleCode;
-        private readonly string _adminRoleName;
 
-        public AuthAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
+        public AuthenticationAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
             _userDataBuilder = userDataBuilder;
-            _doctorRoleCode = configuration["Role.code"];
-            _doctorRoleName = configuration["Role.name"];
-            _adminRoleCode = configuration["RoleAdmin.code"];
-            _adminRoleName = configuration["RoleAdmin.name"];
+            _doctorRoleCode = configuration["DoctorRole"];
+            _adminRoleCode = configuration["AdminRole"];
         }
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -86,47 +83,24 @@ namespace Access.Data.Access
                                     .AsNoTracking()
                                     .AnyAsync();
 
-            var doctorRole = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
-            doctorRole ??= new Role()
-            {
-                Id = Guid.NewGuid(),
-                Active = true,
-                Code = _doctorRoleCode,
-                Name = _doctorRoleName
-            };
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
             if (!existUser)
             {
                 entity.Approved = true;
-                var adminRole = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode);
-                adminRole ??= new Role()
-                {
-                    Id = Guid.NewGuid(),
-                    Active = true,
-                    Code = _adminRoleCode,
-                    Name = _adminRoleName
-                };
-                await _context.Roles.AddAsync(adminRole);
-                entity.UserRoles = new List<UserRole>
-                {
-                    new UserRole
-                    {
-                        User = entity,
-                        RoleId = adminRole.Id
-                    }
-                };
+                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode) ?? throw new Exception("No existe rol administrativo.");
             }
-            else
+            if (role is null)
             {
-                await _context.Roles.AddAsync(doctorRole);
-                entity.UserRoles = new List<UserRole>
-                {
-                    new UserRole
-                    {
-                        User = entity,
-                        RoleId = doctorRole.Id
-                    }
-                };
+                throw new Exception($"Rol: {CultureInfo.InvariantCulture.TextInfo.ToTitleCase(_doctorRoleCode)} no fue encontrado, favor contacte con soporte.");
             }
+            entity.UserRoles = new List<UserRole>
+            {
+                new UserRole
+                {
+                    User = entity,
+                    Role = role
+                }
+            };
 
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
