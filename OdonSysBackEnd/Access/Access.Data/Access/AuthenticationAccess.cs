@@ -2,11 +2,11 @@
 using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -15,20 +15,21 @@ using Utilities;
 
 namespace Access.Data.Access
 {
-    internal sealed class AuthAccess : IAuthAccess
+    internal sealed class AuthenticationAccess : IAuthAccess
     {
-        private readonly IMapper _mapper;
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
-        private readonly string _roleCode;
-        private readonly string _adminRole;
-        public AuthAccess(IMapper mapper, IConfiguration configuration, DataContext context)
+        private readonly IUserDataAccessBuilder _userDataBuilder;
+        private readonly string _doctorRoleCode;
+        private readonly string _adminRoleCode;
+
+        public AuthenticationAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
-            _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             _context = context;
-            _roleCode = configuration["Role"];
-            _adminRole = configuration["RoleAdmin"];
+            _userDataBuilder = userDataBuilder;
+            _doctorRoleCode = configuration["DoctorRole"];
+            _adminRoleCode = configuration["AdminRole"];
         }
 
         public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -60,14 +61,14 @@ namespace Access.Data.Access
             var userId = user.Id;
             var roleCodes = await RoleCodesAsync(userId);
             (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
-            var userAccessModel = _mapper.Map<UserDataAccessModel>(user);
-            var userResponse = new AuthAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
-            return userResponse;
+            var userDataAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(user);
+            var authAccessModel = new AuthAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+            return authAccessModel;
         }
 
         public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
-            var entity = _mapper.Map<User>(dataAccess);
+            var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
             userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
@@ -78,14 +79,20 @@ namespace Access.Data.Access
             entity.Approved = false;
             entity.IsDoctor = true;
             entity.Active = true;
-            var existUser = await _context.Users.AsNoTracking().AnyAsync();
-            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _roleCode);
+            var existUser = await _context.Users
+                                    .AsNoTracking()
+                                    .AnyAsync();
+
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
             if (!existUser)
             {
                 entity.Approved = true;
-                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRole);
+                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode) ?? throw new Exception("No existe rol administrativo.");
             }
-
+            if (role is null)
+            {
+                throw new Exception($"Rol: {CultureInfo.InvariantCulture.TextInfo.ToTitleCase(_doctorRoleCode)} no fue encontrado, favor contacte con soporte.");
+            }
             entity.UserRoles = new List<UserRole>
             {
                 new UserRole
@@ -94,10 +101,11 @@ namespace Access.Data.Access
                     Role = role
                 }
             };
+
             await _context.AddAsync(entity);
             if (await _context.SaveChangesAsync() > 0)
             {
-                var userAccessModel = _mapper.Map<UserDataAccessModel>(entity);
+                var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
                 var roleCodes = await RoleCodesAsync(entity.Id);
                 (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;

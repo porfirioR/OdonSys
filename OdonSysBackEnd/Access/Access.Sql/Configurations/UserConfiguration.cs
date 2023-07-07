@@ -13,21 +13,21 @@ namespace Access.Sql.Configurations
 
             builder
                 .Property(x => x.Name)
-                .HasMaxLength(25)
+                .HasMaxLength(30)
                 .IsRequired();
 
             builder
                 .Property(x => x.MiddleName)
-                .HasMaxLength(25);
+                .HasMaxLength(30);
 
             builder
                 .Property(x => x.Surname)
-                .HasMaxLength(25)
+                .HasMaxLength(30)
                 .IsRequired();
 
             builder
                 .Property(x => x.SecondSurname)
-                .HasMaxLength(25);
+                .HasMaxLength(30);
 
             builder
                 .Property(x => x.Document)
@@ -41,7 +41,7 @@ namespace Access.Sql.Configurations
 
             builder
                 .Property(x => x.Email)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsRequired();
 
             builder
@@ -52,10 +52,11 @@ namespace Access.Sql.Configurations
                 .HasIndex(x => x.Email)
                 .IsUnique();
 
-            builder.Property(s => s.Country)
+            builder.Property(x => x.Country)
                .HasConversion(
-                   s => s.GetDescription(),
-                   s => (Country)Enum.Parse(typeof(Country), s));
+                   x => x.GetDescription(),
+                   x => (Country)Enum.Parse(typeof(Country), x)
+               );
         }
     }
 }

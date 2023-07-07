@@ -1,28 +1,27 @@
 ﻿using Access.Contract.Roles;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class RoleAccess : IRoleAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly IRoleDataAccessBuilder _roleDataAccessBuilder;
 
-        public RoleAccess(IMapper mapper, DataContext context)
+        public RoleAccess(DataContext context, IRoleDataAccessBuilder roleDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _roleDataAccessBuilder = roleDataAccessBuilder;
         }
 
         public async Task<RoleAccessModel> CreateAccessAsync(CreateRoleAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Role>(accessRequest);
+            var entity = _roleDataAccessBuilder.MapCreateRoleAccessRequestToRole(accessRequest);
             _context.Roles.Add(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<RoleAccessModel>(entity);
+            return _roleDataAccessBuilder.MapRoleToRoleAccessModel(entity);
         }
 
         public async Task<IEnumerable<RoleAccessModel>> GetAllAccessAsync()
@@ -31,15 +30,16 @@ namespace Access.Data.Access
                                         .Include(x => x.RolePermissions)
                                         .AsNoTracking()
                                         .ToListAsync();
-            var respose = _mapper.Map<IEnumerable<RoleAccessModel>>(entities);
-            return respose;
+
+            var accessModelList = entities.Select(_roleDataAccessBuilder.MapRoleToRoleAccessModel);
+            return accessModelList;
         }
 
         public async Task<RoleAccessModel> GetRoleByCodeAccessAsync(string code)
         {
             var entity = await GetRoleByCodeAsync(code);
-            var response = _mapper.Map<RoleAccessModel>(entity);
-            return response;
+            var accessModel = _roleDataAccessBuilder.MapRoleToRoleAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<IEnumerable<RoleAccessModel>> GetRolesByUserIdAsync(string userId)
@@ -48,7 +48,11 @@ namespace Access.Data.Access
                                 .Include(x => x.Role)
                                 .Where(x => x.UserId == new Guid(userId))
                                 .ToListAsync();
-            var roles = userRoles.Any() ? userRoles.Select(x => _mapper.Map<RoleAccessModel>(x.Role)) : throw new ArgumentException($"Usuario Id: {userId}");
+
+            var roles = userRoles.Any() ?
+                userRoles.Select(x => _roleDataAccessBuilder.MapRoleToRoleAccessModel(x.Role)) :
+                throw new ArgumentException($"Usuario Id: {userId}");
+
             return roles;
         }
 
@@ -57,14 +61,18 @@ namespace Access.Data.Access
             var entity = await GetRoleByCodeAsync(accessRequest.Code);
             var entityPermissions = entity.RolePermissions.Select(x => x.Name);
             var persistPermissions = entity.RolePermissions.Where(x => accessRequest.Permissions.Contains(x.Name));
-            var permissions = accessRequest.Permissions.Where(x => !entityPermissions.Contains(x)).Select(x => new Permission { Id = Guid.NewGuid(), Name = x, RoleId = entity.Id, Active = true });
+            var permissions = accessRequest.Permissions
+                                    .Where(x => !entityPermissions.Contains(x))
+                                    .Select(x => new Permission { Id = Guid.NewGuid(), Name = x, RoleId = entity.Id, Active = true });
+
             permissions = permissions.Concat(persistPermissions);
-            entity = _mapper.Map(accessRequest, entity);
+            entity = _roleDataAccessBuilder.MapUpdateRoleAccessRequestToRole(accessRequest, entity);
             entity.RolePermissions = permissions.ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<RoleAccessModel>(entity);
-            return respose;
+
+            var accessModel = _roleDataAccessBuilder.MapRoleToRoleAccessModel(entity);
+            return accessModel;
         }
 
         private async Task<Role> GetRoleByCodeAsync(string code)
@@ -72,6 +80,7 @@ namespace Access.Data.Access
             var entity = await _context.Set<Role>()
                             .Include(x => x.RolePermissions)
                             .SingleOrDefaultAsync(x => x.Code == code);
+
             return entity ?? throw new KeyNotFoundException($"code {code}");
         }
     }

@@ -1,4 +1,4 @@
-﻿using Access.Contract.Procedure;
+﻿using Access.Contract.Procedures;
 using AutoMapper;
 using Contract.Workspace.Procedures;
 
