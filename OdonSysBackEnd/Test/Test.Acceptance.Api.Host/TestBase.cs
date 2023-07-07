@@ -36,8 +36,8 @@ namespace AcceptanceTest.Host.Api
             var dbContextFactory = new ApplicationDbContextFactory();
             _context = dbContextFactory.CreateDbContext(Array.Empty<string>());
 
-            await _context.Database.EnsureDeletedAsync();
-            await _context.Database.EnsureCreatedAsync();
+            //await _context.Database.EnsureDeletedAsync();
+            //await _context.Database.EnsureCreatedAsync();
             await LoadDataBaseConfigurations();
             _factory = new HostApiFactory();
             _client = _factory.CreateClient();

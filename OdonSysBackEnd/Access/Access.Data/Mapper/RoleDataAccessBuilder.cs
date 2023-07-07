@@ -21,10 +21,11 @@ namespace Access.Data.Mapper
 
         public RoleAccessModel MapRoleToRoleAccessModel(Role role)
         {
+            var rolePermissions = role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
             var roleAccessModel = new RoleAccessModel(
                 role.Name,
                 role.Code,
-                role.RolePermissions.Select(x => x.Name.GetDescription()),
+                rolePermissions,
                 new List<DoctorDataAccessModel>(),
                 role.DateCreated,
                 role.DateModified,
