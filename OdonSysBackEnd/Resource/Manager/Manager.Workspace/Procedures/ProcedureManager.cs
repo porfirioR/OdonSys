@@ -1,5 +1,5 @@
-﻿using Access.Contract.ClientProcedure;
-using Access.Contract.Procedure;
+﻿using Access.Contract.ClientProcedures;
+using Access.Contract.Procedures;
 using Access.Contract.Users;
 using AutoMapper;
 using Contract.Workspace.ClientProcedures;

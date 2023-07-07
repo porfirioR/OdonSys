@@ -1,29 +1,27 @@
-﻿using Access.Contract.Procedure;
+﻿using Access.Contract.Procedures;
 using Access.Sql;
-using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class ProcedureAccess : IProcedureAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
+        private readonly IProcedureDataAccessBuilder _procedureDataAccessBuilder;
 
-        public ProcedureAccess(IMapper mapper, DataContext context)
+        public ProcedureAccess(DataContext context, IProcedureDataAccessBuilder procedureDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _procedureDataAccessBuilder = procedureDataAccessBuilder;
         }
 
         public async Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Procedure>(accessRequest);
+            var entity = _procedureDataAccessBuilder.MapCreateProcedureAccessRequestToProcedure(accessRequest);
             //entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
             _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessModel>(entity);
+            return _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(entity);
         }
 
         public async Task<ProcedureAccessModel> DeleteAsync(string id)
@@ -32,14 +30,14 @@ namespace Access.Data.Access
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ProcedureAccessModel>(entity);
+            return _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(entity);
         }
 
         public async Task<IEnumerable<ProcedureAccessModel>> GetAllAsync()
         {
             var entities = await _context.Procedures.AsNoTracking().ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ProcedureAccessModel>>(entities);
-            return respose;
+            var modelList = entities.Select(_procedureDataAccessBuilder.MapProcedureToProcedureAccessModel);
+            return modelList;
         }
 
         public async Task<ProcedureAccessModel> GetByIdAsync(string id, bool active)
@@ -55,8 +53,8 @@ namespace Access.Data.Access
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id))) ??
                 throw new KeyNotFoundException($"id {id}");
 
-            var respose = _mapper.Map<ProcedureAccessModel>(entity);
-            return respose;
+            var accessModel = _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<ProcedureAccessModel> UpdateAsync(UpdateProcedureAccessRequest accessRequest)
@@ -64,12 +62,12 @@ namespace Access.Data.Access
             var entity = await _context.Procedures
                             //.Include(x => x.ProcedureTeeth)
                             .SingleOrDefaultAsync(x => x.Id == new Guid(accessRequest.Id));
-            entity = _mapper.Map(accessRequest, entity);
+            entity = _procedureDataAccessBuilder.MapUpdateProcedureAccessRequestToProcedure(accessRequest, entity);
             //entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), Active = true }).ToList();
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ProcedureAccessModel>(entity);
-            return respose;
+            var accessModel = _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<bool> ValidateIdNameAsync(string value)

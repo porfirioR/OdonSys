@@ -1,4 +1,4 @@
-﻿namespace Access.Contract.ClientProcedure
+﻿namespace Access.Contract.ClientProcedures
 {
     public record ClientProcedureAccessModel(
         string Id,

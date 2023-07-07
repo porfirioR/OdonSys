@@ -1,4 +1,4 @@
-﻿namespace Access.Contract.Procedure
+﻿namespace Access.Contract.Procedures
 {
     public class CreateProcedureAccessRequest
     {
@@ -6,5 +6,6 @@
         public string Description { get; set; }
         public IEnumerable<string> ProcedureTeeth { get; set; }
         public bool XRays { get; set; }
+        public int Price { get; set; }
     }
 }

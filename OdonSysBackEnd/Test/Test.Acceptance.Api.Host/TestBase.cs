@@ -36,8 +36,8 @@ namespace AcceptanceTest.Host.Api
             var dbContextFactory = new ApplicationDbContextFactory();
             _context = dbContextFactory.CreateDbContext(Array.Empty<string>());
 
-            await _context.Database.EnsureDeletedAsync();
-            await _context.Database.EnsureCreatedAsync();
+            //await _context.Database.EnsureDeletedAsync();
+            //await _context.Database.EnsureCreatedAsync();
             await LoadDataBaseConfigurations();
             _factory = new HostApiFactory();
             _client = _factory.CreateClient();
@@ -75,7 +75,7 @@ namespace AcceptanceTest.Host.Api
                 permissions = string.Concat(permissions, string.Format(insertPermissions, rolId, permissionItem.GetDescription(), Guid.NewGuid(), date.ToString(), date, date.ToString()));
             }
             adminRoleSqlStatement = string.Concat(adminRoleSqlStatement, permissions, "SELECT * from Permissions;");
-            var permissionList = await _context.Permissions.FromSqlRaw(adminRoleSqlStatement).ToListAsync();
+            _ = await _context.Permissions.FromSqlRaw(adminRoleSqlStatement).ToListAsync();
 
             _context.Database.ExecuteSqlRaw(Properties.Resources.BasicSql);
         }
@@ -88,9 +88,9 @@ namespace AcceptanceTest.Host.Api
                 MiddleName = Guid.NewGuid().ToString()[..25],
                 Surname = _testUser,
                 SecondSurname = Guid.NewGuid().ToString()[..25],
-                Document = Guid.NewGuid().ToString()[..15],
+                Document = "1111111",
                 Password = _testPassword,
-                Phone = Guid.NewGuid().ToString()[..15],
+                Phone = "0991123456",
                 Email = _email,
                 Country = Country.Paraguay
             };
