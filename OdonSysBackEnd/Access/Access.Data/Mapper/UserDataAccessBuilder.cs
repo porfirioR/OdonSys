@@ -43,7 +43,7 @@ namespace Access.Data.Mapper
             user.UserName,
             user.Active,
             user.Approved,
-            user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>()
+            user.UserRoles != null && user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>()
         );
 
         public UserDataAccessModel MapUserToUserDataAccessModel(User user) => new(
@@ -51,7 +51,7 @@ namespace Access.Data.Mapper
             user.UserName,
             user.Active,
             user.Approved,
-            user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>()
+            user.UserRoles != null && user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>()
         );
     }
 }

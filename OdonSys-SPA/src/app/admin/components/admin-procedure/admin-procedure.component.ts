@@ -72,9 +72,9 @@ export class AdminProcedureComponent implements OnInit {
     if (this.canEdit) {
       buttonShows.push(ButtonGridActionType.Editar)
     }
-    if (this.canDelete) {
-      buttonShows.push(ButtonGridActionType.Borrar)
-    }
+    // if (this.canDelete) {
+    //   buttonShows.push(ButtonGridActionType.Borrar)
+    // }
     const conditionalButtons = []
     if (this.canRestore) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Restaurar))
@@ -83,7 +83,7 @@ export class AdminProcedureComponent implements OnInit {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
     }
     const params: GridActionModel = {
-      buttonShow: [ButtonGridActionType.Borrar, ButtonGridActionType.Editar],
+      buttonShow: buttonShows,
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons
     }

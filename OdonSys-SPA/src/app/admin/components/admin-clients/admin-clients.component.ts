@@ -70,16 +70,18 @@ export class AdminClientsComponent implements OnInit {
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     columnAction.minWidth = 360
     const conditionalButtons = []
-    const buttonsToShow: ButtonGridActionType[] = [ButtonGridActionType.Ver]
+    const buttonsToShow: ButtonGridActionType[] = [
+      // ButtonGridActionType.Ver
+    ]
     if (this.canDeactivate) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
     }
     if (this.canRestore) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Aprobar))
     }
-    if (this.canDelete) {
-      buttonsToShow.push(ButtonGridActionType.Borrar)
-    }
+    // if (this.canDelete) {
+    //   buttonsToShow.push(ButtonGridActionType.Borrar)
+    // }
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
@@ -91,7 +93,7 @@ export class AdminClientsComponent implements OnInit {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
-      customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
+      // customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
     }
     columnAction.cellRendererParams = params
   }
