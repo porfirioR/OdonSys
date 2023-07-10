@@ -70,5 +70,15 @@ namespace Manager.Admin
             var accessModel = await _clientAccess.AssignClientToUserAsync(accessRequest);
             return _mapper.Map<IEnumerable<ClientModel>>(accessModel);
         }
+
+        public async Task<bool> IsDuplicateEmailAsync(string email, string id = null)
+        {
+            return await _clientAccess.IsDuplicateEmailAsync(email, id);
+        }
+
+        public Task<bool> IsDuplicateDocumentAsync(string document, string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

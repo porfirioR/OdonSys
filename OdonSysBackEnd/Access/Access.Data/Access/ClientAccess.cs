@@ -92,5 +92,25 @@ namespace Access.Data.Access
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
             return entity ?? throw new KeyNotFoundException($"id {id}");
         }
+
+        public async Task<bool> IsDuplicateEmailAsync(string email, string id = null)
+        {
+            if (id != null)
+            {
+                var existClientWithEmail = await _context.Clients
+                                                    .FirstOrDefaultAsync(x => x.Id != new Guid(id) && !string.IsNullOrEmpty(x.Email) && x.Email == email);
+                return existClientWithEmail != null;
+            }
+            var client = await _context.Clients
+                                    .FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.Email) && x.Email == email);
+            return client != null;
+        }
+
+        public async Task<bool> IsDuplicateDocumentAsync(string document, string id)
+        {
+            var client = await _context.Clients
+                                    .FirstOrDefaultAsync(x => x.Id != new Guid(id) && x.Document == document);
+            return client != null;
+        }
     }
 }

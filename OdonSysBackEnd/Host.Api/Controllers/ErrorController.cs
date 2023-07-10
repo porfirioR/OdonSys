@@ -80,7 +80,7 @@ namespace Host.Api.Controllers
             return (statusCode, title);
         }
 
-        private string GetDuplicateKeyFromSqlErrorMessage(string message)
+        private static string GetDuplicateKeyFromSqlErrorMessage(string message)
         {
             var duplicateValue = string.Empty;
             var initialDuplicateIndex = message.IndexOf("(") + 1;

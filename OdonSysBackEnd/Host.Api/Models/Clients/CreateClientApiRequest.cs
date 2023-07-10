@@ -28,7 +28,8 @@ namespace Host.Api.Models.Clients
             if (documentLength < 5)
             {
                 results.Add(new ValidationResult($"Longitud mínima de documento es 5."));
-            } else if (documentLength > 10)
+            }
+            else if (documentLength > 10)
             {
                 results.Add(new ValidationResult($"Longitud máxima de documento es 10."));
             }
@@ -36,6 +37,10 @@ namespace Host.Api.Models.Clients
             if (clientManager.GetByDocumentAsync(Document).GetAwaiter().GetResult() != null)
             {
                 results.Add(new ValidationResult($"Paciente con el document: {Document} ya existe."));
+            }
+            if (clientManager.IsDuplicateEmailAsync(Email).GetAwaiter().GetResult())
+            {
+                results.Add(new ValidationResult($"El correo {Email} ya existe."));
             }
             if (Country != Country.Paraguay && !string.IsNullOrEmpty(Ruc))
             {

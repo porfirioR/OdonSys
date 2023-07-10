@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Access.Sql.Migrations
 {
-    public partial class InitialDB : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -354,13 +355,6 @@ namespace Access.Sql.Migrations
                 table: "Clients",
                 column: "Document",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Clients_Email",
-                table: "Clients",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FileStorages_Url",
