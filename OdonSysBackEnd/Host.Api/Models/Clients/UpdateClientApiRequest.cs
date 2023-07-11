@@ -1,4 +1,4 @@
-﻿using Contract.Admin.Clients;
+﻿using Contract.Administration.Clients;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 

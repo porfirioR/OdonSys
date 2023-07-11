@@ -1,4 +1,4 @@
-﻿using Access.Contract.Auth;
+﻿using Access.Contract.Authentication;
 using Access.Contract.ClientProcedures;
 using Access.Contract.Clients;
 using Access.Contract.Files;
@@ -17,7 +17,7 @@ namespace Access.Data
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IAuthAccess, AuthenticationAccess>();
+            services.AddTransient<IAuthenticationAccess, AuthenticationAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
             services.AddTransient<IFileAccess, Access.FileAccess>();

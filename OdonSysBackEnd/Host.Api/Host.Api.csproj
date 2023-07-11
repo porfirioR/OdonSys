@@ -33,10 +33,10 @@
     <ProjectReference Include="..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\Access\Access.File\Access.File.csproj" />
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
-    <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Contract\Contract.Administration\Contract.Administration.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Payment\Contract.Payment.csproj" />
-    <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Manager\Manager.Administration\Manager.Administration.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Payment\Manager.Payment.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Workspace\Manager.Workspace.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />

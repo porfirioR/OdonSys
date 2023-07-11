@@ -1,4 +1,4 @@
-﻿using Contract.Admin.Roles;
+﻿using Contract.Administration.Roles;
 using Host.Api.Models.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Utilities;

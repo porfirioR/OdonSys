@@ -1,4 +1,4 @@
-﻿using Contract.Admin.Clients;
+﻿using Contract.Administration.Clients;
 using Contract.Workspace.Procedures;
 using System.ComponentModel.DataAnnotations;
 

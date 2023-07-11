@@ -1,4 +1,4 @@
-﻿using Contract.Admin.Clients;
+﻿using Contract.Administration.Clients;
 using Contract.Payment.Invoices;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Files;

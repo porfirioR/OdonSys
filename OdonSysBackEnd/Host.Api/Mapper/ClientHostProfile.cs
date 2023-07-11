@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Contract.Admin.Clients;
+using Contract.Administration.Clients;
 using Host.Api.Models.Clients;
 
 namespace Host.Api.Mapper

@@ -1,5 +1,5 @@
-﻿using Contract.Admin.Clients;
-using Contract.Admin.Users;
+﻿using Contract.Administration.Clients;
+using Contract.Administration.Users;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Models.Clients

@@ -1,5 +1,5 @@
 ﻿using Host.Api.Mapper;
-using Manager.Admin.Mapper;
+using Manager.Administration.Mapper;
 using Manager.Workspace.Procedures;
 
 namespace Host.Api

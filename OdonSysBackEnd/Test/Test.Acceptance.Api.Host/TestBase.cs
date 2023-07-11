@@ -1,5 +1,5 @@
 ﻿using Access.Sql;
-using Contract.Admin.Auth;
+using Contract.Administration.Authentication;
 using Host.Api.Models.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -80,7 +80,7 @@ namespace AcceptanceTest.Host.Api
             _context.Database.ExecuteSqlRaw(Properties.Resources.BasicSql);
         }
 
-        private async Task<AuthModel> RegisterTestClient(HttpClient client)
+        private async Task<AuthenticationModel> RegisterTestClient(HttpClient client)
         {
             var testUser = new RegisterUserApiRequest()
             {
@@ -96,7 +96,7 @@ namespace AcceptanceTest.Host.Api
             };
             var response = await client.PostAsJsonAsync("api/authentication/register", testUser);
             var content = await response.Content.ReadAsStringAsync();
-            var responseBody = JsonConvert.DeserializeObject<AuthModel>(content);
+            var responseBody = JsonConvert.DeserializeObject<AuthenticationModel>(content);
             return responseBody;
         }
     }

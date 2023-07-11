@@ -1,4 +1,6 @@
-﻿namespace Host.Api
+﻿using Manager.Administration;
+
+namespace Host.Api
 {
     public partial class Startup
     {
@@ -10,7 +12,7 @@
             Access.Sql.ServiceInjection.ConfigureServices(services, MainConfiguration);
 
             //Manager
-            Manager.Admin.ServiceInjection.ConfigureServices(services);
+            ServiceInjection.ConfigureServices(services);
             Manager.Payment.ServiceInjection.ConfigureServices(services);
             Manager.Workspace.ServiceInjection.ConfigureServices(services);
         }

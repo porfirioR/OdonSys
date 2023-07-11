@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Contract.Admin.Clients;
-using Contract.Admin.Users;
+using Contract.Administration.Clients;
+using Contract.Administration.Users;
 using Host.Api.Models.Auth;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Users;

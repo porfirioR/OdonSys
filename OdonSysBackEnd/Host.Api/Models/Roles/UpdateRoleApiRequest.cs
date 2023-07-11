@@ -1,5 +1,5 @@
-﻿using Contract.Admin.Roles;
-using Contract.Admin.Users;
+﻿using Contract.Administration.Roles;
+using Contract.Administration.Users;
 using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 

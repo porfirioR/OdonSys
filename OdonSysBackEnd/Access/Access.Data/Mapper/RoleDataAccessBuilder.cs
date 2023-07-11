@@ -24,9 +24,9 @@ namespace Access.Data.Mapper
             return permissions.Select(x => new Permission { Id = Guid.NewGuid(), Name = x, Active = true, Role = role });
         }
 
-        public RoleAccessModel MapRoleToRoleAccessModel(Role role, IEnumerable<Permission> rolePeremissions = null)
+        public RoleAccessModel MapRoleToRoleAccessModel(Role role, IEnumerable<Permission> rolePermissions = null)
         {
-            var rolePermissionList = rolePeremissions != null && rolePeremissions.Any() ? rolePeremissions.Select(x => x.Name.GetDescription()) : null;
+            var rolePermissionList = rolePermissions != null && rolePermissions.Any() ? rolePermissions.Select(x => x.Name.GetDescription()) : null;
             rolePermissionList ??= role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
             var roleAccessModel = new RoleAccessModel(
                 role.Name,
