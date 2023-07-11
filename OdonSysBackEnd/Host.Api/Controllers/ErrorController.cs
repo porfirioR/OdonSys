@@ -34,7 +34,7 @@ namespace Host.Api.Controllers
                 type: _problemPayloadType);
         }
 
-        private (int StatusCode, string Title) GetExceptionDetails(IExceptionHandlerFeature exceptionDetails)
+        private static (int StatusCode, string Title) GetExceptionDetails(IExceptionHandlerFeature exceptionDetails)
         {
             var statusCode = 500;
             var title = string.Empty;

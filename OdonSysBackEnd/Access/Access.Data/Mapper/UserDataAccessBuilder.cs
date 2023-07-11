@@ -27,6 +27,7 @@ namespace Access.Data.Mapper
             user.Country = request.Country;
             user.Email = user.Email;
             user.Phone = request.Phone;
+            user.Active = request.Active;
             return user;
         }
 

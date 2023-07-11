@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridOptions, IRowNode } from 'ag-grid-community';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
@@ -101,14 +101,15 @@ export class AdminProcedureComponent implements OnInit {
         break
       case ButtonGridActionType.Restaurar:
       case ButtonGridActionType.Desactivar:
-        this.changeSelectedDoctorVisibility(currentRowNode.data)
+        this.changeSelectedDoctorVisibility(currentRowNode)
         break
       default:
         break
     }
   }
 
-  private changeSelectedDoctorVisibility = (procedure: ProcedureModel): void => {
+  private changeSelectedDoctorVisibility = (currentRowNode: IRowNode<any>): void => {
+    const procedure: ProcedureModel = currentRowNode.data
     const message = procedure.active ?
                     '¿Está seguro de deshabilitar el tratamiento?, no será visible y no podra ser seleccionado en el sistema.' :
                     '¿Está seguro de restaurar el tratamiento?, será visible para ser seleccionado en el sistema.'
@@ -116,6 +117,8 @@ export class AdminProcedureComponent implements OnInit {
       if (result.value) {
         const request = new PatchRequest(!procedure.active)
         this.store.dispatch(fromProceduresActions.changeProcedureVisibility({ id: procedure.id, model: request }))
+        const columnToRefresh = ['active', 'action']
+        this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
       }
     })
   }
