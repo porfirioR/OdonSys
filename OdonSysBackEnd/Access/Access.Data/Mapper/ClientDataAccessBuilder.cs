@@ -20,7 +20,11 @@ namespace Access.Data.Mapper
 
         public ClientAccessModel MapClientToClientAccessModel(Client client)
         {
-            var doctorDataAccessModels = client.UserClients.Any() ?
+            if (client is null)
+            {
+                return null;
+            }
+            var doctorDataAccessModels = client.UserClients != null && client.UserClients.Any() ?
                 client.UserClients.Select(x => new DoctorDataAccessModel(
                     x.User.Id.ToString(),
                     x.User.Name,
@@ -34,7 +38,7 @@ namespace Access.Data.Mapper
                     x.User.UserName,
                     x.User.Active,
                     x.User.Approved,
-                    x.User.UserRoles.Any() ? x.User.UserRoles.Select(x => x.Role.Code) : new List<string>()
+                    x.User.UserRoles != null && x.User.UserRoles.Any() ? x.User.UserRoles.Select(x => x.Role.Code) : new List<string>()
                 )) :
                 new List<DoctorDataAccessModel>();
 

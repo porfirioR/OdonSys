@@ -22,13 +22,16 @@ namespace Access.Data.Mapper
             return entity;
         }
 
-        public InvoiceDetail MapInvoiceDetailAccessRequestToInvoiceDetail(InvoiceDetailAccessRequest request)
+        public InvoiceDetail MapInvoiceDetailAccessRequestToInvoiceDetail(InvoiceDetailAccessRequest request, Invoice entity)
         {
             var invoiceDetail = new InvoiceDetail()
             {
                 ClientProcedureId = request.ClientProcedureId,
                 ProcedurePrice = request.ProcedurePrice,
-                FinalPrice = request.FinalPrice
+                FinalPrice = request.FinalPrice,
+                Active = true,
+                Id = Guid.NewGuid(),
+                InvoiceId = entity.Id
             };
             return invoiceDetail;
         }
@@ -37,7 +40,8 @@ namespace Access.Data.Mapper
         {
             var invoiceDetails = entity.InvoiceDetails is null ?
                 new List<InvoiceDetailAccessModel>() :
-                entity.InvoiceDetails.Select(x => {
+                entity.InvoiceDetails.Select(x =>
+                {
                     var clientProcedure = clientProcedureEntities.FirstOrDefault(y => y.Id == x.ClientProcedureId);
                     return new InvoiceDetailAccessModel(
                         x.Id,

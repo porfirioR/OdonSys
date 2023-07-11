@@ -20,8 +20,10 @@ namespace Access.Data.Access
         {
             var entity = _roleDataAccessBuilder.MapCreateRoleAccessRequestToRole(accessRequest);
             _context.Roles.Add(entity);
+            var rolePermissions = _roleDataAccessBuilder.GetPermissions(accessRequest.Permissions, entity);
+            _context.Permissions.AddRange(rolePermissions);
             await _context.SaveChangesAsync();
-            return _roleDataAccessBuilder.MapRoleToRoleAccessModel(entity);
+            return _roleDataAccessBuilder.MapRoleToRoleAccessModel(entity, rolePermissions);
         }
 
         public async Task<IEnumerable<RoleAccessModel>> GetAllAccessAsync()
@@ -31,7 +33,7 @@ namespace Access.Data.Access
                                         .AsNoTracking()
                                         .ToListAsync();
 
-            var accessModelList = entities.Select(_roleDataAccessBuilder.MapRoleToRoleAccessModel);
+            var accessModelList = entities.Select(x => _roleDataAccessBuilder.MapRoleToRoleAccessModel(x));
             return accessModelList;
         }
 

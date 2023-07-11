@@ -6,7 +6,9 @@
       [type]="type"
       [class.is-invalid]="ngControl.touched && ngControl.invalid"
       [formControl]="$any(ngControl).control"
-      placeholder={{label}}>
+      placeholder={{label}}
+      [autocomplete]="type === 'password' ? 'on': 'off'"
+    >
   </ng-container>
 
   <ng-template #inputNumberSeparator>

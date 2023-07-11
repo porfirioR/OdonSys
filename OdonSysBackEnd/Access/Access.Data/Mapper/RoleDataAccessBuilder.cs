@@ -1,6 +1,7 @@
 ﻿using Access.Contract.Roles;
 using Access.Contract.Users;
 using Access.Sql.Entities;
+using Utilities.Enums;
 using Utilities.Extensions;
 
 namespace Access.Data.Mapper
@@ -13,19 +14,24 @@ namespace Access.Data.Mapper
             {
                 Active = true,
                 Code = createRoleAccessRequest.Code,
-                Name = createRoleAccessRequest.Name,
-                RolePermissions = createRoleAccessRequest.Permissions.Select(x => new Permission { Id = Guid.NewGuid(), Name = x, Active = true })
+                Name = createRoleAccessRequest.Name
             };
             return role;
         }
 
-        public RoleAccessModel MapRoleToRoleAccessModel(Role role)
+        public IEnumerable<Permission> GetPermissions(IEnumerable<PermissionName> permissions, Role role)
         {
-            var rolePermissions = role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
+            return permissions.Select(x => new Permission { Id = Guid.NewGuid(), Name = x, Active = true, Role = role });
+        }
+
+        public RoleAccessModel MapRoleToRoleAccessModel(Role role, IEnumerable<Permission> rolePeremissions = null)
+        {
+            var rolePermissionList = rolePeremissions != null && rolePeremissions.Any() ? rolePeremissions.Select(x => x.Name.GetDescription()) : null;
+            rolePermissionList ??= role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
             var roleAccessModel = new RoleAccessModel(
                 role.Name,
                 role.Code,
-                rolePermissions,
+                rolePermissionList,
                 new List<DoctorDataAccessModel>(),
                 role.DateCreated,
                 role.DateModified,
@@ -53,7 +59,7 @@ namespace Access.Data.Mapper
         public Role MapUpdateRoleAccessRequestToRole(UpdateRoleAccessRequest updateRoleAccessRequest, Role role)
         {
             role.DateModified = DateTime.Now;
-            role.RolePermissions = updateRoleAccessRequest.Permissions.Select(x => new Permission { Name = x });
+            role.RolePermissions = updateRoleAccessRequest.Permissions != null ? updateRoleAccessRequest.Permissions.Select(x => new Permission { Name = x }) : new List<Permission>();
             return role;
         }
     }

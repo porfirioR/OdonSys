@@ -1,9 +1,8 @@
 @import "../../../../assets/scss/colors.scss";
 
 .header-container {
-  width: 100%;
   margin: auto;
-  background-color: $primaryColor;
+  // background-color: $primaryColor;
   position: sticky;
   z-index: 1;
   top: 0;
@@ -80,4 +79,10 @@ ul {
 img {
   height: 58px;
   margin-left: -15px !important;
+}
+
+@media screen and (max-width: 1024px) {
+  main {
+    width: fit-content;
+  }
 }

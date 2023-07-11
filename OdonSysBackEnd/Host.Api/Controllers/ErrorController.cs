@@ -34,7 +34,7 @@ namespace Host.Api.Controllers
                 type: _problemPayloadType);
         }
 
-        private (int StatusCode, string Title) GetExceptionDetails(IExceptionHandlerFeature exceptionDetails)
+        private static (int StatusCode, string Title) GetExceptionDetails(IExceptionHandlerFeature exceptionDetails)
         {
             var statusCode = 500;
             var title = string.Empty;
@@ -80,7 +80,7 @@ namespace Host.Api.Controllers
             return (statusCode, title);
         }
 
-        private string GetDuplicateKeyFromSqlErrorMessage(string message)
+        private static string GetDuplicateKeyFromSqlErrorMessage(string message)
         {
             var duplicateValue = string.Empty;
             var initialDuplicateIndex = message.IndexOf("(") + 1;

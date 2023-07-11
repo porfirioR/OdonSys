@@ -20,6 +20,11 @@ namespace Access.Data.Access
         {
             var entity = _invoiceDataAccessBuilder.MapInvoiceAccessRequestToInvoice(accessRequest);
             _context.Invoices.Add(entity);
+            if (accessRequest.InvoiceDetails != null && accessRequest.InvoiceDetails.Any())
+            {
+                var invoiceDetails = accessRequest.InvoiceDetails.Select(x => _invoiceDataAccessBuilder.MapInvoiceDetailAccessRequestToInvoiceDetail(x, entity));
+                _context.InvoiceDetails.AddRange(invoiceDetails);
+            }
             await _context.SaveChangesAsync();
             var clientProcedureIds = entity.InvoiceDetails.Select(x => x.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
