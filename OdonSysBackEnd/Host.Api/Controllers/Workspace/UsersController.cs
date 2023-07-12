@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Contract.Administration.Users;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Error;
-using Host.Api.Models.Roles;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Error;
+using Host.Api.Contract.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

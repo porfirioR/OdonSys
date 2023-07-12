@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Contract.Administration.Clients;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Clients;
-using Host.Api.Models.Error;
+﻿using Contract.Administration.Clients;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Clients;
+using Host.Api.Contract.Error;
+using Host.Api.Contract.MapBuilders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -15,20 +15,20 @@ namespace Host.Api.Controllers.Administration
     [ApiController]
     public sealed class ClientsController : OdonSysBaseController
     {
-        private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
+        private readonly IClientHostBuilder _clientHostBuilder;
 
-        public ClientsController(IMapper mapper, IClientManager clientManager)
+        public ClientsController(IClientManager clientManager, IClientHostBuilder clientHostBuilder)
         {
-            _mapper = mapper;
             _clientManager = clientManager;
+            _clientHostBuilder = clientHostBuilder;
         }
 
         [HttpPost]
         [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
-            var request = _mapper.Map<CreateClientRequest>(apiRequest);
+            var request = _clientHostBuilder.MapCreateClientApiRequestToCreateClientRequest(apiRequest);
             request.UserId = UserId;
             var model = await _clientManager.CreateAsync(request);
             return model;
@@ -38,7 +38,7 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            var request = _mapper.Map<UpdateClientRequest>(apiRequest);
+            var request = _clientHostBuilder.MapUpdateClientApiRequestToUpdateClientRequest(apiRequest);
             var model = await _clientManager.UpdateAsync(request);
             return model;
         }
@@ -79,8 +79,11 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanModifyVisibilityClient)]
         public async Task<ClientModel> PatchClient(string id, [FromBody] JsonPatchDocument<UpdateClientRequest> patchClient)
         {
-            if (patchClient == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
-            var clientRequest = _mapper.Map<UpdateClientRequest>(await _clientManager.GetByIdAsync(id));
+            if (patchClient == null)
+            {
+                throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
+            }
+            var clientRequest = _clientHostBuilder.MapClientModelToUpdateClientRequest(await _clientManager.GetByIdAsync(id));
             patchClient.ApplyTo(clientRequest);
             if (!ModelState.IsValid)
             {

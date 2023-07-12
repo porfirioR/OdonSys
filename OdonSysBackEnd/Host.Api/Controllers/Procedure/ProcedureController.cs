@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Contract.Workspace.Procedures;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Error;
-using Host.Api.Models.Procedures;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Error;
+using Host.Api.Contract.MapBuilders;
+using Host.Api.Contract.Procedures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -15,20 +16,21 @@ namespace Host.Api.Controllers.Procedure
     [ApiController]
     public sealed class ProcedureController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IProcedureManager _procedureManager;
 
-        public ProcedureController(IMapper mapper, IProcedureManager procedureManager)
+        private readonly IProcedureManager _procedureManager;
+        private readonly IProcedureHostBuilder _procedureHostBuilder;
+
+        public ProcedureController(IMapper mapper, IProcedureManager procedureManager, IProcedureHostBuilder procedureHostBuilder)
         {
-            _mapper = mapper;
             _procedureManager = procedureManager;
+            _procedureHostBuilder = procedureHostBuilder;
         }
 
         [HttpPost]
         [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Create([FromBody] CreateProcedureApiRequest apiRequest)
         {
-            var request = _mapper.Map<CreateProcedureRequest>(apiRequest);
+            var request = _procedureHostBuilder.MapCreateProcedureApiRequestToCreateProcedureRequest(apiRequest);
             var model = await _procedureManager.CreateAsync(request);
             return model;
         }
@@ -37,7 +39,7 @@ namespace Host.Api.Controllers.Procedure
         [Authorize(Policy = Policy.CanManageProcedure)]
         public async Task<ProcedureModel> Update([FromBody] UpdateProcedureApiRequest apiRequest)
         {
-            var request = _mapper.Map<UpdateProcedureRequest>(apiRequest);
+            var request = _procedureHostBuilder.MapUpdateProcedureApiRequestToUpdateProcedureRequest(apiRequest);
             var response = await _procedureManager.UpdateAsync(request);
             return response;
         }
@@ -80,7 +82,7 @@ namespace Host.Api.Controllers.Procedure
             {
                 response = await _procedureManager.GetByIdAsync(id, false);
             }
-            var updateProcedureRequest = _mapper.Map<UpdateProcedureRequest>(response);
+            var updateProcedureRequest = _procedureHostBuilder.MapProcedureModelToUpdateProcedureRequest(response);
             patchProcedure.ApplyTo(updateProcedureRequest);
             if (!ModelState.IsValid)
             {

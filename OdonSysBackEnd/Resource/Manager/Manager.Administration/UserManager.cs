@@ -10,13 +10,13 @@ namespace Manager.Administration
     internal sealed class UserManager : IUserManager
     {
         private readonly IUserDataAccess _userDataAccess;
-        private readonly IAuthenticationAccess _authDataAccess;
+        private readonly IAuthenticationAccess _authenticationDataAccess;
         private readonly IUserManagerBuilder _userManagerBuilder;
 
-        public UserManager(IUserDataAccess userDataAccess, IAuthenticationAccess authDataAccess, IUserManagerBuilder userManagerBuilder)
+        public UserManager(IUserDataAccess userDataAccess, IAuthenticationAccess authenticationDataAccess, IUserManagerBuilder userManagerBuilder)
         {
             _userDataAccess = userDataAccess;
-            _authDataAccess = authDataAccess;
+            _authenticationDataAccess = authenticationDataAccess;
             _userManagerBuilder = userManagerBuilder;
         }
 
@@ -27,7 +27,7 @@ namespace Manager.Administration
                 throw new AggregateException("Ya existe un usuario con ese mismo documento o correo.");
             }
             var dataAccess = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
-            var accessModel = await _authDataAccess.RegisterUserAsync(dataAccess);
+            var accessModel = await _authenticationDataAccess.RegisterUserAsync(dataAccess);
             var response = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return response;
         }
@@ -37,7 +37,7 @@ namespace Manager.Administration
             var encodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(authorization["Basic ".Length..]));
             var credentials = encodedCredentials.Split(":");
             var loginAccess = new LoginDataAccess(credentials.First(), credentials.Last());
-            var accessModel = await _authDataAccess.LoginAsync(loginAccess);
+            var accessModel = await _authenticationDataAccess.LoginAsync(loginAccess);
             var model = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return model;
         }
@@ -65,7 +65,7 @@ namespace Manager.Administration
 
         public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
         {
-            var success = _authDataAccess.RemoveAllClaims(claimsPrincipal);
+            var success = _authenticationDataAccess.RemoveAllClaims(claimsPrincipal);
             return success;
         }
 

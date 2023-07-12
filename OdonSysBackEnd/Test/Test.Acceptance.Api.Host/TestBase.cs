@@ -1,6 +1,6 @@
 ﻿using Access.Sql;
 using Contract.Administration.Authentication;
-using Host.Api.Models.Auth;
+using Host.Api.Contract.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;

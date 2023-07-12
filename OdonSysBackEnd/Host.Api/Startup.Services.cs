@@ -1,4 +1,6 @@
-﻿using Manager.Administration;
+﻿using Host.Api.Contract.MapBuilders;
+using Host.Api.Mapper;
+using Manager.Administration;
 
 namespace Host.Api
 {
@@ -6,6 +8,9 @@ namespace Host.Api
     {
         public void InjectServices(IServiceCollection services)
         {
+            services.AddTransient<IClientHostBuilder, ClientHostBuilder>();
+            services.AddTransient<IProcedureHostBuilder, ProcedureHostBuilder>();
+
             //Access
             Access.Data.ServiceInjection.ConfigureServices(services);
             Access.File.ServiceInjection.ConfigureServices(services);

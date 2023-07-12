@@ -1,9 +1,9 @@
 ﻿using Contract.Payment.Invoices;
 using Contract.Workspace.Files;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Error;
-using Host.Api.Models.Files;
-using Host.Api.Models.Invoices;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Error;
+using Host.Api.Contract.Files;
+using Host.Api.Contract.Invoices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;

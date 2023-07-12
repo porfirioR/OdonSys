@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contract.Administration.Roles;
-using Host.Api.Models.Roles;
+using Host.Api.Contract.Roles;
 
 namespace Host.Api.Mapper
 {

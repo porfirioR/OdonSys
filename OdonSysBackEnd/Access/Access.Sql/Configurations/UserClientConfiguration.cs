@@ -9,7 +9,7 @@ namespace Access.Sql.Configurations
         {
             base.Configure(builder);
             builder
-                .HasIndex(x => new {x.Id, x.UserId, x.ClientId })
+                .HasIndex(x => new { x.Id, x.UserId, x.ClientId })
                 .IsUnique();
 
             builder

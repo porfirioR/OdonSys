@@ -7,7 +7,6 @@ namespace Host.Api
         public void ConfigureMappings(IServiceCollection services)
         {
             services.AddAutoMapper(
-                typeof(ProcedureHostProfile),
                 typeof(UserHostProfile)
             );
         }

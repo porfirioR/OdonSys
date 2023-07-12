@@ -1,4 +1,4 @@
-﻿using Host.Api.Models.Error;
+﻿using Host.Api.Contract.Error;
 using System.Net;
 using System.Text.Json;
 
@@ -33,12 +33,12 @@ namespace Host.Api.Middleware
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiException(context.Response.StatusCode, ex.Message);
                 }
-                else if(ex is UnauthorizedAccessException)
+                else if (ex is UnauthorizedAccessException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     response = new ApiException(context.Response.StatusCode, ex.Message);
                 }
-                else if(ex is AggregateException)
+                else if (ex is AggregateException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     response = new ApiException(context.Response.StatusCode, ex.Message);

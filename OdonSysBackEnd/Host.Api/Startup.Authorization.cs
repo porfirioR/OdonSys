@@ -1,4 +1,4 @@
-﻿using Host.Api.Models.Authorization;
+﻿using Host.Api.Contract.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Utilities.Enums;

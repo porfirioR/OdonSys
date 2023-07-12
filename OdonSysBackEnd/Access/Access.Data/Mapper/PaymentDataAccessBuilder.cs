@@ -17,7 +17,7 @@ namespace Access.Data.Mapper
             return payment;
         }
 
-        public PaymentAccessModel MapPaymentToPaymentAccessModel(Payment payment) => new (
+        public PaymentAccessModel MapPaymentToPaymentAccessModel(Payment payment) => new(
             payment.InvoiceId.ToString(),
             payment.UserId.ToString(),
             payment.DateCreated,

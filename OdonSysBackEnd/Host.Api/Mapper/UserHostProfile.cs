@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contract.Administration.Users;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Users;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Users;
 
 namespace Host.Api.Mapper
 {

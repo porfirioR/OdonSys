@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Contract.Administration.Clients;
 using Contract.Administration.Users;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Clients;
-using Host.Api.Models.Users;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Clients;
+using Host.Api.Contract.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

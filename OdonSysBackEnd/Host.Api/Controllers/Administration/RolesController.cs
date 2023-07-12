@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contract.Administration.Roles;
-using Host.Api.Models.Authorization;
-using Host.Api.Models.Roles;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
