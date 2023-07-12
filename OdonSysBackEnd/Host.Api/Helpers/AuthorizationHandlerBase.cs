@@ -1,4 +1,4 @@
-﻿using Host.Api.Models.Auth;
+﻿using Host.Api.Models.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Host.Api.Helpers

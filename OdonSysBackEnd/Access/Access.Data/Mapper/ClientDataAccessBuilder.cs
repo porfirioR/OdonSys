@@ -78,7 +78,6 @@ namespace Access.Data.Mapper
             Active = true
         };
 
-
         public Client MapUpdateClientAccessRequestToClient(UpdateClientAccessRequest updateClientAccessRequest, Client client = null)
         {
             client ??= new Client();

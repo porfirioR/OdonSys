@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
-using Host.Api.Models.Auth;
+using Host.Api.Models.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,5 @@
 ﻿using Access.Contract.Authentication;
 using Access.Contract.Users;
-using AutoMapper;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
 using System.Security.Claims;
@@ -10,15 +9,15 @@ namespace Manager.Administration
 {
     internal sealed class UserManager : IUserManager
     {
-        private readonly IMapper _mapper;
         private readonly IUserDataAccess _userDataAccess;
         private readonly IAuthenticationAccess _authDataAccess;
+        private readonly IUserManagerBuilder _userManagerBuilder;
 
-        public UserManager(IMapper mapper, IUserDataAccess userDataAccess, IAuthenticationAccess authDataAccess)
+        public UserManager(IUserDataAccess userDataAccess, IAuthenticationAccess authDataAccess, IUserManagerBuilder userManagerBuilder)
         {
-            _mapper = mapper;
             _userDataAccess = userDataAccess;
             _authDataAccess = authDataAccess;
+            _userManagerBuilder = userManagerBuilder;
         }
 
         public async Task<AuthenticationModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
@@ -27,9 +26,9 @@ namespace Manager.Administration
             {
                 throw new AggregateException("Ya existe un usuario con ese mismo documento o correo.");
             }
-            var dataAccess = _mapper.Map<UserDataAccessRequest>(createUserRequest);
+            var dataAccess = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
             var accessModel = await _authDataAccess.RegisterUserAsync(dataAccess);
-            var response = _mapper.Map<AuthenticationModel>(accessModel);
+            var response = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return response;
         }
 
@@ -39,21 +38,21 @@ namespace Manager.Administration
             var credentials = encodedCredentials.Split(":");
             var loginAccess = new LoginDataAccess(credentials.First(), credentials.Last());
             var accessModel = await _authDataAccess.LoginAsync(loginAccess);
-            var model = _mapper.Map<AuthenticationModel>(accessModel);
+            var model = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return model;
         }
 
         public async Task<UserModel> ApproveNewUserAsync(string id)
         {
             var accessModel = await _userDataAccess.ApproveNewUserAsync(id);
-            var response = _mapper.Map<UserModel>(accessModel);
-            return response;
+            var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(accessModel);
+            return model;
         }
 
         public async Task<IEnumerable<DoctorModel>> GetAllAsync()
         {
             var accessModel = await _userDataAccess.GetAllAsync();
-            var response = _mapper.Map<IEnumerable<DoctorModel>>(accessModel);
+            var response = accessModel.Select(_userManagerBuilder.MapDoctorDataAccessModelToDoctorModel);
             return response;
         }
 
@@ -73,7 +72,7 @@ namespace Manager.Administration
         public async Task<DoctorModel> GetByIdAsync(string id)
         {
             var accessModel = await _userDataAccess.GetByIdAsync(id);
-            var model = _mapper.Map<DoctorModel>(accessModel);
+            var model = _userManagerBuilder.MapDoctorDataAccessModelToDoctorModel(accessModel);
             return model;
         }
 
@@ -86,9 +85,9 @@ namespace Manager.Administration
 
         public async Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest)
         {
-            var dataAccess = _mapper.Map<UserDataAccessRequest>(updateUserRequest);
+            var dataAccess = _userManagerBuilder.MapUpdateDoctorRequestToUserDataAccessRequest(updateUserRequest);
             var accessModel = await _userDataAccess.UpdateAsync(dataAccess);
-            var model = _mapper.Map<DoctorModel>(accessModel);
+            var model = _userManagerBuilder.MapDoctorDataAccessModelToDoctorModel(accessModel);
             return model;
         }
 

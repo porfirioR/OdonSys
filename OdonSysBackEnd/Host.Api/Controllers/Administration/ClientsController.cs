@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contract.Administration.Clients;
-using Host.Api.Models.Auth;
+using Host.Api.Models.Authorization;
 using Host.Api.Models.Clients;
 using Host.Api.Models.Error;
 using Microsoft.AspNetCore.Authorization;

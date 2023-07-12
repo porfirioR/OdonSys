@@ -1,6 +1,6 @@
 ﻿using Contract.Payment.Invoices;
 using Contract.Workspace.Files;
-using Host.Api.Models.Auth;
+using Host.Api.Models.Authorization;
 using Host.Api.Models.Error;
 using Host.Api.Models.Files;
 using Host.Api.Models.Invoices;

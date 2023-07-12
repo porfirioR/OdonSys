@@ -16,6 +16,7 @@ namespace Manager.Administration
 
             services.AddTransient<IClientManagerBuilder, ClientManagerBuilder>();
             services.AddTransient<IRoleManagerBuilder, RoleManagerBuilder>();
+            services.AddTransient<IUserManagerBuilder, UserManagerBuilder>();
         }
     }
 }

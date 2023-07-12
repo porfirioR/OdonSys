@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Host.Api.Models.Auth
+namespace Host.Api.Models.Authorization
 {
     public class LoginApiRequest : IValidatableObject
     {

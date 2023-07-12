@@ -1,11 +1,11 @@
 ﻿using Contract.Administration.Roles;
-using Host.Api.Models.Auth;
+using Host.Api.Models.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Utilities;
 
 namespace Host.Api.Helpers
 {
-    public class CheckAuthPermissions : AuthorizationHandlerBase<CheckAuthPermissions, AuthRequirement>
+    public class CheckAuthPermissions : AuthorizationHandlerBase<CheckAuthPermissions, AuthorizationRequirement>
     {
         private readonly IRoleManager _roleManager;
         public CheckAuthPermissions(IRoleManager roleManager)
@@ -13,7 +13,7 @@ namespace Host.Api.Helpers
             _roleManager = roleManager;
         }
 
-        protected override async Task CheckRequirementAsync(AuthorizationHandlerContext context, AuthRequirement requirement)
+        protected override async Task CheckRequirementAsync(AuthorizationHandlerContext context, AuthorizationRequirement requirement)
         {
             // Get all of a user's roles
             var userId = context.User.FindFirst(x => x.Type == Claims.UserId).Value;

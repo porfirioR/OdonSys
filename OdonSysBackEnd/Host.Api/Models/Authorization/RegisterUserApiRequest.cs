@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Utilities.Enums;
 
-namespace Host.Api.Models.Auth
+namespace Host.Api.Models.Authorization
 {
     public class RegisterUserApiRequest
     {

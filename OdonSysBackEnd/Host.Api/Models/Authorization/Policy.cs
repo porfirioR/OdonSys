@@ -1,4 +1,4 @@
-﻿namespace Host.Api.Models.Auth
+﻿namespace Host.Api.Models.Authorization
 {
     sealed class Policy
     {
