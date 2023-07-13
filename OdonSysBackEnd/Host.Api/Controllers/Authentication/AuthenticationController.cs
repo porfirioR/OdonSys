@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using Contract.Administration.Authentication;
+﻿using Contract.Administration.Authentication;
 using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
+using Host.Api.Contract.MapBuilders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,13 +11,13 @@ namespace Host.Api.Controllers.Authentication
     [ApiController]
     public sealed class AuthenticationController : OdonSysBaseController
     {
-        private readonly IMapper _mapper;
         private readonly IUserManager _userManager;
+        private readonly IUserHostBuilder _userHostBuilder;
 
-        public AuthenticationController(IMapper mapper, IUserManager userManager)
+        public AuthenticationController(IUserManager userManager, IUserHostBuilder userHostBuilder)
         {
-            _mapper = mapper;
             _userManager = userManager;
+            _userHostBuilder = userHostBuilder;
         }
 
         [AllowAnonymous]
@@ -32,7 +32,7 @@ namespace Host.Api.Controllers.Authentication
         [HttpPost("register")]
         public async Task<AuthenticationModel> Register([FromBody] RegisterUserApiRequest apiRequest)
         {
-            var register = _mapper.Map<RegisterUserRequest>(apiRequest);
+            var register = _userHostBuilder.MapRegisterUserApiRequestToRegisterUserRequest(apiRequest);
             var model = await _userManager.RegisterUserAsync(register);
             return model;
         }

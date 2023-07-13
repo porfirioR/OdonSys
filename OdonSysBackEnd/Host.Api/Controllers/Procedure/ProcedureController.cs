@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Contract.Workspace.Procedures;
+﻿using Contract.Workspace.Procedures;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Error;
 using Host.Api.Contract.MapBuilders;
@@ -20,7 +19,7 @@ namespace Host.Api.Controllers.Procedure
         private readonly IProcedureManager _procedureManager;
         private readonly IProcedureHostBuilder _procedureHostBuilder;
 
-        public ProcedureController(IMapper mapper, IProcedureManager procedureManager, IProcedureHostBuilder procedureHostBuilder)
+        public ProcedureController(IProcedureManager procedureManager, IProcedureHostBuilder procedureHostBuilder)
         {
             _procedureManager = procedureManager;
             _procedureHostBuilder = procedureHostBuilder;
