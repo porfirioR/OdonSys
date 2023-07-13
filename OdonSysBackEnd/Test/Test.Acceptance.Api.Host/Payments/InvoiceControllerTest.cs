@@ -3,6 +3,7 @@ using Contract.Payment.Invoices;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Files;
 using Contract.Workspace.Procedures;
+using Host.Api.Contract.ClientProcedures;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Net;

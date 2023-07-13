@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using Contract.Administration.Roles;
+﻿using Contract.Administration.Roles;
 using Host.Api.Contract.Authorization;
+using Host.Api.Contract.MapBuilders;
 using Host.Api.Contract.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,20 +12,20 @@ namespace Host.Api.Controllers.Administration
     [ApiController]
     public sealed class RolesController : OdonSysBaseController
     {
-        private readonly IMapper _mapper;
         private readonly IRoleManager _roleManager;
+        private readonly IRoleHostBuilder _roleHostBuilder;
 
-        public RolesController(IMapper mapper, IRoleManager clientManager)
+        public RolesController(IRoleManager clientManager, IRoleHostBuilder roleHostBuilder)
         {
-            _mapper = mapper;
             _roleManager = clientManager;
+            _roleHostBuilder = roleHostBuilder;
         }
 
         [HttpPost]
         [Authorize(Policy = Policy.CanManageRole)]
         public async Task<RoleModel> Create([FromBody] CreateRoleApiRequest apiRequest)
         {
-            var request = _mapper.Map<CreateRoleRequest>(apiRequest);
+            var request = _roleHostBuilder.MapCreateRoleApiRequestToCreateRoleRequest(apiRequest);
             var model = await _roleManager.CreateAsync(request);
             return model;
         }
@@ -34,7 +34,7 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanManageRole)]
         public async Task<RoleModel> Update([FromBody] UpdateRoleApiRequest apiRequest)
         {
-            var request = _mapper.Map<UpdateRoleRequest>(apiRequest);
+            var request = _roleHostBuilder.MapUpdateRoleApiRequestToUpdateRoleRequest(apiRequest);
             var model = await _roleManager.UpdateAsync(request);
             return model;
         }

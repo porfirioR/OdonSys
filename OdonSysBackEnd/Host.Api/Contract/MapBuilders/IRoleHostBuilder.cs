@@ -6,6 +6,6 @@ namespace Host.Api.Contract.MapBuilders
     public interface IRoleHostBuilder
     {
         CreateRoleRequest MapCreateRoleApiRequestToCreateRoleRequest(CreateRoleApiRequest createRoleApiRequest);
-        UpdateRoleRequest MapUpdateRoleApiRequestUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest);
+        UpdateRoleRequest MapUpdateRoleApiRequestToUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest);
     }
 }

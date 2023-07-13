@@ -34,9 +34,8 @@ namespace Host.Api
             });
 
             // partial startup
-            ConfigureMappings(services);
-
             InjectServices(services);
+
             ConfigureAuthentication(services, Configuration);
 
             ConfigureAuthorization(services);

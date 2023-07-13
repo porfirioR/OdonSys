@@ -4,7 +4,7 @@ using Host.Api.Contract.Roles;
 
 namespace Host.Api.Mapper
 {
-    internal class RoleHostBuilder : IRoleHostBuilder
+    internal sealed class RoleHostBuilder : IRoleHostBuilder
     {
         public CreateRoleRequest MapCreateRoleApiRequestToCreateRoleRequest(CreateRoleApiRequest createRoleApiRequest) => new(
             createRoleApiRequest.Name,
@@ -12,7 +12,7 @@ namespace Host.Api.Mapper
             createRoleApiRequest.Permissions
         );
 
-        public UpdateRoleRequest MapUpdateRoleApiRequestUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest) => new(
+        public UpdateRoleRequest MapUpdateRoleApiRequestToUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest) => new(
             updateRoleApiRequest.Name,
             updateRoleApiRequest.Code,
             updateRoleApiRequest.Active,

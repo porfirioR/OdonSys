@@ -10,6 +10,8 @@ namespace Host.Api
         {
             services.AddTransient<IClientHostBuilder, ClientHostBuilder>();
             services.AddTransient<IProcedureHostBuilder, ProcedureHostBuilder>();
+            services.AddTransient<IRoleHostBuilder, RoleHostBuilder>();
+            services.AddTransient<IUserHostBuilder, UserHostBuilder>();
 
             //Access
             Access.Data.ServiceInjection.ConfigureServices(services);
