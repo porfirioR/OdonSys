@@ -1,6 +1,4 @@
-﻿using Contract.Workspace.Files;
-
-namespace Contract.Payment.Invoices
+﻿namespace Contract.Payment.Invoices
 {
     public interface IInvoiceManager
     {

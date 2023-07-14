@@ -1,6 +1,6 @@
 ﻿using Contract.Payment.Payments;
-using Host.Api.Models.Auth;
-using Host.Api.Models.Payments;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Payments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

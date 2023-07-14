@@ -1,4 +1,4 @@
-﻿using Host.Api.Models.Auth;
+﻿using Host.Api.Contract.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Utilities.Enums;
@@ -11,61 +11,61 @@ namespace Host.Api
         {
             var policiesToAdd = new List<PolicyModel>
             {
-                new PolicyModel(Policy.CanAccessRole, new AuthRequirement(PermissionName.AccessRoles)),
-                new PolicyModel(Policy.CanManageRole, new AuthRequirement(PermissionName.ManageRoles)),
-                new PolicyModel(Policy.CanAssignRoleDoctors, new AuthRequirement(PermissionName.AssignRoleDoctors)),
+                new PolicyModel(Policy.CanAccessRole, new AuthorizationRequirement(PermissionName.AccessRoles)),
+                new PolicyModel(Policy.CanManageRole, new AuthorizationRequirement(PermissionName.ManageRoles)),
+                new PolicyModel(Policy.CanAssignRoleDoctors, new AuthorizationRequirement(PermissionName.AssignRoleDoctors)),
 
-                new PolicyModel(Policy.CanAccessInvoice, new AuthRequirement(PermissionName.AccessInvoices)),
-                new PolicyModel(Policy.CanAccessMyInvoice, new AuthRequirement(PermissionName.AccessMyInvoices)),
-                new PolicyModel(Policy.CanCreateInvoice, new AuthRequirement(PermissionName.CreateInvoices)),
-                new PolicyModel(Policy.CanAccessInvoiceFiles, new AuthRequirement(
+                new PolicyModel(Policy.CanAccessInvoice, new AuthorizationRequirement(PermissionName.AccessInvoices)),
+                new PolicyModel(Policy.CanAccessMyInvoice, new AuthorizationRequirement(PermissionName.AccessMyInvoices)),
+                new PolicyModel(Policy.CanCreateInvoice, new AuthorizationRequirement(PermissionName.CreateInvoices)),
+                new PolicyModel(Policy.CanAccessInvoiceFiles, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateInvoices,
                         PermissionName.AccessMyInvoices,
                         PermissionName.AccessInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthRequirement(PermissionName.ChangeInvoiceStatus)),
+                new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthorizationRequirement(PermissionName.ChangeInvoiceStatus)),
 
-                new PolicyModel(Policy.CanAccessClient, new AuthRequirement(
+                new PolicyModel(Policy.CanAccessClient, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.AccessClients,
                         PermissionName.AccessMyInvoices,
                         PermissionName.AccessInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanManageClient, new AuthRequirement(
+                new PolicyModel(Policy.CanManageClient, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateClients,
                         PermissionName.UpdateClients,
                         PermissionName.CreateInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanModifyVisibilityClient, new AuthRequirement(
+                new PolicyModel(Policy.CanModifyVisibilityClient, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreClients,
                         PermissionName.DeactivateClients
                     }
                 )),
-                new PolicyModel(Policy.CanDeleteClient, new AuthRequirement(PermissionName.DeleteClients)),
-                new PolicyModel(Policy.CanAssignClient, new AuthRequirement(
+                new PolicyModel(Policy.CanDeleteClient, new AuthorizationRequirement(PermissionName.DeleteClients)),
+                new PolicyModel(Policy.CanAssignClient, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.AssignClients,
                         PermissionName.CreateInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanAccessMyClients, new AuthRequirement(PermissionName.AccessMyClients)),
-                new PolicyModel(Policy.CanApproveDoctor, new AuthRequirement(PermissionName.ApproveDoctors)),
-                new PolicyModel(Policy.CanDeleteDoctor, new AuthRequirement(PermissionName.DeleteDoctors)),
-                new PolicyModel(Policy.CanAssignDoctorRoles, new AuthRequirement(PermissionName.AssignDoctorRoles)),
-                new PolicyModel(Policy.CanModifyVisibilityDoctor, new AuthRequirement(
+                new PolicyModel(Policy.CanAccessMyClients, new AuthorizationRequirement(PermissionName.AccessMyClients)),
+                new PolicyModel(Policy.CanApproveDoctor, new AuthorizationRequirement(PermissionName.ApproveDoctors)),
+                new PolicyModel(Policy.CanDeleteDoctor, new AuthorizationRequirement(PermissionName.DeleteDoctors)),
+                new PolicyModel(Policy.CanAssignDoctorRoles, new AuthorizationRequirement(PermissionName.AssignDoctorRoles)),
+                new PolicyModel(Policy.CanModifyVisibilityDoctor, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreDoctors,
                         PermissionName.DeactivateDoctors
                     }
                 )),
-                new PolicyModel(Policy.CanUpdateDoctor, new AuthRequirement(PermissionName.UpdateDoctors)),
-                new PolicyModel(Policy.CanAccessDoctor, new AuthRequirement(
+                new PolicyModel(Policy.CanUpdateDoctor, new AuthorizationRequirement(PermissionName.UpdateDoctors)),
+                new PolicyModel(Policy.CanAccessDoctor, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.AccessMyData,
                         PermissionName.AccessDoctors,
@@ -77,35 +77,35 @@ namespace Host.Api
                 //        PermissionName.UpdateDoctors,
                 //        PermissionName.DeleteDoctors,
                 //    })),
-                new PolicyModel(Policy.CanCreateClientProcedure, new AuthRequirement(
+                new PolicyModel(Policy.CanCreateClientProcedure, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateClientProcedures,
                         PermissionName.CreateInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanUpdateClientProcedure, new AuthRequirement(PermissionName.UpdateClientProcedures)),
+                new PolicyModel(Policy.CanUpdateClientProcedure, new AuthorizationRequirement(PermissionName.UpdateClientProcedures)),
 
-                new PolicyModel(Policy.CanAccessProcedure, new AuthRequirement(
+                new PolicyModel(Policy.CanAccessProcedure, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.AccessProcedures,
                         PermissionName.CreateInvoices
                     }
                 )),
-                new PolicyModel(Policy.CanModifyVisibilityProcedure, new AuthRequirement(
+                new PolicyModel(Policy.CanModifyVisibilityProcedure, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.RestoreProcedures,
                         PermissionName.DeactivateProcedures
                     }
                 )),
-                new PolicyModel(Policy.CanManageProcedure, new AuthRequirement(
+                new PolicyModel(Policy.CanManageProcedure, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateProcedures,
                         PermissionName.UpdateProcedures,
                         PermissionName.DeleteProcedures,
                     }
                 )),
-                new PolicyModel(Policy.CanAccessPayment, new AuthRequirement(PermissionName.AccessPayments)),
-                new PolicyModel(Policy.CanRegisterPayment, new AuthRequirement(PermissionName.RegisterPayments)),
+                new PolicyModel(Policy.CanAccessPayment, new AuthorizationRequirement(PermissionName.AccessPayments)),
+                new PolicyModel(Policy.CanRegisterPayment, new AuthorizationRequirement(PermissionName.RegisterPayments)),
             };
 
             //  Add Authorization

@@ -1,4 +1,4 @@
-﻿using Access.Contract.Auth;
+﻿using Access.Contract.Authentication;
 using Access.Contract.Users;
 using Access.Sql;
 using Access.Sql.Entities;
@@ -15,7 +15,7 @@ using Utilities;
 
 namespace Access.Data.Access
 {
-    internal sealed class AuthenticationAccess : IAuthAccess
+    internal sealed class AuthenticationAccess : IAuthenticationAccess
     {
         private readonly SymmetricSecurityKey _key;
         private readonly DataContext _context;
@@ -32,7 +32,7 @@ namespace Access.Data.Access
             _adminRoleCode = configuration["AdminRole"];
         }
 
-        public async Task<AuthAccessModel> LoginAsync(LoginDataAccess loginAccess)
+        public async Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess)
         {
             var user = await _context.Users
                             .Include(x => x.UserRoles)
@@ -62,11 +62,11 @@ namespace Access.Data.Access
             var roleCodes = await RoleCodesAsync(userId);
             (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
             var userDataAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(user);
-            var authAccessModel = new AuthAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+            var authAccessModel = new AuthenticationAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
             return authAccessModel;
         }
 
-        public async Task<AuthAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
+        public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
             var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
@@ -109,7 +109,7 @@ namespace Access.Data.Access
                 var roleCodes = await RoleCodesAsync(entity.Id);
                 (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
-                var userResponse = new AuthAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+                var userResponse = new AuthenticationAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
                 return userResponse;
             }
             throw new Exception("Error al intentar crear usuario.");

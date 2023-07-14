@@ -15,7 +15,6 @@ import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
 import { ClientModel } from '../../../core/models/view/client-model';
-import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import { environment } from '../../../../environments/environment';

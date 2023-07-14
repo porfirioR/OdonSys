@@ -2,6 +2,6 @@
 {
     //public interface IToothManager
     //{
-        //Task<IEnumerable<ToothModel>> GetAllAsync();
+    //Task<IEnumerable<ToothModel>> GetAllAsync();
     //}
 }

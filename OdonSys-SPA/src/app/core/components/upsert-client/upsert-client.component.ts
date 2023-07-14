@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -45,10 +44,11 @@ export class UpsertClientComponent implements OnInit {
   protected countries: SelectModel[] = []
   private id = ''
   private fullFieldEdit = false
+  private adminUrl = '/admin/pacientes'
+  private workspaceUrl = '/trabajo/mis-pacientes'
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly location: Location,
     private readonly router: Router,
     private userInfoService: UserInfoService,
     private store: Store,
@@ -68,7 +68,7 @@ export class UpsertClientComponent implements OnInit {
   }
 
   protected close = () => {
-    this.location.back()
+    this.router.navigate([`${this.redirectUrl()}`])
   }
 
   protected save = (): void => {
@@ -88,10 +88,7 @@ export class UpsertClientComponent implements OnInit {
     client$.subscribe({
       next: (data) => {
         if (isUpdateUrl && !data) {
-          const adminUrl = '/admin/pacientes'
-          const workspaceUrl = '/trabajo/mis-pacientes'
-          const redirectUrl = this.router.url.startsWith(adminUrl) ? adminUrl : workspaceUrl
-          this.router.navigate([`${redirectUrl}/registrar`])
+          this.router.navigate([`${this.redirectUrl()}/registrar`])
         }
         this.formGroupValueChanges()
         if (this.id && data) {
@@ -107,13 +104,13 @@ export class UpsertClientComponent implements OnInit {
           this.formGroup.controls.email.setValue(data.email)
           this.formGroup.controls.active.setValue(data.active)
           this.formGroup.controls.ruc.disable()
-          this.formGroup.controls.country.disable()
           if (!this.fullFieldEdit) {
             this.formGroup.controls.document.disable()
             this.formGroup.controls.country.disable()
             this.formGroup.controls.email.disable()
           }
         }
+        this.formGroup.controls.name.markAsTouched()
       }
     })
   }
@@ -142,7 +139,7 @@ export class UpsertClientComponent implements OnInit {
       this.formGroup.value.document!,
       this.formGroup.controls.ruc.value!.toString(),
     )
-    this.store.dispatch(fromClientsActions.addClient({ client: newClient }))
+    this.store.dispatch(fromClientsActions.addClient({ client: newClient, redirectUrl: this.redirectUrl() }))
   }
 
   private update = () => {
@@ -158,6 +155,10 @@ export class UpsertClientComponent implements OnInit {
       this.formGroup.controls.document.value!,
       this.formGroup.value.active!
     )
-    this.store.dispatch(fromClientsActions.updateClient({ client: updateClient }))
+    this.store.dispatch(fromClientsActions.updateClient({ client: updateClient, redirectUrl: this.redirectUrl() }))
+  }
+
+  private redirectUrl = () => {
+    return this.router.url.startsWith(this.adminUrl) ? this.adminUrl : this.workspaceUrl
   }
 }
