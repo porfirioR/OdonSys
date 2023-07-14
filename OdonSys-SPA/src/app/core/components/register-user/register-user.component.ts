@@ -40,6 +40,7 @@ export class RegisterUserComponent implements OnInit {
 
   ngOnInit() {
     this.loadConfiguration()
+    this.formGroup.controls.name.markAsTouched()
   }
 
   protected register = (): void => {
