@@ -18,16 +18,25 @@ namespace Host.Api.Mapper
             createClientApiRequest.Email
         );
 
-        public UpdateClientRequest MapUpdateClientApiRequestToUpdateClientRequest(UpdateClientApiRequest updateClientApiRequest) => new(
-            updateClientApiRequest.Id,
-            updateClientApiRequest.Name,
-            updateClientApiRequest.MiddleName,
-            updateClientApiRequest.Surname,
-            updateClientApiRequest.SecondSurname,
-            updateClientApiRequest.Phone,
-            updateClientApiRequest.Email,
-            updateClientApiRequest.Active
-        );
+        public UpdateClientRequest MapUpdateClientApiRequestToUpdateClientRequest(UpdateClientApiRequest updateClientApiRequest, bool canFullEdit)
+        {
+            var request = new UpdateClientRequest(
+                updateClientApiRequest.Id,
+                updateClientApiRequest.Name,
+                updateClientApiRequest.MiddleName,
+                updateClientApiRequest.Surname,
+                updateClientApiRequest.SecondSurname,
+                updateClientApiRequest.Phone,
+                updateClientApiRequest.Email,
+                updateClientApiRequest.Active
+            );
+            if (canFullEdit)
+            {
+                request.Document = updateClientApiRequest.Document.Replace(".", "");
+                request.Country = updateClientApiRequest.Country;
+            }
+            return request;
+        }
 
         public UpdateClientRequest MapClientModelToUpdateClientRequest(ClientModel clientModel) => new(
             clientModel.Id,

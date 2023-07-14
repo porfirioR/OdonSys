@@ -15,9 +15,9 @@ namespace Host.Api.Controllers.Administration
         private readonly IRoleManager _roleManager;
         private readonly IRoleHostBuilder _roleHostBuilder;
 
-        public RolesController(IRoleManager clientManager, IRoleHostBuilder roleHostBuilder)
+        public RolesController(IRoleManager roleManager, IRoleHostBuilder roleHostBuilder)
         {
-            _roleManager = clientManager;
+            _roleManager = roleManager;
             _roleHostBuilder = roleHostBuilder;
         }
 

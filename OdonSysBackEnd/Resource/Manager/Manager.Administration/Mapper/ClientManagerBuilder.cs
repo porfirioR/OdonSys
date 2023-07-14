@@ -8,6 +8,10 @@ namespace Manager.Administration.Mapper
     {
         public ClientModel MapClientAccessModelToClientModel(ClientAccessModel accessModel)
         {
+            if (accessModel is null)
+            {
+                return null;
+            }
             var doctors = accessModel.Doctors != null && accessModel.Doctors.Any() ?
                 accessModel.Doctors.Select(x => new DoctorModel(
                     x.Id,
@@ -63,7 +67,7 @@ namespace Manager.Administration.Mapper
 
         public UpdateClientAccessRequest MapUpdateClientRequestToUpdateClientAccessRequest(UpdateClientRequest request)
         {
-            return new UpdateClientAccessRequest(
+            var accessRequest = new UpdateClientAccessRequest(
                 request.Id,
                 request.Active,
                 request.Name,
@@ -73,6 +77,13 @@ namespace Manager.Administration.Mapper
                 request.Phone,
                 request.Email
             );
+            if (request.Country.HasValue && !string.IsNullOrEmpty(request.Document))
+            {
+                accessRequest.Country = request.Country.Value;
+                accessRequest.Document = request.Document;
+
+            }
+            return accessRequest;
         }
     }
 }

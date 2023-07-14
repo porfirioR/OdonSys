@@ -1,4 +1,6 @@
-﻿namespace Access.Contract.Clients
+﻿using Utilities.Enums;
+
+namespace Access.Contract.Clients
 {
     public record UpdateClientAccessRequest
     (
@@ -10,5 +12,9 @@
         string SecondSurname,
         string Phone,
         string Email
-    );
+    )
+    {
+        public Country? Country { get; set; }
+        public string Document { get; set; }
+    };
 }

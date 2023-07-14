@@ -1,4 +1,5 @@
 ﻿using Contract.Administration.Clients;
+using Contract.Administration.Roles;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Clients;
 using Host.Api.Contract.Error;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Utilities.Enums;
+using Utilities.Extensions;
 
 namespace Host.Api.Controllers.Administration
 {
@@ -16,11 +19,13 @@ namespace Host.Api.Controllers.Administration
     public sealed class ClientsController : OdonSysBaseController
     {
         private readonly IClientManager _clientManager;
+        private readonly IRoleManager _roleManager;
         private readonly IClientHostBuilder _clientHostBuilder;
 
-        public ClientsController(IClientManager clientManager, IClientHostBuilder clientHostBuilder)
+        public ClientsController(IClientManager clientManager, IRoleManager roleManager, IClientHostBuilder clientHostBuilder)
         {
             _clientManager = clientManager;
+            _roleManager = roleManager;
             _clientHostBuilder = clientHostBuilder;
         }
 
@@ -38,7 +43,9 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            var request = _clientHostBuilder.MapUpdateClientApiRequestToUpdateClientRequest(apiRequest);
+            var permissions = await _roleManager.GetPermissionsByUserIdAsync(UserId);
+            var canFullEdit = permissions.Any(x => x == PermissionName.FullFieldUpdateClients.GetDescription());
+            var request = _clientHostBuilder.MapUpdateClientApiRequestToUpdateClientRequest(apiRequest, canFullEdit);
             var model = await _clientManager.UpdateAsync(request);
             return model;
         }

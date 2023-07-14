@@ -88,7 +88,14 @@ namespace Access.Data.Mapper
             client.Surname = updateClientAccessRequest.Surname;
             client.SecondSurname = updateClientAccessRequest.SecondSurname;
             client.Phone = updateClientAccessRequest.Phone;
-            client.Email = updateClientAccessRequest.Email;
+
+            if (updateClientAccessRequest.Country.HasValue && !string.IsNullOrEmpty(updateClientAccessRequest.Document))
+            {
+                client.Email = updateClientAccessRequest.Email;
+                client.Country = updateClientAccessRequest.Country.Value;
+                client.Document = updateClientAccessRequest.Document;
+
+            }
             return client;
         }
 

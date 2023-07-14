@@ -1,4 +1,6 @@
-﻿namespace Contract.Administration.Clients
+﻿using Utilities.Enums;
+
+namespace Contract.Administration.Clients
 {
     public record UpdateClientRequest
     (
@@ -10,5 +12,9 @@
         string Phone,
         string Email,
         bool Active
-    );
+    )
+    {
+        public Country? Country { get; set; }
+        public string Document { get; set; }
+    };
 }

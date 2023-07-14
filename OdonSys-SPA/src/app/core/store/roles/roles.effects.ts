@@ -91,7 +91,7 @@ export class RolesEffects {
     )
   })
 
-  protected errorHandler$ = createEffect(() => {
+  private errorHandler$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(roleActions.rolesFailure),
       tap((x) => {

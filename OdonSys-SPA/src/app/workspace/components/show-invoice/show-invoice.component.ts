@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, debounceTime, forkJoin, map, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, debounceTime, map, of, switchMap, tap } from 'rxjs';
 import { ClientModel } from '../../../core/models/view/client-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentModel } from '../../models/payments/payment-model';

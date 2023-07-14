@@ -16,7 +16,10 @@ export const allClientsLoaded = createAction(
 
 export const addClient = createAction(
   '[Client Component] Add Client',
-  props<{ client: CreateClientRequest }>()
+  props<{
+    client: CreateClientRequest,
+    redirectUrl: string
+  }>()
 )
 
 export const addClientSuccess = createAction(
@@ -31,7 +34,10 @@ export const updateClientSuccess = createAction(
 
 export const updateClient = createAction(
   '[Client Component] Update Client',
-  props<{ client: UpdateClientRequest }>()
+  props<{
+    client: UpdateClientRequest,
+    redirectUrl: string
+  }>()
 )
 
 export const deleteClient = createAction(
