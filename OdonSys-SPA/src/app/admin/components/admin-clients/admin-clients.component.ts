@@ -70,7 +70,7 @@ export class AdminClientsComponent implements OnInit {
     columnAction.minWidth = 360
     const conditionalButtons = []
     const buttonsToShow: ButtonGridActionType[] = [
-      // ButtonGridActionType.Ver
+      ButtonGridActionType.Ver
     ]
     if (this.canDeactivate) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
@@ -108,6 +108,9 @@ export class AdminClientsComponent implements OnInit {
       case ButtonGridActionType.Aprobar:
         this.alertService.showInfo('No implementado.')
         // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        break
+      case ButtonGridActionType.Ver:
+        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])

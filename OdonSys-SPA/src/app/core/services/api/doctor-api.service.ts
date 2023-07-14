@@ -15,7 +15,7 @@ export class DoctorApiService {
 
   constructor(private readonly http: HttpClient) { }
 
-  public update = (id: string, model: UpdateUserRequest): Observable<DoctorApiModel> => {
+  public update = (model: UpdateUserRequest): Observable<DoctorApiModel> => {
     return this.http.put<DoctorApiModel>(`${this.baseUrl}`, model)
   }
 

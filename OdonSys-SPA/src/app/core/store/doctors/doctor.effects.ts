@@ -114,7 +114,7 @@ export class DoctorEffects {
   protected updateDoctor$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(doctorActions.updateDoctor),
-      switchMap((x) => this.doctorApiService.update(x.user.id, x.user).pipe(
+      switchMap((x) => this.doctorApiService.update(x.user).pipe(
         map((data: DoctorApiModel) => {
           this.zone.run(() => this.router.navigate(['']))
           this.alertService.showSuccess('Datos actualizados correctamente.')

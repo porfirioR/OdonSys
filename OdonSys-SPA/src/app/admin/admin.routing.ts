@@ -9,6 +9,7 @@ import { UpsertRoleComponent } from './components/upsert-role/upsert-role.compon
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesAdmin } from './guards/prevent-unsaved-changes-admin.guard';
 import { Permission } from '../core/enums/permission.enum';
+import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
 
 export const AdminRoutes: Routes = [
   { 
@@ -51,8 +52,8 @@ export const AdminRoutes: Routes = [
       },
       {
         path: 'pacientes/ver/:id',
-        component: AdminClientsComponent,
-        title: 'Ver pacientes',
+        component: ClientDetailComponent,
+        title: 'Detalle pacientes',
         data: { permissions: [ Permission.AccessClients ] }
       },
       {
