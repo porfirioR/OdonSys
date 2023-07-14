@@ -20,7 +20,11 @@ namespace Access.Data.Mapper
 
         public ClientAccessModel MapClientToClientAccessModel(Client client)
         {
-            var doctorDataAccessModels = client.UserClients.Any() ?
+            if (client is null)
+            {
+                return null;
+            }
+            var doctorDataAccessModels = client.UserClients != null && client.UserClients.Any() ?
                 client.UserClients.Select(x => new DoctorDataAccessModel(
                     x.User.Id.ToString(),
                     x.User.Name,
@@ -34,7 +38,7 @@ namespace Access.Data.Mapper
                     x.User.UserName,
                     x.User.Active,
                     x.User.Approved,
-                    x.User.UserRoles.Any() ? x.User.UserRoles.Select(x => x.Role.Code) : new List<string>()
+                    x.User.UserRoles != null && x.User.UserRoles.Any() ? x.User.UserRoles.Select(x => x.Role.Code) : new List<string>()
                 )) :
                 new List<DoctorDataAccessModel>();
 
@@ -74,7 +78,6 @@ namespace Access.Data.Mapper
             Active = true
         };
 
-
         public Client MapUpdateClientAccessRequestToClient(UpdateClientAccessRequest updateClientAccessRequest, Client client = null)
         {
             client ??= new Client();
@@ -85,7 +88,14 @@ namespace Access.Data.Mapper
             client.Surname = updateClientAccessRequest.Surname;
             client.SecondSurname = updateClientAccessRequest.SecondSurname;
             client.Phone = updateClientAccessRequest.Phone;
-            client.Email = updateClientAccessRequest.Email;
+
+            if (updateClientAccessRequest.Country.HasValue && !string.IsNullOrEmpty(updateClientAccessRequest.Document))
+            {
+                client.Email = updateClientAccessRequest.Email;
+                client.Country = updateClientAccessRequest.Country.Value;
+                client.Document = updateClientAccessRequest.Document;
+
+            }
             return client;
         }
 

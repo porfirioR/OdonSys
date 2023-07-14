@@ -60,7 +60,7 @@ export const AdminRoutes: Routes = [
         component: UpsertClientComponent,
         canActivate: [PermissionGuard],
         canDeactivate: [PreventUnsavedChangesAdmin],
-        title: 'Actualizar pacientes',
+        title: 'Registrar paciente',
         data: { permissions: [ Permission.CreateClients ] }
       },
       {

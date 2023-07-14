@@ -1,6 +1,5 @@
 ﻿using Access.Contract.ClientProcedures;
 using Access.Sql;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access

@@ -1,17 +1,13 @@
 ﻿using Access.Contract.Teeth;
 using Access.Sql;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class ToothAccess : IToothAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
-        public ToothAccess(IMapper mapper, DataContext context)
+        public ToothAccess(DataContext context)
         {
-            _mapper = mapper;
             _context = context;
         }
 

@@ -42,7 +42,7 @@ export class ClientEffects {
       switchMap((action) =>
         this.clientApiService.createClient(action.client).pipe(
           map(data => {
-            this.router.navigate(['/admin/pacientes'])
+            this.router.navigate([action.redirectUrl])
             this.alertService.showSuccess('Paciente registrado con éxito.')
             return clientActions.addClientSuccess({ client: this.getModel(data) })
           }),
@@ -58,7 +58,7 @@ export class ClientEffects {
       switchMap((action) =>
         this.clientApiService.updateClient(action.client).pipe(
           map(data => {
-            this.router.navigate(['/admin/pacientes'])
+            this.router.navigate([action.redirectUrl])
             this.alertService.showSuccess('Paciente actualizado con éxito.')
             return clientActions.updateClientSuccess({ client: this.getModel(data) })
           }),

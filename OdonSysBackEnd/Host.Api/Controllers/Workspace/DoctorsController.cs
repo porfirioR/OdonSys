@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using Contract.Admin.Clients;
-using Contract.Admin.Users;
-using Host.Api.Models.Auth;
-using Host.Api.Models.Clients;
-using Host.Api.Models.Users;
+﻿using Contract.Administration.Clients;
+using Contract.Administration.Users;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Clients;
+using Host.Api.Contract.MapBuilders;
+using Host.Api.Contract.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,18 +14,19 @@ namespace Host.Api.Controllers.Workspace
     [ApiController]
     public sealed class DoctorsController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IClientManager _clientManager;
         private readonly IUserManager _userManager;
+        private readonly IUserHostBuilder _userHostBuilder;
 
         public DoctorsController(
-            IMapper mapper,
             IClientManager clientManager,
-            IUserManager userManager)
+            IUserManager userManager,
+            IUserHostBuilder userHostBuilder
+        )
         {
-            _mapper = mapper;
             _clientManager = clientManager;
             _userManager = userManager;
+            _userHostBuilder = userHostBuilder;
         }
 
         [HttpPost]
@@ -41,7 +42,7 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanUpdateDoctor)]
         public async Task<DoctorModel> Update([FromBody] UpdateDoctorApiRequest apiRequest)
         {
-            var user = _mapper.Map<UpdateDoctorRequest>(apiRequest);
+            var user = _userHostBuilder.MapUpdateDoctorApiRequestToUpdateDoctorRequest(apiRequest);
             var model = await _userManager.UpdateAsync(user);
             return model;
         }
@@ -50,8 +51,8 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanAccessDoctor)]
         public async Task<DoctorModel> GetById([FromRoute] string id)
         {
-            var response = await _userManager.GetByIdAsync(id);
-            return response;
+            var doctorModel = await _userManager.GetByIdAsync(id);
+            return doctorModel;
         }
 
     }

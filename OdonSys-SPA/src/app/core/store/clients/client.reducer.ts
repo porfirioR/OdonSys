@@ -29,7 +29,7 @@ export const reducer = createReducer(
   ),
   on(ClientActions.clearClients,
     state => adapter.removeAll(state)
-  ),
+  )
 )
 
 export const {

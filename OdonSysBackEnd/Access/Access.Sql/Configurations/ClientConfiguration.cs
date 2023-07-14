@@ -55,10 +55,6 @@ namespace Access.Sql.Configurations
                 .Property(x => x.Email)
                 .HasMaxLength(25);
 
-            builder
-                .HasIndex(x => x.Email)
-                .IsUnique();
-
             builder.Property(s => s.Country)
                .HasConversion(
                    s => s.GetDescription(),

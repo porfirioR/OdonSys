@@ -49,10 +49,10 @@ namespace Manager.Payment
             return invoiceModel;
         }
 
-        public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string username)
+        public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string userName)
         {
             var invoiceAccessModelList = await _invoiceAccess.GetInvoicesAsync();
-            var myInvoiceAccessList = invoiceAccessModelList.Where(x => x.UserCreated == username);
+            var myInvoiceAccessList = invoiceAccessModelList.Where(x => x.UserCreated == userName);
             return await PrepareInvocesWithPayments(invoiceAccessModelList);
         }
 

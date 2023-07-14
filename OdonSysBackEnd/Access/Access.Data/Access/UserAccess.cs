@@ -74,7 +74,10 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync()
         {
-            var response = await _context.Set<User>().ToListAsync();
+            var response = await _context.Set<User>()
+                                    .Include(x => x.UserRoles)
+                                    .ThenInclude(x => x.Role)
+                                    .ToListAsync();
             var doctorDataAccessModelList = response.Select(_userDataAccessBuilder.MapUserToDoctorDataAccessModel);
             return doctorDataAccessModelList;
         }

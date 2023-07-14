@@ -60,7 +60,7 @@ namespace Access.File
 
         public string GenerateExpiringLink(string publicLink, TimeSpan expirationTime)
         {
-            string expirationTimestamp = DateTime.UtcNow.Add(expirationTime).ToUnixTimestamp().ToString();
+            string expirationTimestamp = DateTime.UtcNow.Add(expirationTime).ToUnixTimestamps().ToString();
             string signature = GetSignature($"{_account.Cloud}{publicLink}{expirationTimestamp}", _account.ApiSecret);
             return $"{publicLink}?_expires={expirationTimestamp}&_signature={signature}";
         }

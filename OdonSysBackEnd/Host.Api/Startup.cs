@@ -1,5 +1,4 @@
 using Host.Api.Middleware;
-using Microsoft.IdentityModel.Logging;
 using Newtonsoft.Json.Converters;
 using Utilities.Configurations;
 
@@ -35,9 +34,8 @@ namespace Host.Api
             });
 
             // partial startup
-            ConfigureMappings(services);
-
             InjectServices(services);
+
             ConfigureAuthentication(services, Configuration);
 
             ConfigureAuthorization(services);
@@ -47,28 +45,28 @@ namespace Host.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
         {
-            app.UseMiddleware<ExceptionMiddleware>();
+            application.UseMiddleware<ExceptionMiddleware>();
 
-            app.UseSwagger();
+            application.UseSwagger();
 
-            app.UseSwaggerUI();
+            application.UseSwaggerUI();
 
-            app.UseExceptionHandler("/error");
-            app.UseHsts();
+            application.UseExceptionHandler("/error");
+            application.UseHsts();
 
-            app.UseRouting();
+            application.UseRouting();
 
-            app.UseCors();
+            application.UseCors();
 
-            app.UseHttpsRedirection();
+            application.UseHttpsRedirection();
 
-            app.UseAuthentication();
+            application.UseAuthentication();
 
-            app.UseAuthorization();
+            application.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            application.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
