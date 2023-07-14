@@ -58,7 +58,11 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "assets": [
+                "src/web.config",
+                "src/assets/img"
+              ]
             },
             "development": {
               "buildOptimizer": false,

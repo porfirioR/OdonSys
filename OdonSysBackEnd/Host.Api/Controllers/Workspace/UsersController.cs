@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using Contract.Admin.Users;
-using Host.Api.Models.Auth;
-using Host.Api.Models.Error;
-using Host.Api.Models.Roles;
+﻿using Contract.Administration.Users;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.Error;
+using Host.Api.Contract.MapBuilders;
+using Host.Api.Contract.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +16,12 @@ namespace Host.Api.Controllers.Workspace
     public sealed class UsersController : OdonSysBaseController
     {
         private readonly IUserManager _userManager;
-        private readonly IMapper _mapper;
+        private readonly IUserHostBuilder _userHostBuilder;
 
-        public UsersController(IUserManager userManager, IMapper mapper)
+        public UsersController(IUserManager userManager, IUserHostBuilder userHostBuilder)
         {
             _userManager = userManager;
-            _mapper = mapper;
+            _userHostBuilder = userHostBuilder;
         }
 
         [HttpPost("approve/{id}")]
@@ -45,7 +45,7 @@ namespace Host.Api.Controllers.Workspace
         public async Task<DoctorModel> PatchDoctor([FromRoute] string id, [FromBody] JsonPatchDocument<UpdateDoctorRequest> patchDoctor)
         {
             if (patchDoctor == null) throw new Exception(JsonConvert.SerializeObject(new ApiException(400, "Valor inválido", "No puede estar vacío.")));
-            var updateDoctorRequest = _mapper.Map<UpdateDoctorRequest>(await _userManager.GetByIdAsync(id));
+            var updateDoctorRequest = _userHostBuilder.MapDoctorModelToUpdateDoctorRequest(await _userManager.GetByIdAsync(id));
             patchDoctor.ApplyTo(updateDoctorRequest);
             if (!ModelState.IsValid)
             {

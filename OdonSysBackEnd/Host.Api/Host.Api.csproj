@@ -16,27 +16,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.12" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.20">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\Access\Access.File\Access.File.csproj" />
     <ProjectReference Include="..\Access\Access.Sql\Access.Sql.csproj" />
-    <ProjectReference Include="..\Resource\Contract\Contract.Admin\Contract.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Contract\Contract.Administration\Contract.Administration.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Authentication\Contract.Workspace.csproj" />
     <ProjectReference Include="..\Resource\Contract\Contract.Payment\Contract.Payment.csproj" />
-    <ProjectReference Include="..\Resource\Manager\Manager.Admin\Manager.Admin.csproj" />
+    <ProjectReference Include="..\Resource\Manager\Manager.Administration\Manager.Administration.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Payment\Manager.Payment.csproj" />
     <ProjectReference Include="..\Resource\Manager\Manager.Workspace\Manager.Workspace.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />

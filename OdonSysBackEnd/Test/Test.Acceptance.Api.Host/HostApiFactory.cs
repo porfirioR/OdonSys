@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Utilities;
 
 namespace AcceptanceTest.Host.Api
 {
     public class HostApiFactory : WebApplicationFactory<Startup>
     {
 
-        private readonly string connectionString = $"Server=(local);Database={Configuration.DataBase};Integrated Security=True;MultipleActiveResultSets=False";
+        private readonly string _connectionString = $"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False";
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -22,7 +21,7 @@ namespace AcceptanceTest.Host.Api
                 {
                     services.Remove(dbDescriptor);
                 }
-                services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+                services.AddDbContext<DataContext>(options => options.UseSqlServer(_connectionString));
 
                 //var dbServerCache = services.SingleOrDefault(d => d.ServiceType == typeof(SqlServerCacheOptions));
                 //if (dbServerCache != null)

@@ -1,7 +1,7 @@
 ﻿using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
-using Host.Api.Models.Auth;
-using Host.Api.Models.ClientProcedures;
+using Host.Api.Contract.Authorization;
+using Host.Api.Contract.ClientProcedures;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

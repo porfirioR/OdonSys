@@ -43,6 +43,7 @@ export const reducer = createReducer(
     fromDoctorsActions.approveDoctorSuccess,
     fromDoctorsActions.changeDoctorVisibilitySuccess,
     fromDoctorsActions.updateDoctorSuccess,
+    fromClientsActions.changeClientVisibilitySuccess,
     (state) => ({
       ...state,
       saving: false

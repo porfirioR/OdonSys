@@ -3,7 +3,6 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, debounceTime } from 'rxjs';
-import { AlertService } from '../../../core/services/shared/alert.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { SubscriptionService } from '../../../core/services/shared/subscription.service';
@@ -47,7 +46,6 @@ export class MyConfigurationComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly alertService: AlertService,
     private readonly userInfoService: UserInfoService,
     private readonly zone: NgZone,
     private readonly roleApiService: RoleApiService,

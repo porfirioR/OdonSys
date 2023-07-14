@@ -38,7 +38,7 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'mis-pacientes/actualizar/:id',
         component: UpsertClientComponent,
-        title: 'Actualizar paciente',
+        title: 'Actualizar mi paciente',
         canDeactivate: [PreventUnsavedChangesWorkspace],
         canActivate: [PermissionGuard],
         data: { permissions: [ Permission.AccessMyClients, Permission.UpdateClients ] }
@@ -68,7 +68,7 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'mis-facturas/ver/:id',
         component: ShowInvoiceComponent,
-        title: 'Actualizar paciente'
+        title: 'Ver factura'
       },
       {
         path: 'facturas/registrar',
@@ -81,7 +81,7 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'facturas/ver/:id',
         component: ShowInvoiceComponent,
-        title: 'Actualizar paciente'
+        title: 'Ver factura'
       }
     ]
   }

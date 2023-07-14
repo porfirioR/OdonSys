@@ -84,6 +84,7 @@ export class UpsertProcedureComponent implements OnInit {
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }
+        this.formGroup.controls.name.markAsTouched()
       }
     })
     // this.activatedRoute.params.pipe(

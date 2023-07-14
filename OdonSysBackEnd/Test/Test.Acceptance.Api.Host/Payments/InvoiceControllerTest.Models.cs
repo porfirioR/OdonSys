@@ -1,6 +1,6 @@
-﻿using Host.Api.Models.Clients;
-using Host.Api.Models.Invoices;
-using Host.Api.Models.Procedures;
+﻿using Host.Api.Contract.Clients;
+using Host.Api.Contract.Invoices;
+using Host.Api.Contract.Procedures;
 using Utilities.Enums;
 
 namespace AcceptanceTest.Host.Api.Payments

@@ -7,7 +7,7 @@ namespace Host.Api
     {
         public void ConfigureAuthorizationHandlers(IServiceCollection services)
         {
-            services.AddScoped<IAuthorizationHandler, CheckAuthPermissions>();
+            services.AddScoped<IAuthorizationHandler, CheckAuthorizationPermissions>();
             services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
         }
     }

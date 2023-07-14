@@ -17,7 +17,7 @@ namespace Access.Sql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -94,10 +94,6 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("Document")
                         .IsUnique();
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Clients");
                 });
@@ -514,20 +510,20 @@ namespace Access.Sql.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDoctor")
                         .HasColumnType("bit");
 
                     b.Property<string>("MiddleName")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
@@ -541,13 +537,13 @@ namespace Access.Sql.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("SecondSurname")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("UserCreated")
                         .HasColumnType("nvarchar(max)");

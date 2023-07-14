@@ -15,7 +15,6 @@ import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
 import { ClientModel } from '../../../core/models/view/client-model';
-import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import { environment } from '../../../../environments/environment';
@@ -70,16 +69,18 @@ export class AdminClientsComponent implements OnInit {
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     columnAction.minWidth = 360
     const conditionalButtons = []
-    const buttonsToShow: ButtonGridActionType[] = [ButtonGridActionType.Ver]
+    const buttonsToShow: ButtonGridActionType[] = [
+      // ButtonGridActionType.Ver
+    ]
     if (this.canDeactivate) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
     }
     if (this.canRestore) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, false.toString(), ButtonGridActionType.Aprobar))
     }
-    if (this.canDelete) {
-      buttonsToShow.push(ButtonGridActionType.Borrar)
-    }
+    // if (this.canDelete) {
+    //   buttonsToShow.push(ButtonGridActionType.Borrar)
+    // }
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
@@ -91,7 +92,7 @@ export class AdminClientsComponent implements OnInit {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
-      customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
+      // customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
     }
     columnAction.cellRendererParams = params
   }

@@ -1,7 +1,6 @@
 ﻿using Access.Contract.Invoices;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
@@ -9,22 +8,27 @@ namespace Access.Data.Access
     internal sealed class InvoiceAccess : IInvoiceAccess
     {
         private readonly DataContext _context;
-        private readonly IMapper _mapper;
+        private readonly IInvoiceDataAccessBuilder _invoiceDataAccessBuilder;
 
-        public InvoiceAccess(IMapper mapper, DataContext context)
+        public InvoiceAccess(DataContext context, IInvoiceDataAccessBuilder invoiceDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _invoiceDataAccessBuilder = invoiceDataAccessBuilder;
         }
 
         public async Task<InvoiceAccessModel> CreateInvoiceAsync(InvoiceAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Invoice>(accessRequest);
+            var entity = _invoiceDataAccessBuilder.MapInvoiceAccessRequestToInvoice(accessRequest);
             _context.Invoices.Add(entity);
+            if (accessRequest.InvoiceDetails != null && accessRequest.InvoiceDetails.Any())
+            {
+                var invoiceDetails = accessRequest.InvoiceDetails.Select(x => _invoiceDataAccessBuilder.MapInvoiceDetailAccessRequestToInvoiceDetail(x, entity));
+                _context.InvoiceDetails.AddRange(invoiceDetails);
+            }
             await _context.SaveChangesAsync();
             var clientProcedureIds = entity.InvoiceDetails.Select(x => x.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
-            return GetModel(entity, clientProcedureEntities);
+            return _invoiceDataAccessBuilder.GetModel(entity, clientProcedureEntities);
         }
 
         public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesAsync()
@@ -34,7 +38,7 @@ namespace Access.Data.Access
                                     .OrderByDescending(x => x.DateCreated)
                                     .ToListAsync();
 
-            return entities.Select(x => GetModel(x, new List<ClientProcedure>()));
+            return entities.Select(x => _invoiceDataAccessBuilder.GetModel(x, new List<ClientProcedure>()));
         }
 
         public async Task<InvoiceAccessModel> GetInvoiceByIdAsync(string id)
@@ -47,7 +51,7 @@ namespace Access.Data.Access
 
             var clientProcedureIds = entity.InvoiceDetails.Select(y => y.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
-            return GetModel(entity, clientProcedureEntities);
+            return _invoiceDataAccessBuilder.GetModel(entity, clientProcedureEntities);
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)
@@ -63,7 +67,7 @@ namespace Access.Data.Access
             entity.Status = accessRequest.Status;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return GetModel(entity, new List<ClientProcedure>());
+            return _invoiceDataAccessBuilder.GetModel(entity, new List<ClientProcedure>());
         }
 
         private async Task<IEnumerable<ClientProcedure>> GetClientProcedureEntities(IEnumerable<Guid> clientProcedureIds)
@@ -71,36 +75,6 @@ namespace Access.Data.Access
             return await _context.ClientProcedures
                                     .Include(x => x.Procedure)
                                     .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
-        }
-
-        private static InvoiceAccessModel GetModel(Invoice entity, IEnumerable<ClientProcedure> clientProcedureEntities)
-        {
-            var invoiceDetails = entity.InvoiceDetails is null ?
-                new List<InvoiceDetailAccessModel>() :
-                entity.InvoiceDetails.Select(x => {
-                    var clientProcedure = clientProcedureEntities.FirstOrDefault(y => y.Id == x.ClientProcedureId);
-                    return new InvoiceDetailAccessModel(
-                        x.Id,
-                        x.InvoiceId,
-                        clientProcedure is null ? string.Empty : clientProcedure.Procedure.Name,
-                        x.ProcedurePrice,
-                        x.FinalPrice
-                    );
-                });
-            return new InvoiceAccessModel(
-                entity.Id,
-                entity.InvoiceNumber,
-                entity.Iva10,
-                entity.TotalIva,
-                entity.SubTotal,
-                entity.Total,
-                entity.Timbrado,
-                entity.Status,
-                entity.ClientId,
-                entity.DateCreated,
-                entity.UserCreated,
-                invoiceDetails
-            );
         }
     }
 }

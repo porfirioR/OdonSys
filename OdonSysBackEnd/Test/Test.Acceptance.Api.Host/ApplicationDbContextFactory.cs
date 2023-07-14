@@ -1,7 +1,6 @@
 ﻿using Access.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Utilities;
 
 namespace AcceptanceTest.Host.Api
 {
@@ -10,7 +9,7 @@ namespace AcceptanceTest.Host.Api
         public DataContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<DataContext>()
-                            .UseSqlServer($"Server=(local);Database={Configuration.DataBase};Integrated Security=True;MultipleActiveResultSets=False");
+                            .UseSqlServer($"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False");
 
             return new DataContext(optionsBuilder.Options, null);
         }

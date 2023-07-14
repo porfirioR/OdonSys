@@ -1,28 +1,26 @@
 ﻿using Access.Contract.Clients;
 using Access.Sql;
 using Access.Sql.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class ClientAccess : IClientAccess
     {
-        private readonly IMapper _mapper;
         private readonly DataContext _context;
-
-        public ClientAccess(IMapper mapper, DataContext context)
+        private readonly IClientDataAccessBuilder _clientAccessDataBuilder;
+        public ClientAccess(DataContext context, IClientDataAccessBuilder clientDataAccessBuilder)
         {
-            _mapper = mapper;
             _context = context;
+            _clientAccessDataBuilder = clientDataAccessBuilder;
         }
 
         public async Task<ClientAccessModel> CreateClientAsync(CreateClientAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<Client>(accessRequest);
+            var entity = _clientAccessDataBuilder.MapCreateClientAccessRequestToClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ClientAccessModel>(entity);
+            return _clientAccessDataBuilder.MapClientToClientAccessModel(entity);
         }
 
         public async Task<ClientAccessModel> DeleteAsync(string id)
@@ -32,7 +30,7 @@ namespace Access.Data.Access
             entity.Active = false;
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return _mapper.Map<ClientAccessModel>(entity);
+            return _clientAccessDataBuilder.MapClientToClientAccessModel(entity);
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetAllAsync()
@@ -41,15 +39,15 @@ namespace Access.Data.Access
                                     .Include(x => x.UserClients).ThenInclude(x => x.User)
                                     .AsNoTracking()
                                     .ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
-            return respose;
+            var modelList = entities.Select(_clientAccessDataBuilder.MapClientToClientAccessModel);
+            return modelList;
         }
 
         public async Task<ClientAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetClientByIdAsync(id);
-            var respose = _mapper.Map<ClientAccessModel>(entity);
-            return respose;
+            var accessModel = _clientAccessDataBuilder.MapClientToClientAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string userId, string userName)
@@ -58,31 +56,31 @@ namespace Access.Data.Access
                             .Include(x => x.UserClients)
                             .ThenInclude(x => x.User)
                             .Where(x => x.UserClients.Any(y => y.UserId == new Guid(userId)) || x.UserCreated == userName).ToListAsync();
-            var respose = _mapper.Map<IEnumerable<ClientAccessModel>>(entities);
-            return respose;
+            var accessModel = entities.Select(_clientAccessDataBuilder.MapClientToClientAccessModel);
+            return accessModel;
         }
 
         public async Task<ClientAccessModel> UpdateClientAsync(UpdateClientAccessRequest accessRequest)
         {
             var entity = await GetClientByIdAsync(accessRequest.Id);
-            entity = _mapper.Map(accessRequest, entity);
+            entity = _clientAccessDataBuilder.MapUpdateClientAccessRequestToClient(accessRequest, entity);
             _context.Entry(entity).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            var respose = _mapper.Map<ClientAccessModel>(entity);
-            return respose;
+            var accessModel = _clientAccessDataBuilder.MapClientToClientAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<ClientAccessModel> GetByDocumentAsync(string document)
         {
             var entity = await _context.Set<Client>()
                             .SingleOrDefaultAsync(x => x.Document == document);
-            var respose = _mapper.Map<ClientAccessModel>(entity);
+            var respose = _clientAccessDataBuilder.MapClientToClientAccessModel(entity);
             return respose;
         }
 
         public async Task<IEnumerable<ClientAccessModel>> AssignClientToUserAsync(AssignClientAccessRequest accessRequest)
         {
-            var entity = _mapper.Map<UserClient>(accessRequest);
+            var entity = _clientAccessDataBuilder.MapAssignClientAccessRequestToUserClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return await GetClientsByUserIdAsync(accessRequest.UserId, entity.UserCreated);
@@ -93,6 +91,26 @@ namespace Access.Data.Access
             var entity = await _context.Set<Client>()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
             return entity ?? throw new KeyNotFoundException($"id {id}");
+        }
+
+        public async Task<bool> IsDuplicateEmailAsync(string email, string id = null)
+        {
+            if (id != null)
+            {
+                var existClientWithEmail = await _context.Clients
+                                                    .FirstOrDefaultAsync(x => x.Id != new Guid(id) && !string.IsNullOrEmpty(x.Email) && x.Email == email);
+                return existClientWithEmail != null;
+            }
+            var client = await _context.Clients
+                                    .FirstOrDefaultAsync(x => !string.IsNullOrEmpty(x.Email) && x.Email == email);
+            return client != null;
+        }
+
+        public async Task<bool> IsDuplicateDocumentAsync(string document, string id)
+        {
+            var client = await _context.Clients
+                                    .FirstOrDefaultAsync(x => x.Id != new Guid(id) && x.Document == document);
+            return client != null;
         }
     }
 }

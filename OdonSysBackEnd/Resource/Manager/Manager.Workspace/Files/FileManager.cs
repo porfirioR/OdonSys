@@ -42,10 +42,11 @@ namespace Manager.Workspace.Files
             var files = await _fileAccess.GetFilesByReferenceIdAsync(referenceId);
             var pdfFiles = files.Where(x => x.Format == "pdf");
             var pictureFiles = files.Where(x => x.Format != "pdf");
-            var expiringImageLinks = pictureFiles.Select(x => {
+            var expiringImageLinks = pictureFiles.Select(x =>
+            {
                 var url = preview ? _uploadFileStorage.ResizeImage(x.Url, 300, 300) : x.Url;
                 return new FileModel(x.Name, _uploadFileStorage.GenerateExpiringLink(url, TimeSpan.FromHours(1)), x.Format, x.DateCreated, x.Url);
-             });
+            });
             if (preview)
             {
                 expiringImageLinks = expiringImageLinks.Concat(pdfFiles.Select(x => new FileModel(x.Name, _uploadFileStorage.GenerateExpiringLink(x.Url, TimeSpan.FromHours(1)), x.Format, x.DateCreated, x.Url)));

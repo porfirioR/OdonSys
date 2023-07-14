@@ -1,6 +1,6 @@
 ﻿using Access.Sql;
-using Contract.Admin.Auth;
-using Host.Api.Models.Auth;
+using Contract.Administration.Authentication;
+using Host.Api.Contract.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -75,12 +75,12 @@ namespace AcceptanceTest.Host.Api
                 permissions = string.Concat(permissions, string.Format(insertPermissions, rolId, permissionItem.GetDescription(), Guid.NewGuid(), date.ToString(), date, date.ToString()));
             }
             adminRoleSqlStatement = string.Concat(adminRoleSqlStatement, permissions, "SELECT * from Permissions;");
-            var permissionList = await _context.Permissions.FromSqlRaw(adminRoleSqlStatement).ToListAsync();
+            _ = await _context.Permissions.FromSqlRaw(adminRoleSqlStatement).ToListAsync();
 
             _context.Database.ExecuteSqlRaw(Properties.Resources.BasicSql);
         }
 
-        private async Task<AuthModel> RegisterTestClient(HttpClient client)
+        private async Task<AuthenticationModel> RegisterTestClient(HttpClient client)
         {
             var testUser = new RegisterUserApiRequest()
             {
@@ -88,15 +88,15 @@ namespace AcceptanceTest.Host.Api
                 MiddleName = Guid.NewGuid().ToString()[..25],
                 Surname = _testUser,
                 SecondSurname = Guid.NewGuid().ToString()[..25],
-                Document = Guid.NewGuid().ToString()[..15],
+                Document = "1111111",
                 Password = _testPassword,
-                Phone = Guid.NewGuid().ToString()[..15],
+                Phone = "0991123456",
                 Email = _email,
                 Country = Country.Paraguay
             };
             var response = await client.PostAsJsonAsync("api/authentication/register", testUser);
             var content = await response.Content.ReadAsStringAsync();
-            var responseBody = JsonConvert.DeserializeObject<AuthModel>(content);
+            var responseBody = JsonConvert.DeserializeObject<AuthenticationModel>(content);
             return responseBody;
         }
     }

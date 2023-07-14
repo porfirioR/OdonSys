@@ -62,6 +62,7 @@ export class UpsertRoleComponent implements OnInit {
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
         this.loading = false
+        this.formGroup.controls.name.markAsTouched()
       }
     })
   }

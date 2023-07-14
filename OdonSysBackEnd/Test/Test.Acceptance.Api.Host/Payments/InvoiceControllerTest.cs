@@ -1,9 +1,9 @@
-﻿using Contract.Admin.Clients;
+﻿using Contract.Administration.Clients;
 using Contract.Payment.Invoices;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Files;
 using Contract.Workspace.Procedures;
-using Host.Api.Models.ClientProcedures;
+using Host.Api.Contract.ClientProcedures;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Net;

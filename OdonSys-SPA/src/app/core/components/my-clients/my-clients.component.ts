@@ -23,6 +23,7 @@ export class ClientsComponent implements OnInit {
   public ready: boolean = false
   public gridOptions!: GridOptions
   private attributeActive!: string
+  private canEdit = false
   protected canCreate: boolean = false
 
   constructor(
@@ -36,6 +37,7 @@ export class ClientsComponent implements OnInit {
   ngOnInit() {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
+    this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -62,8 +64,12 @@ export class ClientsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
+    const buttonsToShow: ButtonGridActionType[] = []
+    if (this.canEdit) {
+      buttonsToShow.push(ButtonGridActionType.Editar)
+    }
     const params: GridActionModel = {
-      buttonShow: [ButtonGridActionType.Editar, ButtonGridActionType.Ver],
+      buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked
     }
     columnAction.cellRendererParams = params
