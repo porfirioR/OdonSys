@@ -1,40 +1,70 @@
 <app-progress *ngIf="!load"></app-progress>
-<div class="p-l-10 p-t-10" [formGroup]="formGroup">
-  <main class="row w-100">
-    <section class="col-2 p-r-0">
-      <aside class="card">
-        <article class="card-body">
-          <h5 class="card-title">Paciente</h5>
-          <form [formGroup]="clientFormGroup" class="row">
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Nombre'" [colClass]="'col-lg-12'" id="name"
-                formControlName="name"></app-text-number-input>
+<div class="container">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+    <h3>Detalles Paciente</h3>
+  </div>
+  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm" [formGroup]="formGroup">
+    <main class="row w-100">
+      <section class="p-r-0 p-b-10">
+        <main class="card">
+          <article class="card-body">
+            <h4 class="card-title">Datos Personales</h4>
+            <form [formGroup]="clientFormGroup" class="row">
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <strong class="col-3">Nombre: </strong>
+                  <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+                </div>
+                <div class="col-lg-6">
+                  <strong class="col-3">Documento: </strong>
+                  <label class="col"
+                    id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+                </div>
+              </div>
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <strong class="col-3">N° de teléfono: </strong>
+                  <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+                </div>
+                <div class="col-lg-6">
+                  <strong class="col-3">País: </strong>
+                  <label class="col" id="country">{{clientFormGroup.value.country}} </label>
+                </div>
+              </div>
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <strong>Correo: </strong>
+                  <label id="email">{{clientFormGroup.value.email}}</label>
+                </div>
+              </div>
+            </form>
+          </article>
+        </main>
+      </section>
+      <section class="p-r-0">
+        <main class="card">
+          <article class="card-body">
+            <h4 class="card-title">Facturas</h4>
+            <div ngbAccordion>
+              <div ngbAccordionItem [collapsed]="false">
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>Factura ejemplo</button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                      <h5>Tratamientos</h5>
+                      <h5>Pagos</h5>
+                      <h5>Documentos</h5>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'N° de teléfono'" [colClass]="'col-lg-12'" id="phone"
-                formControlName="phone"></app-text-number-input>
-            </div>
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'País'" [colClass]="'col-lg-12'" id="country"
-                formControlName="country"></app-text-number-input>
-            </div>
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Documento'" [type]="'number'" [colClass]="'col-lg-12'" id="document"
-                formControlName="document"></app-text-number-input>
-            </div>
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Ruc'" [type]="'number'" [colClass]="'col-lg-12'" id="ruc"
-                formControlName="ruc"></app-text-number-input>
-            </div>
-            <div class="col-lg-12 col-md-6">
-              <app-text-number-input [label]="'Correo'" [type]="'email'" [colClass]="'col-lg-12'" id="email"
-                formControlName="email"></app-text-number-input>
-            </div>
-          </form>
-        </article>
-      </aside>
-    </section>
-    <!-- <section class="col-5 p-r-0">
+          </article>
+        </main>
+      </section>
+      <!-- <section class="col-5 p-r-0">
       <article class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card" id="procedure-section">
           <div class="card-body">
@@ -185,8 +215,8 @@
         </div>
       </div>
     </section> -->
-  </main>
-  <!-- <footer class="row col-12">
+    </main>
+    <!-- <footer class="row col-12">
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-center">
@@ -197,4 +227,5 @@
       </div>
     </div>
   </footer> -->
+  </div>
 </div>

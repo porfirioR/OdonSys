@@ -39,7 +39,7 @@ export class ClientDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const id: string = this.activeRoute.snapshot.data['id']!
+    const id: string = this.activeRoute.snapshot.params['id']!
     this.clientApiService.getById(id).subscribe({
       next: (client) => {
         this.clientFormGroup.controls.name.setValue(`${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`)

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -57,7 +57,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-ma
     NgxDropzoneModule,
     StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
     NgxMaskDirective,
-    NgxMaskPipe
+    NgxMaskPipe,
+    NgbAccordionModule
   ],
   declarations: [
     HeaderComponent,
