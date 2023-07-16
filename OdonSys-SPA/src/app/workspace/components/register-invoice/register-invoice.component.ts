@@ -80,7 +80,7 @@ export class RegisterInvoiceComponent implements OnInit {
     procedure: new FormControl(''),
     procedures: new FormArray<FormGroup<ProcedureFormGroup>>([]),
     subTotal: new FormControl({ value: 0, disabled: true}),
-    total: new FormControl({ value: 0, disabled: true}),
+    total: new FormControl(0, Validators.min(1)),
     clientId: new FormControl('')
   })
 

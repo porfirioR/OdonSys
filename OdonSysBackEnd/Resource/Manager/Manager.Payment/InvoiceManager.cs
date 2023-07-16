@@ -53,7 +53,7 @@ namespace Manager.Payment
         {
             var invoiceAccessModelList = await _invoiceAccess.GetInvoicesAsync();
             var myInvoiceAccessList = invoiceAccessModelList.Where(x => x.UserCreated == userName);
-            return await PrepareInvocesWithPayments(invoiceAccessModelList);
+            return await PrepareInvocesWithPayments(myInvoiceAccessList);
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)

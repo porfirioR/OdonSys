@@ -64,7 +64,9 @@ export class ClientsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    const buttonsToShow: ButtonGridActionType[] = []
+    const buttonsToShow: ButtonGridActionType[] = [
+      ButtonGridActionType.Ver
+    ]
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
@@ -81,6 +83,9 @@ export class ClientsComponent implements OnInit {
       case ButtonGridActionType.Ver:
         this.alertService.showInfo('No implementado.')
         // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        break
+      case ButtonGridActionType.Ver:
+        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])

@@ -60,7 +60,8 @@
               ],
               "outputHashing": "all",
               "assets": [
-                "src/web.config"
+                "src/web.config",
+                "src/assets/img"
               ]
             },
             "development": {

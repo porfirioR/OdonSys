@@ -56,10 +56,6 @@ export class InvoicesComponent implements OnInit {
     this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
     this.setupAgGrid()
     this.ready = true
-    this.getList()
-  }
-
-  private getList = () => {
     this.loading = true
     this.request$.subscribe({
       next: (response: InvoiceApiModel[]) => {
