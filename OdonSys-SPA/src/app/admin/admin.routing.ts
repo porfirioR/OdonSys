@@ -53,7 +53,7 @@ export const AdminRoutes: Routes = [
       {
         path: 'pacientes/ver/:id',
         component: ClientDetailComponent,
-        title: 'Detalle pacientes',
+        title: 'Datos del paciente',
         data: { permissions: [ Permission.AccessClients ] }
       },
       {
