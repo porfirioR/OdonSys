@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { combineLatest } from 'rxjs';
 import { AlertService } from '../../services/shared/alert.service';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
@@ -10,7 +8,7 @@ import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
 import { InvoiceApiModel } from '../../../workspace/models/invoices/api/invoice-api-model';
 import { Country } from '../../enums/country.enum';
-import { ProcedureFormGroup } from '../../forms/procedure-form-group.form';
+import { DetailClientModel } from '../../models/view/detail-client-model';
 
 @Component({
   selector: 'app-client-detail',
@@ -27,7 +25,7 @@ export class ClientDetailComponent implements OnInit {
     phone: new FormControl({ value: '', disabled: true}),
     email: new FormControl({ value: '', disabled: true}),
   })
-  protected formProcedure = new Map<string, FormGroup>()
+  protected formProcedure = new Map<string, DetailClientModel>()
 
   protected formGroup = new FormGroup({
     client: this.clientFormGroup
@@ -37,9 +35,7 @@ export class ClientDetailComponent implements OnInit {
   protected invoicesSummary: InvoiceApiModel[] = []
 
   constructor(
-    private store: Store,
     private readonly alertService: AlertService,
-    private domSanitizer: DomSanitizer,
     private readonly activeRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly doctorApiService: DoctorApiService,
@@ -61,13 +57,17 @@ export class ClientDetailComponent implements OnInit {
         this.clientFormGroup.controls.country.setValue(client.country)
         this.clientFormGroup.controls.phone.setValue(client.phone)
         this.invoicesSummary = invoicesSummary
-        this.invoicesSummary.forEach(x => this.formProcedure.set(x.id, new FormGroup({})))
+        this.invoicesSummary.forEach(x => this.formProcedure.set(x.id, new DetailClientModel()))
         this.load = true
       }, error: (e) => {
         this.load = true
         throw e
       }
     })
+  }
+
+  protected getDetails = (invoiceId: string) => {
+
   }
 
 }

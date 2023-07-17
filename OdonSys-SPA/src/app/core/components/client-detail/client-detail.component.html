@@ -48,7 +48,7 @@
             <div ngbAccordion>
               <div ngbAccordionItem *ngFor="let summary of invoicesSummary">
                 <h2 ngbAccordionHeader>
-                  <button ngbAccordionButton>
+                  <button ngbAccordionButton (onclick)="getDetails(summary.id)">
                     <span class="row col-12">
                       <span class="col-6">
                         {{summary.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}
@@ -73,15 +73,15 @@
                               <label for="finalPrice" class="col-md-3 fw-bold text-end">Precio final (Gs.)</label>
                             </header>
                             <div class="row align-center" id="selected-procedure-items">
-                              <!-- <div *ngFor="let item of formProcedure.get(summary.id)!.controls['procedures']!">
-                                <label class="col-md-6 form-label"> {{item.controls.name.value}}</label>
+                              <div *ngFor="let item of formProcedure.get(summary.id)?.procedures">
+                                <label class="col-md-6 form-label"> {{item.name}}</label>
                                 <label class="col-md-3 form-label text-end">
-                                  {{item.controls.price.value | number:'' : 'es' }}
+                                  {{item.price | number:'' : 'es' }}
                                 </label>
-                                <label class="col-md-3 form-label text-end fw-bold">
-                                  {{item.controls.finalPrice.value | number:'' : 'es' }}
-                                </label>
-                              </div> -->
+                                <!-- <label class="col-md-3 form-label text-end fw-bold">
+                                  {{item.finalPrice | number:'' : 'es' }}
+                                </label> -->
+                              </div>
                             </div>
                           </main>
                         </div>
