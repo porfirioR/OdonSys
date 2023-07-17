@@ -7,6 +7,7 @@
         Task<IEnumerable<InvoiceModel>> GetInvoicesAsync();
         Task<InvoiceModel> GetInvoiceByIdAsync(string id);
         Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync(string username);
+        Task<IEnumerable<InvoiceModel>> GetInvoicesSummaryByClientIdAsync(string clientId);
         Task<InvoiceModel> UpdateInvoiceStatusIdAsync(InvoiceStatusRequest request);
     }
 }

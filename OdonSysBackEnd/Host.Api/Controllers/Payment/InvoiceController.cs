@@ -50,6 +50,14 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
+        [HttpGet("invoices-summary/{clientId}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<IEnumerable<InvoiceModel>> GetInvoicesSummaryByClient(string clientId)
+        {
+            var model = await _invoiceManager.GetInvoicesSummaryByClientIdAsync(clientId);
+            return model;
+        }
+
         [HttpPost]
         [Authorize(Policy = Policy.CanCreateInvoice)]
         public async Task<InvoiceModel> CreateInvoice([FromBody] CreateInvoiceApiRequest apiRequest)
