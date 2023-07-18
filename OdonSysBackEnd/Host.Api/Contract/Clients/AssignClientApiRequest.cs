@@ -22,11 +22,6 @@ namespace Host.Api.Contract.Clients
             }
             var clientManager = (IClientManager)validationContext.GetService(typeof(IClientManager));
             _ = clientManager.GetByIdAsync(ClientId).GetAwaiter().GetResult();
-            var clients = clientManager.GetClientsByUserIdAsync(UserId, "").GetAwaiter().GetResult();
-            if (clients.Any(x => x.Id == ClientId))
-            {
-                results.Add(new ValidationResult($"El doctor ya tiene al paciente en su lista."));
-            }
             return results;
         }
     }
