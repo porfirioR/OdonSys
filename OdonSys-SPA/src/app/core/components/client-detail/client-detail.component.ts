@@ -6,9 +6,12 @@ import { AlertService } from '../../services/shared/alert.service';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
+import { PaymentApiService } from '../../../workspace/services/payment-api.service';
 import { InvoiceApiModel } from '../../../workspace/models/invoices/api/invoice-api-model';
-import { Country } from '../../enums/country.enum';
 import { DetailClientModel } from '../../models/view/detail-client-model';
+import { Country } from '../../enums/country.enum';
+import { ProcedureModel } from '../../models/procedure/procedure-model';
+import { InvoiceDetailModel } from '../../models/view/invoice-detail-model';
 
 @Component({
   selector: 'app-client-detail',
@@ -40,8 +43,9 @@ export class ClientDetailComponent implements OnInit {
     private readonly router: Router,
     private readonly doctorApiService: DoctorApiService,
     private readonly clientApiService: ClientApiService,
-    private readonly invoiceApiService: InvoiceApiService
-  ) { }
+    private readonly invoiceApiService: InvoiceApiService,
+    private readonly paymentApiService: PaymentApiService,
+    ) { }
 
   ngOnInit() {
     const clientId: string = this.activeRoute.snapshot.params['id']!
@@ -67,7 +71,23 @@ export class ClientDetailComponent implements OnInit {
   }
 
   protected getDetails = (invoiceId: string) => {
-
+    combineLatest([
+    this.invoiceApiService.getInvoiceById(invoiceId),
+    // this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
+    // this.invoiceApiService.previewInvoiceFile(invoiceId)
+    ]).subscribe({
+      next: ([fullInvoice, 
+        // payments, files
+      ]) => {
+        const invoiceDetails = fullInvoice.invoiceDetails
+        const detailClientModel = this.formProcedure.get(invoiceId)!
+        detailClientModel.procedures = invoiceDetails.map(x => new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated))
+        detailClientModel.hasData = true
+        this.formProcedure.set(invoiceId, detailClientModel)
+      }, error: (e) => {
+        throw e
+      }
+    })
   }
 
 }

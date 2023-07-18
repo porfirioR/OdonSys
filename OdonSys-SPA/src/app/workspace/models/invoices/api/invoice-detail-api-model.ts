@@ -4,4 +4,6 @@ export interface InvoiceDetailApiModel {
   procedure: string
   procedurePrice: number
   finalPrice: number
+  dateCreated: Date
+  userCreated: string
 }

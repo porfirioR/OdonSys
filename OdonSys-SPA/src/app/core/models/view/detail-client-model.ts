@@ -1,7 +1,7 @@
-import { ProcedureModel } from "../procedure/procedure-model";
+import { InvoiceDetailModel } from "./invoice-detail-model";
 
 export class DetailClientModel {
-  procedures: ProcedureModel[]
+  procedures: InvoiceDetailModel[]
   hasData: boolean
 
   constructor() {

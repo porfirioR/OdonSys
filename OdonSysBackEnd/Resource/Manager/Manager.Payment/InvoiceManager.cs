@@ -106,7 +106,9 @@ namespace Manager.Payment
                     x.InvoiceId,
                     x.Procedure,
                     x.ProcedurePrice,
-                    x.FinalPrice
+                    x.FinalPrice,
+                    x.DateCreated,
+                    x.UserCreted
                 ))
             );
         }

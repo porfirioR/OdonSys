@@ -5,6 +5,8 @@
         Guid InvoiceId,
         string Procedure,
         int ProcedurePrice,
-        int FinalPrice
+        int FinalPrice,
+        DateTime DateCreated,
+        string UserCreted
     );
 }
