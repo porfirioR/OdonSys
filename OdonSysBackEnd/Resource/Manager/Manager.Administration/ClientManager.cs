@@ -65,9 +65,12 @@ namespace Manager.Administration
 
         public async Task<IEnumerable<ClientModel>> AssignClientToUser(AssignClientRequest request)
         {
-            var accessRequest = new AssignClientAccessRequest(request.UserId, request.ClientId);
-            var accessModel = await _clientAccess.AssignClientToUserAsync(accessRequest);
-            return accessModel.Select(_clientManagerBuilder.MapClientAccessModelToClientModel);
+
+            var clients = await GetClientsByUserIdAsync(request.UserId, "");
+            var accessModelList = clients.Any(x => x.Id == request.ClientId) ?
+                await _clientAccess.GetClientsByUserIdAsync(request.UserId, string.Empty) :
+                await _clientAccess.AssignClientToUserAsync(new AssignClientAccessRequest(request.UserId, request.ClientId));
+            return accessModelList.Select(_clientManagerBuilder.MapClientAccessModelToClientModel);
         }
 
         public async Task<bool> IsDuplicateEmailAsync(string email, string id = null)

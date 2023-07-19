@@ -28,10 +28,10 @@ namespace Host.Api.Controllers.Payment
 
         [HttpGet]
         [Authorize(Policy = Policy.CanAccessInvoice)]
-        public async Task<IEnumerable<InvoiceModel>> GetInvoices()
+        public async Task<IEnumerable<InvoiceModel>> GetInvoicesAsync()
         {
-            var model = await _invoiceManager.GetInvoicesAsync();
-            return model;
+            var modelList = await _invoiceManager.GetInvoicesAsync();
+            return modelList;
         }
 
         [HttpGet("{id}")]
@@ -44,15 +44,23 @@ namespace Host.Api.Controllers.Payment
 
         [HttpGet("my-invoices")]
         [Authorize(Policy = Policy.CanAccessMyInvoice)]
-        public async Task<IEnumerable<InvoiceModel>> GetMyInvoices()
+        public async Task<IEnumerable<InvoiceModel>> GetMyInvoicesAsync()
         {
             var model = await _invoiceManager.GetMyInvoicesAsync(Username);
             return model;
         }
 
+        [HttpGet("invoices-summary/{clientId}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<IEnumerable<InvoiceModel>> GetInvoicesSummaryByClientAsync(string clientId)
+        {
+            var model = await _invoiceManager.GetInvoicesSummaryByClientIdAsync(clientId);
+            return model;
+        }
+
         [HttpPost]
         [Authorize(Policy = Policy.CanCreateInvoice)]
-        public async Task<InvoiceModel> CreateInvoice([FromBody] CreateInvoiceApiRequest apiRequest)
+        public async Task<InvoiceModel> CreateInvoiceAsync([FromBody] CreateInvoiceApiRequest apiRequest)
         {
             var request = new InvoiceRequest(
                 apiRequest.InvoiceNumber,
@@ -89,11 +97,11 @@ namespace Host.Api.Controllers.Payment
 
         [HttpPost("upload-invoice-files")]
         [Authorize(Policy = Policy.CanCreateInvoice)]
-        public async Task<IEnumerable<string>> UploadInvoiceFiles([FromForm] UploadFileApiRequest apiRequest)
+        public async Task<IEnumerable<string>> UploadInvoiceFilesAsync([FromForm] UploadFileApiRequest apiRequest)
         {
             var request = new UploadFileRequest(apiRequest.Id, apiRequest.Files, UserId);
-            var model = await _fileManager.UploadFileAsync(request);
-            return model;
+            var modelList = await _fileManager.UploadFileAsync(request);
+            return modelList;
         }
 
         [HttpGet("preview-invoice-files/{id}")]

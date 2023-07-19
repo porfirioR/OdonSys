@@ -33,7 +33,7 @@
               </div>
               <div class="row col-lg-12 col-md-6">
                 <div class="col-lg-6">
-                  <strong>Correo: </strong>
+                  <b>Correo: </b>
                   <label id="email">{{clientFormGroup.value.email}}</label>
                 </div>
               </div>
@@ -46,16 +46,52 @@
           <article class="card-body">
             <h4 class="card-title">Facturas</h4>
             <div ngbAccordion>
-              <div ngbAccordionItem [collapsed]="false">
+              <div ngbAccordionItem *ngFor="let summary of invoicesSummary">
                 <h2 ngbAccordionHeader>
-                  <button ngbAccordionButton>Factura ejemplo</button>
+                  <button ngbAccordionButton (click)="getDetails(summary.id)">
+                    <span class="row col-12">
+                      <span class="col-6">
+                        <b>Fecha: </b>{{summary.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}
+                      </span>
+                      <span class="col-6 text-end">
+                        <b>Total: </b>{{summary.total | number:'' : 'es'}}
+                      </span>
+                    </span>
+                  </button>
                 </h2>
                 <div ngbAccordionCollapse>
-                  <div ngbAccordionBody>
-                    <ng-template>
-                      <h5>Tratamientos</h5>
-                      <h5>Pagos</h5>
-                      <h5>Documentos</h5>
+                  <div ngbAccordionBody class="p-l-10">
+                    <span *ngIf="!formProcedure.get(summary.id)!.hasData; else invoicesDetails"></span>
+                    <ng-template #invoicesDetails>
+                      <article class="col-md-12 p-b-10 selected-procedures">
+                        <div class="procedure-section">
+                          <h5 class="card-title">Procedimientos</h5>
+                          <main class="p-l-10">
+                            <header class="row">
+                              <label for="name" class="col-md-3 fw-bold">Nombre</label>
+                              <label for="userCreated" class="col-md-3 fw-bold text-end">Quien Registró</label>
+                              <label for="date" class="col-md-3 fw-bold text-end p-r-6">Fecha</label>
+                              <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
+                            </header>
+                            <div class="row align-center">
+                              <div *ngFor="let invoiceDetail of formProcedure.get(summary.id)?.procedures">
+                                <label class="col-md-3">
+                                  {{invoiceDetail?.procedure}}
+                                </label>
+                                <label class="col-md-3 text-end p-r-12">
+                                  {{invoiceDetail?.userCreated}}
+                                </label>
+                                <label class="col-md-3 text-end">
+                                  {{invoiceDetail?.dateCreated | date: 'dd/MM/yyyy': '': 'es' }}
+                                </label>
+                                <label class="col-md-3 text-end">
+                                  {{invoiceDetail?.finalPrice | number:'' : 'es' }}
+                                </label>
+                              </div>
+                            </div>
+                          </main>
+                        </div>
+                      </article>
                     </ng-template>
                   </div>
                 </div>
@@ -65,31 +101,7 @@
         </main>
       </section>
       <!-- <section class="col-5 p-r-0">
-      <article class="col-md-12 p-b-10" id="selected-procedures">
-        <div class="card" id="procedure-section">
-          <div class="card-body">
-            <h5 class="card-title">Procedimientos</h5>
-            <main formArrayName="procedures">
-              <header class="row">
-                <label for="name" class="col-md-6 fw-bold">Nombre</label>
-                <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
-                <label for="finalPrice" class="col-md-3 fw-bold text-end">Precio final (Gs.)</label>
-              </header>
-              <div class="row align-center" id="selected-procedure-items">
-                <div [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
-                  <label class="col-md-6 form-label"> {{item.controls.name.value}}</label>
-                  <label class="col-md-3 form-label text-end">
-                    {{item.controls.price.value | number:'' : 'es' }}
-                  </label>
-                  <label class="col-md-3 form-label text-end fw-bold">
-                    {{item.controls.finalPrice.value | number:'' : 'es' }}
-                  </label>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
-      </article>
+      
       <footer class="col-md-12 p-l-0" id="footer-procedures">
         <div class="card">
           <div class="card-body amount">

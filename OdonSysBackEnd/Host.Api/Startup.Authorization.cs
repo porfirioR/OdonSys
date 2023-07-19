@@ -31,7 +31,8 @@ namespace Host.Api
                     new List<PermissionName> {
                         PermissionName.AccessClients,
                         PermissionName.AccessMyInvoices,
-                        PermissionName.AccessInvoices
+                        PermissionName.AccessInvoices,
+                        PermissionName.AccessMyClients
                     }
                 )),
                 new PolicyModel(Policy.CanManageClient, new AuthorizationRequirement(

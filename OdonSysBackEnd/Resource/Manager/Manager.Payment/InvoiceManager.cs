@@ -67,6 +67,13 @@ namespace Manager.Payment
             return GetModel(accessModel);
         }
 
+        public async Task<IEnumerable<InvoiceModel>> GetInvoicesSummaryByClientIdAsync(string clientId)
+        {
+            var accessModelList = await _invoiceAccess.GetInvoicesAsync();
+            accessModelList = accessModelList.Where(x => x.ClientId == new Guid(clientId));
+            return accessModelList.Select(GetModel);
+        }
+
         private async Task<IEnumerable<InvoiceModel>> PrepareInvocesWithPayments(IEnumerable<InvoiceAccessModel> invoiceIdsList)
         {
             var invoiceIds = invoiceIdsList.Select(x => x.Id);
@@ -99,7 +106,9 @@ namespace Manager.Payment
                     x.InvoiceId,
                     x.Procedure,
                     x.ProcedurePrice,
-                    x.FinalPrice
+                    x.FinalPrice,
+                    x.DateCreated,
+                    x.UserCreated
                 ))
             );
         }

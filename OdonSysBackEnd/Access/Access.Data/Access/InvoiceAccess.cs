@@ -33,12 +33,12 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesAsync()
         {
-            var entities = await _context.Invoices
-                                    .AsNoTracking()
-                                    .OrderByDescending(x => x.DateCreated)
-                                    .ToListAsync();
+            var entities = _context.Invoices
+                                    .AsNoTrackingWithIdentityResolution()
+                                    .OrderByDescending(x => x.DateCreated);
 
-            return entities.Select(x => _invoiceDataAccessBuilder.GetModel(x, new List<ClientProcedure>()));
+            var accessModels = entities.Select(x => _invoiceDataAccessBuilder.GetModel(x, new List<ClientProcedure>()));
+            return await accessModels.ToListAsync();
         }
 
         public async Task<InvoiceAccessModel> GetInvoiceByIdAsync(string id)
