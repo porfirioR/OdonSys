@@ -1,11 +1,14 @@
-﻿using Contract.Administration.Clients;
+﻿using Access.Sql.Entities;
+using Contract.Administration.Clients;
 using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Clients;
 using Host.Api.Contract.MapBuilders;
 using Host.Api.Contract.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Controllers.Workspace
 {
@@ -33,9 +36,9 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanAssignClient)]
         public async Task<IEnumerable<ClientModel>> AssignClientToUser([FromBody] AssignClientApiRequest apiRequest)
         {
-            var user = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
-            var model = await _clientManager.AssignClientToUser(user);
-            return model;
+            var request = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
+            var modelList = await _clientManager.AssignClientToUser(request);
+            return modelList;
         }
 
         [HttpPut]

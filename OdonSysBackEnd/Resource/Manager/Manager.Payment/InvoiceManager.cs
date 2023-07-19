@@ -53,7 +53,7 @@ namespace Manager.Payment
         {
             var invoiceAccessModelList = await _invoiceAccess.GetInvoicesAsync();
             var myInvoiceAccessList = invoiceAccessModelList.Where(x => x.UserCreated == userName);
-            return await PrepareInvocesWithPayments(invoiceAccessModelList);
+            return await PrepareInvocesWithPayments(myInvoiceAccessList);
         }
 
         public async Task<bool> IsValidInvoiceIdAsync(string id)
@@ -65,6 +65,13 @@ namespace Manager.Payment
         {
             var accessModel = await _invoiceAccess.UpdateInvoiceStatusIdAsync(new InvoiceStatusAccessRequest(request.InvoiceId, request.Status));
             return GetModel(accessModel);
+        }
+
+        public async Task<IEnumerable<InvoiceModel>> GetInvoicesSummaryByClientIdAsync(string clientId)
+        {
+            var accessModelList = await _invoiceAccess.GetInvoicesAsync();
+            accessModelList = accessModelList.Where(x => x.ClientId == new Guid(clientId));
+            return accessModelList.Select(GetModel);
         }
 
         private async Task<IEnumerable<InvoiceModel>> PrepareInvocesWithPayments(IEnumerable<InvoiceAccessModel> invoiceIdsList)
@@ -99,7 +106,9 @@ namespace Manager.Payment
                     x.InvoiceId,
                     x.Procedure,
                     x.ProcedurePrice,
-                    x.FinalPrice
+                    x.FinalPrice,
+                    x.DateCreated,
+                    x.UserCreated
                 ))
             );
         }

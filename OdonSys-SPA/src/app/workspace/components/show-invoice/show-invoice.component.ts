@@ -17,9 +17,8 @@ import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.for
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { PaymentApiService } from '../../services/payment-api.service';
-import { DoctorApiService } from '../../../core/services/api/doctor-api.service';
 import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
-import { selectDoctor } from 'src/app/core/store/doctors/doctor.selectors';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
 
 @Component({
   selector: 'app-show-invoice',
@@ -63,7 +62,6 @@ export class ShowInvoiceComponent implements OnInit {
     private readonly router: Router,
     private readonly activeRoute: ActivatedRoute,
     private readonly paymentApiService: PaymentApiService,
-    private readonly doctorApiService: DoctorApiService,
     private domSanitizer: DomSanitizer
   ) { }
 

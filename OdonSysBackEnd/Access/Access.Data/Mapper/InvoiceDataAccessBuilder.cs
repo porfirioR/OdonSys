@@ -48,7 +48,9 @@ namespace Access.Data.Mapper
                         x.InvoiceId,
                         clientProcedure is null ? string.Empty : clientProcedure.Procedure.Name,
                         x.ProcedurePrice,
-                        x.FinalPrice
+                        x.FinalPrice,
+                        x.DateCreated,
+                        x.UserCreated
                     );
                 });
             return new InvoiceAccessModel(
