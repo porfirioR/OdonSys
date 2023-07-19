@@ -71,6 +71,10 @@ export class ClientDetailComponent implements OnInit {
   }
 
   protected getDetails = (invoiceId: string) => {
+    const detailClientModel = this.formProcedure.get(invoiceId)!
+    if (detailClientModel.hasData) {
+      return
+    }
     combineLatest([
     this.invoiceApiService.getInvoiceById(invoiceId),
     // this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
@@ -80,10 +84,9 @@ export class ClientDetailComponent implements OnInit {
         // payments, files
       ]) => {
         const invoiceDetails = fullInvoice.invoiceDetails
-        const detailClientModel = this.formProcedure.get(invoiceId)!
         detailClientModel.procedures = invoiceDetails.map(x => new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated))
         detailClientModel.hasData = true
-        this.formProcedure.set(invoiceId, detailClientModel)
+        // this.formProcedure.set(invoiceId, detailClientModel)
       }, error: (e) => {
         throw e
       }

@@ -7,6 +7,6 @@
         int ProcedurePrice,
         int FinalPrice,
         DateTime DateCreated,
-        string UserCreted
+        string UserCreated
     );
 }

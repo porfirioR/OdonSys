@@ -67,16 +67,9 @@ namespace Manager.Administration
         {
 
             var clients = await GetClientsByUserIdAsync(request.UserId, "");
-            IEnumerable<ClientAccessModel> accessModelList;
-            if (clients.Any(x => x.Id == request.ClientId))
-            {
-                accessModelList = await _clientAccess.GetClientsByUserIdAsync(request.UserId, string.Empty);
-            }
-            else
-            {
-                var accessRequest = new AssignClientAccessRequest(request.UserId, request.ClientId);
-                accessModelList = await _clientAccess.AssignClientToUserAsync(accessRequest);
-            }
+            var accessModelList = clients.Any(x => x.Id == request.ClientId) ?
+                await _clientAccess.GetClientsByUserIdAsync(request.UserId, string.Empty) :
+                await _clientAccess.AssignClientToUserAsync(new AssignClientAccessRequest(request.UserId, request.ClientId));
             return accessModelList.Select(_clientManagerBuilder.MapClientAccessModelToClientModel);
         }
 

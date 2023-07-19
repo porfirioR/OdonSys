@@ -108,7 +108,7 @@ namespace Manager.Payment
                     x.ProcedurePrice,
                     x.FinalPrice,
                     x.DateCreated,
-                    x.UserCreted
+                    x.UserCreated
                 ))
             );
         }
