@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -73,7 +73,6 @@ export class RegisterInvoiceComponent implements OnInit {
     '285px',
     'm-b-0'
   )
-  private procedures!: ProcedureModel[]
   public saving: boolean = false
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
@@ -83,6 +82,11 @@ export class RegisterInvoiceComponent implements OnInit {
     total: new FormControl(0, Validators.min(1)),
     clientId: new FormControl('')
   })
+  private procedures!: ProcedureModel[]
+  private maxProcedureHeight = 569
+  private minProcedureHeight = 541
+  protected maximumProcedureHeight = this.maxProcedureHeight
+  protected minimumProcedureHeight = this.minProcedureHeight
 
   constructor(
     private store: Store,
@@ -96,6 +100,7 @@ export class RegisterInvoiceComponent implements OnInit {
     private readonly subscriptionService: SubscriptionService
   ) {
     this.countries = EnumHandler.getCountries()
+    this.getScreenSize()
   }
 
   ngOnInit() {
@@ -130,7 +135,20 @@ export class RegisterInvoiceComponent implements OnInit {
     this.formGroupValueChanges()
     this.formGroup.controls.procedures.addValidators(this.minimumOneSelectedValidator)
   }
-
+  
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?: any) {
+    
+    if (window.screen.height <= 768) {
+      this.uploadFileConfig.height = '130px'
+      this.maximumProcedureHeight = 407
+      this.minimumProcedureHeight = 380
+    } else {
+      this.uploadFileConfig.height = '285px'
+      this.maximumProcedureHeight = this.maxProcedureHeight
+      this.minimumProcedureHeight = this.minProcedureHeight
+    }
+  }
   protected cleanClient = () => {
     this.formGroup.controls.client.reset()
     this.formGroup.controls.client.patchValue({ country: Country.Paraguay })

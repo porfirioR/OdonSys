@@ -21,3 +21,10 @@ ag-grid-angular {
 .ag-root-wrapper.ag-layout-normal {
   border-radius: var(--bs-border-radius) !important;
 }
+
+@media screen and (max-height: 768px) {
+  ag-grid-angular {
+    height: 78vh;
+    margin-bottom: 10px;
+  }
+}

@@ -2,7 +2,6 @@
   padding-right: 0 !important;
 }
 
-
 footer {
   & .card-body {
     padding-bottom: 0.5rem !important;
@@ -37,5 +36,17 @@ footer {
 
 .upload-files-height {
   overflow-x: hidden;
-  height: 347px !important;
+  height: 355px !important;
+}
+
+@media screen and (max-height: 768px) {
+  .upload-files-height {
+    overflow-x: hidden;
+    height: 193px !important;
+  }
+
+  #selected-procedures-items {
+    max-height: 325px !important;
+    overflow-x: hidden;
+  }
 }
