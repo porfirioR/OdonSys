@@ -84,8 +84,8 @@ footer {
 }
 
 .invoice-file {
-  overflow-x: hidden;
   max-height: 440px;
+  overflow-x: hidden;
 }
 
 .legend {
@@ -143,4 +143,48 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media screen and (max-height: 768px) {
+  #procedure-section { 
+    height: 35.6rem;
+  }
+
+  #paid-section {
+    height: 14rem;
+    margin-bottom: 10px !important;
+  }
+
+  #file-preview {
+    height: 24.3rem;
+  }
+
+  form {
+    height: calc(35rem - 5px);
+    overflow-x: hidden;
+  }
+
+  .no-file {
+    height: 21rem;
+  }
+
+  #selected-procedure-items {
+    max-height: 29.2rem !important;
+  }
+
+  #paid-items {
+    max-height: 7.6rem !important;
+  }
+
+  .invoice-file {
+    max-height: 305px;
+  }
+
+  .pdf {
+    font-size: 4rem;
+  }
+
+  .pictures {
+    width: 188px;
+  }
 }
