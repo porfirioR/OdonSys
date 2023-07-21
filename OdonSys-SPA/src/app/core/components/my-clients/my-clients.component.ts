@@ -81,10 +81,6 @@ export class ClientsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Ver:
-        this.alertService.showInfo('No implementado.')
-        // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
-        break
-      case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Editar:

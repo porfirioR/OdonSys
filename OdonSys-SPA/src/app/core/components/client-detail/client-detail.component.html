@@ -53,7 +53,15 @@
                       <span class="col-6">
                         <b>Fecha: </b>{{summary.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}
                       </span>
-                      <span class="col-6 text-end">
+                      <span class="col-3 text-end">
+                        <b>Estado: </b>
+                        <span class="badge" [ngClass]="[
+                          summary.status === invoiceStatus.Nuevo ? 'text-bg-info':
+                          summary.status === invoiceStatus.Completado ? 'text-bg-success' :
+                          summary.status === invoiceStatus.Cancelado ? 'text-bg-danger': 'text-bg-warning'
+                        ]">{{summary.status}}</span>
+                      </span>
+                      <span class="col-3 text-end">
                         <b>Total: </b>{{summary.total | number:'' : 'es'}}
                       </span>
                     </span>
@@ -68,20 +76,20 @@
                           <h5 class="card-title">Procedimientos</h5>
                           <main class="p-l-10">
                             <header class="row">
-                              <label for="name" class="col-md-3 fw-bold">Nombre</label>
-                              <label for="userCreated" class="col-md-3 fw-bold text-end">Quien Registró</label>
-                              <label for="date" class="col-md-3 fw-bold text-end p-r-6">Fecha</label>
+                              <label for="name" class="col-md-5 fw-bold">Nombre</label>
+                              <label for="userCreated" class="col-md-2 fw-bold text-end">Quien Registró</label>
+                              <label for="date" class="col-md-2 fw-bold text-end p-r-6">Fecha</label>
                               <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
                             </header>
                             <div class="row align-center">
                               <div *ngFor="let invoiceDetail of formProcedure.get(summary.id)?.procedures">
-                                <label class="col-md-3">
+                                <label class="col-md-5">
                                   {{invoiceDetail?.procedure}}
                                 </label>
-                                <label class="col-md-3 text-end p-r-12">
+                                <label class="col-md-2 text-end p-r-12">
                                   {{invoiceDetail?.userCreated}}
                                 </label>
-                                <label class="col-md-3 text-end">
+                                <label class="col-md-2 text-end">
                                   {{invoiceDetail?.dateCreated | date: 'dd/MM/yyyy': '': 'es' }}
                                 </label>
                                 <label class="col-md-3 text-end">
@@ -93,61 +101,36 @@
                         </div>
                       </article>
                     </ng-template>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-        </main>
-      </section>
-      <!-- <section class="col-5 p-r-0">
-      
-      <footer class="col-md-12 p-l-0" id="footer-procedures">
-        <div class="card">
-          <div class="card-body amount">
-            <div class="row">
-              <div class=" offset-4 col-md-4">
-                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' :
-                  'es' }}</label>
-              </div>
-              <div class="col-md-4">
-                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' :
-                  'es' }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </section>
-    <section class="col-5 p-r-0">
-      <div class="card" id="paid-section">
-        <div class="card-body" [ngClass]="{'align-items-center d-flex justify-content-center': !hasPayments}">
-          <div *ngIf="!hasPayments; else allPayments">
-            <h5 class="text-center">Sin pagos realizados</h5>
-          </div>
-          <ng-template #allPayments>
-            <section id="payments">
-              <h5>Pagos realizados</h5>
-              <header class="row paid-header">
-                <h6 class="col-3">Quien registró</h6>
-                <h6 class="col-3">Fecha pagada</h6>
-                <h6 class="col-3 text-end">Monto (Gs.)</h6>
-                <h6 class="col-3 text-end">Deuda (Gs.)</h6>
-              </header>
-              <div id="paid-items">
-                <div class="row paid-content-row" *ngFor="let payment of payments">
-                  <label class="col-3">{{payment.user}}</label>
-                  <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-                  <label class="col-3 text-end">{{payment.amount | number: '': 'es'}}</label>
-                  <label class="col-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
-                </div>
-              </div>
-            </section>
-            <br>
-          </ng-template>
-        </div>
-      </div>
-      <div id="file-preview" class="card">
+                    <section class="p-r-5">
+                      <h5>Pagos</h5>
+                      <div class="" id="paid-section">
+                        <div [ngClass]="{'align-items-center d-flex justify-content-center': !formProcedure.get(summary.id)!.hasPayments}">
+                          <div *ngIf="!formProcedure.get(summary.id)!.hasPayments; else allPayments">
+                            <h5 class="text-center">Sin pagos realizados</h5>
+                          </div>
+                          <ng-template #allPayments>
+                            <main class="p-l-10">
+                              <header class="row paid-header">
+                                <h6 class="col-md-5">Quien registró</h6>
+                                <h6 class="col-md-2 text-end">Fecha pagada</h6>
+                                <h6 class="col-md-2 text-end p-r-0">Monto (Gs.)</h6>
+                                <h6 class="col-md-3 text-end">Deuda (Gs.)</h6>
+                              </header>
+                              <div id="paid-items">
+                                <div class="row paid-content-row"
+                                  *ngFor="let payment of formProcedure.get(summary.id)!.payments">
+                                  <label class="col-md-5">{{payment.user}}</label>
+                                  <label class="col-md-2 text-end">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+                                  <label class="col-md-2 text-end p-r-0">{{payment.amount | number: '': 'es'}}</label>
+                                  <label class="col-md-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+                                </div>
+                              </div>
+                            </main>
+                            <br>
+                          </ng-template>
+                        </div>
+                      </div>
+                      <!-- <div id="file-preview" class="card">
         <div class="card-body">
           <nav ngbNav #nav="ngbNav" class="nav-tabs">
             <ng-container ngbNavItem>
@@ -225,8 +208,33 @@
           </nav>
           <div [ngbNavOutlet]="nav" class="mt-2"></div>
         </div>
-      </div>
-    </section> -->
+      </div> -->
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </main>
+      </section>
+      <!-- <section class="col-5 p-r-0">
+      
+      <footer class="col-md-12 p-l-0" id="footer-procedures">
+        <div class="card">
+          <div class="card-body amount">
+            <div class="row">
+              <div class=" offset-4 col-md-4">
+                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' :
+                  'es' }}</label>
+              </div>
+              <div class="col-md-4">
+                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' : 'es' }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>-->
     </main>
     <!-- <footer class="row col-12">
     <div class="card">

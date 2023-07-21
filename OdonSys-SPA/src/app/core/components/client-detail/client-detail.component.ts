@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { AlertService } from '../../services/shared/alert.service';
+import { combineLatest, map, of, switchMap } from 'rxjs';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
 import { PaymentApiService } from '../../../workspace/services/payment-api.service';
 import { InvoiceApiModel } from '../../../workspace/models/invoices/api/invoice-api-model';
 import { DetailClientModel } from '../../models/view/detail-client-model';
-import { Country } from '../../enums/country.enum';
-import { ProcedureModel } from '../../models/procedure/procedure-model';
 import { InvoiceDetailModel } from '../../models/view/invoice-detail-model';
+import { PaymentModel } from '../../../workspace/models/payments/payment-model';
+import { InvoiceStatus } from '../../enums/invoice-status.enum';
+import { Country } from '../../enums/country.enum';
 
 @Component({
   selector: 'app-client-detail',
@@ -29,16 +29,13 @@ export class ClientDetailComponent implements OnInit {
     email: new FormControl({ value: '', disabled: true}),
   })
   protected formProcedure = new Map<string, DetailClientModel>()
-
+  protected invoiceStatus = InvoiceStatus
   protected formGroup = new FormGroup({
     client: this.clientFormGroup
   })
-
-
   protected invoicesSummary: InvoiceApiModel[] = []
 
   constructor(
-    private readonly alertService: AlertService,
     private readonly activeRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly doctorApiService: DoctorApiService,
@@ -77,17 +74,34 @@ export class ClientDetailComponent implements OnInit {
     }
     combineLatest([
     this.invoiceApiService.getInvoiceById(invoiceId),
-    // this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
+    this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
     // this.invoiceApiService.previewInvoiceFile(invoiceId)
-    ]).subscribe({
-      next: ([fullInvoice, 
-        // payments, files
-      ]) => {
-        const invoiceDetails = fullInvoice.invoiceDetails
-        detailClientModel.procedures = invoiceDetails.map(x => new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated))
+    ]).pipe(switchMap(([fullInvoice, paymentList]) => {
+      const invoiceDetails = fullInvoice.invoiceDetails
+      detailClientModel.procedures = invoiceDetails.map(x => new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated))
+      const userPayments = [... new Set(paymentList.map(x => x.userId))]
+      const payments: PaymentModel[] = []
+      if (userPayments.length === 0) {
+        return of(payments)
+      }
+      const userPayments$ = userPayments.map(this.doctorApiService.getById)
+      return combineLatest(userPayments$).pipe(map(users => {
+        let remainingDebt = fullInvoice.total
+        paymentList.forEach(payment => {
+          const user = users.find(x => x!.id.compareString(payment.userId))
+          remainingDebt -= payment.amount
+          const paymentItem = new PaymentModel(user!.userName, payment.dateCreated, payment.amount, remainingDebt)
+          payments.push(paymentItem)
+        })
+        return payments
+      }))
+    })).subscribe({
+      next: (paymentList: PaymentModel[]) => {
+        detailClientModel.payments = paymentList
+        detailClientModel.hasPayments = paymentList.length > 0
         detailClientModel.hasData = true
-        // this.formProcedure.set(invoiceId, detailClientModel)
       }, error: (e) => {
+        
         throw e
       }
     })

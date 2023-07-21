@@ -7,14 +7,14 @@
           <div class="card-body">
             <h5 class="card-title">Pacientes</h5>
             <div class="row">
-              <div class="col-lg-9 col-md-10 col-sm-10">
+              <div class="col-8">
                 <select class="form-select" formControlName="clientId">
                   <option [value]="''" disabled>Pacientes existentes</option>
                   <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}
                   </option>
                 </select>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-3 text-end ">
+              <div class="col text-end p-t-0">
                 <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
               </div>
             </div>
@@ -81,7 +81,7 @@
       </header>
       <main class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card">
-          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 541 : 569}">
+          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? minimumProcedureHeight : maximumProcedureHeight}">
             <h5 class="card-title">Procedimientos seleccionados</h5>
             <article formArrayName="procedures">
               <header class="row">

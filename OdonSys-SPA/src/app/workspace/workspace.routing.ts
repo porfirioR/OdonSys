@@ -8,6 +8,7 @@ import { ShowInvoiceComponent } from './components/show-invoice/show-invoice.com
 import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
 import { Permission } from '../core/enums/permission.enum';
+import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -42,6 +43,12 @@ export const WorkspaceRoutes: Routes = [
         canDeactivate: [PreventUnsavedChangesWorkspace],
         canActivate: [PermissionGuard],
         data: { permissions: [ Permission.AccessMyClients, Permission.UpdateClients ] }
+      },
+      {
+        path: 'mis-pacientes/ver/:id',
+        component: ClientDetailComponent,
+        title: 'Datos del paciente',
+        data: { permissions: [ Permission.AccessMyClients ] }
       },
       {
         path: 'facturas',
