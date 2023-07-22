@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
@@ -62,6 +62,11 @@ export class AdminClientsComponent implements OnInit {
       this.gridOptions.api?.sizeColumnsToFit()
     }))
     this.load = true
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?: any) {
+    this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {

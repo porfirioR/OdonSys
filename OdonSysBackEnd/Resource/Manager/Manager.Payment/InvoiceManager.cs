@@ -99,6 +99,7 @@ namespace Manager.Payment
                 accessModel.Timbrado,
                 accessModel.Status,
                 accessModel.ClientId,
+                accessModel.ClientFullName,
                 accessModel.DateCreated,
                 accessModel.UserCreated,
                 accessModel.InvoiceDetails.Select(x => new InvoiceDetailModel(

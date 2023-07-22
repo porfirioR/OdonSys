@@ -1,4 +1,5 @@
-﻿using Utilities.Enums;
+﻿using Access.Contract.Clients;
+using Utilities.Enums;
 
 namespace Access.Contract.Invoices
 {
@@ -12,6 +13,7 @@ namespace Access.Contract.Invoices
         string Timbrado,
         InvoiceStatus Status,
         Guid ClientId,
+        string ClientFullName,
         DateTime DateCreated,
         string UserCreated,
         IEnumerable<InvoiceDetailAccessModel> InvoiceDetails

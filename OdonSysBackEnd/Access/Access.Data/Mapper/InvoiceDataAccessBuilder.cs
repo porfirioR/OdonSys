@@ -1,4 +1,5 @@
-﻿using Access.Contract.Invoices;
+﻿using Access.Contract.Clients;
+using Access.Contract.Invoices;
 using Access.Sql.Entities;
 
 namespace Access.Data.Mapper
@@ -38,6 +39,10 @@ namespace Access.Data.Mapper
 
         public InvoiceAccessModel GetModel(Invoice entity, IEnumerable<ClientProcedure> clientProcedureEntities)
         {
+            var clientFullName = entity.Client != null ?
+                                $"{entity.Client.Name} {entity.Client.MiddleName} {entity.Client.Surname} {entity.Client.SecondSurname}" :
+                                string.Empty;
+
             var invoiceDetails = entity.InvoiceDetails is null ?
                 new List<InvoiceDetailAccessModel>() :
                 entity.InvoiceDetails.Select(x =>
@@ -53,6 +58,7 @@ namespace Access.Data.Mapper
                         x.UserCreated
                     );
                 });
+
             return new InvoiceAccessModel(
                 entity.Id,
                 entity.InvoiceNumber,
@@ -63,6 +69,7 @@ namespace Access.Data.Mapper
                 entity.Timbrado,
                 entity.Status,
                 entity.ClientId,
+                clientFullName,
                 entity.DateCreated,
                 entity.UserCreated,
                 invoiceDetails

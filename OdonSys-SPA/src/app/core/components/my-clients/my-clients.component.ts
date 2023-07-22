@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
@@ -59,6 +59,11 @@ export class ClientsComponent implements OnInit {
         throw e
       }
     })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?: any) {
+    this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {

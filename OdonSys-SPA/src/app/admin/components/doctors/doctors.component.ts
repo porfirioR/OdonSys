@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ColDef, GridOptions, IRowNode } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
@@ -60,6 +60,11 @@ export class DoctorsComponent implements OnInit {
     this.setupAgGrid()
     this.store.dispatch(fromDoctorsActions.loadDoctors())
     this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridOptions.api?.sizeColumnsToFit()))
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?: any) {
+    this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
