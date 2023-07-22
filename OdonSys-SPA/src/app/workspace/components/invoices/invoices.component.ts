@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColDef, GridOptions } from 'ag-grid-community';
@@ -71,6 +71,11 @@ export class InvoicesComponent implements OnInit {
         throw e
       }
     })
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?: any) {
+    this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {

@@ -34,6 +34,7 @@ namespace Access.Data.Access
         public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesAsync()
         {
             var entities = _context.Invoices
+                                    .Include(x => x.Client)
                                     .AsNoTrackingWithIdentityResolution()
                                     .OrderByDescending(x => x.DateCreated);
 
@@ -44,6 +45,7 @@ namespace Access.Data.Access
         public async Task<InvoiceAccessModel> GetInvoiceByIdAsync(string id)
         {
             var entity = await _context.Invoices
+                                    .Include(x => x.Client)
                                     .AsNoTracking()
                                     .Include(x => x.InvoiceDetails)
                                     .AsNoTracking()

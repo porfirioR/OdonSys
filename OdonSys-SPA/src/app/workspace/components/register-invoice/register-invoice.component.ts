@@ -135,7 +135,7 @@ export class RegisterInvoiceComponent implements OnInit {
     this.formGroupValueChanges()
     this.formGroup.controls.procedures.addValidators(this.minimumOneSelectedValidator)
   }
-  
+
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?: any) {
     
@@ -149,6 +149,7 @@ export class RegisterInvoiceComponent implements OnInit {
       this.minimumProcedureHeight = this.minProcedureHeight
     }
   }
+
   protected cleanClient = () => {
     this.formGroup.controls.client.reset()
     this.formGroup.controls.client.patchValue({ country: Country.Paraguay })

@@ -11,10 +11,9 @@ ag-grid-angular {
 }
 
 .long-text-cell-ag-grid {
+  display: flex;
+  flex-wrap: wrap;
   line-height: 1 !important;
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-  padding-right: 0 !important;
   word-break: break-word !important;
 }
 
