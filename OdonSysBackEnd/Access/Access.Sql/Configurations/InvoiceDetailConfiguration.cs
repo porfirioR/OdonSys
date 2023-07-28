@@ -10,7 +10,7 @@ namespace Access.Sql.Configurations
         {
             base.Configure(builder);
 
-            builder.HasKey(x => new { x.Id, x.InvoiceId, x.ClientProcedureId });
+            builder.HasKey(x => new { x.Id, x.InvoiceId, x.ClientProcedureId, x.ToothId });
 
             builder
                 .HasOne(x => x.Invoice)
@@ -22,6 +22,12 @@ namespace Access.Sql.Configurations
                 .HasOne(x => x.ClientProcedure)
                 .WithOne(x => x.InvoiceDetail)
                 .HasForeignKey<InvoiceDetail>(x => x.ClientProcedureId);
+
+            builder
+                .HasOne(x => x.Tooth)
+                .WithMany(x => x.InvoiceDetails)
+                .HasForeignKey(x => x.ToothId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

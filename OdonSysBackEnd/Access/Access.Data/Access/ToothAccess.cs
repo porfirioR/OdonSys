@@ -1,21 +1,28 @@
 ﻿using Access.Contract.Teeth;
 using Access.Sql;
+using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal sealed class ToothAccess : IToothAccess
     {
         private readonly DataContext _context;
-        public ToothAccess(DataContext context)
+        private readonly IToothAccessBuilder _toothAccessBuilder;
+
+        public ToothAccess(DataContext context, IToothAccessBuilder toothAccessBuilder)
         {
             _context = context;
+            _toothAccessBuilder = toothAccessBuilder;
         }
 
-        //public async Task<IEnumerable<ToothAccessResponse>> GetAllAsync()
-        //{
-        //    var entities = await _context.Teeth.AsNoTracking().ToListAsync();
-        //    var respose = _mapper.Map<IEnumerable<ToothAccessResponse>>(entities);
-        //    return respose;
-        //}
+        public async Task<IEnumerable<ToothAccessModel>> GetAllAsync()
+        {
+            var accessModelList = await _context.Teeth
+                                            .AsNoTrackingWithIdentityResolution()
+                                            .Select(x => _toothAccessBuilder.MapToothToToothAccessModel(x))
+                                            .ToListAsync();
+
+            return accessModelList;
+        }
     }
 }

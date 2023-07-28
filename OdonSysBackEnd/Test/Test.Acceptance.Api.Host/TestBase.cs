@@ -21,7 +21,6 @@ namespace AcceptanceTest.Host.Api
         protected HostApiFactory _factory;
         protected HttpClient _client;
         protected DataContext _context;
-        //public IEnumerable<string> TeethIds;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
