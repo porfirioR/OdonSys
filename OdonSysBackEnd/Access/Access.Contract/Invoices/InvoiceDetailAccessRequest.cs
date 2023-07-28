@@ -5,6 +5,6 @@
         int ProcedurePrice,
         int FinalPrice,
         string Color,
-        IEnumerable<string> ToothIds
+        string ToothId
     );
 }

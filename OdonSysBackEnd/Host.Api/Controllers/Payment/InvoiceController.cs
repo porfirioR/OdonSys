@@ -74,7 +74,10 @@ namespace Host.Api.Controllers.Payment
                 apiRequest.InvoiceDetails.Select(x => new InvoiceDetailRequest(
                     new Guid(x.ClientProcedureId),
                     x.ProcedurePrice,
-                    x.FinalPrice))
+                    x.FinalPrice,
+                    x.Color,
+                    x.ToothId
+                ))
             );
             var model = await _invoiceManager.CreateInvoiceAsync(request);
             return model;

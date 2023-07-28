@@ -29,7 +29,10 @@ namespace Manager.Payment
                 request.InvoiceDetails.Select(x => new InvoiceDetailAccessRequest(
                     x.ClientProcedureId,
                     x.ProcedurePrice,
-                    x.FinalPrice))
+                    x.FinalPrice,
+                    x.Color,
+                    x.ToothId
+                ))
             );
             var accessModel = await _invoiceAccess.CreateInvoiceAsync(accessRequest);
             var model = GetModel(accessModel);
@@ -109,7 +112,9 @@ namespace Manager.Payment
                     x.ProcedurePrice,
                     x.FinalPrice,
                     x.DateCreated,
-                    x.UserCreated
+                    x.UserCreated,
+                    x.Color,
+                    x.ToothId
                 ))
             );
         }

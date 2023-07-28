@@ -13,7 +13,8 @@ namespace Host.Api.Contract.Invoices
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un monto total válido")]
         public int FinalPrice { get; set; }
-
+        public string Color { get; set; }
+        public string ToothId { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();

@@ -31,7 +31,9 @@ namespace Access.Data.Mapper
                 FinalPrice = request.FinalPrice,
                 Active = true,
                 Id = Guid.NewGuid(),
-                InvoiceId = entity.Id
+                InvoiceId = entity.Id,
+                ToothId = new Guid(request.ToothId),
+                Color = request.Color
             };
             return invoiceDetail;
         }
@@ -54,7 +56,9 @@ namespace Access.Data.Mapper
                         x.ProcedurePrice,
                         x.FinalPrice,
                         x.DateCreated,
-                        x.UserCreated
+                        x.UserCreated,
+                        x.Color,
+                        x.ToothId.ToString()
                     );
                 });
 

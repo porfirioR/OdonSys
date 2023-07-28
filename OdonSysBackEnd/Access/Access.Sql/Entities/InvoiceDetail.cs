@@ -7,6 +7,7 @@
         public Guid ToothId { get; set; }
         public int ProcedurePrice { get; set; }
         public int FinalPrice { get; set; }
+        public string Color { get; set; }
 
         public virtual Invoice Invoice { get; set; }
         public virtual ClientProcedure ClientProcedure { get; set; }
