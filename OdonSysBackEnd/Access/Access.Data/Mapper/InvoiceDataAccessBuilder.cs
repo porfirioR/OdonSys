@@ -1,5 +1,4 @@
-﻿using Access.Contract.Clients;
-using Access.Contract.Invoices;
+﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
 
 namespace Access.Data.Mapper
