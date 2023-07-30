@@ -6,6 +6,7 @@ using Access.Contract.Invoices;
 using Access.Contract.Payments;
 using Access.Contract.Procedures;
 using Access.Contract.Roles;
+using Access.Contract.Teeth;
 using Access.Contract.Users;
 using Access.Data.Access;
 using Access.Data.Mapper;
@@ -25,7 +26,7 @@ namespace Access.Data
             services.AddTransient<IPaymentAccess, PaymentAccess>();
             services.AddTransient<IProcedureAccess, ProcedureAccess>();
             services.AddTransient<IRoleAccess, RoleAccess>();
-            //services.AddTransient<IToothAccess, ToothAccess>();
+            services.AddTransient<IToothAccess, ToothAccess>();
             services.AddTransient<IUserDataAccess, UserAccess>();
 
             services.AddTransient<IClientDataAccessBuilder, ClientDataAccessBuilder>();
@@ -34,6 +35,7 @@ namespace Access.Data
             services.AddTransient<IPaymentDataAccessBuilder, PaymentDataAccessBuilder>();
             services.AddTransient<IProcedureDataAccessBuilder, ProcedureDataAccessBuilder>();
             services.AddTransient<IRoleDataAccessBuilder, RoleDataAccessBuilder>();
+            services.AddTransient<IToothDataAccessBuilder, ToothDataAccessBuilder>();
             services.AddTransient<IUserDataAccessBuilder, UserDataAccessBuilder>();
 
             services.AddHttpContextAccessor();

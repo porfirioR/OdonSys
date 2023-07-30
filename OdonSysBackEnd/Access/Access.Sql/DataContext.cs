@@ -40,14 +40,14 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
-            //modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
+            modelBuilder.ApplyConfiguration(new ToothConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserClientConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity &&
                                                         (x.State == EntityState.Added ||

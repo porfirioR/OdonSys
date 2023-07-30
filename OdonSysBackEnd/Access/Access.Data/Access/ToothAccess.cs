@@ -7,9 +7,9 @@ namespace Access.Data.Access
     internal sealed class ToothAccess : IToothAccess
     {
         private readonly DataContext _context;
-        private readonly IToothAccessBuilder _toothAccessBuilder;
+        private readonly IToothDataAccessBuilder _toothAccessBuilder;
 
-        public ToothAccess(DataContext context, IToothAccessBuilder toothAccessBuilder)
+        public ToothAccess(DataContext context, IToothDataAccessBuilder toothAccessBuilder)
         {
             _context = context;
             _toothAccessBuilder = toothAccessBuilder;

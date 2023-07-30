@@ -2,7 +2,7 @@
 
 namespace Access.Contract.Teeth
 {
-    public interface IToothAccessBuilder
+    public interface IToothDataAccessBuilder
     {
         ToothAccessModel MapToothToToothAccessModel(Tooth tooth);
     }
