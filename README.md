@@ -20,9 +20,14 @@ cd .\Access\Access.Sql\
 dotnet ef migrations add AddNewTables -s ..\..\Host.Api\
 dotnet ef database update -s ..\..\Host.Api
 
-## Data base
+- ### Borrar una migración
+Estar en \OdonSys\OdonSysBackEnd\Access\Access.Sql\
+dotnet ef database update  [NombreMigración] -s ..\..\Host.Api\
+dotnet ef migrations remove -s ..\..\Host.Api\
 
-Para crear los registros basicos en la base de datos necesarios para iniciar el proyecto debe agregarlos en OdonSys\OdonSysBackEnd\Test\IntegrationTest\Test.IntegrationTest.Procedure\Resources.BasicSql.sql y ejecutar algun test.
+## Base de datos
+
+Para crear los registros basicos en la base de datos necesarios para iniciar el proyecto debe agregarlos en OdonSys\OdonSysBackEnd\Test\AcceptanceTest.Host.Api\Procedure\Resources.BasicSql.sql y ejecutar algun test.
 
 ## Npm
 Ver versiones a actualizar
