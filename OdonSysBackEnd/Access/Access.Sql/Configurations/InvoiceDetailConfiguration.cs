@@ -23,11 +23,11 @@ namespace Access.Sql.Configurations
                 .WithOne(x => x.InvoiceDetail)
                 .HasForeignKey<InvoiceDetail>(x => x.ClientProcedureId);
 
-            builder
-                .HasOne(x => x.Tooth)
-                .WithMany(x => x.InvoiceDetails)
-                .HasForeignKey(x => x.ToothId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder
+            //    .HasOne(x => x.Tooth)
+            //    .WithMany(x => x.InvoiceDetails)
+            //    .HasForeignKey(x => x.ToothId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

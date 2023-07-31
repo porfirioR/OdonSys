@@ -11,6 +11,6 @@
 
         public virtual Invoice Invoice { get; set; }
         public virtual ClientProcedure ClientProcedure { get; set; }
-        public virtual Tooth Tooth { get; init; }
+        //public virtual Tooth Tooth { get; init; }
     }
 }
