@@ -40,6 +40,8 @@ import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToothModalComponent } from 'src/app/core/components/tooth-modal/tooth-modal.component';
 
 @Component({
   selector: 'app-register-invoice',
@@ -99,7 +101,8 @@ export class RegisterInvoiceComponent implements OnInit {
     private readonly alertService: AlertService,
     private readonly router: Router,
     private readonly subscriptionService: SubscriptionService,
-    private readonly toothApiService: ToothApiService
+    private readonly toothApiService: ToothApiService,
+    private modalService: NgbModal,
   ) {
     this.countries = EnumHandler.getCountries()
     this.getScreenSize()
@@ -191,7 +194,15 @@ export class RegisterInvoiceComponent implements OnInit {
   }
 
   protected selectTooth = (procedure: FormGroup<ProcedureFormGroup>) => {
-
+    const modalRef = this.modalService.open(ToothModalComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    })
+    modalRef.componentInstance.procedure = procedure
+    modalRef.result.then(() => {
+      
+    }, () => {})
   }
 
   private formGroupValueChanges = () => {
