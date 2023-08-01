@@ -6,4 +6,6 @@ export interface ProcedureFormGroup {
   price: FormControl<number | null>
   finalPrice: FormControl<number | null>
   xRays: FormControl<boolean | null>
+  toothId?: FormControl<string | null>
+  color?: FormControl<string | null>
 }

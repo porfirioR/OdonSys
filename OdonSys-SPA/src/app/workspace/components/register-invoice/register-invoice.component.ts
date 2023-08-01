@@ -35,6 +35,7 @@ import { DoctorApiService } from '../../../core/services/api/doctor-api.service'
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { SubscriptionService } from '../../../core/services/shared/subscription.service';
+import { ToothApiService } from '../../../core/services/api/tooth-api.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
@@ -97,7 +98,8 @@ export class RegisterInvoiceComponent implements OnInit {
     private userInfoService: UserInfoService,
     private readonly alertService: AlertService,
     private readonly router: Router,
-    private readonly subscriptionService: SubscriptionService
+    private readonly subscriptionService: SubscriptionService,
+    private readonly toothApiService: ToothApiService
   ) {
     this.countries = EnumHandler.getCountries()
     this.getScreenSize()
@@ -119,8 +121,8 @@ export class RegisterInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    combineLatest([clientRowData$, procedureRowData$]).subscribe({
-      next: ([clients, procedures]) => {
+    combineLatest([clientRowData$, procedureRowData$, this.toothApiService.getAll()]).subscribe({
+      next: ([clients, procedures, teeth]) => {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
@@ -186,6 +188,10 @@ export class RegisterInvoiceComponent implements OnInit {
     const currentUrl = this.router.url.split('/')
     currentUrl.pop()
     this.router.navigate([currentUrl.join('/')])
+  }
+
+  protected selectTooth = (procedure: FormGroup<ProcedureFormGroup>) => {
+
   }
 
   private formGroupValueChanges = () => {
