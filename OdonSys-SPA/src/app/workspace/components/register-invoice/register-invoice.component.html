@@ -110,9 +110,9 @@
                       <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
                         thousandSeparator="." [mask]="'separator.0'">
                     </div>
-                    <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
+                    <!-- <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
                       El Precio final <strong>Gs. {{procedure.value.finalPrice | number:'' : 'es'}}</strong> no puede ser mayor a <strong>Gs. {{procedure.value.price | number:'' : 'es'}}</strong>.
-                    </small>
+                    </small> -->
                   </div>
                   <div class="col-md-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-outline-primary" (click)="removeProcedure(procedure.controls.id.value!)">
