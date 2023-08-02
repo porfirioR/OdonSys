@@ -204,7 +204,7 @@ export class RegisterInvoiceComponent implements OnInit {
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
             xRays: new FormControl(currentProcedure.xRays)
           })
-          procedureFormGroup.addValidators(this.finalPriceCheckValidator)
+          // procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)
           this.proceduresValues.find(x => x.key === currentProcedure.id)!.disabled = true
           procedureFormGroup.valueChanges.subscribe({ next: () => this.calculatePrices() })
@@ -261,10 +261,10 @@ export class RegisterInvoiceComponent implements OnInit {
     return procedures.controls.some(x => x) ? null : { noneSelected : true }
   }
 
-  private finalPriceCheckValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
-    const procedure = abstractControl as FormGroup<ProcedureFormGroup>
-    return (procedure.value.xRays || procedure.value.finalPrice! <= procedure.value.price!) ? null : { invalidFinalPrice : true }
-  }
+  // private finalPriceCheckValidator = (abstractControl: AbstractControl): ValidationErrors | null => {
+  //   const procedure = abstractControl as FormGroup<ProcedureFormGroup>
+  //   return (procedure.value.xRays || procedure.value.finalPrice! <= procedure.value.price!) ? null : { invalidFinalPrice : true }
+  // }
 
   private generateRequest = (): Observable<InvoiceApiModel> => {
     const clientId = this.formGroup.value.clientId
