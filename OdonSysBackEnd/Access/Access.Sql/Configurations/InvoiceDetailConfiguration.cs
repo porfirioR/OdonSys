@@ -10,7 +10,9 @@ namespace Access.Sql.Configurations
         {
             base.Configure(builder);
 
-            builder.HasKey(x => new { x.Id, x.InvoiceId, x.ClientProcedureId, x.ToothId });
+            builder
+                .HasIndex(x => new { x.InvoiceId, x.ClientProcedureId })
+                .IsUnique();
 
             builder
                 .HasOne(x => x.Invoice)

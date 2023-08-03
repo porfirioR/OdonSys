@@ -10,13 +10,11 @@ namespace Access.Sql.Configurations
         {
             base.Configure(builder);
 
-            builder.HasKey(x => new { x.Id, x.InvoiceDetailId, x.ToothId });
-
             builder
                 .HasOne(x => x.InvoiceDetail)
                 .WithMany(x => x.InvoiceDetailsTeeth)
                 .HasForeignKey(x => x.InvoiceDetailId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(x => x.Tooth)

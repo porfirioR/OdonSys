@@ -31,7 +31,7 @@ namespace Manager.Payment
                     x.ProcedurePrice,
                     x.FinalPrice,
                     x.Color,
-                    x.ToothId
+                    x.ToothIds
                 ))
             );
             var accessModel = await _invoiceAccess.CreateInvoiceAsync(accessRequest);
@@ -114,7 +114,7 @@ namespace Manager.Payment
                     x.DateCreated,
                     x.UserCreated,
                     x.Color,
-                    x.ToothId
+                    x.ToothIds
                 ))
             );
         }

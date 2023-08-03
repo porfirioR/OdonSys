@@ -9,6 +9,6 @@
         DateTime DateCreated,
         string UserCreated,
         string Color,
-        string ToothId
+        IEnumerable<string> ToothIds
     );
 }

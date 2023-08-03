@@ -32,8 +32,20 @@ namespace Access.Data.Mapper
                 Active = true,
                 Id = Guid.NewGuid(),
                 InvoiceId = entity.Id,
-                ToothId = new Guid(request.ToothId),
                 Color = request.Color
+            };
+            var toothIds = request.ToothIds;
+            if (toothIds is not null && toothIds.Any())
+            {
+                foreach (var x in toothIds)
+                {
+                    var newInvoiceDetailTooth = new InvoiceDetailTooth()
+                    {
+                        ToothId = new Guid(x)
+                    };
+                    invoiceDetail.InvoiceDetailsTeeth = invoiceDetail.InvoiceDetailsTeeth.Append(newInvoiceDetailTooth);
+                }
+
             };
             return invoiceDetail;
         }
@@ -49,6 +61,7 @@ namespace Access.Data.Mapper
                 entity.InvoiceDetails.Select(x =>
                 {
                     var clientProcedure = clientProcedureEntities.FirstOrDefault(y => y.Id == x.ClientProcedureId);
+                    var toothIds = x.InvoiceDetailsTeeth is not null && x.InvoiceDetailsTeeth.Any() ? x.InvoiceDetailsTeeth.Select(x => x.ToothId.ToString()) : new List<string>();
                     return new InvoiceDetailAccessModel(
                         x.Id,
                         x.InvoiceId,
@@ -58,7 +71,7 @@ namespace Access.Data.Mapper
                         x.DateCreated,
                         x.UserCreated,
                         x.Color,
-                        x.ToothId.ToString()
+                        toothIds
                     );
                 });
 

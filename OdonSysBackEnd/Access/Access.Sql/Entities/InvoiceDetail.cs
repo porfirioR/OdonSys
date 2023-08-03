@@ -4,7 +4,6 @@
     {
         public Guid InvoiceId { get; set; }
         public Guid ClientProcedureId { get; set; }
-        public Guid ToothId { get; set; }
         public int ProcedurePrice { get; set; }
         public int FinalPrice { get; set; }
         public string Color { get; set; }

@@ -1,4 +1,4 @@
-﻿----First quadrant
+﻿--First quadrant
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 11, 'Incisivo Central', 1, 1, 1, 1, GETDATE(), GETDATE(), 'system', 'system');
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 12, 'Incisivo Lateral', 1, 1, 1, 1, GETDATE(), GETDATE(), 'system', 'system');
 insert into Teeth (Id, Number, [Name], Jaw, Quadrant, Active, [Group], DateCreated, DateModified, UserCreated, UserUpdated) values(newid(), 13, 'Canino', 1, 1, 1, 2, GETDATE(), GETDATE(), 'system', 'system');

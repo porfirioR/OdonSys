@@ -76,7 +76,7 @@ namespace Host.Api.Controllers.Payment
                     x.ProcedurePrice,
                     x.FinalPrice,
                     x.Color,
-                    x.ToothId
+                    x.ToothIds
                 ))
             );
             var model = await _invoiceManager.CreateInvoiceAsync(request);
