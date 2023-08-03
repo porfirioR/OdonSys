@@ -17,7 +17,7 @@ namespace Access.Sql.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.20")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -95,7 +95,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Document")
                         .IsUnique();
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>
@@ -143,7 +143,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Id", "ProcedureId", "UserClientId")
                         .IsUnique();
 
-                    b.ToTable("ClientProcedures");
+                    b.ToTable("ClientProcedures", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.FileStorage", b =>
@@ -192,7 +192,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Url")
                         .IsUnique();
 
-                    b.ToTable("FileStorages");
+                    b.ToTable("FileStorages", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Invoice", b =>
@@ -254,7 +254,7 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.InvoiceDetail", b =>
@@ -269,14 +269,8 @@ namespace Access.Sql.Migrations
                     b.Property<Guid>("ClientProcedureId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ToothId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
@@ -300,14 +294,14 @@ namespace Access.Sql.Migrations
                     b.Property<string>("UserUpdated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id", "InvoiceId", "ClientProcedureId", "ToothId");
+                    b.HasKey("Id", "InvoiceId", "ClientProcedureId");
 
                     b.HasIndex("ClientProcedureId")
                         .IsUnique();
 
                     b.HasIndex("InvoiceId");
 
-                    b.ToTable("InvoiceDetails");
+                    b.ToTable("InvoiceDetails", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Payment", b =>
@@ -350,7 +344,7 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Permission", b =>
@@ -388,7 +382,7 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("Permissions", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Procedure", b =>
@@ -434,7 +428,7 @@ namespace Access.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Procedures");
+                    b.ToTable("Procedures", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.Role", b =>
@@ -480,57 +474,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Access.Sql.Entities.Tooth", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<DateTime>("DateModified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GetDate()");
-
-                    b.Property<string>("Group")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Jaw")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Quadrant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserCreated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserUpdated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Teeth");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.User", b =>
@@ -618,7 +562,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.UserClient", b =>
@@ -661,7 +605,7 @@ namespace Access.Sql.Migrations
                     b.HasIndex("Id", "UserId", "ClientId")
                         .IsUnique();
 
-                    b.ToTable("UserClients");
+                    b.ToTable("UserClients", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.UserRole", b =>
@@ -676,7 +620,7 @@ namespace Access.Sql.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Access.Sql.Entities.ClientProcedure", b =>

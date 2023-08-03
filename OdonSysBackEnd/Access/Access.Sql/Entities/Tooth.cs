@@ -9,6 +9,6 @@ namespace Access.Sql.Entities
         public Jaw Jaw { get; set; }
         public Quadrant Quadrant { get; set; }
         public DentalGroup Group { get; set; }
-        //public virtual IEnumerable<InvoiceDetail> InvoiceDetails { get; set; }
+        public virtual IEnumerable<InvoiceDetailTooth> InvoiceDetailsTeeth { get; set; }
     }
 }

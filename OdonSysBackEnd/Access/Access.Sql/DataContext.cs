@@ -26,6 +26,7 @@ namespace Access.Sql
         public DbSet<ClientProcedure> ClientProcedures { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public DbSet<InvoiceDetailTooth> InvoiceDetailTeeth { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<FileStorage> FileStorages { get; set; }
 
@@ -37,6 +38,7 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new FileStorageConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailToothConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
