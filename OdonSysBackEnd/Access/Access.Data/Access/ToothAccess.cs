@@ -24,5 +24,15 @@ namespace Access.Data.Access
 
             return accessModelList;
         }
+
+        public async Task<IEnumerable<string>> InvalidTeethAsync(IEnumerable<string> teeth)
+        {
+            var teethId = await _context.Teeth
+                                        .Select(x => x.Id)
+                                        .ToListAsync();
+
+            var invalidTeethId = teeth.Where(x => !teethId.Contains(new Guid(x)));
+            return invalidTeethId;
+        }
     }
 }

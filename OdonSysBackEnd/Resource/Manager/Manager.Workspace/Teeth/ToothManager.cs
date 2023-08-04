@@ -20,5 +20,11 @@ namespace Manager.Workspace.Teeth
             var modelList = accessModelList.Select(_toothManagerBuilder.MapToothAccessModelToToothModel);
             return modelList;
         }
+
+        public async Task<IEnumerable<string>> GetInvalidTeethAsync(IEnumerable<string> teeth)
+        {
+            var invalidTeeth = await _toothAccess.InvalidTeethAsync(teeth);
+            return invalidTeeth;
+        }
     }
 }

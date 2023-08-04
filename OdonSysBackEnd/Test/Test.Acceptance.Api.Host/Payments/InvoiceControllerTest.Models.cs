@@ -22,7 +22,7 @@ namespace AcceptanceTest.Host.Api.Payments
             Document = Guid.NewGuid().ToString()[..7],
             Country = Country.Argentina,
             Phone = Guid.NewGuid().ToString()[..8],
-            Email = $"{ Guid.NewGuid().ToString()[..6] }@{ Guid.NewGuid().ToString()[..6] }.com"
+            Email = $"{Guid.NewGuid().ToString()[..6]}@{Guid.NewGuid().ToString()[..6]}.com"
         };
 
         internal static CreateInvoiceApiRequest CreateInvoiceApiRequest(string clientId, string clientProcedureId) => new()
