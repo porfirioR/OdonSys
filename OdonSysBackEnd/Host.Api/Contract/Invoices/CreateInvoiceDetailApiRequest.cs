@@ -1,4 +1,5 @@
 ﻿using Contract.Workspace.Procedures;
+using Contract.Workspace.Teeth;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Contract.Invoices
@@ -29,6 +30,15 @@ namespace Host.Api.Contract.Invoices
             //{
             //    results.Add(new ValidationResult($"El valor final del procedimiento {FinalPrice} es mayor al precio referencia {ProcedurePrice}."));
             //}
+            if (ToothIds.Any())
+            {
+                var toothManager = (IToothManager)validationContext.GetService(typeof(IToothManager));
+                var invalidTeeth = toothManager.GetInvalidTeethAsync(ToothIds).GetAwaiter().GetResult();
+                foreach (var tooth in invalidTeeth)
+                {
+                    results.Add(new ValidationResult($"Id del diente {tooth} ingresado es inválido."));
+                }
+            }
             return results;
         }
     }

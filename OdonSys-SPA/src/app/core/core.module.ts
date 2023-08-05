@@ -38,6 +38,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import * as fromDoctor from './store/doctors/doctor.reducer';
 import { DoctorEffects } from './store/doctors/doctor.effects';
 import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
+import * as fromTooth from './store/teeth/tooth.reducer';
+import { ToothEffects } from './store/teeth/tooth.effects';
 
 @NgModule({
   imports: [
@@ -53,12 +55,13 @@ import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-ma
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
-    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects]),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects, ToothEffects]),
     NgxDropzoneModule,
     StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
     NgxMaskDirective,
     NgxMaskPipe,
-    NgbAccordionModule
+    NgbAccordionModule,
+    StoreModule.forFeature(fromTooth.teethFeatureKey, fromTooth.reducer)
   ],
   declarations: [
     HeaderComponent,

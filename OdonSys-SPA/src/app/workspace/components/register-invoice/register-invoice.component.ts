@@ -13,10 +13,14 @@ import { CreateInvoiceDetailRequest } from '../../models/invoices/api/create-inv
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { AssignClientRequest } from '../../../core/models/api/clients/assign-client-request';
 
-import { selectActiveClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
+import { selectActiveClients } from '../../../core/store/clients/client.selectors';
+
 import  * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
 import { selectActiveProcedures } from '../../../core/store/procedures/procedure.selectors';
+
+import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
+import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
@@ -124,8 +128,17 @@ export class RegisterInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    combineLatest([clientRowData$, procedureRowData$, this.toothApiService.getAll()]).subscribe({
+    let loadingTooth = true
+    const toothRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingProcedure && x.length === 0) {
+        this.store.dispatch(fromTeethActions.componentLoadTeeth())
+        loadingTooth = false
+      }
+    }))
+    combineLatest([clientRowData$, procedureRowData$, toothRowData$]).subscribe({
       next: ([clients, procedures, teeth]) => {
+        console.log(teeth)
+        
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
