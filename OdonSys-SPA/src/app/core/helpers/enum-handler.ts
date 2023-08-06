@@ -25,4 +25,8 @@ export class EnumHandler {
     const result = Object.entries(enumType).find(([enumKey, value]) => enumKey === key)?.[1]!
     return result
   }
+  public static getKeyByValue = (enumType: Record<string, string | number>, value: string) => {
+    const result = Object.entries(enumType).find(([enumKey, value]) => value === value)?.[0]!
+    return result
+  }
 }

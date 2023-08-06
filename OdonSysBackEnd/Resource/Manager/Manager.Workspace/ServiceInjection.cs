@@ -12,10 +12,11 @@ namespace Manager.Workspace
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IFileManager, FileManager>();
             services.AddTransient<IProcedureManagerBuilder, ProcedureManagerBuilder>();
-            services.AddTransient<IProcedureManager, ProcedureManager>();
             services.AddTransient<IToothManagerBuilder, ToothManagerBuilder>();
+
+            services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<IProcedureManager, ProcedureManager>();
             services.AddTransient<IToothManager, ToothManager>();
         }
     }

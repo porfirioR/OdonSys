@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, combineLatest, debounceTime, filter, forkJoin, of, switchMap, tap } from 'rxjs';
 
 import { ClientModel } from '../../../core/models/view/client-model';
@@ -24,6 +25,7 @@ import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
+import { DifficultyProcedure } from '../../../core/enums/difficulty-procedure.enum';
 
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
@@ -39,13 +41,11 @@ import { DoctorApiService } from '../../../core/services/api/doctor-api.service'
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { SubscriptionService } from '../../../core/services/shared/subscription.service';
-import { ToothApiService } from '../../../core/services/api/tooth-api.service';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToothModalComponent } from 'src/app/core/components/tooth-modal/tooth-modal.component';
+import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
 
 @Component({
   selector: 'app-register-invoice',
@@ -53,12 +53,14 @@ import { ToothModalComponent } from 'src/app/core/components/tooth-modal/tooth-m
   styleUrls: ['./register-invoice.component.scss']
 })
 export class RegisterInvoiceComponent implements OnInit {
-  @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent;
+  @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent
+
   protected load: boolean = false
   protected clients!: ClientModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
   protected clientsValues: Map<string, string> = new Map<string, string>()
+  protected teethIdsForm = new FormArray([])
   protected clientFormGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
@@ -105,7 +107,6 @@ export class RegisterInvoiceComponent implements OnInit {
     private readonly alertService: AlertService,
     private readonly router: Router,
     private readonly subscriptionService: SubscriptionService,
-    private readonly toothApiService: ToothApiService,
     private modalService: NgbModal,
   ) {
     this.countries = EnumHandler.getCountries()
@@ -130,7 +131,7 @@ export class RegisterInvoiceComponent implements OnInit {
     }))
     let loadingTooth = true
     const toothRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
-      if(loadingProcedure && x.length === 0) {
+      if(loadingTooth && x.length === 0) {
         this.store.dispatch(fromTeethActions.componentLoadTeeth())
         loadingTooth = false
       }
@@ -177,8 +178,8 @@ export class RegisterInvoiceComponent implements OnInit {
   }
 
   protected removeProcedure = (id: string) => {
-    const formArray = this.formGroup.controls.procedures as FormArray
-    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls['id'].value === id)
+    const formArray = this.formGroup.controls.procedures
+    const index = formArray.controls.findIndex(x => x.controls['id'].value === id)
     formArray.removeAt(index)
     this.proceduresValues.find(x => x.key === id)!.disabled = false
     this.calculatePrices()
@@ -210,7 +211,7 @@ export class RegisterInvoiceComponent implements OnInit {
     const modalRef = this.modalService.open(ToothModalComponent, {
       size: 'xl',
       backdrop: 'static',
-      keyboard: false
+      // keyboard: false
     })
     modalRef.componentInstance.procedure = procedure
     modalRef.result.then(() => {
@@ -232,7 +233,9 @@ export class RegisterInvoiceComponent implements OnInit {
             name: new FormControl(currentProcedure.name),
             price: new FormControl(currentProcedure.price),
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
-            xRays: new FormControl(currentProcedure.xRays)
+            xRays: new FormControl(currentProcedure.xRays),
+            color: new FormControl({ value: DifficultyProcedure.Rutinario, disabled: true }),
+            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string)
           })
           // procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)

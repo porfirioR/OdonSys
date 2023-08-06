@@ -21,17 +21,9 @@ export const reducer = createReducer(
   ),
 );
 
-export const teethFeature = createFeature({
-  name: teethFeatureKey,
-  reducer,
-  extraSelectors: ({ selectTeethState }) => ({
-    ...adapter.getSelectors(selectTeethState)
-  }),
-});
-
 export const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = teethFeature;
+} = adapter.getSelectors();

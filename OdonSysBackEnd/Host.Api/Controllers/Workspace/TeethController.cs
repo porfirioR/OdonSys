@@ -18,7 +18,7 @@ namespace Host.Api.Controllers.Workspace
         }
 
         [HttpGet]
-        [Authorize(Policy = Policy.CanAccessProcedure)]
+        [Authorize(Policy = Policy.CanAccessInvoice)]
         public async Task<IEnumerable<ToothModel>> GetAll()
         {
             var modelList = await _toothManager.GetAllAsync();

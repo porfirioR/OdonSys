@@ -103,12 +103,30 @@
               </header>
               <main class="row align-center" id="selected-procedures-items">
                 <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls">
-                  <button class="btn btn-sm btn-outline-info m-r-8 col-md-1" (click)="selectTooth(procedure)">
-                    <span class="d-flex-center">
-                      <i class="fas fa-magnifying-glass m-r-2"></i>
-                    </span>
-                  </button>
-                  <div class="col-md-4">
+                  <div class="col-md-2">
+                    <button class="btn btn-sm btn-outline-info" (click)="selectTooth(procedure)">
+                      <span class="d-flex-center">
+                        <i class="fas fa-magnifying-glass"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="col-md-2">
+                      <!-- <div class="row">
+                        <div class="col-md-3">
+                          <input type="color" class="form-control" *ngIf="procedure.controls.color?.value" formControlName="color"/>
+                        </div>
+                        <div class="col-md-7">
+                          <select class="form-select" formControlName="color">
+                            <option [value]="client.key" *ngFor="let client of difficultyOfProcedure | keyvalue">{{client.value}}
+                            </option>
+                          </select>
+
+                        </div>
+                        </div> -->
+                        <input type="color" class="form-control" formControlName="color"/>
+                        <label class="form-label">{{procedure.value.difficult}}</label>
+                    </div>
+                  <div class="col-md-2">
                     <label class="form-label">{{procedure.value.name}}</label>
                   </div>
                   <div class="col-md-3">

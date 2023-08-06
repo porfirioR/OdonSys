@@ -55,13 +55,13 @@ import { ToothEffects } from './store/teeth/tooth.effects';
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
+    StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
+    StoreModule.forFeature(fromTooth.teethFeatureKey, fromTooth.reducer),
     EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects, ToothEffects]),
     NgxDropzoneModule,
-    StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
     NgxMaskDirective,
     NgxMaskPipe,
     NgbAccordionModule,
-    StoreModule.forFeature(fromTooth.teethFeatureKey, fromTooth.reducer)
   ],
   declarations: [
     HeaderComponent,
