@@ -22,11 +22,19 @@ export class EnumHandler {
    * @returns enum value
    */
   public static getValueByKey = (enumType: Record<string, string | number>, searchKey: string) => {
-    const result = Object.entries(enumType).find(([enumKey, value]) => enumKey === searchKey)?.[1]!
-    return result
+    const value = Object.entries(enumType).find(([enumKey, value]) => enumKey === searchKey)?.[1]!
+    return value
   }
+
+  /**
+   * Receives an enum in the form of a record and returns the value assigned from the received key.
+   * 
+   * @param enumType is the enum to work with
+   * @param searchValue enum value of which you want its key
+   * @returns enum value
+   */
   public static getKeyByValue = (enumType: Record<string, string | number>, searchValue: string) => {
-    const result = Object.entries(enumType).find(([enumKey, value]) => value === searchValue)?.[0]!
-    return result
+    const key = Object.entries(enumType).find(([enumKey, value]) => value === searchValue)?.[0]!
+    return key
   }
 }

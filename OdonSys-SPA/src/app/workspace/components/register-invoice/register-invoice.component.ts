@@ -350,9 +350,26 @@ export class RegisterInvoiceComponent implements OnInit {
       // Create Invoice
       const invoiceDetails: CreateInvoiceDetailRequest[] = clientProcedures.map(x => {
         const selectedProcedure = procedures.find(y => y.controls.id.value === x.procedureId)!
-        return new CreateInvoiceDetailRequest(x.id, selectedProcedure.controls.price.value!, selectedProcedure.controls.finalPrice.value!)
+        const toothIds = selectedProcedure.controls.toothIds?.controls.map(x => x.controls.id.value!)
+        return new CreateInvoiceDetailRequest(
+          x.id,
+          selectedProcedure.controls.price.value!,
+          selectedProcedure.controls.finalPrice.value!,
+          selectedProcedure.controls.color!.value!,
+          toothIds
+        )
       })
-      const invoice = new CreateInvoiceRequest('invoiceNumber', 1, 1, this.formGroup.controls.subTotal.value!, this.formGroup.controls.total.value!, 'timbrado', InvoiceStatus.Nuevo, clientId, invoiceDetails)
+      const invoice = new CreateInvoiceRequest(
+        'invoiceNumber',
+        1,
+        1,
+        this.formGroup.controls.subTotal.value!,
+        this.formGroup.controls.total.value!,
+        'timbrado',
+        InvoiceStatus.Nuevo,
+        clientId,
+        invoiceDetails
+      )
       return this.invoiceApiService.createInvoice(invoice)
     }))
   }

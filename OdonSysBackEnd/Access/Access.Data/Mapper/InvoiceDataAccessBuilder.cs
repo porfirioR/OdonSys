@@ -1,5 +1,6 @@
 ﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
+using System.Linq;
 
 namespace Access.Data.Mapper
 {
@@ -37,15 +38,16 @@ namespace Access.Data.Mapper
             var toothIds = request.ToothIds;
             if (toothIds is not null && toothIds.Any())
             {
+                var invoiceDetailTooth = new List<InvoiceDetailTooth>();
                 foreach (var x in toothIds)
                 {
                     var newInvoiceDetailTooth = new InvoiceDetailTooth()
                     {
                         ToothId = new Guid(x)
                     };
-                    invoiceDetail.InvoiceDetailsTeeth = invoiceDetail.InvoiceDetailsTeeth.Append(newInvoiceDetailTooth);
+                    invoiceDetailTooth.Add(newInvoiceDetailTooth);
                 }
-
+                invoiceDetail.InvoiceDetailsTeeth = invoiceDetailTooth;
             };
             return invoiceDetail;
         }
