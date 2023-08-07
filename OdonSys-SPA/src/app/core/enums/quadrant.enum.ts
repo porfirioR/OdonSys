@@ -1,6 +1,6 @@
 export enum Quadrant {
-    First = 1,
-    Second = 2,
-    Third = 3,
-    Fourth = 4
+    First = 'First',
+    Second = 'Second',
+    Third = 'Third',
+    Fourth = 'Fourth'
 }

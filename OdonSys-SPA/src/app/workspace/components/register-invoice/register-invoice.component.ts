@@ -46,6 +46,8 @@ import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
+import { ProcedureToothModalModel } from 'src/app/core/models/view/procedure-tooth-modal-model';
+import { ProcedureToothFormGroup } from 'src/app/core/forms/procedure-tooth-form-group.form';
 
 @Component({
   selector: 'app-register-invoice',
@@ -130,16 +132,15 @@ export class RegisterInvoiceComponent implements OnInit {
       }
     }))
     let loadingTooth = true
-    const toothRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
-      if(loadingTooth && x.length === 0) {
-        this.store.dispatch(fromTeethActions.componentLoadTeeth())
+    const toothRowData$ = this.store.select(selectActiveProcedures).pipe(tap(x => {
+      if(loadingProcedure && x.length === 0) {
+        this.store.dispatch(fromProceduresActions.loadProcedures())
         loadingTooth = false
       }
     }))
+    this.store.dispatch(fromTeethActions.componentLoadTeeth())
     combineLatest([clientRowData$, procedureRowData$, toothRowData$]).subscribe({
       next: ([clients, procedures, teeth]) => {
-        console.log(teeth)
-        
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
@@ -207,15 +208,28 @@ export class RegisterInvoiceComponent implements OnInit {
     this.router.navigate([currentUrl.join('/')])
   }
 
-  protected selectTooth = (procedure: FormGroup<ProcedureFormGroup>) => {
+  protected selectTooth = (i: number) => {
+    const procedure: FormGroup<ProcedureFormGroup> = this.formGroup.controls.procedures.controls[i]
     const modalRef = this.modalService.open(ToothModalComponent, {
       size: 'xl',
       backdrop: 'static',
-      // keyboard: false
+      keyboard: false
     })
     modalRef.componentInstance.procedure = procedure
-    modalRef.result.then(() => {
-      
+    modalRef.result.then((result: ProcedureToothModalModel) => {
+      if (!!result) {
+        procedure.controls.toothIds?.clear()
+        result.teethIds.forEach(x => {
+          procedure.controls.toothIds?.push(
+            new FormGroup<ProcedureToothFormGroup>({
+              id: new FormControl(x.id),
+              number: new FormControl(x.number!)
+            })
+          )
+        })
+        procedure.controls.color!.setValue(result.color)
+        procedure.controls.difficult!.setValue(EnumHandler.getKeyByValue(DifficultyProcedure, result.color)!)
+      }
     }, () => {})
   }
 
@@ -226,7 +240,7 @@ export class RegisterInvoiceComponent implements OnInit {
     ).subscribe({
       next: (procedure) => {
         const currentProcedure = this.procedures.find(x => x.id.compareString(procedure!))!
-        const formArray = this.formGroup.controls.procedures as FormArray<FormGroup<ProcedureFormGroup>>
+        const formArray = this.formGroup.controls.procedures
         if (!formArray.controls.find((x: FormGroup<ProcedureFormGroup>) => x.controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
@@ -234,13 +248,16 @@ export class RegisterInvoiceComponent implements OnInit {
             price: new FormControl(currentProcedure.price),
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
             xRays: new FormControl(currentProcedure.xRays),
-            color: new FormControl({ value: DifficultyProcedure.Rutinario, disabled: true }),
-            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string)
+            color: new FormControl(DifficultyProcedure.Rutinario),
+            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string),
+            toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([])
           })
           // procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)
           this.proceduresValues.find(x => x.key === currentProcedure.id)!.disabled = true
-          procedureFormGroup.valueChanges.subscribe({ next: () => this.calculatePrices() })
+          procedureFormGroup.valueChanges.subscribe({
+            next: () => this.calculatePrices()
+          })
         }
         this.calculatePrices()
         this.formGroup.controls.procedure.setValue('', { onlySelf: true, emitEvent: false })

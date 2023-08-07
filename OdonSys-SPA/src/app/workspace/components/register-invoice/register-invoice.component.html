@@ -85,13 +85,13 @@
             <h5 class="card-title">Procedimientos seleccionados</h5>
             <article formArrayName="procedures">
               <header class="row">
-                <div class="offset-1 col-md-2">
+                <div class="col-md-2 d-flex justify-content-center">
                   <label for="name" class="fw-bold">Dificultad</label>
                 </div>
                 <div class="col-md-2">
                   <label for="name" class="fw-bold">N° Diente</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="name" class="fw-bold">Nombre</label>
                 </div>
                 <div class="col-md-2">
@@ -102,37 +102,36 @@
                 </div>
               </header>
               <main class="row align-center" id="selected-procedures-items">
-                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls">
+                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls; let i = index">
                   <div class="col-md-2">
-                    <button class="btn btn-sm btn-outline-info" (click)="selectTooth(procedure)">
-                      <span class="d-flex-center">
-                        <i class="fas fa-magnifying-glass"></i>
-                      </span>
-                    </button>
+                    <div class="d-flex">
+                      <button class="btn btn-sm btn-outline-info" (click)="selectTooth(i)">
+                        <span class="d-flex-center">
+                          <i class="fas fa-magnifying-glass"></i>
+                        </span>
+                      </button>
+                      <label class="color-difficult" [ngStyle]="{'background': procedure.value.color }"></label>
+                      <label class="form-label w-80">{{procedure.value.difficult}}</label>
+                    </div>
                   </div>
                   <div class="col-md-2">
-                      <!-- <div class="row">
-                        <div class="col-md-3">
-                          <input type="color" class="form-control" *ngIf="procedure.controls.color?.value" formControlName="color"/>
-                        </div>
-                        <div class="col-md-7">
-                          <select class="form-select" formControlName="color">
-                            <option [value]="client.key" *ngFor="let client of difficultyOfProcedure | keyvalue">{{client.value}}
-                            </option>
-                          </select>
-
-                        </div>
-                        </div> -->
-                        <input type="color" class="form-control" formControlName="color"/>
-                        <label class="form-label">{{procedure.value.difficult}}</label>
-                    </div>
+                    <ng-container *ngIf="procedure.value.toothIds?.length !== 0; else noTeeth">
+                      <ng-container *ngFor="let item of procedure.controls.toothIds!.controls; let i = index">
+                        <label>{{i !== 0 ? ',': ''}} {{item.value.number}}</label>
+                      </ng-container>
+                    </ng-container>
+                    <ng-template #noTeeth>
+                      <label class="form-label">Sin dientes seleccionados</label>
+                    </ng-template>
+                    
+                  </div>
                   <div class="col-md-2">
                     <label class="form-label">{{procedure.value.name}}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <label class="form-label"> Gs. {{procedure.value.price | number:'' : 'es' }}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="input-group">
                       <span class="input-group-text">Gs.</span>
                       <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"

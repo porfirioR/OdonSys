@@ -18,15 +18,15 @@ export class EnumHandler {
    * Receives an enum in the form of a record and returns the value assigned from the received key.
    * 
    * @param enumType is the enum to work with
-   * @param key enum key of which you want its value
+   * @param searchKey enum key of which you want its value
    * @returns enum value
    */
-  public static getValueByKey = (enumType: Record<string, string | number>, key: string) => {
-    const result = Object.entries(enumType).find(([enumKey, value]) => enumKey === key)?.[1]!
+  public static getValueByKey = (enumType: Record<string, string | number>, searchKey: string) => {
+    const result = Object.entries(enumType).find(([enumKey, value]) => enumKey === searchKey)?.[1]!
     return result
   }
-  public static getKeyByValue = (enumType: Record<string, string | number>, value: string) => {
-    const result = Object.entries(enumType).find(([enumKey, value]) => value === value)?.[0]!
+  public static getKeyByValue = (enumType: Record<string, string | number>, searchValue: string) => {
+    const result = Object.entries(enumType).find(([enumKey, value]) => value === searchValue)?.[0]!
     return result
   }
 }

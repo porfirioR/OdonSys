@@ -24,6 +24,7 @@ import { AnimationComponent } from './components/animation/animation.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import { ClientDetailComponent } from './components/client-detail/client-detail.component';
+import { ToothModalComponent } from './components/tooth-modal/tooth-modal.component';
 
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
@@ -79,7 +80,8 @@ import { ToothEffects } from './store/teeth/tooth.effects';
     AnimationComponent,
     GridBadgeComponent,
     UploadFileComponent,
-    ClientDetailComponent
+    ClientDetailComponent,
+    ToothModalComponent
   ],
   exports: [
     FormsModule,
