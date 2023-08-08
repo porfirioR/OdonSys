@@ -48,8 +48,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "3kb",
+                  "maximumError": "5kb"
                 }
               ],
               "fileReplacements": [
@@ -61,7 +61,9 @@
               "outputHashing": "all",
               "assets": [
                 "src/web.config",
-                "src/assets/img"
+                "src/assets/img",
+                "src/robots.txt",
+                "src/sitemap.xml"
               ]
             },
             "development": {

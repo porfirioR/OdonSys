@@ -12,7 +12,7 @@ namespace Host.Api.Helpers
     public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
     {
         private readonly IAuthorizationMiddlewareResultHandler _defaultHandler;
-        private const string ProblemPayloadType = "Error";
+        private const string _problemPayloadType = "Error";
 
         public CustomAuthorizationMiddlewareResultHandler()
         {
@@ -30,7 +30,7 @@ namespace Host.Api.Helpers
                 {
                     Status = (int)HttpStatusCode.Unauthorized,
                     Title = "Credencial inválido",
-                    Type = ProblemPayloadType
+                    Type = _problemPayloadType
                 };
                 var jsonResponse = JsonConvert.SerializeObject(details, serializerSettings);
                 await httpContext.Response.WriteAsync(jsonResponse);

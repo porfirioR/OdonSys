@@ -1,4 +1,5 @@
 ﻿using Contract.Workspace.Procedures;
+using Contract.Workspace.Teeth;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Contract.Invoices
@@ -13,7 +14,8 @@ namespace Host.Api.Contract.Invoices
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Por favor ingrese un monto total válido")]
         public int FinalPrice { get; set; }
-
+        public string Color { get; set; }
+        public IEnumerable<string> ToothIds { get; set; }
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
@@ -23,10 +25,19 @@ namespace Host.Api.Contract.Invoices
             {
                 results.Add(new ValidationResult($"Id del cliente procedimiento {ClientProcedureId} ingresado es inválido."));
             }
-            var procedure = procedureManager.GetProcedureByClientProcedureIdAsync(ClientProcedureId).GetAwaiter().GetResult();
-            if (!procedure.XRays && FinalPrice > ProcedurePrice)
+            //var procedure = procedureManager.GetProcedureByClientProcedureIdAsync(ClientProcedureId).GetAwaiter().GetResult();
+            //if (!procedure.XRays && FinalPrice > ProcedurePrice)
+            //{
+            //    results.Add(new ValidationResult($"El valor final del procedimiento {FinalPrice} es mayor al precio referencia {ProcedurePrice}."));
+            //}
+            if (ToothIds.Any())
             {
-                results.Add(new ValidationResult($"El valor final del procedimiento {FinalPrice} es mayor al precio referencia {ProcedurePrice}."));
+                var toothManager = (IToothManager)validationContext.GetService(typeof(IToothManager));
+                var invalidTeeth = toothManager.GetInvalidTeethAsync(ToothIds).GetAwaiter().GetResult();
+                foreach (var tooth in invalidTeeth)
+                {
+                    results.Add(new ValidationResult($"Id del diente {tooth} ingresado es inválido."));
+                }
             }
             return results;
         }

@@ -3,10 +3,10 @@
     <nav class="nav-main bg-primary">
       <div class="nav-menu-left">
         <a class="navbar-brand" routerLink="inicio">
-          <img src="../../../../assets/img/logo.png">
+          <img src="../../../../assets/img/logo.png" alt="Logo">
         </a>
       </div>
-      <ul class="nav-menu" *ngIf="!reloadHeader">
+      <ul id="nav-item-id" class="nav-menu" *ngIf="!reloadHeader">
         <li class="nav-item" *ngFor="let item of menuPermissions">
           <a class="nav-link" [routerLink]="item.link" routerLinkActive="active">{{item.title}}</a>
         </li>

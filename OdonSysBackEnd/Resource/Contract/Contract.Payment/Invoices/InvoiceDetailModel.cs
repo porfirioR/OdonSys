@@ -7,6 +7,8 @@
         int ProcedurePrice,
         int FinalPrice,
         DateTime DateCreated,
-        string UserCreated
+        string UserCreated,
+        string Color,
+        IEnumerable<string> ToothIds
     );
 }

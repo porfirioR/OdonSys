@@ -1,4 +1,4 @@
 export enum Jaw {
-    Upper = 1,
-    Lower = 2
+    Upper = 'Upper',
+    Lower = 'Lower'
 }

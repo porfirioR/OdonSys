@@ -2,7 +2,6 @@
   padding-right: 0 !important;
 }
 
-
 footer {
   & .card-body {
     padding-bottom: 0.5rem !important;
@@ -37,5 +36,32 @@ footer {
 
 .upload-files-height {
   overflow-x: hidden;
-  height: 347px !important;
+  height: 355px !important;
+}
+
+@media screen and (max-height: 768px) {
+  .upload-files-height {
+    overflow-x: hidden;
+    height: 193px !important;
+  }
+
+  #selected-procedures-items {
+    max-height: 325px !important;
+    overflow-x: hidden;
+  }
+}
+
+.color-difficult {
+  width: 2rem;
+  margin-left: 8px;
+  margin-right: 8px;
+  border-radius: var(--bs-border-radius-sm);
+  margin-top: 0.5rem;
+  margin-bottom: 0.8rem;
+  min-width: 0.7rem;
+}
+
+.col-md-2 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }

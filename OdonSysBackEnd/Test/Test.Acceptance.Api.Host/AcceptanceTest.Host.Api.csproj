@@ -46,6 +46,9 @@
     <None Update="Resources\auth.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\InsertEFMigrationsHistory.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\BasicSql.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

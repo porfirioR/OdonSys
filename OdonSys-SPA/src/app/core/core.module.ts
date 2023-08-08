@@ -24,6 +24,7 @@ import { AnimationComponent } from './components/animation/animation.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import { ClientDetailComponent } from './components/client-detail/client-detail.component';
+import { ToothModalComponent } from './components/tooth-modal/tooth-modal.component';
 
 import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
@@ -38,6 +39,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import * as fromDoctor from './store/doctors/doctor.reducer';
 import { DoctorEffects } from './store/doctors/doctor.effects';
 import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
+import * as fromTooth from './store/teeth/tooth.reducer';
+import { ToothEffects } from './store/teeth/tooth.effects';
 
 @NgModule({
   imports: [
@@ -53,12 +56,13 @@ import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-ma
     // StoreModule.forFeature(fromUserInfo.userInfoFeatureKey, fromUserInfo.reducer),
     StoreModule.forFeature(fromProcedure.proceduresFeatureKey, fromProcedure.reducer),
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
-    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects]),
-    NgxDropzoneModule,
     StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
+    StoreModule.forFeature(fromTooth.teethFeatureKey, fromTooth.reducer),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects, ToothEffects]),
+    NgxDropzoneModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    NgbAccordionModule
+    NgbAccordionModule,
   ],
   declarations: [
     HeaderComponent,
@@ -76,7 +80,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-ma
     AnimationComponent,
     GridBadgeComponent,
     UploadFileComponent,
-    ClientDetailComponent
+    ClientDetailComponent,
+    ToothModalComponent
   ],
   exports: [
     FormsModule,

@@ -22,7 +22,7 @@ import { SubscriptionService } from '../../../core/services/shared/subscription.
   styleUrls: ['./upsert-procedure.component.scss']
 })
 export class UpsertProcedureComponent implements OnInit {
-  public formGroup = new FormGroup( {
+  public formGroup = new FormGroup({
     name : new FormControl('', [Validators.required, Validators.maxLength(60)]),
     description : new FormControl('', [Validators.required, Validators.maxLength(100)]),
     active : new FormControl(true, [Validators.required]),

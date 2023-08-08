@@ -7,14 +7,14 @@
           <div class="card-body">
             <h5 class="card-title">Pacientes</h5>
             <div class="row">
-              <div class="col-lg-9 col-md-10 col-sm-10">
+              <div class="col-8">
                 <select class="form-select" formControlName="clientId">
                   <option [value]="''" disabled>Pacientes existentes</option>
                   <option [value]="client.id" *ngFor="let client of clients">{{client.name}} {{client.surname}}
                   </option>
                 </select>
               </div>
-              <div class="col-lg-3 col-md-3 col-sm-3 text-end ">
+              <div class="col text-end p-t-0">
                 <button type="button" class="btn btn-outline-primary" (click)="cleanClient()">Nuevo</button>
               </div>
             </div>
@@ -81,38 +81,65 @@
       </header>
       <main class="col-md-12 p-b-10" id="selected-procedures">
         <div class="card">
-          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? 541 : 569}">
+          <div class="card-body" [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? minimumProcedureHeight : maximumProcedureHeight}">
             <h5 class="card-title">Procedimientos seleccionados</h5>
             <article formArrayName="procedures">
               <header class="row">
-                <div class="col-md-4">
+                <div class="col-md-2 d-flex justify-content-center">
+                  <label for="name" class="fw-bold">Dificultad</label>
+                </div>
+                <div class="col-md-2">
+                  <label for="name" class="fw-bold">N° Diente</label>
+                </div>
+                <div class="col-md-2">
                   <label for="name" class="fw-bold">Nombre</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="price" class="fw-bold">Precio</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="finalPrice" class="fw-bold">Precio final</label>
                 </div>
               </header>
               <main class="row align-center" id="selected-procedures-items">
-                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls">
-                  <div class="col-md-4">
+                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls; let i = index">
+                  <div class="col-md-2">
+                    <div class="d-flex">
+                      <button class="btn btn-sm btn-outline-info m-r-2" (click)="selectTooth(i)">
+                        <span class="d-flex-center">
+                          <i class="fas fa-magnifying-glass"></i>
+                        </span>
+                      </button>
+                      <label class="color-difficult" [ngStyle]="{'background': procedure.value.color }"></label>
+                      <label class="form-label">{{procedure.value.difficult}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <ng-container *ngIf="procedure.value.toothIds?.length !== 0; else noTeeth">
+                      <label>
+                        {{procedure.value.teethSelected}}
+                      </label>
+                    </ng-container>
+                    <ng-template #noTeeth>
+                      <label class="form-label">Sin dientes seleccionados</label>
+                    </ng-template>
+                    
+                  </div>
+                  <div class="col-md-2">
                     <label class="form-label">{{procedure.value.name}}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <label class="form-label"> Gs. {{procedure.value.price | number:'' : 'es' }}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="input-group">
                       <span class="input-group-text">Gs.</span>
-                      <!-- TODO generic input-group -->
                       <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
                         thousandSeparator="." [mask]="'separator.0'">
                     </div>
-                    <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
+                    <!-- <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
                       El Precio final <strong>Gs. {{procedure.value.finalPrice | number:'' : 'es'}}</strong> no puede ser mayor a <strong>Gs. {{procedure.value.price | number:'' : 'es'}}</strong>.
-                    </small>
+                    </small> -->
                   </div>
                   <div class="col-md-2 d-md-flex justify-content-md-end">
                     <button class="btn btn-outline-primary" (click)="removeProcedure(procedure.controls.id.value!)">

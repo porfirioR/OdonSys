@@ -12,6 +12,7 @@ namespace Contract.Payment.Invoices
         string Timbrado,
         InvoiceStatus Status,
         Guid ClientId,
+        string ClientFullName,
         DateTime DateCreated,
         string UserCreated,
         IEnumerable<InvoiceDetailModel> InvoiceDetails

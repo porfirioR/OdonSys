@@ -10,7 +10,15 @@
   padding-right: 2rem;
 
 }
+
 #paid-detail {
   padding-right: 3rem !important;
   padding-left: 2rem;
+}
+
+@media screen and (max-height: 768px) {
+  #payments {
+    max-height: 230px !important;
+    overflow-x: hidden;
+  }
 }

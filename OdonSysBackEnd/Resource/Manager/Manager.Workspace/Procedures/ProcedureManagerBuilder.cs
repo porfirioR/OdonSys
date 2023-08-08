@@ -4,7 +4,7 @@ using Access.Contract.Users;
 using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
 
-namespace Manager.Workspace.Mapper
+namespace Manager.Workspace.Procedures
 {
     internal class ProcedureManagerBuilder : IProcedureManagerBuilder
     {

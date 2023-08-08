@@ -53,17 +53,17 @@
             <h5 class="card-title">Procedimientos</h5>
             <main formArrayName="procedures">
               <header class="row">
-                <label for="name" class="col-md-6 fw-bold">Nombre</label>
+                <label for="name" class="col-md-5 fw-bold">Nombre</label>
                 <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
-                <label for="finalPrice" class="col-md-3 fw-bold text-end">Precio final (Gs.)</label>
+                <label for="finalPrice" class="col-md-4 fw-bold text-end">Precio final (Gs.)</label>
               </header>
               <div class="row align-center" id="selected-procedure-items">
                 <div [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
-                  <label class="col-md-6 form-label"> {{item.controls.name.value}}</label>
+                  <label class="col-md-5 form-label"> {{item.controls.name.value}}</label>
                   <label class="col-md-3 form-label text-end">
                     {{item.controls.price.value | number:'' : 'es' }}
                   </label>
-                  <label class="col-md-3 form-label text-end fw-bold">
+                  <label class="col-md-4 form-label text-end fw-bold">
                     {{item.controls.finalPrice.value | number:'' : 'es' }}
                   </label>
                 </div>
@@ -76,13 +76,13 @@
         <div class="card">
           <div class="card-body amount">
             <div class="row">
-              <div class=" offset-4 col-md-4">
-                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' :
-                  'es' }}</label>
-              </div>
-              <div class="col-md-4">
-                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' :
-                  'es' }}</label>
+              <div class="d-flex">
+                <div class="col-md-6 text-end">
+                  <label for="subTotal"><strong>Sub Total: </strong>Gs. {{formGroup.controls.subTotal.value | number:'' : 'es' }}</label>
+                </div>
+                <div class="col-md-6 text-end">
+                  <label for="montoTotal"><strong>Monto Total: </strong>Gs. {{formGroup.controls.total.value | number:'' : 'es' }}</label>
+                </div>
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@
                           </a>
                         </div>
                           <div class="d-flex justify-content-center mt-auto mb-auto">
-                            <img class="pictures" [src]="imageFile.safeUrl" />
+                            <img class="pictures" [src]="imageFile.safeUrl" [alt]="imageFile.name" />
                           </div>
                           <div class="legend align-items-end">
                             <span>

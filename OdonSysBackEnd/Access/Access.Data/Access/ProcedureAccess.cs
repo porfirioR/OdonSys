@@ -18,7 +18,6 @@ namespace Access.Data.Access
         public async Task<ProcedureAccessModel> CreateAsync(CreateProcedureAccessRequest accessRequest)
         {
             var entity = _procedureDataAccessBuilder.MapCreateProcedureAccessRequestToProcedure(accessRequest);
-            //entity.ProcedureTeeth = accessRequest.ProcedureTeeth.Select(x => new ProcedureTooth { ToothId = new Guid(x), ProcedureId = entity.Id }).ToList();
             _context.Procedures.Add(entity);
             await _context.SaveChangesAsync();
             return _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(entity);
@@ -35,9 +34,12 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<ProcedureAccessModel>> GetAllAsync()
         {
-            var entities = await _context.Procedures.AsNoTracking().ToListAsync();
-            var modelList = entities.Select(_procedureDataAccessBuilder.MapProcedureToProcedureAccessModel);
-            return modelList;
+            var accessModelList = await _context.Procedures
+                                .AsNoTrackingWithIdentityResolution()
+                                .Select(x => _procedureDataAccessBuilder.MapProcedureToProcedureAccessModel(x))
+                                .ToListAsync();
+
+            return accessModelList;
         }
 
         public async Task<ProcedureAccessModel> GetByIdAsync(string id, bool active)

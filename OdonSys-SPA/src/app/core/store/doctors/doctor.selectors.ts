@@ -12,4 +12,3 @@ export const selectDoctor = (doctorId: string) => createSelector(
   selectDoctorsFeature,
   state => state.entities[doctorId.toUpperCase()]!
 )
-

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
@@ -61,6 +61,11 @@ export class ClientsComponent implements OnInit {
     })
   }
 
+  @HostListener('window:resize', ['$event'])
+  private getScreenSize(event?: any) {
+    this.gridOptions.api?.sizeColumnsToFit()
+  }
+
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
@@ -80,10 +85,6 @@ export class ClientsComponent implements OnInit {
   private actionColumnClicked = (action: ButtonGridActionType): void => {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
-      case ButtonGridActionType.Ver:
-        this.alertService.showInfo('No implementado.')
-        // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
-        break
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break

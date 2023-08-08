@@ -11,6 +11,7 @@ export interface InvoiceApiModel {
   timbrado: string
   status: InvoiceStatus
   clientId: string
+  clientFullName: string
   dateCreated: Date
   userCreated: string
   invoiceDetails: InvoiceDetailApiModel[]

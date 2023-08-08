@@ -3,7 +3,7 @@
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>Detalles Paciente</h3>
   </div>
-  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm" [formGroup]="formGroup">
+  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <main class="row w-100">
       <section class="p-r-0 p-b-10">
         <main class="card">
@@ -41,7 +41,7 @@
           </article>
         </main>
       </section>
-      <section class="p-r-0">
+      <section class="p-r-0 p-b-10">
         <main class="card">
           <article class="card-body">
             <h4 class="card-title">Facturas</h4>
@@ -53,7 +53,15 @@
                       <span class="col-6">
                         <b>Fecha: </b>{{summary.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}
                       </span>
-                      <span class="col-6 text-end">
+                      <span class="col-3 text-start">
+                        <b>Estado: </b>
+                        <span class="badge" [ngClass]="[
+                          summary.status === invoiceStatus.Nuevo ? 'text-bg-info':
+                          summary.status === invoiceStatus.Completado ? 'text-bg-success' :
+                          summary.status === invoiceStatus.Cancelado ? 'text-bg-danger': 'text-bg-warning'
+                        ]">{{summary.status}}</span>
+                      </span>
+                      <span class="col-3 text-end">
                         <b>Total: </b>{{summary.total | number:'' : 'es'}}
                       </span>
                     </span>
@@ -61,27 +69,27 @@
                 </h2>
                 <div ngbAccordionCollapse>
                   <div ngbAccordionBody class="p-l-10">
-                    <span *ngIf="!formProcedure.get(summary.id)!.hasData; else invoicesDetails"></span>
+                    <span *ngIf="!clientDetails.get(summary.id)!.hasData; else invoicesDetails"></span>
                     <ng-template #invoicesDetails>
                       <article class="col-md-12 p-b-10 selected-procedures">
                         <div class="procedure-section">
                           <h5 class="card-title">Procedimientos</h5>
                           <main class="p-l-10">
                             <header class="row">
-                              <label for="name" class="col-md-3 fw-bold">Nombre</label>
-                              <label for="userCreated" class="col-md-3 fw-bold text-end">Quien Registró</label>
-                              <label for="date" class="col-md-3 fw-bold text-end p-r-6">Fecha</label>
+                              <label for="name" class="col-md-5 fw-bold">Nombre</label>
+                              <label for="userCreated" class="col-md-2 fw-bold text-end">Quien Registró</label>
+                              <label for="date" class="col-md-2 fw-bold text-end p-r-6">Fecha</label>
                               <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
                             </header>
                             <div class="row align-center">
-                              <div *ngFor="let invoiceDetail of formProcedure.get(summary.id)?.procedures">
-                                <label class="col-md-3">
+                              <div *ngFor="let invoiceDetail of clientDetails.get(summary.id)?.procedures">
+                                <label class="col-md-5">
                                   {{invoiceDetail?.procedure}}
                                 </label>
-                                <label class="col-md-3 text-end p-r-12">
+                                <label class="col-md-2 text-end p-r-12">
                                   {{invoiceDetail?.userCreated}}
                                 </label>
-                                <label class="col-md-3 text-end">
+                                <label class="col-md-2 text-end">
                                   {{invoiceDetail?.dateCreated | date: 'dd/MM/yyyy': '': 'es' }}
                                 </label>
                                 <label class="col-md-3 text-end">
@@ -93,6 +101,112 @@
                         </div>
                       </article>
                     </ng-template>
+                    <section class="p-r-5">
+                      <h5>Pagos</h5>
+                      <div id="paid-section">
+                        <div [ngClass]="{'align-items-center d-flex justify-content-center': !clientDetails.get(summary.id)!.hasPayments}">
+                          <div *ngIf="!clientDetails.get(summary.id)!.hasPayments; else allPayments">
+                            <h5 class="text-center">Sin pagos realizados</h5>
+                          </div>
+                          <ng-template #allPayments>
+                            <main class="p-l-10">
+                              <header class="row paid-header">
+                                <h6 class="col-md-5">Quien registró</h6>
+                                <h6 class="col-md-2 text-end">Fecha pagada</h6>
+                                <h6 class="col-md-2 text-end p-r-0">Monto (Gs.)</h6>
+                                <h6 class="col-md-3 text-end">Deuda (Gs.)</h6>
+                              </header>
+                              <div id="paid-items">
+                                <div class="row paid-content-row"
+                                  *ngFor="let payment of clientDetails.get(summary.id)!.payments">
+                                  <label class="col-md-5">{{payment.user}}</label>
+                                  <label class="col-md-2 text-end">{{payment.dateCreated | date: 'dd/MM/yyyy': '':
+                                    'es'}}</label>
+                                  <label class="col-md-2 text-end p-r-0">{{payment.amount | number: '': 'es'}}</label>
+                                  <label class="col-md-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+                                </div>
+                              </div>
+                            </main>
+                            <br>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </section>
+                    <section class="p-r-5" *ngIf="clientDetails.get(summary.id)!.hasFiles">
+                      <header>
+                        <h5>Archivos</h5>
+                      </header>
+                      <article class="p-l-10">
+                        <h6><b>Imágenes</b></h6>
+                        <ng-container *ngIf="clientDetails.get(summary.id)!.invoiceImageFiles.length === 0; else pictureFiles">
+                          <div class="no-file">
+                            <div>
+                              <h5>Sin imágenes</h5>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-template #pictureFiles>
+                          <div class="invoice-file d-flex flex-wrap">
+                            <ng-container *ngFor="let imageFile of clientDetails.get(summary.id)!.invoiceImageFiles">
+                              <main class="col-5 gallery d-flex flex-column justify-content-space-between">
+                                <header id="picture-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
+                                  <a (click)="downloadFile(imageFile)" title="Descargar">
+                                    <i class="fas fa-cloud-download-alt text-end icon-file"></i>
+                                  </a>
+                                  <a [href]="imageFile.url" target="_blank" title="Abrir en otra ventana">
+                                    <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
+                                  </a>
+                                </header>
+                                <article class="d-flex justify-content-center mt-auto mb-auto">
+                                  <img class="pictures" [src]="imageFile.safeUrl" [alt]="imageFile.name" />
+                                </article>
+                                <footer class="legend align-items-end">
+                                  <span>
+                                    {{imageFile.name}}
+                                  </span>
+                                </footer>
+                              </main>
+                            </ng-container>
+                          </div>
+                        </ng-template>
+                      </article>
+                      <article class="p-l-10">
+                        <header>
+                          <h6><b>Pdfs</b></h6>
+                        </header>
+                        <ng-container *ngIf="clientDetails.get(summary.id)!.invoicePdfFiles.length === 0; else pdfFiles">
+                          <div class="no-file">
+                            <div>
+                              <h5>Sin Pdfs</h5>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-template #pdfFiles>
+                          <div class="invoice-file d-flex flex-wrap">
+                            <ng-container *ngFor="let pdfFile of clientDetails.get(summary.id)!.invoicePdfFiles">
+                              <main class="col-3 gallery">
+                                <header id="pdf-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
+                                  <a (click)="downloadFile(pdfFile)" title="Descargar">
+                                    <i class="fas fa-cloud-download-alt text-end icon-file"></i>
+                                  </a>
+                                  <a [href]="pdfFile.url" target="_blank" title="Abrir en otra ventana">
+                                    <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
+                                  </a>
+                                </header>
+                                <article class="d-flex justify-content-center">
+                                  <i class="fas fa-file-pdf pdf"></i>
+                                </article>
+                                <footer class="legend align-items-end">
+                                  <span>
+                                    {{pdfFile.name}}
+                                  </span>
+                                </footer>
+                              </main>
+                            </ng-container>
+                          </div>
+                        </ng-template>
+                      </article>
+                    </section>
                   </div>
                 </div>
               </div>
@@ -100,144 +214,17 @@
           </article>
         </main>
       </section>
-      <!-- <section class="col-5 p-r-0">
-      
-      <footer class="col-md-12 p-l-0" id="footer-procedures">
-        <div class="card">
-          <div class="card-body amount">
-            <div class="row">
-              <div class=" offset-4 col-md-4">
-                <label for="subTotal"><strong>Sub Total </strong>Gs. {{formGroup.controls.subTotal.value | number:'' :
-                  'es' }}</label>
-              </div>
-              <div class="col-md-4">
-                <label for="montoTotal"><strong>Monto Total </strong>Gs. {{formGroup.controls.total.value | number:'' :
-                  'es' }}</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </section>
-    <section class="col-5 p-r-0">
-      <div class="card" id="paid-section">
-        <div class="card-body" [ngClass]="{'align-items-center d-flex justify-content-center': !hasPayments}">
-          <div *ngIf="!hasPayments; else allPayments">
-            <h5 class="text-center">Sin pagos realizados</h5>
-          </div>
-          <ng-template #allPayments>
-            <section id="payments">
-              <h5>Pagos realizados</h5>
-              <header class="row paid-header">
-                <h6 class="col-3">Quien registró</h6>
-                <h6 class="col-3">Fecha pagada</h6>
-                <h6 class="col-3 text-end">Monto (Gs.)</h6>
-                <h6 class="col-3 text-end">Deuda (Gs.)</h6>
-              </header>
-              <div id="paid-items">
-                <div class="row paid-content-row" *ngFor="let payment of payments">
-                  <label class="col-3">{{payment.user}}</label>
-                  <label class="col-3">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-                  <label class="col-3 text-end">{{payment.amount | number: '': 'es'}}</label>
-                  <label class="col-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
-                </div>
-              </div>
-            </section>
-            <br>
-          </ng-template>
-        </div>
-      </div>
-      <div id="file-preview" class="card">
-        <div class="card-body">
-          <nav ngbNav #nav="ngbNav" class="nav-tabs">
-            <ng-container ngbNavItem>
-              <a ngbNavLink>Imágenes</a>
-              <ng-template ngbNavContent>
-                <ng-container *ngIf="invoiceImageFiles.length === 0; else pictureFiles">
-                  <div class="no-file">
-                    <div>
-                      <h5>Sin imágenes</h5>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-template #pictureFiles>
-                  <div class="invoice-file d-flex flex-wrap">
-                    <ng-container *ngFor="let imageFile of invoiceImageFiles">
-                      <div class="col-5 gallery d-flex flex-column justify-content-space-between">
-                        <div id="picture-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
-                          <a (click)="downloadFile(imageFile)" title="Descargar">
-                            <i class="fas fa-cloud-download-alt text-end icon-file"></i>
-                          </a>
-                          <a [href]="imageFile.url" target="_blank" title="Abrir en otra ventana">
-                            <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
-                          </a>
-                        </div>
-                          <div class="d-flex justify-content-center mt-auto mb-auto">
-                            <img class="pictures" [src]="imageFile.safeUrl" />
-                          </div>
-                          <div class="legend align-items-end">
-                            <span>
-                              {{imageFile.name}}
-                            </span>
-                          </div>
-                      </div>
-                    </ng-container>
-                  </div>
-                </ng-template>
-              </ng-template>
-            </ng-container>
-            <ng-container ngbNavItem>
-              <a ngbNavLink>Pdfs</a>
-              <ng-template ngbNavContent>
-                <ng-container *ngIf="invoicePdfFiles.length === 0; else pdfFiles">
-                  <div class="no-file">
-                    <div>
-                      <h5>Sin Pdfs</h5>
-                    </div>
-                  </div>
-                </ng-container>
-                <ng-template #pdfFiles>
-                  <div class="invoice-file d-flex flex-wrap">
-                    <ng-container *ngFor="let pdfFile of invoicePdfFiles">
-                      <div class="col-3 gallery">
-                        <div id="pdf-icons" class="d-flex justify-content-end row-icons" style="height: 35px;">
-                          <a (click)="downloadFile(pdfFile)" title="Descargar">
-                            <i class="fas fa-cloud-download-alt text-end icon-file"></i>
-                          </a>
-                          <a [href]="pdfFile.url" target="_blank" title="Abrir en otra ventana">
-                            <i class="fas fa-external-link-alt text-end icon-file m-r-8"></i>
-                          </a>
-                        </div>
-                        <div class="d-flex justify-content-center">
-                          <i class="fas fa-file-pdf pdf"></i>
-                        </div>
-                        <div class="legend align-items-end">
-                          <span>
-                            {{pdfFile.name}}
-                          </span>
-                        </div>
-                      </div>
-                    </ng-container>
-                  </div>
-                </ng-template>
-              </ng-template>
-            </ng-container>
-          </nav>
-          <div [ngbNavOutlet]="nav" class="mt-2"></div>
-        </div>
-      </div>
-    </section> -->
+      <section class="p-r-0 p-b-0">
+        <footer class="card">
+          <main class="card-body p-t-10 p-b-10">
+            <article class="d-flex justify-content-center">
+              <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
+                Volver a la lista
+              </button>
+            </article>
+          </main>
+        </footer>
+      </section>
     </main>
-    <!-- <footer class="row col-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
-            Volver a la lista
-          </button>
-        </div>
-      </div>
-    </div>
-  </footer> -->
   </div>
 </div>
