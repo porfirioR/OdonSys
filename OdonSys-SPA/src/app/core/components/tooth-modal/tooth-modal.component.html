@@ -1,0 +1,67 @@
+<form [formGroup]="formGroup">
+  <div class="modal-header">
+    <h4 class="modal-title">Dientes para el Procedimiento</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')">
+    </button>
+  </div>
+  <div class="modal-body p-l-20 p-r-20">
+    <h4>Nivel de dificultad</h4>
+    <div class="col-lg-6">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="color" name="colorValue" id="difficult" class="form-control" formControlName="difficult">
+          </span>
+        </div>
+        <select class="form-select" formControlName="color" id="color">
+          <option [value]="diffProcedure.value" *ngFor="let diffProcedure of difficultyOfProcedure | keyvalue">{{diffProcedure.key}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col-6">
+        <select class="form-select" formControlName="color" id="color">
+          <option [value]="diffProcedure.value" *ngFor="let diffProcedure of difficultyOfProcedure | keyvalue">{{diffProcedure.key}}
+          </option>
+        </select>
+      </div>
+      <div class="col-6">
+        <input type="color" name="colorValue" id="difficult" class="form-control" formControlName="difficult">
+      </div>
+    </div> -->
+    <div class="col-lg-12 row m-t-16" formArrayName="teeth">
+      <h4>Dientes</h4>
+      <ng-container *ngFor="let tooth of teethFormArray.controls; let i = index">
+        <h5 class="d-flex justify-content-center" *ngIf="i === 0 || i === 16">
+          <ng-container  *ngIf="tooth.value.jaw! === jaw.Upper">
+            Maxilar
+          </ng-container>
+          <ng-container *ngIf="tooth.value.jaw! === jaw.Lower">
+            <br>
+            Mandibular
+          </ng-container>
+        </h5>
+        <div class="form-check" [ngClass]="[(i%2 === 0) ? 'col-lg-8': 'col-lg-3']">
+          <h6 *ngIf="i === 0 || i === 1 || i === 16 || i === 17">
+            {{
+              tooth.value.quadrant === quadrant.First ? 'Superior derecha' :
+              tooth.value.quadrant === quadrant.Second ? 'Superior izquierda' :
+              tooth.value.quadrant === quadrant.Fourth ? 'Inferior derecha':
+              'Inferior izquierda'
+            }}
+          </h6>
+          <div class="m-l-32">
+            <input class="form-check-input" type="checkbox" [formControl]="tooth.controls.value" [id]="tooth.value.id">
+            <label class="form-check-label m-r-2" [for]="tooth.value.id">{{tooth.value.name}} ({{tooth.value.number}})</label>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="activeModal.close()">Cerrar</button>
+    <button type="button" class="btn btn-outline-primary" (click)="save()">Guardar</button>
+  </div>
+</form>

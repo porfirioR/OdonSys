@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, combineLatest, debounceTime, filter, forkJoin, of, switchMap, tap } from 'rxjs';
 
 import { ClientModel } from '../../../core/models/view/client-model';
@@ -13,13 +14,18 @@ import { CreateInvoiceDetailRequest } from '../../models/invoices/api/create-inv
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { AssignClientRequest } from '../../../core/models/api/clients/assign-client-request';
 
-import { selectActiveClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
+import { selectActiveClients } from '../../../core/store/clients/client.selectors';
+
 import  * as fromProceduresActions from '../../../core/store/procedures/procedure.actions';
 import { selectActiveProcedures } from '../../../core/store/procedures/procedure.selectors';
 
+import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
+import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
+
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
+import { DifficultyProcedure } from '../../../core/enums/difficulty-procedure.enum';
 
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
@@ -39,6 +45,9 @@ import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
+import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
+import { ProcedureToothModalModel } from 'src/app/core/models/view/procedure-tooth-modal-model';
+import { ProcedureToothFormGroup } from 'src/app/core/forms/procedure-tooth-form-group.form';
 
 @Component({
   selector: 'app-register-invoice',
@@ -46,12 +55,14 @@ import { UploadFileComponent } from '../../../core/components/upload-file/upload
   styleUrls: ['./register-invoice.component.scss']
 })
 export class RegisterInvoiceComponent implements OnInit {
-  @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent;
+  @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent
+
   protected load: boolean = false
   protected clients!: ClientModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
   protected clientsValues: Map<string, string> = new Map<string, string>()
+  protected teethIdsForm = new FormArray([])
   protected clientFormGroup = new FormGroup<UserFormGroup>({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl('', [Validators.maxLength(25)]),
@@ -97,7 +108,8 @@ export class RegisterInvoiceComponent implements OnInit {
     private userInfoService: UserInfoService,
     private readonly alertService: AlertService,
     private readonly router: Router,
-    private readonly subscriptionService: SubscriptionService
+    private readonly subscriptionService: SubscriptionService,
+    private modalService: NgbModal,
   ) {
     this.countries = EnumHandler.getCountries()
     this.getScreenSize()
@@ -119,8 +131,16 @@ export class RegisterInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    combineLatest([clientRowData$, procedureRowData$]).subscribe({
-      next: ([clients, procedures]) => {
+    let loadingTooth = true
+    const toothRowData$ = this.store.select(selectActiveProcedures).pipe(tap(x => {
+      if(loadingProcedure && x.length === 0) {
+        this.store.dispatch(fromProceduresActions.loadProcedures())
+        loadingTooth = false
+      }
+    }))
+    this.store.dispatch(fromTeethActions.componentLoadTeeth())
+    combineLatest([clientRowData$, procedureRowData$, toothRowData$]).subscribe({
+      next: ([clients, procedures, teeth]) => {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures
@@ -159,8 +179,8 @@ export class RegisterInvoiceComponent implements OnInit {
   }
 
   protected removeProcedure = (id: string) => {
-    const formArray = this.formGroup.controls.procedures as FormArray
-    const index = formArray.controls.findIndex((x) => (x as FormGroup).controls['id'].value === id)
+    const formArray = this.formGroup.controls.procedures
+    const index = formArray.controls.findIndex(x => x.controls['id'].value === id)
     formArray.removeAt(index)
     this.proceduresValues.find(x => x.key === id)!.disabled = false
     this.calculatePrices()
@@ -188,6 +208,31 @@ export class RegisterInvoiceComponent implements OnInit {
     this.router.navigate([currentUrl.join('/')])
   }
 
+  protected selectTooth = (i: number) => {
+    const procedure: FormGroup<ProcedureFormGroup> = this.formGroup.controls.procedures.controls[i]
+    const modalRef = this.modalService.open(ToothModalComponent, {
+      size: 'xl',
+      backdrop: 'static',
+      keyboard: false
+    })
+    modalRef.componentInstance.procedure = procedure
+    modalRef.result.then((result: ProcedureToothModalModel) => {
+      if (!!result) {
+        procedure.controls.toothIds?.clear()
+        procedure.controls.teethSelected?.setValue(result.teethIds.map(x => x.number).sort().join(', '))
+        result.teethIds.forEach(x => {
+          procedure.controls.toothIds?.push(
+            new FormGroup<ProcedureToothFormGroup>({
+              id: new FormControl(x.id)
+            })
+          )
+        })
+        procedure.controls.color!.setValue(result.color)
+        procedure.controls.difficult!.setValue(EnumHandler.getKeyByValue(DifficultyProcedure, result.color)!)
+      }
+    }, () => {})
+  }
+
   private formGroupValueChanges = () => {
     this.formGroup.controls.procedure.valueChanges.pipe(
       debounceTime(500),
@@ -195,19 +240,25 @@ export class RegisterInvoiceComponent implements OnInit {
     ).subscribe({
       next: (procedure) => {
         const currentProcedure = this.procedures.find(x => x.id.compareString(procedure!))!
-        const formArray = this.formGroup.controls.procedures as FormArray<FormGroup<ProcedureFormGroup>>
+        const formArray = this.formGroup.controls.procedures
         if (!formArray.controls.find((x: FormGroup<ProcedureFormGroup>) => x.controls['id'].value === currentProcedure.id)) {
           const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
             id: new FormControl(currentProcedure.id),
             name: new FormControl(currentProcedure.name),
             price: new FormControl(currentProcedure.price),
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
-            xRays: new FormControl(currentProcedure.xRays)
+            xRays: new FormControl(currentProcedure.xRays),
+            color: new FormControl(DifficultyProcedure.Rutinario),
+            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string),
+            toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([]),
+            teethSelected: new FormControl('')
           })
           // procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)
           this.proceduresValues.find(x => x.key === currentProcedure.id)!.disabled = true
-          procedureFormGroup.valueChanges.subscribe({ next: () => this.calculatePrices() })
+          procedureFormGroup.valueChanges.subscribe({
+            next: () => this.calculatePrices()
+          })
         }
         this.calculatePrices()
         this.formGroup.controls.procedure.setValue('', { onlySelf: true, emitEvent: false })
@@ -300,9 +351,26 @@ export class RegisterInvoiceComponent implements OnInit {
       // Create Invoice
       const invoiceDetails: CreateInvoiceDetailRequest[] = clientProcedures.map(x => {
         const selectedProcedure = procedures.find(y => y.controls.id.value === x.procedureId)!
-        return new CreateInvoiceDetailRequest(x.id, selectedProcedure.controls.price.value!, selectedProcedure.controls.finalPrice.value!)
+        const toothIds = selectedProcedure.controls.toothIds?.controls.map(x => x.controls.id.value!)
+        return new CreateInvoiceDetailRequest(
+          x.id,
+          selectedProcedure.controls.price.value!,
+          selectedProcedure.controls.finalPrice.value!,
+          selectedProcedure.controls.color!.value!,
+          toothIds
+        )
       })
-      const invoice = new CreateInvoiceRequest('invoiceNumber', 1, 1, this.formGroup.controls.subTotal.value!, this.formGroup.controls.total.value!, 'timbrado', InvoiceStatus.Nuevo, clientId, invoiceDetails)
+      const invoice = new CreateInvoiceRequest(
+        'invoiceNumber',
+        1,
+        1,
+        this.formGroup.controls.subTotal.value!,
+        this.formGroup.controls.total.value!,
+        'timbrado',
+        InvoiceStatus.Nuevo,
+        clientId,
+        invoiceDetails
+      )
       return this.invoiceApiService.createInvoice(invoice)
     }))
   }

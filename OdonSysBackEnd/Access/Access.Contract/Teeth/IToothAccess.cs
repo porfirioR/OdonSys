@@ -2,6 +2,7 @@
 {
     public interface IToothAccess
     {
-        //Task<IEnumerable<ToothAccessResponse>> GetAllAsync();
+        Task<IEnumerable<ToothAccessModel>> GetAllAsync();
+        Task<IEnumerable<string>> InvalidTeethAsync(IEnumerable<string> teeth);
     }
 }

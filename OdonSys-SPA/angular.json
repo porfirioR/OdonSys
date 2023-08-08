@@ -61,7 +61,9 @@
               "outputHashing": "all",
               "assets": [
                 "src/web.config",
-                "src/assets/img"
+                "src/assets/img",
+                "src/robots.txt",
+                "src/sitemap.xml"
               ]
             },
             "development": {

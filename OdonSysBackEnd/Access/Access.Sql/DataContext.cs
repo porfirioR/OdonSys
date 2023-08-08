@@ -22,11 +22,11 @@ namespace Access.Sql
         public DbSet<Client> Clients { get; set; }
         public DbSet<UserClient> UserClients { get; set; }
         public DbSet<Procedure> Procedures { get; set; }
-        //public DbSet<Tooth> Teeth { get; set; }
-        //public DbSet<ProcedureTooth> ProcedureTeeth { get; set; }
+        public DbSet<Tooth> Teeth { get; set; }
         public DbSet<ClientProcedure> ClientProcedures { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public DbSet<InvoiceDetailTooth> InvoiceDetailTeeth { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<FileStorage> FileStorages { get; set; }
 
@@ -38,17 +38,18 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new FileStorageConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailToothConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());
-            //modelBuilder.ApplyConfiguration(new ProcedureToothConfiguration());
+            modelBuilder.ApplyConfiguration(new ToothConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new UserClientConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserRolesConfiguration());
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity &&
                                                         (x.State == EntityState.Added ||

@@ -3,6 +3,8 @@
     public record InvoiceDetailRequest(
         Guid ClientProcedureId,
         int ProcedurePrice,
-        int FinalPrice
+        int FinalPrice,
+        string Color,
+        IEnumerable<string> ToothIds
     );
 }

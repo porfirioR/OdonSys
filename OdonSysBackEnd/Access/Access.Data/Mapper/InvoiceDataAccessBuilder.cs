@@ -1,6 +1,6 @@
-﻿using Access.Contract.Clients;
-using Access.Contract.Invoices;
+﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
+using System.Linq;
 
 namespace Access.Data.Mapper
 {
@@ -32,7 +32,22 @@ namespace Access.Data.Mapper
                 FinalPrice = request.FinalPrice,
                 Active = true,
                 Id = Guid.NewGuid(),
-                InvoiceId = entity.Id
+                InvoiceId = entity.Id,
+                Color = request.Color
+            };
+            var toothIds = request.ToothIds;
+            if (toothIds is not null && toothIds.Any())
+            {
+                var invoiceDetailTooth = new List<InvoiceDetailTooth>();
+                foreach (var x in toothIds)
+                {
+                    var newInvoiceDetailTooth = new InvoiceDetailTooth()
+                    {
+                        ToothId = new Guid(x)
+                    };
+                    invoiceDetailTooth.Add(newInvoiceDetailTooth);
+                }
+                invoiceDetail.InvoiceDetailsTeeth = invoiceDetailTooth;
             };
             return invoiceDetail;
         }
@@ -48,6 +63,7 @@ namespace Access.Data.Mapper
                 entity.InvoiceDetails.Select(x =>
                 {
                     var clientProcedure = clientProcedureEntities.FirstOrDefault(y => y.Id == x.ClientProcedureId);
+                    var toothIds = x.InvoiceDetailsTeeth is not null && x.InvoiceDetailsTeeth.Any() ? x.InvoiceDetailsTeeth.Select(x => x.ToothId.ToString()) : new List<string>();
                     return new InvoiceDetailAccessModel(
                         x.Id,
                         x.InvoiceId,
@@ -55,7 +71,9 @@ namespace Access.Data.Mapper
                         x.ProcedurePrice,
                         x.FinalPrice,
                         x.DateCreated,
-                        x.UserCreated
+                        x.UserCreated,
+                        x.Color,
+                        toothIds
                     );
                 });
 

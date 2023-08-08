@@ -7,16 +7,14 @@ namespace AcceptanceTest.Host.Api.Payments
 {
     internal partial class InvoiceControllerTest
     {
-
-        CreateProcedureApiRequest CreateProcedureApiRequest => new()
+        internal static CreateProcedureApiRequest CreateProcedureApiRequest => new()
         {
             Name = Guid.NewGuid().ToString()[..30],
             Description = Guid.NewGuid().ToString()[..30],
             Price = 10,
-            //ProcedureTeeth = TeethIds
         };
 
-        static CreateClientApiRequest CreateClientApiRequest => new()
+        internal static CreateClientApiRequest CreateClientApiRequest => new()
         {
             Name = Guid.NewGuid().ToString()[..5],
             Surname = Guid.NewGuid().ToString()[..5],
@@ -27,9 +25,9 @@ namespace AcceptanceTest.Host.Api.Payments
             Email = $"{Guid.NewGuid().ToString()[..6]}@{Guid.NewGuid().ToString()[..6]}.com"
         };
 
-        static CreateInvoiceApiRequest CreateInvoiceApiRequest(string clientId, string clientProcedureId) => new()
+        internal static CreateInvoiceApiRequest CreateInvoiceApiRequest(string clientId, string clientProcedureId) => new()
         {
-            InvoiceNumber = "abc",
+            InvoiceNumber = Guid.NewGuid().ToString()[..3],
             Iva10 = 1,
             TotalIva = 1,
             SubTotal = 10,
@@ -48,17 +46,17 @@ namespace AcceptanceTest.Host.Api.Payments
             ClientId = clientId
         };
 
-        static MultipartFormDataContent InvoiceFormData(string invoiceId) => new()
+        internal static MultipartFormDataContent InvoiceFormData(string invoiceId) => new()
         {
             { new StringContent(invoiceId), "Id" },
-            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{Guid.NewGuid().ToString()[..10]}.png" },
+            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
         };
 
-        static MultipartFormDataContent InvoiceFormDataWithPdf(string invoiceId) => new()
+        internal static MultipartFormDataContent InvoiceFormDataWithPdf(string invoiceId) => new()
         {
             { new StringContent(invoiceId), "Id" },
-            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{Guid.NewGuid().ToString()[..10]}.png" },
-            { new ByteArrayContent(Properties.Resources.TestPdf), "Files", $"{Guid.NewGuid().ToString()[..10]}.pdf" },
+            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
+            { new ByteArrayContent(Properties.Resources.TestPdf), "Files", $"{ Guid.NewGuid().ToString()[..10] }.pdf" },
         };
     }
 }

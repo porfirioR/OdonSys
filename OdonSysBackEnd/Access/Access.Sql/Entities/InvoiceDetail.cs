@@ -6,8 +6,10 @@
         public Guid ClientProcedureId { get; set; }
         public int ProcedurePrice { get; set; }
         public int FinalPrice { get; set; }
+        public string Color { get; set; }
 
         public virtual Invoice Invoice { get; set; }
         public virtual ClientProcedure ClientProcedure { get; set; }
+        public virtual IEnumerable<InvoiceDetailTooth> InvoiceDetailsTeeth { get; set; }
     }
 }

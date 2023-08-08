@@ -85,28 +85,55 @@
             <h5 class="card-title">Procedimientos seleccionados</h5>
             <article formArrayName="procedures">
               <header class="row">
-                <div class="col-md-4">
+                <div class="col-md-2 d-flex justify-content-center">
+                  <label for="name" class="fw-bold">Dificultad</label>
+                </div>
+                <div class="col-md-2">
+                  <label for="name" class="fw-bold">N° Diente</label>
+                </div>
+                <div class="col-md-2">
                   <label for="name" class="fw-bold">Nombre</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="price" class="fw-bold">Precio</label>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="finalPrice" class="fw-bold">Precio final</label>
                 </div>
               </header>
               <main class="row align-center" id="selected-procedures-items">
-                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls">
-                  <div class="col-md-4">
+                <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls; let i = index">
+                  <div class="col-md-2">
+                    <div class="d-flex">
+                      <button class="btn btn-sm btn-outline-info m-r-2" (click)="selectTooth(i)">
+                        <span class="d-flex-center">
+                          <i class="fas fa-magnifying-glass"></i>
+                        </span>
+                      </button>
+                      <label class="color-difficult" [ngStyle]="{'background': procedure.value.color }"></label>
+                      <label class="form-label">{{procedure.value.difficult}}</label>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <ng-container *ngIf="procedure.value.toothIds?.length !== 0; else noTeeth">
+                      <label>
+                        {{procedure.value.teethSelected}}
+                      </label>
+                    </ng-container>
+                    <ng-template #noTeeth>
+                      <label class="form-label">Sin dientes seleccionados</label>
+                    </ng-template>
+                    
+                  </div>
+                  <div class="col-md-2">
                     <label class="form-label">{{procedure.value.name}}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <label class="form-label"> Gs. {{procedure.value.price | number:'' : 'es' }}</label>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="input-group">
                       <span class="input-group-text">Gs.</span>
-                      <!-- TODO generic input-group -->
                       <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
                         thousandSeparator="." [mask]="'separator.0'">
                     </div>

@@ -1,5 +1,4 @@
-﻿using Access.Contract.Clients;
-using Utilities.Enums;
+﻿using Utilities.Enums;
 
 namespace Access.Contract.Invoices
 {
