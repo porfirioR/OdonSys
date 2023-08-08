@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\Contract\Contract.Authentication\Contract.Workspace.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapper\" />
-  </ItemGroup>
-
 </Project>
