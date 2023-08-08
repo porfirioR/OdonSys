@@ -219,11 +219,11 @@ export class RegisterInvoiceComponent implements OnInit {
     modalRef.result.then((result: ProcedureToothModalModel) => {
       if (!!result) {
         procedure.controls.toothIds?.clear()
+        procedure.controls.teethSelected?.setValue(result.teethIds.map(x => x.number).sort().join(', '))
         result.teethIds.forEach(x => {
           procedure.controls.toothIds?.push(
             new FormGroup<ProcedureToothFormGroup>({
-              id: new FormControl(x.id),
-              number: new FormControl(x.number!)
+              id: new FormControl(x.id)
             })
           )
         })
@@ -250,7 +250,8 @@ export class RegisterInvoiceComponent implements OnInit {
             xRays: new FormControl(currentProcedure.xRays),
             color: new FormControl(DifficultyProcedure.Rutinario),
             difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string),
-            toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([])
+            toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([]),
+            teethSelected: new FormControl('')
           })
           // procedureFormGroup.addValidators(this.finalPriceCheckValidator)
           formArray.push(procedureFormGroup)

@@ -105,20 +105,20 @@
                 <ng-container [formGroup]="procedure" *ngFor="let procedure of formGroup.controls.procedures.controls; let i = index">
                   <div class="col-md-2">
                     <div class="d-flex">
-                      <button class="btn btn-sm btn-outline-info" (click)="selectTooth(i)">
+                      <button class="btn btn-sm btn-outline-info m-r-2" (click)="selectTooth(i)">
                         <span class="d-flex-center">
                           <i class="fas fa-magnifying-glass"></i>
                         </span>
                       </button>
                       <label class="color-difficult" [ngStyle]="{'background': procedure.value.color }"></label>
-                      <label class="form-label w-80">{{procedure.value.difficult}}</label>
+                      <label class="form-label">{{procedure.value.difficult}}</label>
                     </div>
                   </div>
                   <div class="col-md-2">
                     <ng-container *ngIf="procedure.value.toothIds?.length !== 0; else noTeeth">
-                      <ng-container *ngFor="let item of procedure.controls.toothIds!.controls; let i = index">
-                        <label>{{i !== 0 ? ',': ''}} {{item.value.number}}</label>
-                      </ng-container>
+                      <label>
+                        {{procedure.value.teethSelected}}
+                      </label>
                     </ng-container>
                     <ng-template #noTeeth>
                       <label class="form-label">Sin dientes seleccionados</label>

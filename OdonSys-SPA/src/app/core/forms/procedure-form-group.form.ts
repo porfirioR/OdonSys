@@ -10,4 +10,5 @@ export interface ProcedureFormGroup {
   toothIds?: FormArray<FormGroup<ProcedureToothFormGroup>>
   color?: FormControl<string | null>
   difficult?: FormControl<string | null>
+  teethSelected?: FormControl<string | null>
 }
