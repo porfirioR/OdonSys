@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: 
+Sitemap: https://odon-sys-spa.azurewebsites.net/sitemap.xml
