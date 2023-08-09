@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, map, of, switchMap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
@@ -14,6 +15,10 @@ import { PaymentModel } from '../../../workspace/models/payments/payment-model';
 import { FileModel } from '../../models/view/file-model';
 import { InvoiceStatus } from '../../enums/invoice-status.enum';
 import { Country } from '../../enums/country.enum';
+
+import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
+import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
+import { ToothModel } from '../../models/tooth/tooth-model';
 
 @Component({
   selector: 'app-client-detail',
@@ -28,11 +33,12 @@ export class ClientDetailComponent implements OnInit {
     ruc: new FormControl({ value: '0', disabled: true }),
     country: new FormControl({ value: Country.Paraguay, disabled: true }),
     phone: new FormControl({ value: '', disabled: true }),
-    email: new FormControl({ value: '', disabled: true }),
+    email: new FormControl({ value: '', disabled: true })
   })
   protected clientDetails = new Map<string, DetailClientModel>()
   protected invoiceStatus = InvoiceStatus
   protected invoicesSummary: InvoiceApiModel[] = []
+  protected teeth: ToothModel[]
 
   constructor(
     private readonly activeRoute: ActivatedRoute,
@@ -41,16 +47,26 @@ export class ClientDetailComponent implements OnInit {
     private readonly clientApiService: ClientApiService,
     private readonly invoiceApiService: InvoiceApiService,
     private readonly paymentApiService: PaymentApiService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private store: Store,
+
   ) { }
 
   ngOnInit() {
+    let loadingTooth = true
+    const toothRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingTooth && x.length === 0) {
+        this.store.dispatch(fromTeethActions.componentLoadTeeth())
+        loadingTooth = false
+      }
+    }))
     const clientId: string = this.activeRoute.snapshot.params['id']!
     const client$ = this.clientApiService.getById(clientId)
     const invoicesSummary$ = this.invoiceApiService.getInvoicesSummaryByClientId(clientId)
-    combineLatest([client$, invoicesSummary$])
+    combineLatest([client$, invoicesSummary$, toothRowData$])
     .subscribe({
-      next: ([client, invoicesSummary]) => {
+      next: ([client, invoicesSummary, teeth]) => {
+        this.teeth = teeth
         this.clientFormGroup.controls.name.setValue(`${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`)
         this.clientFormGroup.controls.email.setValue(client.email)
         this.clientFormGroup.controls.document.setValue(client.document)
@@ -92,7 +108,11 @@ export class ClientDetailComponent implements OnInit {
           .map(x => new FileModel(x.url, this.domSanitizer.bypassSecurityTrustUrl(x.url), x.format, x.dateCreated, x.name, x.fullUrl))
       }
       const invoiceDetails = fullInvoice.invoiceDetails
-      detailClientModel.procedures = invoiceDetails.map(x => new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated))
+      detailClientModel.procedures = invoiceDetails.map(x => {
+        const selectedTeed = this.teeth.filter(y => x.toothIds.includes(y.id))
+        const teeth = selectedTeed.length === 0 ? 'Sin seleccionar' : selectedTeed.map(x => x.number).sort().join(', ')
+        return new InvoiceDetailModel(x.id, invoiceId, x.procedure, x.procedurePrice, x.finalPrice, x.dateCreated, x.userCreated, teeth)
+      })
       const userPayments = [... new Set(paymentList.map(x => x.userId))]
       const payments: PaymentModel[] = []
       if (userPayments.length === 0) {

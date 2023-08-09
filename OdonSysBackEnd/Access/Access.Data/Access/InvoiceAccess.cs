@@ -47,7 +47,7 @@ namespace Access.Data.Access
             var entity = await _context.Invoices
                                     .Include(x => x.Client)
                                     .AsNoTracking()
-                                    .Include(x => x.InvoiceDetails)
+                                    .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
                                     .AsNoTracking()
                                     .FirstOrDefaultAsync(x => x.Id == new Guid(id));
 
