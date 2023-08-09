@@ -6,4 +6,5 @@ export interface InvoiceDetailApiModel {
   finalPrice: number
   dateCreated: Date
   userCreated: string
+  toothIds: string[]
 }

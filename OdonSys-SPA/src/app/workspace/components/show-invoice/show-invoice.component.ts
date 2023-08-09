@@ -9,16 +9,23 @@ import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { PaymentModel } from '../../models/payments/payment-model';
 import { SelectModel } from '../../../core/models/view/select-model';
 import { FileModel } from '../../../core/models/view/file-model';
+
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
+
+import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
+import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
+
+import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
+import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
+
 import { Country } from '../../../core/enums/country.enum';
 import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
 import { PaymentApiService } from '../../services/payment-api.service';
-import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions';
-import { selectDoctor } from '../../../core/store/doctors/doctor.selectors';
+import { ToothModel } from 'src/app/core/models/tooth/tooth-model';
 
 @Component({
   selector: 'app-show-invoice',
@@ -47,6 +54,7 @@ export class ShowInvoiceComponent implements OnInit {
   protected hasPayments = false
   protected invoicePdfFiles: FileModel[] = []
   protected invoiceImageFiles: FileModel[] = []
+  private teeth: ToothModel[]
 
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
@@ -74,12 +82,21 @@ export class ShowInvoiceComponent implements OnInit {
         loadingClient = false
       }
     }))
+    let loadingTooth = true
+    const toothRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingTooth && x.length === 0) {
+        this.store.dispatch(fromTeethActions.componentLoadTeeth())
+        loadingTooth = false
+      }
+    }))
     combineLatest([
       this.invoiceApiService.getInvoiceById(invoiceId),
       clientRowData$,
       this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
-      this.invoiceApiService.previewInvoiceFile(invoiceId)
-    ]).pipe(switchMap(([invoice, clients, paymentList, invoiceFiles]) => {
+      this.invoiceApiService.previewInvoiceFile(invoiceId),
+      toothRowData$
+    ]).pipe(switchMap(([invoice, clients, paymentList, invoiceFiles, teeth]) => {
+      this.teeth = teeth
       const invoiceImageFiles = invoiceFiles.filter(x => x.format !== 'pdf')
       if (invoiceImageFiles.length > 0) {
         this.invoiceImageFiles = invoiceImageFiles
@@ -151,13 +168,16 @@ export class ShowInvoiceComponent implements OnInit {
 
   private setInvoiceProcedures = (invoice: InvoiceApiModel) => {
     const formArray = this.formGroup.controls.procedures as FormArray
-    invoice.invoiceDetails.forEach(procedure => {
+    invoice.invoiceDetails.forEach(invoiceDetail => {
+      const selectedTeed = this.teeth.filter(y => invoiceDetail.toothIds.includes(y.id))
+      const teeth = selectedTeed.length === 0 ? 'Sin seleccionar' : selectedTeed.map(x => x.number).sort().join(', ')
       const procedureFormGroup = new FormGroup<ProcedureFormGroup>({
-        id: new FormControl(procedure.id),
-        name: new FormControl(procedure.procedure),
-        price: new FormControl(procedure.procedurePrice),
-        finalPrice: new FormControl(procedure.finalPrice),
-        xRays: new FormControl(false)
+        id: new FormControl(invoiceDetail.id),
+        name: new FormControl(invoiceDetail.procedure),
+        price: new FormControl(invoiceDetail.procedurePrice),
+        finalPrice: new FormControl(invoiceDetail.finalPrice),
+        xRays: new FormControl(false),
+        teethSelected:  new FormControl(teeth)
       })
       procedureFormGroup.disable()
       formArray.push(procedureFormGroup)

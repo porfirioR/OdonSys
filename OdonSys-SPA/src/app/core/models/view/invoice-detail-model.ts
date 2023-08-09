@@ -6,6 +6,7 @@ export class InvoiceDetailModel {
     public procedurePrice: number,
     public finalPrice: number,
     public dateCreated: Date,
-    public userCreated: string
+    public userCreated: string,
+    public teeth: string
   ) { }
 }
