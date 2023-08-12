@@ -44,10 +44,10 @@ import { SubscriptionService } from '../../../core/services/shared/subscription.
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
+import { ProcedureToothModalModel } from '../../../core/models/view/procedure-tooth-modal-model';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
-import { ProcedureToothModalModel } from 'src/app/core/models/view/procedure-tooth-modal-model';
-import { ProcedureToothFormGroup } from 'src/app/core/forms/procedure-tooth-form-group.form';
+import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
 
 @Component({
   selector: 'app-register-invoice',
@@ -132,15 +132,14 @@ export class RegisterInvoiceComponent implements OnInit {
       }
     }))
     let loadingTooth = true
-    const toothRowData$ = this.store.select(selectActiveProcedures).pipe(tap(x => {
-      if(loadingProcedure && x.length === 0) {
-        this.store.dispatch(fromProceduresActions.loadProcedures())
+    this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingTooth && x.length === 0) {
+        this.store.dispatch(fromTeethActions.componentLoadTeeth())
         loadingTooth = false
       }
     }))
-    this.store.dispatch(fromTeethActions.componentLoadTeeth())
-    combineLatest([clientRowData$, procedureRowData$, toothRowData$]).subscribe({
-      next: ([clients, procedures, teeth]) => {
+    combineLatest([clientRowData$, procedureRowData$]).subscribe({
+      next: ([clients, procedures]) => {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
         this.procedures = procedures

@@ -53,13 +53,15 @@
             <h5 class="card-title">Procedimientos</h5>
             <main formArrayName="procedures">
               <header class="row">
-                <label for="name" class="col-md-5 fw-bold">Nombre</label>
+                <label for="name" class="col-md-3 fw-bold">Nombre</label>
+                <label for="teethSelected" class="col-md-2 fw-bold p-l-6">Nº de Dientes</label>
                 <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
                 <label for="finalPrice" class="col-md-4 fw-bold text-end">Precio final (Gs.)</label>
               </header>
               <div class="row align-center" id="selected-procedure-items">
                 <div [formGroup]="item" *ngFor="let item of formGroup.controls.procedures.controls">
-                  <label class="col-md-5 form-label"> {{item.controls.name.value}}</label>
+                  <label class="col-md-3 form-label">{{item.controls.name.value}}</label>
+                  <label for="teethSelected" class="col-md-2">{{item.controls.teethSelected!.value}}</label>
                   <label class="col-md-3 form-label text-end">
                     {{item.controls.price.value | number:'' : 'es' }}
                   </label>

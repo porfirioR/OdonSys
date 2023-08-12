@@ -25,6 +25,14 @@ namespace Host.Api
                         PermissionName.AccessInvoices
                     }
                 )),
+                new PolicyModel(Policy.CanAccessTeeth, new AuthorizationRequirement(
+                    new List<PermissionName> {
+                        PermissionName.AccessMyInvoices,
+                        PermissionName.AccessInvoices,
+                        PermissionName.AccessClients,
+                        PermissionName.AccessMyClients
+                    }
+                )),
                 new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthorizationRequirement(PermissionName.ChangeInvoiceStatus)),
 
                 new PolicyModel(Policy.CanAccessClient, new AuthorizationRequirement(
