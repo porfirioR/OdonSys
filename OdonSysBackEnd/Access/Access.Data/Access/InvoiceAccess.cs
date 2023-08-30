@@ -78,5 +78,10 @@ namespace Access.Data.Access
                                     .Include(x => x.Procedure)
                                     .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
         }
+
+        public Task<InvoiceAccessModel> UpdateInvoiceAsync(UpdateInvoiceAccessRequest accessRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
