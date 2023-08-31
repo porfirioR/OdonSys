@@ -77,6 +77,11 @@ namespace Manager.Payment
             return accessModelList.Select(GetModel);
         }
 
+        public Task<InvoiceModel> UpdateInvoiceAsync(UpdateInvoiceRequest accessRequest)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<IEnumerable<InvoiceModel>> PrepareInvocesWithPayments(IEnumerable<InvoiceAccessModel> invoiceIdsList)
         {
             var invoiceIds = invoiceIdsList.Select(x => x.Id);

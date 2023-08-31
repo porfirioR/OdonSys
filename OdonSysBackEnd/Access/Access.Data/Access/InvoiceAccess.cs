@@ -2,6 +2,7 @@
 using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
+using Utilities.Enums;
 
 namespace Access.Data.Access
 {
@@ -79,9 +80,43 @@ namespace Access.Data.Access
                                     .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
         }
 
-        public Task<InvoiceAccessModel> UpdateInvoiceAsync(UpdateInvoiceAccessRequest accessRequest)
+        public async Task<InvoiceAccessModel> UpdateInvoiceAsync(UpdateInvoiceAccessRequest accessRequest)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Invoices
+                .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
+                .Include(x => x.Payments)
+                .FirstAsync(x => x.Id == accessRequest.Id);
+
+            foreach (var invoiceDetailAccessRequest in accessRequest.InvoiceDetails)
+            {
+                var entityInvoiceDetail = entity.InvoiceDetails.First(x => x.Id == invoiceDetailAccessRequest.Id);
+                entityInvoiceDetail.FinalPrice = invoiceDetailAccessRequest.FinalPrice;
+                // new inoice detail teeth
+                var allTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Select(x => x.Id.ToString());
+                var newTeeth = invoiceDetailAccessRequest.ToothIds.Where(x => !allTeeth.Contains(x)).Select(x => new InvoiceDetailTooth() { ToothId = new Guid(x), InvoiceDetailId = invoiceDetailAccessRequest.Id });
+                var removeInvoiceTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => !invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
+
+
+                var persisInvoiceDetailTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
+                entityInvoiceDetail.InvoiceDetailsTeeth = persisInvoiceDetailTeeth.Concat(newTeeth);
+                _context.Entry(removeInvoiceTeeth).State = EntityState.Deleted;
+                _context.Entry(newTeeth).State = EntityState.Added;
+                _context.Entry(persisInvoiceDetailTeeth).State = EntityState.Unchanged;
+            }
+
+            entity.Iva10 = accessRequest.Iva10;
+            entity.TotalIva = accessRequest.TotalIva;
+            entity.SubTotal = accessRequest.SubTotal;
+            entity.Total = accessRequest.Total;
+            var invoicePaymentsAmount = entity.Payments.Sum(x => x.Amount);
+            if (invoicePaymentsAmount == entity.Total)
+            {
+                entity.Status = InvoiceStatus.Completado;
+            }
+            _context.Entry(entity).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return _invoiceDataAccessBuilder.GetModel(entity, new List<ClientProcedure>());
         }
     }
 }
