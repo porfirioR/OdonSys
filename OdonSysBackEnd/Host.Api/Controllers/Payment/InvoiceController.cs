@@ -83,6 +83,26 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
+        [HttpPut("{id}")]
+        [Authorize(Policy = Policy.CanUpdateInvoice)]
+        public async Task<InvoiceModel> UpdateInvoiceAsync([FromRoute] string id, [FromBody] UpdateApiRequest apiRequest)
+        {
+            var request = new UpdateInvoiceRequest(
+                new Guid(id),
+                apiRequest.Iva10,
+                apiRequest.TotalIva,
+                apiRequest.SubTotal,
+                apiRequest.Total,
+                apiRequest.InvoiceDetails.Select(x => new UpdateInvoiceDetailRequest(
+                    new Guid(x.Id),
+                    x.FinalPrice,
+                    x.ToothIds
+                ))
+            );
+            var model = await _invoiceManager.UpdateInvoiceAsync(request);
+            return model;
+        }
+
         [HttpPatch("{id}")]
         [Authorize(Policy = Policy.CanChangeInvoiceStatus)]
         public async Task<InvoiceModel> PatchClient([FromRoute] InvoiceIdApiRequest invoiceApiRequest, [FromBody] JsonPatchDocument<InvoiceStatusRequest> patchClient)

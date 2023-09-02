@@ -50,7 +50,7 @@ namespace Access.Data.Access
                                     .AsNoTracking()
                                     .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
                                     .AsNoTracking()
-                                    .FirstOrDefaultAsync(x => x.Id == new Guid(id));
+                                    .FirstAsync(x => x.Id == new Guid(id));
 
             var clientProcedureIds = entity.InvoiceDetails.Select(y => y.ClientProcedureId);
             var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);

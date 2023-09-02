@@ -12,6 +12,7 @@
         AccessInvoices,
         AccessMyInvoices,
         CreateInvoices,
+        UpdateInvoices,
         ChangeInvoiceStatus,
         #endregion
 
