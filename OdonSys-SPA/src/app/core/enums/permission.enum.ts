@@ -24,6 +24,7 @@ export enum Permission {
   AccessInvoices = 'AccessInvoices',
   AccessMyInvoices = 'AccessMyInvoices',
   CreateInvoices = 'CreateInvoices',
+  UpdateInvoices = 'UpdateInvoices',
   ChangeInvoiceStatus = 'ChangeInvoiceStatus',
 
   // Payments

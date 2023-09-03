@@ -34,7 +34,13 @@ namespace Host.Api.Contract.Invoices
                 return results;
             }
             var invoiceDetailIds = InvoiceDetails.Select(x => x.Id);
-            var savedInvoiceDetailIds = invoiceManager.GetInvoiceByIdAsync(Id).GetAwaiter().GetResult().InvoiceDetails.Select(x => x.Id.ToString());
+            var savedInvoice = invoiceManager.GetInvoiceByIdAsync(Id).GetAwaiter().GetResult();
+            if (savedInvoice.Status == Utilities.Enums.InvoiceStatus.Completado)
+            {
+                results.Add(new ValidationResult($"La Factura con el Identificador {Id} no puede ser modificada."));
+                return results;
+            }
+            var savedInvoiceDetailIds = savedInvoice.InvoiceDetails.Select(x => x.Id.ToString());
             var invalidInvoiceDetailIds = invoiceDetailIds.Where(x => !savedInvoiceDetailIds.Contains(x));
             foreach (var invalidInvoiceDetailId in invalidInvoiceDetailIds)
             {

@@ -33,6 +33,7 @@ export class InvoicesComponent implements OnInit {
   protected title: string = ''
   private canRegisterPayments = false
   private canDeactivateInvoice = false
+  private canUpdateInvoice = false
   private isMyPermission: boolean = false
   private request$!: Observable<InvoiceApiModel[]>
 
@@ -51,6 +52,7 @@ export class InvoicesComponent implements OnInit {
     this.canRegisterPayments = this.userInfoService.havePermission(Permission.RegisterPayments)
     this.canRegisterInvoice = this.userInfoService.havePermission(Permission.CreateInvoices)
     this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
+    this.canUpdateInvoice = this.userInfoService.havePermission(Permission.UpdateInvoices)
     this.canAccessMyInvoices = !this.isMyPermission && this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.request$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
     this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
@@ -85,7 +87,7 @@ export class InvoicesComponent implements OnInit {
     if (this.canRegisterPayments) {
       conditionalButtons.push(
         new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual, 'status', InvoiceStatus.Cancelado, OperationType.NotEqual),
-        new ConditionalGridButtonShow('status', InvoiceStatus.Nuevo, ButtonGridActionType.Ver, OperationType.NotEqual, 'status', InvoiceStatus.Pendiente, OperationType.NotEqual),
+        // new ConditionalGridButtonShow('status', InvoiceStatus.Nuevo, ButtonGridActionType.Ver, OperationType.NotEqual, 'status', InvoiceStatus.Pendiente, OperationType.NotEqual),
       )
     }
     if (this.canDeactivateInvoice) {
@@ -93,8 +95,14 @@ export class InvoicesComponent implements OnInit {
         new ConditionalGridButtonShow('status', InvoiceStatus.Cancelado, ButtonGridActionType.Desactivar, OperationType.NotEqual, 'status', InvoiceStatus.Completado, OperationType.NotEqual)
       )
     }
+    if (this.canUpdateInvoice) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow('status', InvoiceStatus.Cancelado, ButtonGridActionType.Editar, OperationType.NotEqual, 'status', InvoiceStatus.Completado, OperationType.NotEqual)
+      )
+    }
+    const buttonToShow: ButtonGridActionType[] = [ ButtonGridActionType.Ver ]
     const params: GridActionModel = {
-      buttonShow: [],
+      buttonShow: buttonToShow,
       clicked: this.actionColumnClicked,
       customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true, 'success') : undefined,
       conditionalButtons: conditionalButtons
@@ -107,6 +115,13 @@ export class InvoicesComponent implements OnInit {
     switch (action) {
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        break
+      case ButtonGridActionType.Editar:
+        if (currentRowNode.data.status == InvoiceStatus.Completado || currentRowNode.data.status == InvoiceStatus.Completado) {
+          this.alertService.showInfo(`Solamente pueden ser modificados los estados ${InvoiceStatus.Nuevo} y ${InvoiceStatus.Pendiente}`)
+          return
+        }
+        this.router.navigate([`${this.router.url}/editar/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Desactivar:
         this.alertService.showQuestionModal(
