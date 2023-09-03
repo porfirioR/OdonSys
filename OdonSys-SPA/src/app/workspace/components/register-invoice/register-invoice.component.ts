@@ -25,7 +25,6 @@ import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
-import { DifficultyProcedure } from '../../../core/enums/difficulty-procedure.enum';
 
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
@@ -131,14 +130,14 @@ export class RegisterInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    let loadingTooth = true
-    this.store.select(selectTeeth).pipe(tap(x => {
-      if(loadingTooth && x.length === 0) {
+    let loadingTeeth = true
+    const teethRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingTeeth && x.length === 0) {
         this.store.dispatch(fromTeethActions.componentLoadTeeth())
-        loadingTooth = false
+        loadingTeeth = false
       }
     }))
-    combineLatest([clientRowData$, procedureRowData$]).subscribe({
+    combineLatest([clientRowData$, procedureRowData$, teethRowData$]).subscribe({
       next: ([clients, procedures]) => {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
@@ -210,7 +209,7 @@ export class RegisterInvoiceComponent implements OnInit {
   protected selectTooth = (i: number) => {
     const procedure: FormGroup<ProcedureFormGroup> = this.formGroup.controls.procedures.controls[i]
     const modalRef = this.modalService.open(ToothModalComponent, {
-      size: 'xl',
+      size: 'lg',
       backdrop: 'static',
       keyboard: false
     })
@@ -226,8 +225,6 @@ export class RegisterInvoiceComponent implements OnInit {
             })
           )
         })
-        procedure.controls.color!.setValue(result.color)
-        procedure.controls.difficult!.setValue(EnumHandler.getKeyByValue(DifficultyProcedure, result.color)!)
       }
     }, () => {})
   }
@@ -247,8 +244,6 @@ export class RegisterInvoiceComponent implements OnInit {
             price: new FormControl(currentProcedure.price),
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
             xRays: new FormControl(currentProcedure.xRays),
-            color: new FormControl(DifficultyProcedure.Rutinario),
-            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string),
             toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([]),
             teethSelected: new FormControl('')
           })
@@ -355,7 +350,6 @@ export class RegisterInvoiceComponent implements OnInit {
           x.id,
           selectedProcedure.controls.price.value!,
           selectedProcedure.controls.finalPrice.value!,
-          selectedProcedure.controls.color!.value!,
           toothIds
         )
       })

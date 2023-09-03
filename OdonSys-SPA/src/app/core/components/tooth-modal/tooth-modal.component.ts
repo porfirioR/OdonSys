@@ -7,13 +7,10 @@ import { ToothFormGroup } from '../../forms/tooth-form-group.form';
 import { ToothApiModel } from '../../models/tooth/tooth-api-model';
 import { ToothModel } from '../../models/tooth/tooth-model';
 import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
-import { ProcedureToothFormGroup } from '../../forms/procedure-tooth-form-group.form';
-import { DifficultyProcedure } from '../../enums/difficulty-procedure.enum';
 import { Jaw } from '../../enums/jaw.enum';
 import { Quadrant } from '../../enums/quadrant.enum';
 import { ToothModalModel } from '../../models/view/tooth-modal-model';
 import { ProcedureToothModalModel } from '../../models/view/procedure-tooth-modal-model';
-import { EnumHandler } from '../../helpers/enum-handler';
 
 @Component({
   selector: 'app-tooth-modal',
@@ -23,13 +20,10 @@ import { EnumHandler } from '../../helpers/enum-handler';
 export class ToothModalComponent implements OnInit {
   @Input() procedure: FormGroup<ProcedureFormGroup>
   protected teethFormArray: FormArray<FormGroup<ToothFormGroup>> = new FormArray<FormGroup<ToothFormGroup>>([])
-  protected difficultyOfProcedure = DifficultyProcedure
   protected jaw = Jaw
   protected quadrant = Quadrant
   public formGroup = new FormGroup({
-    teeth: this.teethFormArray,
-    color: new FormControl(this.difficultyOfProcedure.Rutinario),
-    difficult: new FormControl({ value: this.difficultyOfProcedure.Rutinario, disabled: true}),
+    teeth: this.teethFormArray
   })
   protected teethList: ToothModel[] = []
 
@@ -39,11 +33,6 @@ export class ToothModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.formGroup.controls.color.valueChanges.subscribe({
-      next: (color) => {
-        this.formGroup.controls.difficult.setValue(color)
-      }
-    })
     this.store.select(selectTeeth).subscribe({
       next: (teeth) => {
         teeth.sort((a, b) => a.number - b.number)
@@ -73,8 +62,6 @@ export class ToothModalComponent implements OnInit {
             })
           )
         })
-        this.formGroup.controls.color.setValue(this.procedure.controls.color?.value! as DifficultyProcedure)
-        this.formGroup.controls.color.updateValueAndValidity()
       }, error: (e) => {
         throw e
       }
@@ -84,7 +71,7 @@ export class ToothModalComponent implements OnInit {
   protected save = () => {
     const teeth: ToothModalModel[] = []
     this.teethFormArray.controls.filter(x => x.value.value).forEach(x => teeth.push(new ToothModalModel(x.value.id!, x.value.number!)))
-    const model = new ProcedureToothModalModel(this.formGroup.value.color!, teeth)
+    const model = new ProcedureToothModalModel(teeth)
     this.activeModal.close(model)
   }
 

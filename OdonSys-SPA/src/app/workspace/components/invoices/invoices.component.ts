@@ -1,12 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, ColumnResizedEvent, GridOptions } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { GridHideColumnModel } from '../../../core/models/view/grid-hide-column-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
 import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
@@ -82,6 +83,7 @@ export class InvoicesComponent implements OnInit {
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
+    this.gridOptions.onGridReady = (event) => setTimeout(() => { this.gridOptions.api?.sizeColumnsToFit() }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {
@@ -166,4 +168,34 @@ export class InvoicesComponent implements OnInit {
     }
   }
 
+  protected onGridSizeChanged = () => {
+    const screenWidth = window.innerWidth;
+    const invoiceColumns = [
+      'userCreated',
+      'clientFullName',
+      'status',
+      'total',
+      'moneyColumn',
+      'dateCreated',
+      'total'
+    ]
+
+    const agGridHideColumnList = [
+      new GridHideColumnModel(576, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(768, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(992, ['status', 'userCreated']),
+      new GridHideColumnModel(1200, ['status'])
+    ]
+    const agGridHideColumn = agGridHideColumnList.find(x => screenWidth <= x.screenWidth)
+    if (agGridHideColumn) {
+      agGridHideColumn.columnsToHide.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, false))
+      const columnsToShow = invoiceColumns.filter(x => !agGridHideColumn.columnsToHide.includes(x))
+      columnsToShow.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
+    } else {
+      invoiceColumns.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
+    }
+    if (this.isMyPermission) {
+      this.gridOptions!.columnApi!.setColumnVisible('userCreated', false)
+    }
+  }
 }
