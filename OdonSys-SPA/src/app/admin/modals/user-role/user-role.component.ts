@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { combineLatest, debounceTime, take } from 'rxjs';
 import { UserRoleApiRequest } from '../../../core/models/api/roles/user-role-api-request';
-import { CheckFormGroup } from '../../../core/forms/check-form-group';
+import { CheckFormGroup } from '../../../core/forms/check-form-group.form';
 import { RoleApiService } from '../../../core/services/api/role-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';

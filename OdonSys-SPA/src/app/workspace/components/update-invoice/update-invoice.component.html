@@ -1,0 +1,64 @@
+<app-progress *ngIf="!load"></app-progress>
+<div class="container">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+    <h3>Detalles Paciente</h3>
+  </div>
+  <section class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
+    <main class="row w-100">
+      <section class="p-r-0 p-b-10">
+        <main class="card">
+          <article class="card-body">
+            <h4 class="card-title">Modificar Personales</h4>
+            <form [formGroup]="clientFormGroup" class="row">
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <strong class="col-3">Nombre: </strong>
+                  <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+                </div>
+                <div class="col-lg-6">
+                  <strong class="col-3">Documento: </strong>
+                  <label class="col"
+                    id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+                </div>
+              </div>
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <strong class="col-3">N° de teléfono: </strong>
+                  <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+                </div>
+                <div class="col-lg-6">
+                  <strong class="col-3">País: </strong>
+                  <label class="col" id="country">{{clientFormGroup.value.country}} </label>
+                </div>
+              </div>
+              <div class="row col-lg-12 col-md-6">
+                <div class="col-lg-6">
+                  <b>Correo: </b>
+                  <label id="email">{{clientFormGroup.value.email}}</label>
+                </div>
+              </div>
+            </form>
+          </article>
+        </main>
+      </section>
+      <section class="p-r-0 p-b-10">
+        <main class="card">
+          <article class="card-body">
+            <h4 class="card-title">Facturas</h4>
+          </article>
+        </main>
+      </section>
+      <section class="p-r-0 p-b-0">
+        <footer class="card">
+          <main class="card-body p-t-10 p-b-10">
+            <article class="d-flex justify-content-center">
+              <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
+                Volver a la lista
+              </button>
+            </article>
+          </main>
+        </footer>
+      </section>
+    </main>
+  </section>
+</div>
