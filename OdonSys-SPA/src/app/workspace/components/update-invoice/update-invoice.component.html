@@ -46,6 +46,94 @@
           <article class="card-body">
             <h4 class="card-title">Facturas</h4>
           </article>
+          <main class="col-md-12 p-b-10" id="selected-procedures">
+            <div class="card">
+              <div class="card-body">
+                <!-- [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? minimumProcedureHeight : maximumProcedureHeight}" -->
+                <h5 class="card-title">Procedimientos seleccionados</h5>
+                <article formArrayName="procedures">
+                  <header class="row">
+                    <div class="col-md-3">
+                      <label for="name" class="fw-bold">Nombre</label>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="price" class="fw-bold">Precio</label>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="finalPrice" class="fw-bold">Precio final</label>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="name" class="fw-bold">N° Dientes</label>
+                    </div>
+                    <div class="col-md-2">
+                      <label for="name" class="fw-bold">Acciones</label>
+                    </div>
+                  </header>
+                  <main class="row align-center" id="selected-procedures-items">
+                    <ng-container [formGroup]="invoiceDetail" *ngFor="let invoiceDetail of invoiceFormGroup.controls.invoiceDetails!.controls; let i = index">
+                      <div class="col-md-3">
+                        <label class="form-label">{{invoiceDetail.value.procedure}}</label>
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label"> Gs. {{invoiceDetail.value.procedurePrice | number:'' : 'es' }}</label>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="input-group">
+                          <span class="input-group-text">Gs.</span>
+                          <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
+                            thousandSeparator="." [mask]="'separator.0'">
+                        </div>
+                        <!-- <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
+                          El Precio final <strong>Gs. {{procedure.value.finalPrice | number:'' : 'es'}}</strong> no puede ser mayor a <strong>Gs. {{procedure.value.price | number:'' : 'es'}}</strong>.
+                        </small> -->
+                      </div>
+                      <div class="col-md-2">
+                        <ng-container *ngIf="invoiceDetail.value.toothIds && invoiceDetail.value.toothIds.length !== 0; else noTeeth">
+                          <label class="form-label">
+                            {{invoiceDetail.value.teethSelected}}
+                          </label>
+                        </ng-container>
+                        <ng-template #noTeeth>
+                          <label class="form-label">Sin seleccionar</label>
+                        </ng-template>
+                      </div>
+                      <div class="col-md-3">
+                        <button class="btn btn-outline-primary m-r-5" (click)="selectTeeth(i)">
+                          <span class="d-flex-center">
+                            <i class="fas fa-tooth"></i> 
+                            Dientes
+                          </span>
+                        </button>
+                        <!-- <button class="btn btn-outline-primary" (click)="removeProcedure(procedure.controls.id.value!)">
+                          <span class="d-flex-center">
+                            <i class="fas fa-trash m-r-2"></i>Borrar
+                          </span>
+                        </button> -->
+                      </div>
+                    </ng-container>
+                  </main>
+                </article>
+              </div>
+            </div>
+          </main>
+          <section class="col-md-12 p-b-10">
+            <div class="card">
+              <footer class="card-body amount">
+                <main class="row justify-content-end">
+                  <article class="col-md-3 p-b-0 p-t-0">
+                    <label class="col-form-label m-b-0" for="subTotal">
+                      <strong>Sub Total:</strong> Gs. {{invoiceFormGroup.controls.subTotal.value | number:'' : 'es' }}
+                    </label>
+                  </article>
+                  <article class="col-md-5">
+                    <label class="col-form-label m-b-0" for="montoTotal">
+                      <strong>Monto Total:</strong> Gs. {{invoiceFormGroup.controls.total.value | number:'' : 'es' }}
+                    </label>
+                  </article>
+                </main>
+              </footer>
+            </div>
+          </section>
         </main>
       </section>
       <section class="p-r-0 p-b-0">
@@ -53,7 +141,11 @@
           <main class="card-body p-t-10 p-b-10">
             <article class="d-flex justify-content-center">
               <button type="button" class="btn btn-outline-primary m-r-8" name="cancel" (click)="exit()">
-                Volver a la lista
+                Cancelar
+              </button>
+              <button type="button" class="btn btn-outline-primary" name="save" [disabled]="invoiceFormGroup.invalid || saving"
+                (click)="save()">
+                Guardar
               </button>
             </article>
           </main>

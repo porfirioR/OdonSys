@@ -6,4 +6,5 @@ export interface InvoiceDetailFormGroup {
   procedurePrice: FormControl<number | null>
   finalPrice: FormControl<number | null>
   toothIds?: FormArray<FormControl<string | null>>
+  teethSelected: FormControl<string | null>;
 }

@@ -47,6 +47,7 @@ import { ProcedureToothModalModel } from '../../../core/models/view/procedure-to
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
 import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
+import { ToothModalModel } from 'src/app/core/models/view/tooth-modal-model';
 
 @Component({
   selector: 'app-register-invoice',
@@ -206,19 +207,19 @@ export class RegisterInvoiceComponent implements OnInit {
     this.router.navigate([currentUrl.join('/')])
   }
 
-  protected selectTooth = (i: number) => {
+  protected selectTeeth = (i: number) => {
     const procedure: FormGroup<ProcedureFormGroup> = this.formGroup.controls.procedures.controls[i]
     const modalRef = this.modalService.open(ToothModalComponent, {
       size: 'lg',
       backdrop: 'static',
       keyboard: false
     })
-    modalRef.componentInstance.procedure = procedure
-    modalRef.result.then((result: ProcedureToothModalModel) => {
-      if (!!result) {
+    modalRef.componentInstance.toothIds = procedure.controls.toothIds?.controls.map(x => x.value.id)
+    modalRef.result.then((teethIds: ToothModalModel[]) => {
+      if (!!teethIds) {
         procedure.controls.toothIds?.clear()
-        procedure.controls.teethSelected?.setValue(result.teethIds.map(x => x.number).sort().join(', '))
-        result.teethIds.forEach(x => {
+        procedure.controls.teethSelected?.setValue(teethIds.map(x => x.number).sort().join(', '))
+        teethIds.forEach(x => {
           procedure.controls.toothIds?.push(
             new FormGroup<ProcedureToothFormGroup>({
               id: new FormControl(x.id)

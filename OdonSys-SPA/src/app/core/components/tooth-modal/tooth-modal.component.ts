@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
-import { ProcedureFormGroup } from '../../forms/procedure-form-group.form';
 import { ToothFormGroup } from '../../forms/tooth-form-group.form';
 import { ToothApiModel } from '../../models/tooth/tooth-api-model';
 import { ToothModel } from '../../models/tooth/tooth-model';
@@ -18,7 +17,7 @@ import { ProcedureToothModalModel } from '../../models/view/procedure-tooth-moda
   styleUrls: ['./tooth-modal.component.scss']
 })
 export class ToothModalComponent implements OnInit {
-  @Input() procedure: FormGroup<ProcedureFormGroup>
+  @Input() toothIds: string[] = []
   protected teethFormArray: FormArray<FormGroup<ToothFormGroup>> = new FormArray<FormGroup<ToothFormGroup>>([])
   protected jaw = Jaw
   protected quadrant = Quadrant
@@ -50,7 +49,7 @@ export class ToothModalComponent implements OnInit {
         }
         this.teethList = teethUpper.concat(teethLower)
         this.teethList.forEach(item => {
-          const toothSelected = !!this.procedure.controls.toothIds?.controls.find(x => x.value.id === item.id)
+          const toothSelected = !!this.toothIds?.find(toothId => toothId === item.id)
           this.teethFormArray.push(
             new FormGroup<ToothFormGroup>({
               id: new FormControl(item.id),
@@ -71,8 +70,7 @@ export class ToothModalComponent implements OnInit {
   protected save = () => {
     const teeth: ToothModalModel[] = []
     this.teethFormArray.controls.filter(x => x.value.value).forEach(x => teeth.push(new ToothModalModel(x.value.id!, x.value.number!)))
-    const model = new ProcedureToothModalModel(teeth)
-    this.activeModal.close(model)
+    this.activeModal.close(teeth)
   }
 
 }
