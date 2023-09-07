@@ -30,8 +30,9 @@ import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
 
-import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
+import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
+import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 
 import { ClientApiService } from '../../../core/services/api/client-api.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
@@ -43,11 +44,9 @@ import { SubscriptionService } from '../../../core/services/shared/subscription.
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
-import { ProcedureToothModalModel } from '../../../core/models/view/procedure-tooth-modal-model';
+import { ToothModalModel } from '../../../core/models/view/tooth-modal-model';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
-import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
-import { ToothModalModel } from 'src/app/core/models/view/tooth-modal-model';
 
 @Component({
   selector: 'app-register-invoice',

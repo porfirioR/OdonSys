@@ -123,7 +123,7 @@ export class InvoicesComponent implements OnInit {
           this.alertService.showInfo(`Solamente pueden ser modificados los estados ${InvoiceStatus.Nuevo} y ${InvoiceStatus.Pendiente}`)
           return
         }
-        this.router.navigate([`${this.router.url}/editar/${currentRowNode.data.id}`])
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Desactivar:
         this.alertService.showQuestionModal(

@@ -15,7 +15,7 @@ import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
 import { InvoiceFormGroup } from '../../../core/forms/invoice-form-group.form';
 import { InvoiceDetailFormGroup } from '../../../core/forms/invoice-detail-form-group.form';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
-import { ProcedureToothModalModel } from '../../../core/models/view/procedure-tooth-modal-model';
+import { ToothModalModel } from '../../../core/models/view/tooth-modal-model';
 
 @Component({
   selector: 'app-update-invoice',
@@ -40,7 +40,7 @@ export class UpdateInvoiceComponent implements OnInit {
     iva10: new FormControl(0, [Validators.required]),
     totalIva: new FormControl(0, [Validators.required]),
     subTotal: new FormControl(0, [Validators.required]),
-    total: new FormControl(0, [Validators.required]),
+    total: new FormControl(0, [Validators.required, Validators.min(1)]),
     invoiceDetails: new FormArray<FormGroup<InvoiceDetailFormGroup>>([])
   })
 
@@ -50,7 +50,7 @@ export class UpdateInvoiceComponent implements OnInit {
     private store: Store,
     private readonly router: Router,
     private modalService: NgbModal,
-    ) { }
+  ) { }
 
   ngOnInit() {
     const invoiceId: string = this.activeRoute.snapshot.params['id']
@@ -99,6 +99,9 @@ export class UpdateInvoiceComponent implements OnInit {
         throw e
       }
     })
+    this.invoiceFormGroup.controls.invoiceDetails?.valueChanges.subscribe({
+      next: () => this.calculatePrices()
+    })
   }
 
   protected exit = () => {
@@ -116,11 +119,11 @@ export class UpdateInvoiceComponent implements OnInit {
       keyboard: false
     })
     modalRef.componentInstance.toothIds = invoiceDetail.value.toothIds
-    modalRef.result.then((result: ProcedureToothModalModel) => {
-      if (!!result) {
+    modalRef.result.then((teethIds: ToothModalModel[]) => {
+      if (!!teethIds) {
         invoiceDetail.controls.toothIds?.clear()
-        invoiceDetail.controls.teethSelected?.setValue(result.teethIds.map(x => x.number).sort().join(', '))
-        result.teethIds.forEach(x => invoiceDetail.controls.toothIds?.push(new FormControl(x.id)))
+        invoiceDetail.controls.teethSelected?.setValue(teethIds.map(x => x.number).sort().join(', '))
+        teethIds.forEach(x => invoiceDetail.controls.toothIds?.push(new FormControl(x.id)))
       }
     }, () => {})
   }
@@ -139,5 +142,16 @@ export class UpdateInvoiceComponent implements OnInit {
     //     throw e
     //   }
     // })
+  }
+
+  private calculatePrices = (): void => {
+    let subTotal = 0
+    let total = 0
+    this.invoiceFormGroup.controls.invoiceDetails?.controls.forEach(x => {
+      subTotal += x.value.procedurePrice!
+      total += x.value.finalPrice!
+    })
+    this.invoiceFormGroup.controls.subTotal.setValue(subTotal)
+    this.invoiceFormGroup.controls.total.setValue(total)
   }
 }
