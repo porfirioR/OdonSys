@@ -92,16 +92,22 @@ namespace Access.Data.Access
                 var entityInvoiceDetail = entity.InvoiceDetails.First(x => x.Id == invoiceDetailAccessRequest.Id);
                 entityInvoiceDetail.FinalPrice = invoiceDetailAccessRequest.FinalPrice;
                 // new inoice detail teeth
-                var allTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Select(x => x.Id.ToString());
+                var allTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Select(x => x.ToothId.ToString());
                 var newTeeth = invoiceDetailAccessRequest.ToothIds.Where(x => !allTeeth.Contains(x)).Select(x => new InvoiceDetailTooth() { ToothId = new Guid(x), InvoiceDetailId = invoiceDetailAccessRequest.Id });
                 var removeInvoiceTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => !invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
 
 
-                var persisInvoiceDetailTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
-                entityInvoiceDetail.InvoiceDetailsTeeth = persisInvoiceDetailTeeth.Concat(newTeeth);
-                _context.Entry(removeInvoiceTeeth).State = EntityState.Deleted;
-                _context.Entry(newTeeth).State = EntityState.Added;
-                _context.Entry(persisInvoiceDetailTeeth).State = EntityState.Unchanged;
+                var persistInvoiceDetailTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
+                entityInvoiceDetail.InvoiceDetailsTeeth = persistInvoiceDetailTeeth.Concat(newTeeth).ToList();
+                //if (removeInvoiceTeeth.Any())
+                //{
+                //    _context.Entry(removeInvoiceTeeth).State = EntityState.Deleted;
+                //    //_context.InvoiceDetailTeeth.RemoveRange(removeInvoiceTeeth);
+                //}
+                //if (newTeeth.Any())
+                //{
+                //    await _context.InvoiceDetailTeeth.AddRangeAsync(newTeeth);
+                //}
             }
 
             entity.Iva10 = accessRequest.Iva10;

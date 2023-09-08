@@ -34,8 +34,8 @@ namespace Manager.Administration
             {
                 new PermissionModel("Ingresar", PermissionName.AccessInvoices, PermissionGroup.Admin, PermissionSubGroup.Invoice),
                 new PermissionModel("Mis Facturas", PermissionName.AccessMyInvoices, PermissionGroup.Work, PermissionSubGroup.Invoice),
-                new PermissionModel("Crear Factura", PermissionName.CreateInvoices, PermissionGroup.Work, PermissionSubGroup.Invoice),
-                new PermissionModel("Actualizar Factura", PermissionName.UpdateInvoices, PermissionGroup.Work, PermissionSubGroup.Invoice),
+                new PermissionModel("Crear Facturas", PermissionName.CreateInvoices, PermissionGroup.Work, PermissionSubGroup.Invoice),
+                new PermissionModel("Actualizar Facturas", PermissionName.UpdateInvoices, PermissionGroup.Work, PermissionSubGroup.Invoice),
                 new PermissionModel("Cambiar Estado", PermissionName.ChangeInvoiceStatus, PermissionGroup.Work, PermissionSubGroup.Invoice),
 
                 new PermissionModel("Ingresar", PermissionName.AccessRoles, PermissionGroup.Admin, PermissionSubGroup.Role),

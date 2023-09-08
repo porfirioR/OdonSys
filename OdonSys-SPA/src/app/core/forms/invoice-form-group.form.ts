@@ -7,5 +7,5 @@ export interface InvoiceFormGroup {
   totalIva: FormControl<number | null>
   subTotal: FormControl<number | null>
   total: FormControl<number | null>
-  invoiceDetails?: FormArray<FormGroup<InvoiceDetailFormGroup>>
+  invoiceDetails: FormArray<FormGroup<InvoiceDetailFormGroup>>
 }

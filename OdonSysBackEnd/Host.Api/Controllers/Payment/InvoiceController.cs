@@ -83,12 +83,12 @@ namespace Host.Api.Controllers.Payment
             return model;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         [Authorize(Policy = Policy.CanUpdateInvoice)]
-        public async Task<InvoiceModel> UpdateInvoiceAsync([FromRoute] string id, [FromBody] UpdateApiRequest apiRequest)
+        public async Task<InvoiceModel> UpdateInvoiceAsync([FromBody] UpdateApiRequest apiRequest)
         {
             var request = new UpdateInvoiceRequest(
-                new Guid(id),
+                new Guid(apiRequest.Id),
                 apiRequest.Iva10,
                 apiRequest.TotalIva,
                 apiRequest.SubTotal,

@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { CreateInvoiceRequest } from '../models/invoices/api/create-invoice-request';
 import { InvoicePatchRequest } from '../models/invoices/api/invoice-patch-request';
 import { InvoiceApiModel } from '../models/invoices/api/invoice-api-model';
+import { UpdateInvoiceRequest } from '../models/invoices/api/update-invoice-request';
 import { UploadFileRequest } from '../../core/models/api/files/upload-file-request';
 import { FileApiModel } from '../../core/models/api/files/file-api-model';
 
@@ -36,6 +37,10 @@ export class InvoiceApiService {
 
   public createInvoice = (request: CreateInvoiceRequest): Observable<InvoiceApiModel> => {
     return this.http.post<InvoiceApiModel>(`${this.baseUrl}`, request)
+  }
+
+  public updateInvoice = (request: UpdateInvoiceRequest): Observable<InvoiceApiModel> => {
+    return this.http.put<InvoiceApiModel>(`${this.baseUrl}`, request)
   }
 
   public changeStatus = (id: string, request: InvoicePatchRequest): Observable<InvoiceApiModel> => {

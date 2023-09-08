@@ -31,7 +31,8 @@ namespace Host.Api
                         PermissionName.AccessMyInvoices,
                         PermissionName.AccessInvoices,
                         PermissionName.AccessClients,
-                        PermissionName.AccessMyClients
+                        PermissionName.AccessMyClients,
+                        PermissionName.UpdateInvoices
                     }
                 )),
                 new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthorizationRequirement(PermissionName.ChangeInvoiceStatus)),
