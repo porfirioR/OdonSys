@@ -6,12 +6,17 @@
   }
 }
 
+#selected-procedures-items {
+  max-height: 425px;
+  overflow-x: hidden;
+}
+
 .align-center {
   display: flex !important;
   align-items: center !important;
 }
 
-#selected-procedures-items {
-  max-height: 425px;
-  overflow-x: hidden;
+.invalid-total {
+  color: #ff6565;
+  font-size: small;
 }

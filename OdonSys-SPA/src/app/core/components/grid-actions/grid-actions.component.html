@@ -13,7 +13,7 @@
     <i class="fas fa-eye m-r-2"></i>Ver
   </span>
 </span>
-<span class="btn btn-sm btn-outline-success m-r-8" *ngIf="canShowEdit">
+<span class="btn btn-sm btn-outline-success m-r-8 m-t-b-5" *ngIf="canShowEdit">
   <span class="d-flex-center" (click)="editItem()">
     <i class="fas fa-pen m-r-2"></i>Editar
   </span>
@@ -28,7 +28,7 @@
     <i class="fas fa-recycle m-r-2"></i>Restaurar
   </span>
 </span>
-<span class="btn btn-sm btn-outline-danger m-r-8 m-t-5 m-b-5" (click)="deactivateItem()" *ngIf="canShowDeactivate">
+<span class="btn btn-sm btn-outline-danger m-r-8 m-t-b-5" (click)="deactivateItem()" *ngIf="canShowDeactivate">
   <span class="d-flex-center">
     <i class="fas fa-power-off m-r-2"></i>Desactivar
   </span>

@@ -88,8 +88,8 @@ export class AgGridService {
   private invoiceColumnDef: ColDef[] = [
     { headerName: 'Responsable', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 70 },
     { headerName: 'Paciente', field: 'clientFullName', filter: 'agTextColumnFilter', resizable: true,
-      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 100 },
-    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 50,
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 80 },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 60,
       cellRenderer: GridBadgeComponent,
       cellRendererParams: {
         badgeParams: [

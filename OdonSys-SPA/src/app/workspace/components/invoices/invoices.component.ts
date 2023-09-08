@@ -5,11 +5,11 @@ import { ColDef, ColumnResizedEvent, GridOptions } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
+import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { GridHideColumnModel } from '../../../core/models/view/grid-hide-column-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
-import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
@@ -77,13 +77,13 @@ export class InvoicesComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  private getScreenSize(event?: any) {
+  private getScreenSize() {
     this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
-    this.gridOptions.onGridReady = (event) => setTimeout(() => { this.gridOptions.api?.sizeColumnsToFit() }, 1000)
+    this.gridOptions.onGridReady = () => setTimeout(() => { this.gridOptions.api?.sizeColumnsToFit() }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {

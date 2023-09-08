@@ -156,7 +156,6 @@ export class RegisterInvoiceComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?: any) {
-    
     if (window.screen.height <= 768) {
       this.uploadFileConfig.height = '130px'
       this.maximumProcedureHeight = 407

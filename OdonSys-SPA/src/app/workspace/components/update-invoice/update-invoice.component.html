@@ -38,9 +38,16 @@
   <section class="p-r-0 p-b-10">
     <main class="col-md-12" id="selected-procedures">
       <div class="card">
-        <div class="card-body" [formGroup]="invoiceFormGroup">
-          <!-- [ngStyle]="{'height.px': formGroup.get('procedures')?.hasError('noneSelected') ? minimumProcedureHeight : maximumProcedureHeight}" -->
-          <h5 class="card-title">Procedimientos</h5>
+        <div class="card-body" [ngClass]="{'p-b-0': invoiceFormGroup.controls.total.hasError('min')}" [formGroup]="invoiceFormGroup">
+          <div class="d-flex justify-content-between">
+            <h4 class="card-title">
+              Procedimientos
+            </h4>
+            <h5>
+              <strong>Monto abonado:</strong> &nbsp; Gs. {{invoiceFormGroup.controls.paymentAmount.value | number:'' : 'es' }}
+          </h5>
+            
+          </div>
           <article class="p-l-10" formArrayName="invoiceDetails">
             <header class="row">
               <article class="col-md-4">
@@ -105,6 +112,9 @@
               </main>
             </section>
           </article>
+          <strong class="invalid-total" *ngIf="invoiceFormGroup.controls.total.hasError('min')">
+            *Valor mínimo permitido: Gs. {{invoiceFormGroup.value.paymentAmount | number:'' : 'es' }}
+          </strong>
         </div>
       </div>
     </main>

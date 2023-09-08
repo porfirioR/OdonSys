@@ -8,4 +8,5 @@ export interface InvoiceFormGroup {
   subTotal: FormControl<number | null>
   total: FormControl<number | null>
   invoiceDetails: FormArray<FormGroup<InvoiceDetailFormGroup>>
+  paymentAmount: FormControl<number | null>
 }

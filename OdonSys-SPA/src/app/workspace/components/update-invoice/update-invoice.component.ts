@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -44,16 +44,17 @@ export class UpdateInvoiceComponent implements OnInit {
     totalIva: new FormControl(0, [Validators.required]),
     subTotal: new FormControl(0, [Validators.required]),
     total: new FormControl(0, [Validators.required, Validators.min(1)]),
-    invoiceDetails: new FormArray<FormGroup<InvoiceDetailFormGroup>>([])
+    invoiceDetails: new FormArray<FormGroup<InvoiceDetailFormGroup>>([]),
+    paymentAmount: new FormControl(0)
   })
 
   constructor(
     private readonly activeRoute: ActivatedRoute,
     private readonly invoiceApiService: InvoiceApiService,
-    private store: Store,
     private readonly router: Router,
-    private modalService: NgbModal,
     private readonly alertService: AlertService,
+    private store: Store,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -72,7 +73,7 @@ export class UpdateInvoiceComponent implements OnInit {
         loadingTeeth = false
       }
     }))
-    const invoice$ = this.invoiceApiService.getInvoiceById(invoiceId).pipe(debounceTime(500), take(1))
+    const invoice$ = this.invoiceApiService.getInvoiceById(invoiceId).pipe(debounceTime(1000), take(1))
     combineLatest([clientRowData$, teethRowData$, invoice$]).subscribe({
       next: ([clients, teeth, invoice]) => {
         const client = clients.find(x => x.id === invoice.clientId)!
@@ -88,6 +89,9 @@ export class UpdateInvoiceComponent implements OnInit {
         this.invoiceFormGroup.controls.totalIva.setValue(invoice.totalIva)
         this.invoiceFormGroup.controls.subTotal.setValue(invoice.subTotal)
         this.invoiceFormGroup.controls.total.setValue(invoice.total)
+        this.invoiceFormGroup.controls.total.addValidators(Validators.min(invoice.paymentAmount))
+
+        this.invoiceFormGroup.controls.paymentAmount.setValue(invoice.paymentAmount)
         const invoiceDetails = new FormArray(invoice.invoiceDetails.map(x => {
           const formGroup = new FormGroup<InvoiceDetailFormGroup>({
             id: new FormControl(x.id, [Validators.required]),
@@ -100,8 +104,8 @@ export class UpdateInvoiceComponent implements OnInit {
           formGroup.controls.finalPrice.valueChanges.pipe(debounceTime(100)).subscribe({ next: () => this.calculatePrices() })
           return formGroup
         }))
-
         this.invoiceFormGroup.controls.invoiceDetails = invoiceDetails
+        this.calculatePrices()
         this.load = true
       }, error: (e) => {
         this.load = true
@@ -138,9 +142,9 @@ export class UpdateInvoiceComponent implements OnInit {
     if (this.invoiceFormGroup.invalid) { return }
     this.saving = true
     const invoiceFormGroupValue = this.invoiceFormGroup.value
-    const invoiceDetailsRequest = this.invoiceFormGroup.value.invoiceDetails?.map(x => {
-      const toothIds: string[] = x.toothIds?.filter((y:string | null) => !!y).map(x => x as string)!
-      const invoiceDetails = new UpdateInvoiceDetailRequest(x.id!, x.finalPrice!, toothIds)
+    const invoiceDetailsRequest = this.invoiceFormGroup.controls.invoiceDetails?.controls.map(x => {
+      const toothIds: string[] = x.controls.toothIds?.value.filter((y:string | null) => !!y).map(x => x as string)!
+      const invoiceDetails = new UpdateInvoiceDetailRequest(x.value.id!, x.value.finalPrice!, toothIds)
       return invoiceDetails
     })!
     const updateRequest = new UpdateInvoiceRequest(invoiceFormGroupValue.id!, invoiceFormGroupValue.iva10!, invoiceFormGroupValue.totalIva!, invoiceFormGroupValue.subTotal!, invoiceFormGroupValue.total!, invoiceDetailsRequest)
@@ -167,5 +171,6 @@ export class UpdateInvoiceComponent implements OnInit {
     })
     this.invoiceFormGroup.controls.subTotal.setValue(subTotal)
     this.invoiceFormGroup.controls.total.setValue(total)
+    this.invoiceFormGroup.controls.total.updateValueAndValidity()
   }
 }
