@@ -1,6 +1,5 @@
 ﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
-using System.Linq;
 
 namespace Access.Data.Mapper
 {

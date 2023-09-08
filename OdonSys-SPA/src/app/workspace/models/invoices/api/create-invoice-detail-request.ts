@@ -3,7 +3,6 @@ export class CreateInvoiceDetailRequest {
     public clientProcedureId: string,
     public procedurePrice: number,
     public finalPrice: number,
-    public color: string,
     public toothIds?: string[]
   ) {}
 }

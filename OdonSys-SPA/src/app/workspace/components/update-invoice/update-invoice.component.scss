@@ -1,0 +1,22 @@
+
+@media screen and (max-height: 768px) {
+  #selected-procedures-items {
+    max-height: 270px !important;
+    overflow-x: hidden;
+  }
+}
+
+#selected-procedures-items {
+  max-height: 425px;
+  overflow-x: hidden;
+}
+
+.align-center {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.invalid-total {
+  color: #ff6565;
+  font-size: small;
+}

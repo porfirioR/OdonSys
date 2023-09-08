@@ -9,6 +9,7 @@ import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
+import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -75,7 +76,9 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'mis-facturas/ver/:id',
         component: ShowInvoiceComponent,
-        title: 'Ver factura'
+        canActivate: [PermissionGuard],
+        title: 'Ver factura',
+        data: { permissions: [ Permission.AccessMyInvoices ] },
       },
       {
         path: 'facturas/registrar',
@@ -87,8 +90,17 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'facturas/ver/:id',
+        canActivate: [PermissionGuard],
         component: ShowInvoiceComponent,
-        title: 'Ver factura'
+        title: 'Ver factura',
+        data: { permissions: [ Permission.AccessInvoices ] }
+      },
+      {
+        path: 'facturas/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpdateInvoiceComponent,
+        title: 'Actualizar factura',
+        data: { permissions: [ Permission.UpdateInvoices ] }
       }
     ]
   }

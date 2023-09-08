@@ -6,7 +6,7 @@ import { FieldId } from "../app/core/enums/field-id.enum";
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:44310/api',
+  apiUrl: '',
   systemAttributeModel: [
     { id: FieldId.Active, value: 'active' },
     { id: FieldId.Approved, value: 'approved' },

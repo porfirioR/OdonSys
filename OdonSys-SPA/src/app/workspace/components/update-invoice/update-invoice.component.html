@@ -1,0 +1,154 @@
+<app-progress *ngIf="!load"></app-progress>
+<div class="container">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+    <h3>Modificar Factura</h3>
+  </div>
+  <section class="p-r-0 p-b-10">
+    <main class="card">
+      <form [formGroup]="clientFormGroup" class="row card-body">
+        <div class="row col-lg-12 col-md-6">
+          <article class="col-lg-6">
+            <strong class="col-3">Nombre: </strong>
+            <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+          </article>
+          <article class="col-lg-6">
+            <strong class="col-3">Documento: </strong>
+            <label class="col" id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+          </article>
+        </div>
+        <div class="row col-lg-12 col-md-6">
+          <article class="col-lg-6">
+            <strong class="col-3">N° de teléfono: </strong>
+            <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+          </article>
+          <article class="col-lg-6">
+            <strong class="col-3">País: </strong>
+            <label class="col" id="country">{{clientFormGroup.value.country}} </label>
+          </article>
+        </div>
+        <div class="row col-lg-12 col-md-6">
+          <article class="col-lg-6">
+            <b>Correo: </b>
+            <label id="email">{{clientFormGroup.value.email}}</label>
+          </article>
+        </div>
+      </form>
+    </main>
+  </section>
+  <section class="p-r-0 p-b-10">
+    <main class="col-md-12" id="selected-procedures">
+      <div class="card">
+        <div class="card-body" [ngClass]="{'p-b-0': invoiceFormGroup.controls.total.hasError('min')}" [formGroup]="invoiceFormGroup">
+          <div class="d-flex justify-content-between">
+            <h4 class="card-title">
+              Procedimientos
+            </h4>
+            <h5>
+              <strong>Monto abonado:</strong> &nbsp; Gs. {{invoiceFormGroup.controls.paymentAmount.value | number:'' : 'es' }}
+          </h5>
+            
+          </div>
+          <article class="p-l-10" formArrayName="invoiceDetails">
+            <header class="row">
+              <article class="col-md-4">
+                <label for="name" class="fw-bold">Nombre</label>
+              </article>
+              <article class="col-md-2">
+                <label for="price" class="fw-bold">Precio</label>
+              </article>
+              <article class="col-md-2">
+                <label for="finalPrice" class="fw-bold">Precio final</label>
+              </article>
+              <article class="col-md-2">
+                <label for="name" class="fw-bold">N° Dientes</label>
+              </article>
+              <article class="col-md-2">
+                <label for="name" class="fw-bold">Acciones</label>
+              </article>
+            </header>
+            <section id="selected-procedures-items">
+              <main class="row p-t-b-5 p-l-10" [id]="i" [formGroup]="invoiceDetail"
+                *ngFor="let invoiceDetail of invoiceFormGroup.controls.invoiceDetails!.controls; let i = index">
+                <article class="col-md-4">
+                  <label class="form-label">{{invoiceDetail.value.procedure}}</label>
+                </article>
+                <article class="col-md-2">
+                  <label class="form-label"> Gs. {{invoiceDetail.value.procedurePrice | number:'' : 'es' }}</label>
+                </article>
+                <article class="col-md-2">
+                  <div class="input-group">
+                    <span class="input-group-text">Gs.</span>
+                    <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
+                      thousandSeparator="." [mask]="'separator.0'">
+                  </div>
+                  <!-- <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
+                          El Precio final <strong>Gs. {{procedure.value.finalPrice | number:'' : 'es'}}</strong> no puede ser mayor a <strong>Gs. {{procedure.value.price | number:'' : 'es'}}</strong>.
+                        </small> -->
+                </article>
+                <article class="col-md-2">
+                  <ng-container
+                    *ngIf="invoiceDetail.value.toothIds && invoiceDetail.value.toothIds.length !== 0; else noTeeth">
+                    <label class="form-label">
+                      {{invoiceDetail.value.teethSelected}}
+                    </label>
+                  </ng-container>
+                  <ng-template #noTeeth>
+                    <label class="form-label">Sin seleccionar</label>
+                  </ng-template>
+                </article>
+                <article class="col-md-2">
+                  <button class="btn btn-outline-primary m-r-5" (click)="selectTeeth(i)">
+                    <span class="d-flex-center">
+                      <i class="fas fa-tooth"></i>
+                      Dientes
+                    </span>
+                  </button>
+                  <!-- <button class="btn btn-outline-primary" (click)="removeProcedure(procedure.controls.id.value!)">
+                    <span class="d-flex-center">
+                      <i class="fas fa-trash m-r-2"></i>Borrar
+                    </span>
+                  </button> -->
+                </article>
+              </main>
+            </section>
+          </article>
+          <strong class="invalid-total" *ngIf="invoiceFormGroup.controls.total.hasError('min')">
+            *Valor mínimo permitido: Gs. {{invoiceFormGroup.value.paymentAmount | number:'' : 'es' }}
+          </strong>
+        </div>
+      </div>
+    </main>
+  </section>
+  <section class="p-b-10">
+    <div class="card">
+      <footer class="card-body p-t-b-5">
+        <main class="row justify-content-end">
+          <article class="col-md-3 p-b-0 p-t-0">
+            <label class="col-form-label m-b-0" for="subTotal">
+              <strong>Sub Total:</strong> Gs. {{invoiceFormGroup.controls.subTotal.value | number:'' : 'es' }}
+            </label>
+          </article>
+          <article class="col-md-5">
+            <label class="col-form-label m-b-0" for="montoTotal">
+              <strong>Monto Total:</strong> Gs. {{invoiceFormGroup.controls.total.value | number:'' : 'es' }}
+            </label>
+          </article>
+        </main>
+      </footer>
+    </div>
+  </section>
+  <footer class="card" id="actions">
+    <main class="card-body p-t-b-10">
+      <article class="d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-primary m-r-8" name="cancel"
+          [disabled]="saving" (click)="exit()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-outline-primary" name="save"
+          [disabled]="invoiceFormGroup.invalid || saving" (click)="save()">
+          Guardar
+        </button>
+      </article>
+    </main>
+  </footer>
+</div>

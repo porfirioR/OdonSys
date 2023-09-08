@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, map, of, switchMap, tap } from 'rxjs';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
-import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
 import { PaymentApiService } from '../../../workspace/services/payment-api.service';
 import { InvoiceApiModel } from '../../../workspace/models/invoices/api/invoice-api-model';
@@ -19,6 +18,8 @@ import { Country } from '../../enums/country.enum';
 import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
 import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 import { ToothModel } from '../../models/tooth/tooth-model';
+import { selectClients } from '../../store/clients/client.selectors';
+import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 
 @Component({
   selector: 'app-client-detail',
@@ -44,7 +45,6 @@ export class ClientDetailComponent implements OnInit {
     private readonly activeRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly doctorApiService: DoctorApiService,
-    private readonly clientApiService: ClientApiService,
     private readonly invoiceApiService: InvoiceApiService,
     private readonly paymentApiService: PaymentApiService,
     private domSanitizer: DomSanitizer,
@@ -61,12 +61,19 @@ export class ClientDetailComponent implements OnInit {
       }
     }))
     const clientId: string = this.activeRoute.snapshot.params['id']!
-    const client$ = this.clientApiService.getById(clientId)
+    let loadingClient = true
+    const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
+      if(loadingClient && x.length === 0) {
+        this.store.dispatch(fromClientsActions.loadClients())
+        loadingClient = false
+      }
+    }))
     const invoicesSummary$ = this.invoiceApiService.getInvoicesSummaryByClientId(clientId)
-    combineLatest([client$, invoicesSummary$, toothRowData$])
+    combineLatest([clientRowData$, invoicesSummary$, toothRowData$])
     .subscribe({
-      next: ([client, invoicesSummary, teeth]) => {
+      next: ([clients, invoicesSummary, teeth]) => {
         this.teeth = teeth
+        const client = clients.find(x => x.id === clientId)!
         this.clientFormGroup.controls.name.setValue(`${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`)
         this.clientFormGroup.controls.email.setValue(client.email)
         this.clientFormGroup.controls.document.setValue(client.document)
