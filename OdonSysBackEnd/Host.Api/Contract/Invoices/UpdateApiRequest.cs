@@ -1,4 +1,5 @@
 ﻿using Contract.Payment.Invoices;
+using Contract.Payment.Payments;
 using System.ComponentModel.DataAnnotations;
 
 namespace Host.Api.Contract.Invoices
@@ -25,8 +26,9 @@ namespace Host.Api.Contract.Invoices
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
-
             var invoiceManager = (IInvoiceManager)validationContext.GetService(typeof(IInvoiceManager));
+            var paymentManager = (IPaymentManager)validationContext.GetService(typeof(IInvoiceManager));
+
             var isValidInvoice = invoiceManager.IsValidInvoiceIdAsync(Id).GetAwaiter().GetResult();
             if (!isValidInvoice)
             {
@@ -45,6 +47,13 @@ namespace Host.Api.Contract.Invoices
             foreach (var invalidInvoiceDetailId in invalidInvoiceDetailIds)
             {
                 results.Add(new ValidationResult($"El Identificador {invalidInvoiceDetailId} no existe o ha sido modificado."));
+            }
+            var allPayments = paymentManager.GetPaymentsByInvoiceIdAsync(Id).GetAwaiter().GetResult();
+            var amountPayments = allPayments.Sum(x => x.Amount);
+            var amountInvoices = InvoiceDetails.Sum(x => x.FinalPrice);
+            if (amountPayments > amountInvoices)
+            {
+                results.Add(new ValidationResult($"La sumatoria de los montos ingresados: {amountInvoices} debe ser menor o igual a la sumatoria total de montos ya abonados: {amountPayments}."));
             }
             return results;
         }

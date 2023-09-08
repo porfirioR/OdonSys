@@ -76,16 +76,16 @@ namespace Access.Data.Access
         private async Task<IEnumerable<ClientProcedure>> GetClientProcedureEntities(IEnumerable<Guid> clientProcedureIds)
         {
             return await _context.ClientProcedures
-                                    .Include(x => x.Procedure)
-                                    .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
+                    .Include(x => x.Procedure)
+                    .Where(x => clientProcedureIds.Contains(x.Id)).ToListAsync();
         }
 
         public async Task<InvoiceAccessModel> UpdateInvoiceAsync(UpdateInvoiceAccessRequest accessRequest)
         {
             var entity = await _context.Invoices
-                .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
-                .Include(x => x.Payments)
-                .FirstAsync(x => x.Id == accessRequest.Id);
+                    .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
+                    .Include(x => x.Payments)
+                    .FirstAsync(x => x.Id == accessRequest.Id);
 
             foreach (var invoiceDetailAccessRequest in accessRequest.InvoiceDetails)
             {
@@ -96,18 +96,8 @@ namespace Access.Data.Access
                 var newTeeth = invoiceDetailAccessRequest.ToothIds.Where(x => !allTeeth.Contains(x)).Select(x => new InvoiceDetailTooth() { ToothId = new Guid(x), InvoiceDetailId = invoiceDetailAccessRequest.Id });
                 var removeInvoiceTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => !invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
 
-
                 var persistInvoiceDetailTeeth = entityInvoiceDetail.InvoiceDetailsTeeth.Where(x => invoiceDetailAccessRequest.ToothIds.Contains(x.ToothId.ToString()));
                 entityInvoiceDetail.InvoiceDetailsTeeth = persistInvoiceDetailTeeth.Concat(newTeeth).ToList();
-                //if (removeInvoiceTeeth.Any())
-                //{
-                //    _context.Entry(removeInvoiceTeeth).State = EntityState.Deleted;
-                //    //_context.InvoiceDetailTeeth.RemoveRange(removeInvoiceTeeth);
-                //}
-                //if (newTeeth.Any())
-                //{
-                //    await _context.InvoiceDetailTeeth.AddRangeAsync(newTeeth);
-                //}
             }
 
             entity.Iva10 = accessRequest.Iva10;
