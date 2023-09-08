@@ -8,4 +8,4 @@ export const environment = {
     { id: FieldId.Approved, value: 'approved' },
     { id: FieldId.Id, value: 'id' },
   ]
-};
+}

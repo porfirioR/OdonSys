@@ -18,6 +18,7 @@ namespace Host.Api
                 new PolicyModel(Policy.CanAccessInvoice, new AuthorizationRequirement(PermissionName.AccessInvoices)),
                 new PolicyModel(Policy.CanAccessMyInvoice, new AuthorizationRequirement(PermissionName.AccessMyInvoices)),
                 new PolicyModel(Policy.CanCreateInvoice, new AuthorizationRequirement(PermissionName.CreateInvoices)),
+                new PolicyModel(Policy.CanUpdateInvoice, new AuthorizationRequirement(PermissionName.UpdateInvoices)),
                 new PolicyModel(Policy.CanAccessInvoiceFiles, new AuthorizationRequirement(
                     new List<PermissionName> {
                         PermissionName.CreateInvoices,
@@ -30,7 +31,8 @@ namespace Host.Api
                         PermissionName.AccessMyInvoices,
                         PermissionName.AccessInvoices,
                         PermissionName.AccessClients,
-                        PermissionName.AccessMyClients
+                        PermissionName.AccessMyClients,
+                        PermissionName.UpdateInvoices
                     }
                 )),
                 new PolicyModel(Policy.CanChangeInvoiceStatus, new AuthorizationRequirement(PermissionName.ChangeInvoiceStatus)),

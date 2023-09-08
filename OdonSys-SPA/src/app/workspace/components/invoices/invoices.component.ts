@@ -1,14 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, ColumnResizedEvent, GridOptions } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
+import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
+import { GridHideColumnModel } from '../../../core/models/view/grid-hide-column-model';
 import { PaymentApiModel } from '../../models/payments/payment-api-model';
-import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
@@ -33,6 +34,7 @@ export class InvoicesComponent implements OnInit {
   protected title: string = ''
   private canRegisterPayments = false
   private canDeactivateInvoice = false
+  private canUpdateInvoice = false
   private isMyPermission: boolean = false
   private request$!: Observable<InvoiceApiModel[]>
 
@@ -51,6 +53,7 @@ export class InvoicesComponent implements OnInit {
     this.canRegisterPayments = this.userInfoService.havePermission(Permission.RegisterPayments)
     this.canRegisterInvoice = this.userInfoService.havePermission(Permission.CreateInvoices)
     this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
+    this.canUpdateInvoice = this.userInfoService.havePermission(Permission.UpdateInvoices)
     this.canAccessMyInvoices = !this.isMyPermission && this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.request$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
     this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
@@ -74,18 +77,19 @@ export class InvoicesComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  private getScreenSize(event?: any) {
+  private getScreenSize() {
     this.gridOptions.api?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
+    this.gridOptions.onGridReady = () => setTimeout(() => { this.gridOptions.api?.sizeColumnsToFit() }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {
       conditionalButtons.push(
         new ConditionalGridButtonShow('status', InvoiceStatus.Completado, ButtonGridActionType.CustomButton, OperationType.NotEqual, 'status', InvoiceStatus.Cancelado, OperationType.NotEqual),
-        new ConditionalGridButtonShow('status', InvoiceStatus.Nuevo, ButtonGridActionType.Ver, OperationType.NotEqual, 'status', InvoiceStatus.Pendiente, OperationType.NotEqual),
+        // new ConditionalGridButtonShow('status', InvoiceStatus.Nuevo, ButtonGridActionType.Ver, OperationType.NotEqual, 'status', InvoiceStatus.Pendiente, OperationType.NotEqual),
       )
     }
     if (this.canDeactivateInvoice) {
@@ -93,8 +97,14 @@ export class InvoicesComponent implements OnInit {
         new ConditionalGridButtonShow('status', InvoiceStatus.Cancelado, ButtonGridActionType.Desactivar, OperationType.NotEqual, 'status', InvoiceStatus.Completado, OperationType.NotEqual)
       )
     }
+    if (this.canUpdateInvoice) {
+      conditionalButtons.push(
+        new ConditionalGridButtonShow('status', InvoiceStatus.Cancelado, ButtonGridActionType.Editar, OperationType.NotEqual, 'status', InvoiceStatus.Completado, OperationType.NotEqual)
+      )
+    }
+    const buttonToShow: ButtonGridActionType[] = [ ButtonGridActionType.Ver ]
     const params: GridActionModel = {
-      buttonShow: [],
+      buttonShow: buttonToShow,
       clicked: this.actionColumnClicked,
       customButton:  this.canRegisterPayments ? new CustomGridButtonShow(' Pagar', 'fa-money-bill', true, 'success') : undefined,
       conditionalButtons: conditionalButtons
@@ -107,6 +117,13 @@ export class InvoicesComponent implements OnInit {
     switch (action) {
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        break
+      case ButtonGridActionType.Editar:
+        if (currentRowNode.data.status == InvoiceStatus.Completado || currentRowNode.data.status == InvoiceStatus.Completado) {
+          this.alertService.showInfo(`Solamente pueden ser modificados los estados ${InvoiceStatus.Nuevo} y ${InvoiceStatus.Pendiente}`)
+          return
+        }
+        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
         break
       case ButtonGridActionType.Desactivar:
         this.alertService.showQuestionModal(
@@ -151,4 +168,34 @@ export class InvoicesComponent implements OnInit {
     }
   }
 
+  protected onGridSizeChanged = () => {
+    const screenWidth = window.innerWidth;
+    const invoiceColumns = [
+      'userCreated',
+      'clientFullName',
+      'status',
+      'total',
+      'moneyColumn',
+      'dateCreated',
+      'total'
+    ]
+
+    const agGridHideColumnList = [
+      new GridHideColumnModel(576, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(768, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(992, ['status', 'userCreated']),
+      new GridHideColumnModel(1200, ['status'])
+    ]
+    const agGridHideColumn = agGridHideColumnList.find(x => screenWidth <= x.screenWidth)
+    if (agGridHideColumn) {
+      agGridHideColumn.columnsToHide.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, false))
+      const columnsToShow = invoiceColumns.filter(x => !agGridHideColumn.columnsToHide.includes(x))
+      columnsToShow.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
+    } else {
+      invoiceColumns.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
+    }
+    if (this.isMyPermission) {
+      this.gridOptions!.columnApi!.setColumnVisible('userCreated', false)
+    }
+  }
 }

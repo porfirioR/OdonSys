@@ -71,3 +71,7 @@ body {
   color: #ff6565;
   font-weight: 400;
 }
+
+.text-bg-info, .text-bg-warning {
+  color: $white !important;
+}

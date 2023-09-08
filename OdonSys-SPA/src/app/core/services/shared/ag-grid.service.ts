@@ -86,24 +86,24 @@ export class AgGridService {
   ]
 
   private invoiceColumnDef: ColDef[] = [
-    { headerName: 'Quien Registró', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 110 },
+    { headerName: 'Responsable', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 70 },
     { headerName: 'Paciente', field: 'clientFullName', filter: 'agTextColumnFilter', resizable: true,
-      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 150 },
-    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 120, maxWidth: 200,
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 80 },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 60,
       cellRenderer: GridBadgeComponent,
       cellRendererParams: {
         badgeParams: [
-          new GridBadgeModel(InvoiceStatus.Nuevo, InvoiceStatus.Nuevo, 'info'),
+          new GridBadgeModel(InvoiceStatus.Nuevo, InvoiceStatus.Nuevo, 'primary'),
           new GridBadgeModel(InvoiceStatus.Completado, InvoiceStatus.Completado, 'success'),
           new GridBadgeModel(InvoiceStatus.Cancelado, InvoiceStatus.Cancelado, 'danger'),
           new GridBadgeModel(InvoiceStatus.Pendiente, InvoiceStatus.Pendiente, 'warning'),
         ]
       }
     },
-    { headerName: 'Registrada en', field: 'dateCreated', type: 'dateColumn', initialWidth: 100, maxWidth: 180, resizable: true },
-    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 100, resizable: true, maxWidth: 240 },
-    { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', minWidth: 105, initialWidth: 100, resizable: true },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 180, minWidth: 180, resizable: true,
+    { headerName: 'Fecha', field: 'dateCreated', type: 'dateColumn', initialWidth: 80, maxWidth: 150, resizable: true },
+    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 80, resizable: true },
+    { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', initialWidth: 80, resizable: true },
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 110, resizable: false, suppressAutoSize: true,
       wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', cellRenderer: GridActionsComponent
     }
   ]
