@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColDef, ColumnResizedEvent, GridOptions } from 'ag-grid-community';
+import { ColDef, GridOptions } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
@@ -29,14 +29,14 @@ export class InvoicesComponent implements OnInit {
   protected gridOptions!: GridOptions
   protected ready: boolean = false
   protected loading: boolean = false
-  protected canRegisterInvoice = false
-  protected canAccessMyInvoices = false
+  protected canRegisterInvoice: boolean = false
+  protected canAccessMyInvoices: boolean = false
   protected title: string = ''
-  private canRegisterPayments = false
-  private canDeactivateInvoice = false
-  private canUpdateInvoice = false
+  private canRegisterPayments: boolean = false
+  private canDeactivateInvoice: boolean = false
+  private canUpdateInvoice: boolean = false
   private isMyPermission: boolean = false
-  private request$!: Observable<InvoiceApiModel[]>
+  private invoices$!: Observable<InvoiceApiModel[]>
 
   constructor(
     private readonly agGridService: AgGridService,
@@ -55,12 +55,12 @@ export class InvoicesComponent implements OnInit {
     this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
     this.canUpdateInvoice = this.userInfoService.havePermission(Permission.UpdateInvoices)
     this.canAccessMyInvoices = !this.isMyPermission && this.userInfoService.havePermission(Permission.AccessMyInvoices)
-    this.request$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
+    this.invoices$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
     this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
     this.setupAgGrid()
     this.ready = true
     this.loading = true
-    this.request$.subscribe({
+    this.invoices$.subscribe({
       next: (response: InvoiceApiModel[]) => {
         this.gridOptions.api?.setRowData(response)
         this.gridOptions.api?.sizeColumnsToFit()
@@ -77,7 +77,7 @@ export class InvoicesComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
-  private getScreenSize() {
+  private getScreenSize(event: any) {
     this.gridOptions.api?.sizeColumnsToFit()
   }
 
@@ -193,6 +193,13 @@ export class InvoicesComponent implements OnInit {
       columnsToShow.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
     } else {
       invoiceColumns.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
+      
+      if (screenWidth <= 1300) {
+        const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
+        columnAction.maxWidth = 250
+        columnAction.initialWidth = 250
+        columnAction.resizable = false
+      }
     }
     if (this.isMyPermission) {
       this.gridOptions!.columnApi!.setColumnVisible('userCreated', false)

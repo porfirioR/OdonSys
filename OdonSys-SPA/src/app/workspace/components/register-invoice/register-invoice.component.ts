@@ -80,7 +80,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
     true,
     5000000,
-    '285px',
+    '275px',
     'm-b-0'
   )
   public saving: boolean = false
@@ -94,7 +94,7 @@ export class RegisterInvoiceComponent implements OnInit {
   })
   private procedures!: ProcedureModel[]
   private maxProcedureHeight = 569
-  private minProcedureHeight = 541
+  private minProcedureHeight = 532
   protected maximumProcedureHeight = this.maxProcedureHeight
   protected minimumProcedureHeight = this.minProcedureHeight
 
