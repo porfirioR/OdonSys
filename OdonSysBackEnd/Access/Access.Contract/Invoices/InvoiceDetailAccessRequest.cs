@@ -4,7 +4,6 @@
         Guid ClientProcedureId,
         int ProcedurePrice,
         int FinalPrice,
-        string Color,
         IEnumerable<string> ToothIds
     );
 }

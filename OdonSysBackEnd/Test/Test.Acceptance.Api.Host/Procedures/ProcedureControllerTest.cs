@@ -18,7 +18,6 @@ namespace AcceptanceTest.Host.Api.Procedures
             var response = await _client.PostAsJsonAsync(_uri, request);
 
             var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
-
             Assert.Multiple(() =>
             {
                 Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
@@ -40,14 +39,13 @@ namespace AcceptanceTest.Host.Api.Procedures
             var request = UpdateProcedureApiRequest(createModel.Id);
             var response = await _client.PutAsJsonAsync(_uri, request);
 
-            var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
-
+            var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
             Assert.Multiple(() =>
             {
                 Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                Assert.That(request.Id, Is.EqualTo(model.Id));
-                Assert.That(request.Description, Is.EqualTo(model.Description));
-                Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(model.ProcedureTeeth.Count()));
+                Assert.That(request.Id, Is.EqualTo(actual.Id));
+                Assert.That(request.Description, Is.EqualTo(actual.Description));
+                Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
             });
         }
 

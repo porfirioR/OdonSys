@@ -75,7 +75,6 @@ namespace Host.Api.Controllers.Payment
                     new Guid(x.ClientProcedureId),
                     x.ProcedurePrice,
                     x.FinalPrice,
-                    x.Color,
                     x.ToothIds
                 ))
             );
