@@ -1,5 +1,7 @@
 ﻿using Access.Contract.Clients;
+using Access.Contract.Invoices;
 using Contract.Administration.Clients;
+using Contract.Administration.Reports;
 using Contract.Administration.Users;
 
 namespace Manager.Administration
@@ -8,11 +10,13 @@ namespace Manager.Administration
     {
         private readonly IClientAccess _clientAccess;
         private readonly IClientManagerBuilder _clientManagerBuilder;
+        private readonly IInvoiceAccess _invoiceAccess;
 
-        public ClientManager(IClientAccess clientAccess, IClientManagerBuilder clientManagerBuilder)
+        public ClientManager(IClientAccess clientAccess, IClientManagerBuilder clientManagerBuilder, IInvoiceAccess invoiceAccess)
         {
             _clientAccess = clientAccess;
             _clientManagerBuilder = clientManagerBuilder;
+            _invoiceAccess = invoiceAccess;
         }
 
         public async Task<ClientModel> CreateAsync(CreateClientRequest request)
@@ -81,6 +85,13 @@ namespace Manager.Administration
         public async Task<bool> IsDuplicateDocumentAsync(string document, string id)
         {
             return await _clientAccess.IsDuplicateDocumentAsync(document, id);
+        }
+
+        public async Task<ClientReportModel> GetReportByIdAsync(string id)
+        {
+            var clientAccessModel = await _clientAccess.GetByIdAsync(id);
+            var invoicesAccessModel = await _invoiceAccess.GetInvoicesByClientIdAsync(id);
+            throw new NotImplementedException();
         }
     }
 }
