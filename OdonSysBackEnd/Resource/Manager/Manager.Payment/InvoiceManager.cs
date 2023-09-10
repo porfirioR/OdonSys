@@ -30,7 +30,6 @@ namespace Manager.Payment
                     x.ClientProcedureId,
                     x.ProcedurePrice,
                     x.FinalPrice,
-                    x.Color,
                     x.ToothIds
                 ))
             );
@@ -127,7 +126,6 @@ namespace Manager.Payment
                     x.FinalPrice,
                     x.DateCreated,
                     x.UserCreated,
-                    x.Color,
                     x.ToothIds
                 ))
             );

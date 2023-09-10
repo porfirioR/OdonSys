@@ -8,7 +8,6 @@
         int FinalPrice,
         DateTime DateCreated,
         string UserCreated,
-        string Color,
         IEnumerable<string> ToothIds
     );
 }

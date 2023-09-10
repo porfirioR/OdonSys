@@ -93,7 +93,7 @@ export class RegisterInvoiceComponent implements OnInit {
     clientId: new FormControl('')
   })
   private procedures!: ProcedureModel[]
-  private maxProcedureHeight = 569
+  private maxProcedureHeight = 559
   private minProcedureHeight = 532
   protected maximumProcedureHeight = this.maxProcedureHeight
   protected minimumProcedureHeight = this.minProcedureHeight
