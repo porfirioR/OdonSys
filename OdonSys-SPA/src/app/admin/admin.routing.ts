@@ -10,6 +10,7 @@ import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesAdmin } from './guards/prevent-unsaved-changes-admin.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
+import { ClientReportComponent } from '../core/components/client-report/client-report.component';
 
 export const AdminRoutes: Routes = [
   { 
@@ -54,6 +55,12 @@ export const AdminRoutes: Routes = [
         path: 'pacientes/ver/:id',
         component: ClientDetailComponent,
         title: 'Datos del paciente',
+        data: { permissions: [ Permission.AccessClients ] }
+      },
+      {
+        path: 'pacientes/report/:id',
+        component: ClientReportComponent,
+        title: 'Procedimientos del paciente',
         data: { permissions: [ Permission.AccessClients ] }
       },
       {
