@@ -118,6 +118,5 @@ namespace Host.Api.Controllers.Administration
             var model = await _clientManager.GetReportByIdAsync(id);
             return model;
         }
-
     }
 }

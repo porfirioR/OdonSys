@@ -1,6 +1,11 @@
-﻿namespace Contract.Administration.Reports
+﻿using Utilities.Enums;
+
+namespace Contract.Administration.Reports
 {
     public record ClientInvoiceReportModel(
-
+        Guid Id,
+        int Total,
+        DateTime DateCreated,
+        IEnumerable<InvoiceDetailReportModel> InvoiceDetails
     );
 }

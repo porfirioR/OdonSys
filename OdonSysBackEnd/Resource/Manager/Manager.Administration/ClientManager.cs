@@ -91,7 +91,21 @@ namespace Manager.Administration
         {
             var clientAccessModel = await _clientAccess.GetByIdAsync(id);
             var invoicesAccessModel = await _invoiceAccess.GetInvoicesByClientIdAsync(id);
-            throw new NotImplementedException();
+            var clientReportModel = new ClientReportModel(
+                _clientManagerBuilder.MapClientAccessModelToClientModel(clientAccessModel),
+                invoicesAccessModel.Select(x => new ClientInvoiceReportModel(
+                    x.Id,
+                    x.Total,
+                    x.DateCreated,
+                    x.InvoiceDetails.Select(y => new InvoiceDetailReportModel(
+                        y.Id,
+                        y.Procedure,
+                        y.ProcedurePrice,
+                        y.FinalPrice, y.DateCreated, y.ToothIds
+                    ))
+                ))
+            );
+            return clientReportModel;
         }
     }
 }
