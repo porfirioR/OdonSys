@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
 import { CreateClientRequest } from '../../models/api/clients/create-client-request';
 import { UpdateClientRequest } from '../../models/api/clients/update-client-request';
+import { ClientReportModel } from '../../models/api/clients/client-report-model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class ClientApiService {
 
   public getDoctorPatients = (): Observable<ClientApiModel[]> => {
     return this.http.get<ClientApiModel[]>(`${this.baseUrl}/patients`)
+  }
+
+  public getClientReport = (id: string): Observable<ClientReportModel> => {
+    return this.http.get<ClientReportModel>(`${this.baseUrl}/report/${id}`)
   }
 }

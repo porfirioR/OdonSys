@@ -99,7 +99,7 @@ export class AdminClientsComponent implements OnInit {
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
       // customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
-      customButton:  new CustomGridButtonShow('Reporte', 'fa-file-lines')
+      customButton:  new CustomGridButtonShow(' Reporte', 'fa-file-lines')
     }
     columnAction.cellRendererParams = params
   }

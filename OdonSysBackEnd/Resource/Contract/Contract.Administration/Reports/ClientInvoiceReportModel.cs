@@ -1,6 +1,4 @@
-﻿using Utilities.Enums;
-
-namespace Contract.Administration.Reports
+﻿namespace Contract.Administration.Reports
 {
     public record ClientInvoiceReportModel(
         Guid Id,
