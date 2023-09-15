@@ -167,4 +167,5 @@ export class ClientDetailComponent implements OnInit {
     currentUrl.pop()
     this.router.navigate([currentUrl.join('/')])
   }
+
 }
