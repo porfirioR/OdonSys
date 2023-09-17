@@ -101,7 +101,9 @@ namespace Manager.Administration
                         y.Id,
                         y.Procedure,
                         y.ProcedurePrice,
-                        y.FinalPrice, y.DateCreated, y.ToothIds
+                        y.FinalPrice,
+                        y.DateCreated,
+                        y.ToothIds
                     ))
                 ))
             );
