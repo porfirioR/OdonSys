@@ -48,7 +48,7 @@ export class ClientDetailComponent implements OnInit {
     private readonly invoiceApiService: InvoiceApiService,
     private readonly paymentApiService: PaymentApiService,
     private domSanitizer: DomSanitizer,
-    private store: Store,
+    private store: Store
 
   ) { }
 
@@ -167,4 +167,5 @@ export class ClientDetailComponent implements OnInit {
     currentUrl.pop()
     this.router.navigate([currentUrl.join('/')])
   }
+
 }

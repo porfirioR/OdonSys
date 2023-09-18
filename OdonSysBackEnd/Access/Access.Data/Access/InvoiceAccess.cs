@@ -114,5 +114,24 @@ namespace Access.Data.Access
             await _context.SaveChangesAsync();
             return _invoiceDataAccessBuilder.GetModel(entity, new List<ClientProcedure>());
         }
+
+        public async Task<IEnumerable<InvoiceAccessModel>> GetInvoicesByClientIdAsync(string clientId)
+        {
+            var entities = await _context.Invoices
+                                    .Include(x => x.Client)
+                                    .AsNoTracking()
+                                    .Include(x => x.InvoiceDetails).ThenInclude(x => x.InvoiceDetailsTeeth)
+                                    .AsNoTracking()
+                                    .Where(x => x.ClientId == new Guid(clientId)).ToListAsync();
+
+            var accessModelList = new List<InvoiceAccessModel>();
+            foreach (var entity in entities)
+            {
+                var clientProcedureIds = entity.InvoiceDetails.Select(y => y.ClientProcedureId);
+                var clientProcedureEntities = await GetClientProcedureEntities(clientProcedureIds);
+                accessModelList.Add(_invoiceDataAccessBuilder.GetModel(entity, clientProcedureEntities));
+            }
+            return accessModelList;
+        }
     }
 }

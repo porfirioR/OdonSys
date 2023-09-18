@@ -15,6 +15,7 @@ import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
 import { SystemAttributeModel } from '../../../core/models/view/system-attribute-model';
 import { ClientModel } from '../../../core/models/view/client-model';
+import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
 import { environment } from '../../../../environments/environment';
@@ -98,6 +99,7 @@ export class AdminClientsComponent implements OnInit {
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
       // customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
+      customButton:  new CustomGridButtonShow(' Reporte', 'fa-file-lines')
     }
     columnAction.cellRendererParams = params
   }
@@ -106,10 +108,12 @@ export class AdminClientsComponent implements OnInit {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
     switch (action) {
       case ButtonGridActionType.Aprobar:
-        case ButtonGridActionType.Desactivar:
-          this.changeSelectedClientVisibility(currentRowNode.data)
-          break
+      case ButtonGridActionType.Desactivar:
+        this.changeSelectedClientVisibility(currentRowNode.data)
+        break
       case ButtonGridActionType.CustomButton:
+        this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
+        break
       case ButtonGridActionType.Aprobar:
         this.alertService.showInfo('No implementado.')
         // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
