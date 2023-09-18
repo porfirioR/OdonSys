@@ -2,51 +2,81 @@
 <div class="container p-b-10" *ngIf="!loading">
   <span class="d-print-none">
     <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-      <h3 class="d-print-none">Detalles Paciente</h3>
+      <h3 class="d-print-none">Ficha de Paciente</h3>
       <button class="btn btn-outline-primary m-r-12" (click)="printReport()">
         <i class="fa fa-print" aria-hidden="true"></i> Imprimir
       </button>
     </div>
   </span>
+  <h4 class="card-title d-none d-print-block">Ficha del Paciente</h4>
   <section class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
     <main class="row w-100">
       <section class="p-r-0 p-b-10">
         <main class="card">
           <article class="card-body">
-            <h4 class="card-title d-print-none">Datos Personales</h4>
-            <form [formGroup]="clientFormGroup" class="row">
-              <div class="row col-lg-12 col-md-6">
-                <div class="col-lg-6">
-                  <strong class="col-3">Nombre: </strong>
-                  <label class="col" id="name">{{clientFormGroup.value.name}}</label>
-                </div>
-                <div class="col-lg-6">
-                  <strong class="col-3">Documento: </strong>
-                  <label class="col"
-                    id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
-                </div>
+            <section class="d-none d-print-block">
+              <div class="d-flex">
+                <span class="w-50">
+                  <strong>Nombre: </strong> {{clientFormGroup.value.name}}
+                </span>
+                <span>
+                  <strong>Documento: </strong>{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}
+                </span>
               </div>
-              <div class="row col-lg-12 col-md-6">
-                <div class="col-lg-6">
-                  <strong class="col-3">N° de teléfono: </strong>
-                  <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
-                </div>
-                <div class="col-lg-6">
-                  <strong class="col-3">País: </strong>
-                  <label class="col" id="country">{{clientFormGroup.value.country}}</label>
-                </div>
+              <div class="d-flex">
+                <span class="w-50">
+                  <strong>N° de teléfono: </strong>{{clientFormGroup.value.phone}}
+                </span>
+                <span>
+                  <strong>País: </strong>{{clientFormGroup.value.country}}
+                </span>
               </div>
-              <div class="row col-lg-12 col-md-6">
-                <div class="col-lg-6">
-                  <b>Correo: </b>
-                  <label id="email">{{clientFormGroup.value.email}}</label>
-                </div>
-                <div class="col-lg-6">
-                  <strong class="col-3">Total: </strong>
-                  <label class="col" id="total">{{total | number:'' : 'es'}}</label>
-                </div>
+              <div class="d-flex">
+                <span class="w-50">
+                  <strong>Correo: </strong>{{clientFormGroup.value.email}}
+                </span>
+                <span>
+                  <strong>Total: </strong>{{total | number:'' : 'es'}}
+                </span>
               </div>
-            </form>
+
+            </section>
+            <section class="d-print-none">
+              <h4 class="card-title">Datos Personales</h4>
+              <form [formGroup]="clientFormGroup" class="row">
+                <div class="row col-lg-12 col-md-6">
+                  <div class="col-lg-6">
+                    <strong class="col-3">Nombre: </strong>
+                    <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <strong class="col-3">Documento: </strong>
+                    <label class="col"
+                      id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+                  </div>
+                </div>
+                <div class="row col-lg-12 col-md-6">
+                  <div class="col-lg-6">
+                    <strong class="col-3">N° de teléfono: </strong>
+                    <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <strong class="col-3">País: </strong>
+                    <label class="col" id="country">{{clientFormGroup.value.country}}</label>
+                  </div>
+                </div>
+                <div class="row col-lg-12 col-md-6">
+                  <div class="col-lg-6">
+                    <b>Correo: </b>
+                    <label id="email">{{clientFormGroup.value.email}}</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <strong class="col-3">Total: </strong>
+                    <label class="col" id="total">{{total | number:'' : 'es'}}</label>
+                  </div>
+                </div>
+              </form>
+            </section>
           </article>
         </main>
       </section>
@@ -54,7 +84,7 @@
         <main class="card">
           <article class="card-body">
             <h4 class="card-title">Tratamientos</h4>
-            <table class="table">
+            <table class="table d-print-table">
               <thead>
                 <tr>
                   <th>Nombre</th>
@@ -63,10 +93,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let detail of invoiceDetailReportApiModelList">
-                  <td style="width:50%">{{detail.procedure}}</td>
-                  <td>{{detail.displayTeeth}}</td>
-                  <td>{{detail.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</td>
+                <tr class="d-print-table-row" *ngFor="let detail of invoiceDetailReportApiModelList">
+                  <td class="d-print-table-cell" style="width:50%">{{detail.procedure}}</td>
+                  <td class="d-print-table-cell">{{detail.displayTeeth}}</td>
+                  <td class="d-print-table-cell">{{detail.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</td>
                 </tr>
               </tbody>
             </table>

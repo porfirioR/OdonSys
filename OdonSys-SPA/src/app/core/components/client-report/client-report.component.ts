@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { combineLatest, debounceTime, tap } from 'rxjs';
 import { Country } from '../../enums/country.enum';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { InvoiceDetailReportApiModel } from '../../models/api/clients/invoice-detail-report-api-model';
-import { Store } from '@ngrx/store';
 import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
 import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
-import { combineLatest, debounceTime, tap } from 'rxjs';
 
 @Component({
   selector: 'app-client-report',
@@ -47,7 +47,7 @@ export class ClientReportComponent implements OnInit {
     combineLatest([
       this.clientApiService.getClientReport(this.id),
       toothRowData$
-    ]).pipe(debounceTime(1000))
+    ]).pipe(debounceTime(500))
     .subscribe({
       next: ([report, teeth]) => {
         this.clientFormGroup.controls.name.setValue(`${report.clientModel.name} ${report.clientModel.middleName} ${report.clientModel.surname} ${report.clientModel.secondSurname}`)
