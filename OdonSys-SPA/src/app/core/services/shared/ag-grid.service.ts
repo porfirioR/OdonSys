@@ -86,10 +86,10 @@ export class AgGridService {
   ]
 
   private invoiceColumnDef: ColDef[] = [
-    { headerName: 'Responsable', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true, initialWidth: 70 },
-    { headerName: 'Paciente', field: 'clientFullName', filter: 'agTextColumnFilter', resizable: true,
-      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', initialWidth: 80 },
-    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true, initialWidth: 60,
+    { headerName: 'Responsable', field: 'userCreated', filter: 'agTextColumnFilter', resizable: true,  maxWidth: 130 },
+    { headerName: 'Paciente', field: 'clientFullName', filter: 'agTextColumnFilter', resizable: true, 
+      wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid' },
+    { headerName: 'Estado', field: 'status', filter: 'agTextColumnFilter', resizable: true,  maxWidth: 130,
       cellRenderer: GridBadgeComponent,
       cellRendererParams: {
         badgeParams: [
@@ -100,10 +100,10 @@ export class AgGridService {
         ]
       }
     },
-    { headerName: 'Fecha', field: 'dateCreated', type: 'dateColumn', initialWidth: 80, maxWidth: 150, resizable: true },
-    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter', initialWidth: 80, resizable: true },
-    { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn', initialWidth: 80, resizable: true },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false, initialWidth: 110, resizable: false, suppressAutoSize: true,
+    { headerName: 'Fecha', field: 'dateCreated', type: 'dateColumn', minWidth: 100, maxWidth: 100, resizable: true },
+    { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter',  maxWidth: 200, resizable: true },
+    { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn',  resizable: true },
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false,  resizable: true, maxWidth: 300, initialWidth: 200,
       wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', cellRenderer: GridActionsComponent
     }
   ]

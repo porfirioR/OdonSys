@@ -81,6 +81,13 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.AccessMyInvoices ] },
       },
       {
+        path: 'mis-facturas/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpdateInvoiceComponent,
+        title: 'Actualizar factura',
+        data: { permissions: [ Permission.UpdateInvoices ] }
+      },
+      {
         path: 'facturas/registrar',
         component: RegisterInvoiceComponent,
         canActivate: [PermissionGuard],

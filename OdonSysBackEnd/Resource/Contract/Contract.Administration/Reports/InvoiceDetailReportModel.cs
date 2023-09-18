@@ -1,13 +1,11 @@
-﻿namespace Access.Contract.Invoices
+﻿namespace Contract.Administration.Reports
 {
-    public record InvoiceDetailAccessModel(
+    public record InvoiceDetailReportModel(
         Guid Id,
-        Guid InvoiceId,
         string Procedure,
         int ProcedurePrice,
         int FinalPrice,
         DateTime DateCreated,
-        string UserCreated,
         IEnumerable<string> ToothIds
     );
 }

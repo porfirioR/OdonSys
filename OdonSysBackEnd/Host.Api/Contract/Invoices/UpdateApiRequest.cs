@@ -27,7 +27,7 @@ namespace Host.Api.Contract.Invoices
         {
             var results = new List<ValidationResult>();
             var invoiceManager = (IInvoiceManager)validationContext.GetService(typeof(IInvoiceManager));
-            var paymentManager = (IPaymentManager)validationContext.GetService(typeof(IInvoiceManager));
+            var paymentManager = (IPaymentManager)validationContext.GetService(typeof(IPaymentManager));
 
             var isValidInvoice = invoiceManager.IsValidInvoiceIdAsync(Id).GetAwaiter().GetResult();
             if (!isValidInvoice)

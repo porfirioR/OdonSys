@@ -1,4 +1,5 @@
 ﻿using Contract.Administration.Clients;
+using Contract.Administration.Reports;
 using Contract.Administration.Roles;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Clients;
@@ -110,5 +111,12 @@ namespace Host.Api.Controllers.Administration
             return model;
         }
 
+        [HttpGet("report/{id}")]
+        [Authorize(Policy = Policy.CanAccessClient)]
+        public async Task<ClientReportModel> GetReportProcedures(string id)
+        {
+            var model = await _clientManager.GetReportByIdAsync(id);
+            return model;
+        }
     }
 }

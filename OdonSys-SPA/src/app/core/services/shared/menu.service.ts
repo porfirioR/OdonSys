@@ -18,7 +18,7 @@ export class MenuService {
       new MenuItem('Mis Pacientes', 'trabajo/mis-pacientes', Permission.AccessMyClients),
       new MenuItem('Facturas', 'trabajo/facturas', Permission.AccessInvoices),
       new MenuItem('Mis Facturas', 'trabajo/mis-facturas', Permission.AccessMyInvoices),
-      new MenuItem('Pagos', 'trabajo/pagos', Permission.AccessPayments),
+      // new MenuItem('Pagos', 'trabajo/pagos', Permission.AccessPayments),
     ]
   }
 }

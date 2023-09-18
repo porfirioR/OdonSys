@@ -7,6 +7,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AgGridModule } from 'ag-grid-angular';
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { HeaderComponent } from './components/header/header.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -20,7 +22,6 @@ import { AuthenticateComponent } from './components/authenticate/authenticate.co
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ClientsComponent } from './components/my-clients/my-clients.component';
 import { UpsertClientComponent } from './components/upsert-client/upsert-client.component';
-import { AnimationComponent } from './components/animation/animation.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
 import { UploadFileComponent } from './components/upload-file/upload-file.component';
 import { ClientDetailComponent } from './components/client-detail/client-detail.component';
@@ -30,17 +31,16 @@ import * as fromSaving from './store/saving/saving.reducer';
 import * as fromRoles from './store/roles/roles.reducer';
 import * as fromProcedure from './store/procedures/procedure.reducer';
 import * as fromClient from './store/clients/client.reducer';
+import * as fromDoctor from './store/doctors/doctor.reducer';
+import * as fromTooth from './store/teeth/tooth.reducer';
 
 import { RolesEffects } from './store/roles/roles.effects';
 import { ProcedureEffects } from './store/procedures/procedure.effects';
 import { ClientEffects } from './store/clients/client.effects';
-import { environment } from '../../environments/environment';
-import { NgxDropzoneModule } from 'ngx-dropzone';
-import * as fromDoctor from './store/doctors/doctor.reducer';
 import { DoctorEffects } from './store/doctors/doctor.effects';
-import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask } from 'ngx-mask';
-import * as fromTooth from './store/teeth/tooth.reducer';
 import { ToothEffects } from './store/teeth/tooth.effects';
+import { environment } from '../../environments/environment';
+import { ClientReportComponent } from './components/client-report/client-report.component';
 
 @NgModule({
   imports: [
@@ -77,11 +77,11 @@ import { ToothEffects } from './store/teeth/tooth.effects';
     RegisterUserComponent,
     ClientsComponent,
     UpsertClientComponent,
-    AnimationComponent,
     GridBadgeComponent,
     UploadFileComponent,
     ClientDetailComponent,
-    ToothModalComponent
+    ToothModalComponent,
+    ClientReportComponent
   ],
   exports: [
     FormsModule,
@@ -102,8 +102,8 @@ import { ToothEffects } from './store/teeth/tooth.effects';
     AuthenticateComponent,
     ClientsComponent,
     UpsertClientComponent,
-    AnimationComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ClientReportComponent
   ],
   providers:[
     provideEnvironmentNgxMask()
