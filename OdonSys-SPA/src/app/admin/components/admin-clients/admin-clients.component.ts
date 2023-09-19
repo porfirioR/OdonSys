@@ -32,10 +32,10 @@ export class AdminClientsComponent implements OnInit {
   protected rowData$!: Observable<ClientModel[]>
   protected canCreate = false
   private canEdit = false
-  private canDelete = false
+  // private canDelete = false
   private canDeactivate = false
   private canRestore = false
-  private canAssignToDoctor = false
+  // private canAssignToDoctor = false
 
   constructor(
     private readonly router: Router,
@@ -49,10 +49,10 @@ export class AdminClientsComponent implements OnInit {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
-    this.canDelete = this.userInfoService.havePermission(Permission.DeleteClients)
+    // this.canDelete = this.userInfoService.havePermission(Permission.DeleteClients)
     this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateClients)
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreClients)
-    this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
+    // this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
     this.setupAgGrid()
     let loading = true
     this.rowData$ = this.store.select(selectClients).pipe(tap(x => {
