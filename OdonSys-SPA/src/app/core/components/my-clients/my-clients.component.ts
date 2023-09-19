@@ -8,9 +8,9 @@ import { Permission } from '../../enums/permission.enum';
 import { ClientApiModel } from '../../models/api/clients/client-api-model';
 import { GridActionModel } from '../../models/view/grid-action-model';
 import { SystemAttributeModel } from '../../models/view/system-attribute-model';
+import { CustomGridButtonShow } from '../../models/view/custom-grid-button-show';
 import { ClientApiService } from '../../services/api/client-api.service';
 import { AgGridService } from '../../services/shared/ag-grid.service';
-import { AlertService } from '../../services/shared/alert.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
 
 @Component({
@@ -30,7 +30,6 @@ export class ClientsComponent implements OnInit {
     private readonly clientApiService: ClientApiService,
     private readonly agGridService: AgGridService,
     private readonly router: Router,
-    private readonly alertService: AlertService,
     private userInfoService: UserInfoService,
   ) { }
 
@@ -77,7 +76,8 @@ export class ClientsComponent implements OnInit {
     }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
-      clicked: this.actionColumnClicked
+      clicked: this.actionColumnClicked,
+      customButton:  new CustomGridButtonShow(' Reporte', 'fa-file-lines')
     }
     columnAction.cellRendererParams = params
   }
@@ -90,6 +90,9 @@ export class ClientsComponent implements OnInit {
         break
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        break
+      case ButtonGridActionType.CustomButton:
+        this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
         break
       default:
         break

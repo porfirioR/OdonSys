@@ -10,6 +10,7 @@ import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes
 import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
+import { ClientReportComponent } from '../core/components/client-report/client-report.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -49,6 +50,12 @@ export const WorkspaceRoutes: Routes = [
         path: 'mis-pacientes/ver/:id',
         component: ClientDetailComponent,
         title: 'Datos del paciente',
+        data: { permissions: [ Permission.AccessMyClients ] }
+      },
+      {
+        path: 'mis-pacientes/reporte/:id',
+        component: ClientReportComponent,
+        title: 'Reporte del paciente',
         data: { permissions: [ Permission.AccessMyClients ] }
       },
       {
