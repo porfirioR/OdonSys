@@ -14,5 +14,6 @@ export interface InvoiceApiModel {
   clientFullName: string
   dateCreated: Date
   userCreated: string
-  invoiceDetails: InvoiceDetailApiModel[]
+  invoiceDetails: InvoiceDetailApiModel[],
+  paymentAmount: number
 }

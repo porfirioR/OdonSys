@@ -1,6 +1,5 @@
 ﻿using Access.Contract.Invoices;
 using Access.Sql.Entities;
-using System.Linq;
 
 namespace Access.Data.Mapper
 {
@@ -33,7 +32,6 @@ namespace Access.Data.Mapper
                 Active = true,
                 Id = Guid.NewGuid(),
                 InvoiceId = entity.Id,
-                Color = request.Color
             };
             var toothIds = request.ToothIds;
             if (toothIds is not null && toothIds.Any())
@@ -72,7 +70,6 @@ namespace Access.Data.Mapper
                         x.FinalPrice,
                         x.DateCreated,
                         x.UserCreated,
-                        x.Color,
                         toothIds
                     );
                 });

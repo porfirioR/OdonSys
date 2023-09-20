@@ -4,7 +4,7 @@ namespace AcceptanceTest.Host.Api.Procedures
 {
     internal partial class ProcedureControllerTest
     {
-        CreateProcedureApiRequest CreateProcedureApiRequest => new()
+        static CreateProcedureApiRequest CreateProcedureApiRequest => new()
         {
             Name = Guid.NewGuid().ToString()[30..],
             Description = Guid.NewGuid().ToString()[30..],
@@ -12,7 +12,7 @@ namespace AcceptanceTest.Host.Api.Procedures
             //ProcedureTeeth = TeethIds
         };
 
-        UpdateProcedureApiRequest UpdateProcedureApiRequest(string Id) => new()
+        static UpdateProcedureApiRequest UpdateProcedureApiRequest(string Id) => new()
         {
             Id = Id,
             Description = Guid.NewGuid().ToString()[30..],

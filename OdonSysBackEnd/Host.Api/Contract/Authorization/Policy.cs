@@ -14,6 +14,7 @@
         public const string CanAccessMyInvoice = "can_access_my_invoice";
         public const string CanAccessInvoiceFiles = "can_access_invoice_files";
         public const string CanCreateInvoice = "can_create_invoice";
+        public const string CanUpdateInvoice = "can_update_invoice";
         public const string CanChangeInvoiceStatus = "can_change_invoice_status";
 
         public const string CanAccessRole = "can_access_role";

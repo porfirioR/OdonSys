@@ -269,9 +269,6 @@ namespace Access.Sql.Migrations
                     b.Property<Guid>("ClientProcedureId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -775,7 +772,7 @@ namespace Access.Sql.Migrations
                     b.HasOne("Access.Sql.Entities.InvoiceDetail", "InvoiceDetail")
                         .WithMany("InvoiceDetailsTeeth")
                         .HasForeignKey("InvoiceDetailId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Access.Sql.Entities.Tooth", "Tooth")

@@ -25,14 +25,14 @@ import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 
 import { Country } from '../../../core/enums/country.enum';
 import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
-import { DifficultyProcedure } from '../../../core/enums/difficulty-procedure.enum';
 
 import { CustomValidators } from '../../../core/helpers/custom-validators';
 import { EnumHandler } from '../../../core/helpers/enum-handler';
 import { MethodHandler } from '../../../core/helpers/method-handler';
 
-import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 import { ProcedureFormGroup } from '../../../core/forms/procedure-form-group.form';
+import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
+import { UserFormGroup } from '../../../core/forms/user-form-group.form';
 
 import { ClientApiService } from '../../../core/services/api/client-api.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
@@ -44,10 +44,9 @@ import { SubscriptionService } from '../../../core/services/shared/subscription.
 import { SelectModel } from '../../../core/models/view/select-model';
 import { UploadFileModel } from '../../../core/models/view/upload-file-model';
 import { UploadFileRequest } from '../../../core/models/api/files/upload-file-request';
-import { ProcedureToothModalModel } from '../../../core/models/view/procedure-tooth-modal-model';
+import { ToothModalModel } from '../../../core/models/view/tooth-modal-model';
 import { UploadFileComponent } from '../../../core/components/upload-file/upload-file.component';
 import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-modal.component';
-import { ProcedureToothFormGroup } from '../../../core/forms/procedure-tooth-form-group.form';
 
 @Component({
   selector: 'app-register-invoice',
@@ -81,7 +80,7 @@ export class RegisterInvoiceComponent implements OnInit {
     'application/pdf,image/jpeg,image/jpg,image/png,image/gif',
     true,
     5000000,
-    '285px',
+    '275px',
     'm-b-0'
   )
   public saving: boolean = false
@@ -94,8 +93,8 @@ export class RegisterInvoiceComponent implements OnInit {
     clientId: new FormControl('')
   })
   private procedures!: ProcedureModel[]
-  private maxProcedureHeight = 569
-  private minProcedureHeight = 541
+  private maxProcedureHeight = 559
+  private minProcedureHeight = 532
   protected maximumProcedureHeight = this.maxProcedureHeight
   protected minimumProcedureHeight = this.minProcedureHeight
 
@@ -131,14 +130,14 @@ export class RegisterInvoiceComponent implements OnInit {
         loadingProcedure = false
       }
     }))
-    let loadingTooth = true
-    this.store.select(selectTeeth).pipe(tap(x => {
-      if(loadingTooth && x.length === 0) {
+    let loadingTeeth = true
+    const teethRowData$ = this.store.select(selectTeeth).pipe(tap(x => {
+      if(loadingTeeth && x.length === 0) {
         this.store.dispatch(fromTeethActions.componentLoadTeeth())
-        loadingTooth = false
+        loadingTeeth = false
       }
     }))
-    combineLatest([clientRowData$, procedureRowData$]).subscribe({
+    combineLatest([clientRowData$, procedureRowData$, teethRowData$]).subscribe({
       next: ([clients, procedures]) => {
         this.clients = clients
         clients.forEach(x => this.clientsValues.set(x.id, x.name))
@@ -157,7 +156,6 @@ export class RegisterInvoiceComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?: any) {
-    
     if (window.screen.height <= 768) {
       this.uploadFileConfig.height = '130px'
       this.maximumProcedureHeight = 407
@@ -207,27 +205,25 @@ export class RegisterInvoiceComponent implements OnInit {
     this.router.navigate([currentUrl.join('/')])
   }
 
-  protected selectTooth = (i: number) => {
+  protected selectTeeth = (i: number) => {
     const procedure: FormGroup<ProcedureFormGroup> = this.formGroup.controls.procedures.controls[i]
     const modalRef = this.modalService.open(ToothModalComponent, {
-      size: 'xl',
+      size: 'lg',
       backdrop: 'static',
       keyboard: false
     })
-    modalRef.componentInstance.procedure = procedure
-    modalRef.result.then((result: ProcedureToothModalModel) => {
-      if (!!result) {
+    modalRef.componentInstance.toothIds = procedure.controls.toothIds?.controls.map(x => x.value.id)
+    modalRef.result.then((teethIds: ToothModalModel[]) => {
+      if (!!teethIds) {
         procedure.controls.toothIds?.clear()
-        procedure.controls.teethSelected?.setValue(result.teethIds.map(x => x.number).sort().join(', '))
-        result.teethIds.forEach(x => {
+        procedure.controls.teethSelected?.setValue(teethIds.map(x => x.number).sort().join(', '))
+        teethIds.forEach(x => {
           procedure.controls.toothIds?.push(
             new FormGroup<ProcedureToothFormGroup>({
               id: new FormControl(x.id)
             })
           )
         })
-        procedure.controls.color!.setValue(result.color)
-        procedure.controls.difficult!.setValue(EnumHandler.getKeyByValue(DifficultyProcedure, result.color)!)
       }
     }, () => {})
   }
@@ -247,8 +243,6 @@ export class RegisterInvoiceComponent implements OnInit {
             price: new FormControl(currentProcedure.price),
             finalPrice: new FormControl(currentProcedure.price, Validators.min(0)),
             xRays: new FormControl(currentProcedure.xRays),
-            color: new FormControl(DifficultyProcedure.Rutinario),
-            difficult: new FormControl(EnumHandler.getKeyByValue(DifficultyProcedure, DifficultyProcedure.Rutinario)! as string),
             toothIds: new FormArray<FormGroup<ProcedureToothFormGroup>>([]),
             teethSelected: new FormControl('')
           })
@@ -355,7 +349,6 @@ export class RegisterInvoiceComponent implements OnInit {
           x.id,
           selectedProcedure.controls.price.value!,
           selectedProcedure.controls.finalPrice.value!,
-          selectedProcedure.controls.color!.value!,
           toothIds
         )
       })

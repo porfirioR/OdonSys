@@ -14,7 +14,7 @@ namespace Access.Sql.Configurations
                 .HasOne(x => x.InvoiceDetail)
                 .WithMany(x => x.InvoiceDetailsTeeth)
                 .HasForeignKey(x => x.InvoiceDetailId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(x => x.Tooth)

@@ -30,7 +30,6 @@ namespace Manager.Payment
                     x.ClientProcedureId,
                     x.ProcedurePrice,
                     x.FinalPrice,
-                    x.Color,
                     x.ToothIds
                 ))
             );
@@ -77,6 +76,20 @@ namespace Manager.Payment
             return accessModelList.Select(GetModel);
         }
 
+        public async Task<InvoiceModel> UpdateInvoiceAsync(UpdateInvoiceRequest request)
+        {
+            var accessRequest = new UpdateInvoiceAccessRequest(
+                request.Id,
+                request.Iva10,
+                request.TotalIva,
+                request.TotalIva,
+                request.Total,
+                request.InvoiceDetails.Select(x => new UpdateInvoiceDetailAccessRequest(x.Id, x.FinalPrice, x.ToothIds))
+            );
+            var accessModel = await _invoiceAccess.UpdateInvoiceAsync(accessRequest);
+            return GetModel(accessModel);
+        }
+
         private async Task<IEnumerable<InvoiceModel>> PrepareInvocesWithPayments(IEnumerable<InvoiceAccessModel> invoiceIdsList)
         {
             var invoiceIds = invoiceIdsList.Select(x => x.Id);
@@ -113,7 +126,6 @@ namespace Manager.Payment
                     x.FinalPrice,
                     x.DateCreated,
                     x.UserCreated,
-                    x.Color,
                     x.ToothIds
                 ))
             );

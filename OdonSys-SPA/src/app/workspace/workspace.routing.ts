@@ -9,6 +9,8 @@ import { PermissionGuard } from '../core/guards/permission.guard';
 import { PreventUnsavedChangesWorkspace } from './guards/prevent-unsaved-changes-workspace.guard';
 import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
+import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
+import { ClientReportComponent } from '../core/components/client-report/client-report.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -51,6 +53,12 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.AccessMyClients ] }
       },
       {
+        path: 'mis-pacientes/reporte/:id',
+        component: ClientReportComponent,
+        title: 'Reporte del paciente',
+        data: { permissions: [ Permission.AccessMyClients ] }
+      },
+      {
         path: 'facturas',
         component: InvoicesComponent,
         canActivate: [PermissionGuard],
@@ -75,7 +83,16 @@ export const WorkspaceRoutes: Routes = [
       {
         path: 'mis-facturas/ver/:id',
         component: ShowInvoiceComponent,
-        title: 'Ver factura'
+        canActivate: [PermissionGuard],
+        title: 'Ver factura',
+        data: { permissions: [ Permission.AccessMyInvoices ] },
+      },
+      {
+        path: 'mis-facturas/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpdateInvoiceComponent,
+        title: 'Actualizar factura',
+        data: { permissions: [ Permission.UpdateInvoices ] }
       },
       {
         path: 'facturas/registrar',
@@ -87,8 +104,17 @@ export const WorkspaceRoutes: Routes = [
       },
       {
         path: 'facturas/ver/:id',
+        canActivate: [PermissionGuard],
         component: ShowInvoiceComponent,
-        title: 'Ver factura'
+        title: 'Ver factura',
+        data: { permissions: [ Permission.AccessInvoices ] }
+      },
+      {
+        path: 'facturas/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpdateInvoiceComponent,
+        title: 'Actualizar factura',
+        data: { permissions: [ Permission.UpdateInvoices ] }
       }
     ]
   }

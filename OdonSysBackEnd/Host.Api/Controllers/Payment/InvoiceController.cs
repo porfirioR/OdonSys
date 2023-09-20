@@ -75,11 +75,30 @@ namespace Host.Api.Controllers.Payment
                     new Guid(x.ClientProcedureId),
                     x.ProcedurePrice,
                     x.FinalPrice,
-                    x.Color,
                     x.ToothIds
                 ))
             );
             var model = await _invoiceManager.CreateInvoiceAsync(request);
+            return model;
+        }
+
+        [HttpPut]
+        [Authorize(Policy = Policy.CanUpdateInvoice)]
+        public async Task<InvoiceModel> UpdateInvoiceAsync([FromBody] UpdateApiRequest apiRequest)
+        {
+            var request = new UpdateInvoiceRequest(
+                new Guid(apiRequest.Id),
+                apiRequest.Iva10,
+                apiRequest.TotalIva,
+                apiRequest.SubTotal,
+                apiRequest.Total,
+                apiRequest.InvoiceDetails.Select(x => new UpdateInvoiceDetailRequest(
+                    new Guid(x.Id),
+                    x.FinalPrice,
+                    x.ToothIds
+                ))
+            );
+            var model = await _invoiceManager.UpdateInvoiceAsync(request);
             return model;
         }
 
