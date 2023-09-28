@@ -27,10 +27,12 @@ namespace Host.Api
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder => builder
-                                              .AllowAnyOrigin()
-                                              .AllowAnyHeader()
-                                              .AllowAnyMethod());
+                options.AddDefaultPolicy(builder =>
+                    builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                );
             });
 
             // partial startup

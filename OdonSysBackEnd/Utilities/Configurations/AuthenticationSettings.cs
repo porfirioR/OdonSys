@@ -6,6 +6,6 @@ namespace Utilities.Configurations
     public class AuthenticationSettings
     {
         public const string ConfigSection = "Authentication";
-        public AzureB2CSettings AzureB2C { get; set; }
+        public AzureB2CSettings AzureAdB2C { get; set; }
     }
 }

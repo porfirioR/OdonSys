@@ -4,5 +4,6 @@
     {
         public CloudinarySettings Cloudinary { get; set; }
         public DataAccessSettings ConnectionStrings { get; set; }
+        public AuthenticationSettings Authentication { get; set; }
     }
 }

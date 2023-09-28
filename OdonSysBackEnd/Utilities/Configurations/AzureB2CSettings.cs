@@ -2,12 +2,11 @@
 {
     public class AzureB2CSettings
     {
-        public const string ConfigSection = "AzureB2C";
+        public const string ConfigSection = "Authentication:AzureAdB2C";
         public string ClientSecret { get; set; }
         public string Domain { get; set; }
-        public string EnvironmentBackEnd { get; set; }
-        public string EnvironmentFrontEnd { get; set; }
         public string FrontEndClientId { get; set; }
+        public string FrontEndTenantId { get; set; }
         public string Instance { get; set; }
         public string InviteRedirect { get; set; }
         public string ClientId { get; set; }
