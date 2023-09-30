@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Host.Api
 {
     public partial class Startup
     {
-        private const string _policyName = "AzureAd_OR_JwtBearer";
+        private const string _policyName = "AzureAdB2C_OR_JwtBearer";
         public void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(_policyName)
@@ -20,20 +21,23 @@ namespace Host.Api
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(MainConfiguration.SystemSettings.TokenKey)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         RoleClaimType = Claims.UserRoles
                     };
                 })
-                .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options))
-                ;
+                .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options));
 
             services
                 .AddAuthentication(Constants.AzureAdB2C)
-                .AddMicrosoftIdentityWebApi(configuration, AuthenticationSettings.ConfigSection, Constants.AzureAdB2C);
+                .AddMicrosoftIdentityWebApi(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
+                .EnableTokenAcquisitionToCallDownstreamApi()
+                .AddInMemoryTokenCaches();
 
+            //services.AddInMemoryTokenCaches();
         }
+
         private void PolicySchemeOptions(PolicySchemeOptions options)
         {
             options.ForwardDefaultSelector = context =>
@@ -56,7 +60,7 @@ namespace Host.Api
                 if (jwtHandler.CanReadToken(token))
                 {
                     var jwtToken = jwtHandler.ReadJwtToken(token);
-                    if (jwtToken.Issuer.Equals(MainConfiguration.Authentication.OAuth2.Issuer, StringComparison.OrdinalIgnoreCase))
+                    if (jwtToken.Issuer.Equals(MainConfiguration.SystemSettings.TokenKey, StringComparison.OrdinalIgnoreCase))
                     {
                         return JwtBearerDefaults.AuthenticationScheme;
                     }

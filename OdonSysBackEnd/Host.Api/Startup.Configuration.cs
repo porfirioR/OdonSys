@@ -10,6 +10,7 @@ namespace Host.Api
             services.Configure<DataAccessSettings>(Configuration.GetSection(DataAccessSettings.ConfigSection));
             services.Configure<AuthenticationSettings>(Configuration.GetSection(AuthenticationSettings.ConfigSection));
             services.Configure<AzureB2CSettings>(Configuration.GetSection(AzureB2CSettings.ConfigSection));
+            services.Configure<SystemSettings>(Configuration.GetSection(SystemSettings.ConfigSection));
             services.Configure<MainConfiguration>(Configuration);
             MainConfiguration = Configuration.Get<MainConfiguration>();
         }

@@ -8,6 +8,7 @@ import { MenuItem } from '../../models/view/menu-item';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { LogoutApiModel } from '../../models/users/api/logout-api-model';
 import { AlertService } from '../../services/shared/alert.service';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +26,8 @@ export class HeaderComponent implements OnInit {
     private readonly subscriptionService: SubscriptionService,
     private readonly zone: NgZone,
     private readonly authApiService: AuthApiService,
-    private readonly alertService: AlertService
+    private readonly alertService: AlertService,
+    private msalService: MsalService,
   ) {
     this.checkMenuItems()
     this.subscriptionService.onCheckUpdateMenu.subscribe(this.checkMenuItems)
@@ -35,14 +37,15 @@ export class HeaderComponent implements OnInit {
     this.userName = this.userInfoService.getUserData().userName
   }
 
-  public logOut = () => {
-    this.authApiService.logout().subscribe({
-      next: (logout: LogoutApiModel) => {
-        this.userInfoService.clearAllCredentials()
-        this.alertService.showSuccess(`Hasta pronto: ${logout.username}`)
-        this.zone.run(() => this.router.navigateByUrl('/login'))
-      }
-    })
+  public logout = () => {
+    this.msalService.logout().subscribe()
+    // this.authApiService.logout().subscribe({
+    //   next: (logout: LogoutApiModel) => {
+    //     this.userInfoService.clearAllCredentials()
+    //     this.alertService.showSuccess(`Hasta pronto: ${logout.username}`)
+    //     this.zone.run(() => this.router.navigateByUrl('/login'))
+    //   }
+    // })
   }
 
   private checkMenuItems = () => {

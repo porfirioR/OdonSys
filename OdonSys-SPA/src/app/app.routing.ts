@@ -5,13 +5,15 @@ import { PrincipalPageComponent } from './core/components/principal-page/princip
 import { RegisterUserComponent } from './core/components/register-user/register-user.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { PublicGuard } from './core/guards/public.guard';
+import { MsalGuard } from '@azure/msal-angular';
 
 export const AppRoutes: Routes = [
   {
     path: '',
     component: PrincipalPageComponent,
     runGuardsAndResolvers: 'always',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
+    canActivate: [MsalGuard],
     title: 'Dr. Cano',
     children: [
       {

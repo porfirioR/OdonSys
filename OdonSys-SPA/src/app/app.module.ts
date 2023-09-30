@@ -19,8 +19,59 @@ import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
 import { AgGridModule } from 'ag-grid-angular';
 import "./extensions/implement-extensions";
+import { BrowserCacheLocation, IPublicClientApplication, InteractionType, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
 
 registerLocaleData(localEs, 'es')
+
+const isIE =
+  window.navigator.userAgent.indexOf('MSIE ') > -1 ||
+  window.navigator.userAgent.indexOf('Trident/') > -1;
+
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication({
+    auth: {
+      clientId: environment.clientId,
+      authority: `https://${environment.hostName}/${environment.domainName}/${environment.signUpSignInPolicyName}`,
+      knownAuthorities: [ environment.hostName ],
+      redirectUri: environment.redirectUri,
+      postLogoutRedirectUri: environment.logoutRedirectUri,
+      navigateToLoginRequestUrl: true
+    },
+    cache: {
+      cacheLocation: BrowserCacheLocation.LocalStorage,
+      storeAuthStateInCookie: isIE, // set to true for IE 11. Remove this line to use Angular Universal
+    },
+    system: {
+      loggerOptions: {
+        loggerCallback(logLevel: LogLevel, message: string) {
+          console.log(message);
+        },
+        logLevel: LogLevel.Info,
+        piiLoggingEnabled: false,
+      },
+    },
+  });
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap: new Map([
+      [ environment.apiUrl, [environment.resourceScope] ],
+    ])
+  };
+}
+
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Redirect,
+    // loginFailedRoute: '/login-failed',
+    authRequest: {
+      scopes: environment.endpointScopes,
+    },
+  };
+}
 
 @NgModule({
   declarations: [
@@ -37,11 +88,33 @@ registerLocaleData(localEs, 'es')
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
-    AgGridModule
+    AgGridModule,
+    MsalModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useFactory: MSALGuardConfigFactory
+    },
+    {
+      provide: MSAL_INTERCEPTOR_CONFIG,
+      useFactory: MSALInterceptorConfigFactory
+    },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService
   ],
   bootstrap: [AppComponent]
 })

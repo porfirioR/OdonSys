@@ -4,7 +4,7 @@ using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities;
+using Utilities.Configurations;
 
 namespace Access.Data.Access
 {
@@ -23,13 +24,14 @@ namespace Access.Data.Access
         private readonly string _doctorRoleCode;
         private readonly string _adminRoleCode;
 
-        public AuthenticationAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
+        public AuthenticationAccess(IOptions<SystemSettings> systemSettingsOptions, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
+            var systemSettings = systemSettingsOptions.Value;
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(systemSettings.TokenKey));
             _context = context;
             _userDataBuilder = userDataBuilder;
-            _doctorRoleCode = configuration["DoctorRole"];
-            _adminRoleCode = configuration["AdminRole"];
+            _doctorRoleCode = systemSettings.DoctorRole;
+            _adminRoleCode = systemSettings.AdminRole;
         }
 
         public async Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess)
