@@ -49,6 +49,16 @@ export class AuthApiService {
     return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request)
   }
 
+  public registerAadB2C = (request: RegisterUserRequest): Observable<AuthApiModel> => {
+    return this.http.post<AuthApiModel>(`${this.baseUrl}/register-user`, request)
+  }
+
+  public getProfile = () => {
+    return this.http.get(`https://graph.microsoft.com/v1.0/me`)
+  }
+
+
+
   public logout = (): Observable<LogoutApiModel> => {
     return this.http.get<LogoutApiModel>(`${this.baseUrl}/logout`)
   }

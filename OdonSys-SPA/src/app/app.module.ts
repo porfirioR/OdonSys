@@ -54,15 +54,6 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   });
 }
 
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  return {
-    interactionType: InteractionType.Redirect,
-    protectedResourceMap: new Map([
-      [ environment.apiUrl, [environment.resourceScope] ],
-    ])
-  };
-}
-
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
@@ -70,6 +61,17 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     authRequest: {
       scopes: environment.endpointScopes,
     },
+  };
+}
+
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+  const aux = new Map([])
+  return {
+    interactionType: InteractionType.Redirect,
+    protectedResourceMap: new Map([
+      [ environment.apiUrl, [environment.resourceScope] ],
+      [ environment.graphApi, [environment.graphApiScope] ]
+    ])
   };
 }
 

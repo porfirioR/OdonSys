@@ -38,6 +38,23 @@ namespace Host.Api.Controllers.Authentication
         }
 
         [Authorize]
+        [HttpPost("register-user")]
+        public async Task<AuthenticationModel> RegisterAzureAdB2C([FromBody] RegisterUserApiRequest apiRequest)
+        {
+            var register = _userHostBuilder.MapRegisterUserApiRequestToRegisterUserRequest(apiRequest);
+            var model = await _userManager.RegisterUserAsync(register);
+            return model;
+        }
+
+        [Authorize]
+        [HttpGet("profile/{userId}")]
+        public async Task<DoctorModel> GetUserProfile([FromRoute] string userId)
+        {
+            var model = await _userManager.GetByIdAsync(userId);
+            return model;
+        }
+
+        [Authorize]
         [HttpGet("logout")]
         public LogoutModel Logout()
         {

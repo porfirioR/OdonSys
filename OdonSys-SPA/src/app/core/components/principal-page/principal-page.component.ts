@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, EventType, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, filter, map, of, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { AuthApiService } from '../../services/api/auth-api.service';
+import { RegisterUserRequest } from '../../models/users/api/register-user-request';
+import { Country } from '../../enums/country.enum';
 
 @Component({
   selector: 'app-principal-page',
@@ -14,7 +17,8 @@ export class PrincipalPageComponent implements OnInit {
 
   constructor(
     private msalBroadcastService: MsalBroadcastService,
-    private msalService: MsalService
+    private msalService: MsalService,
+    private authApiService: AuthApiService
   ) {
     const account: Observable<AccountInfo | null> =
     this.msalBroadcastService.inProgress$.pipe(
@@ -33,76 +37,48 @@ export class PrincipalPageComponent implements OnInit {
         }
         return null;
       })
-    );
-  account.subscribe({
-    next: (accountInfo) => {
-      const isNewUser = accountInfo?.idTokenClaims?.[
-        environment.newUserKey
-      ] as boolean;
-      if (isNewUser) {
-        //TODO Go Backend and load data
-        // msalService.logout().subscribe()
+    )
+    account.pipe(
+      switchMap(accountInfo => {
+        return this.authApiService.getProfile()
+        // const isNewUser = accountInfo?.idTokenClaims?.[environment.newUserKey] as boolean;
+
+        // if (isNewUser) {
+        //   const newUser = new RegisterUserRequest(
+        //     accountInfo!.idTokenClaims?.['given_name'] as string,
+        //     accountInfo!.idTokenClaims?.['family_name'] as string,
+        //     accountInfo!.idTokenClaims?.['extension_Document'] as string,
+        //     '',
+        //     accountInfo!.idTokenClaims?.['extension_Phone'] as string,
+        //     accountInfo!.username,
+        //     accountInfo!.idTokenClaims?.['country'] as Country,
+        //     accountInfo!.idTokenClaims?.['extension_Document'] as string,
+        //     accountInfo!.idTokenClaims?.['extension_SecondName'] as string,
+        //     accountInfo!.localAccountId,
+        //     accountInfo!.name
+        //   )
+        //   return this.authApiService.registerAadB2C(newUser)
+        //   //TODO Go Backend and load data
+        //   // msalService.logout().subscribe()
+        // }
+        // return of()
       }
-      this.userData.id = accountInfo?.localAccountId;
-      this.userData.name = accountInfo?.name;
-      this.userData.email = accountInfo?.username;
-      // this.loaded = true;
-    },
-    error: (e) => {
-      throw e;
-    },
-  });
-    
+    )).subscribe({
+      next: (accountInfo) => {
+        
+        console.log(accountInfo)
+        // this.userData.id = accountInfo?.localAccountId;
+        // this.userData.name = accountInfo?.name;
+        // this.userData.email = accountInfo?.username;
+        // this.loaded = true;
+      },
+      error: (e) => {
+        throw e
+      }
+    })
   }
 
   ngOnInit() {
-    // this.msalBroadcastService.msalSubject$.pipe(
-    //   filter((msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS)
-    // ).subscribe({
-    //   next: (value: EventMessage) => {
-    //     const accountInfo: AccountInfo = value.payload as AccountInfo
-    //     const isNewUser = accountInfo.idTokenClaims?.[environment.newUserKey] as boolean
-    //     if (isNewUser) {
-    //       this.msalService.logout().subscribe()
-    //     }
-    //   }, error: (e) => {
-    //     throw e
-    //   }
-    // })
-
-    // this.msalBroadcastService.msalSubject$
-    //   .pipe(
-    //     filter((msg: EventMessage) => msg.eventType === EventType.ACCOUNT_ADDED || msg.eventType === EventType.ACCOUNT_REMOVED),
-    //   )
-    //   .subscribe((result: EventMessage) => {
-    //     if (this.msalService.instance.getAllAccounts().length === 0) {
-    //       window.location.pathname = "/";
-    //     } else {
-    //       // this.setLoginDisplay();
-    //     }
-    //   });
-    
-    // this.msalBroadcastService.inProgress$
-    //   .pipe(
-    //     filter((status: InteractionStatus) => status === InteractionStatus.None),
-    //   )
-    //   .subscribe(() => {
-    //     // this.setLoginDisplay();
-    //     this.checkAndSetActiveAccount();
-    //   })
   }
 
-  private checkAndSetActiveAccount = () => {
-    /**
-     * If no active account set but there are accounts signed in, sets first account to active account
-     * To use active account set here, subscribe to inProgress$ first in your component
-     * Note: Basic usage demonstrated. Your app may require more complicated account selection logic
-     */
-    // let activeAccount = this.msalService.instance.getActiveAccount();
-
-    // if (!activeAccount && this.msalService.instance.getAllAccounts().length > 0) {
-    //   let accounts = this.msalService.instance.getAllAccounts();
-    //   this.msalService.instance.setActiveAccount(accounts[0]);
-    // }
-  }
 }

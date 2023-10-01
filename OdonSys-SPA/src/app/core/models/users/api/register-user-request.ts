@@ -10,6 +10,8 @@ export class RegisterUserRequest {
     public email: string,
     public country: Country,
     public secondSurname?: string,
-    public middleName?: string
+    public middleName?: string,
+    public userId?: string,
+    public userName?: string,
   ) {}
 }
