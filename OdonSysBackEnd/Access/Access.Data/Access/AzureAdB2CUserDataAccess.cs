@@ -1,8 +1,8 @@
-﻿using Access.Contract.Azure;
-using Azure.Identity;
+﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
-using Microsoft.Graph.Models;
+using Microsoft.IdentityModel.Tokens;
 using Utilities.Configurations;
 using Utilities.Enums;
 
@@ -14,19 +14,11 @@ namespace Access.Data.Access
         private readonly AzureB2CSettings _azureB2CSettings;
         private readonly UserExtensionAccessModel _userExtensionAccessModel;
 
-        public AzureAdB2CUserDataAccess(IOptions<AzureB2CSettings> azureB2COptions)
+        public AzureAdB2CUserDataAccess(IOptions<AzureB2CSettings> azureB2COptions, IGraphService graphService)
         {
             _azureB2CSettings = azureB2COptions.Value;
-            var clientSecretCredential = new ClientSecretCredential(
-                _azureB2CSettings.TenantId,
-                _azureB2CSettings.ClientId,
-                _azureB2CSettings.ClientSecret
-            );
-            var scopes = new List<string>() {
-                "https://graph.microsoft.com/.default"
-            };
-            _azureGraphServiceClient = new GraphServiceClient(clientSecretCredential, scopes);
             _userExtensionAccessModel = new UserExtensionAccessModel(_azureB2CSettings.ADApplicationB2CId);
+            _azureGraphServiceClient = graphService.GetGraphServiceClient(_azureB2CSettings.TenantId, _azureB2CSettings.ClientId, _azureB2CSettings.ClientSecret);
         }
 
         public async Task<IEnumerable<UserGraphAccessModel>> GetUsersAsync()
@@ -44,7 +36,8 @@ namespace Access.Data.Access
                         _userExtensionAccessModel.Phone,
                         "country",
                         _userExtensionAccessModel.SecondName,
-                        _userExtensionAccessModel.SecondLastname
+                        _userExtensionAccessModel.SecondSurname,
+                        "identities"
                     };
                 }
             );
@@ -55,8 +48,8 @@ namespace Access.Data.Access
                 _ = additionalData.TryGetValue(_userExtensionAccessModel.Document, out var document);
                 _ = additionalData.TryGetValue(_userExtensionAccessModel.Phone, out var phone);
                 _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
-                _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondLastname, out var secondLastname);
-
+                _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
+                var roles = user.AppRoleAssignments.Select(x => x.PrincipalDisplayName);
                 return new UserGraphAccessModel(
                     user.Id!,
                     user.DisplayName!,
@@ -67,31 +60,61 @@ namespace Access.Data.Access
                     phone.ToString(),
                     Enum.Parse<Country>(user.Country),
                     secondName.ToString(),
-                    secondLastname.ToString()
+                    secondLastname.ToString(),
+                    roles
                 );
             });
             return userAccessModels;
         }
 
-        public async Task<User> GetByIdAsync(string id)
+        public async Task<UserGraphAccessModel> GetUserByIdAsync(string id)
         {
+            try
+            {
             var user = await _azureGraphServiceClient.Users[id].GetAsync((requestConfiguration) =>
             {
                 requestConfiguration.QueryParameters.Select = new string[]
                 {
                     "id",
                     "displayName", // username
-                    "mail",
+                    "email",
                     "givenName", // name
-                    "familyName", // surname
+                    "surname", // surname
                     _userExtensionAccessModel.Document,
                     _userExtensionAccessModel.Phone,
                     "country",
                     _userExtensionAccessModel.SecondName,
-                    _userExtensionAccessModel.SecondLastname
+                    _userExtensionAccessModel.SecondSurname,
+                    "identities"
                 };
             });
-            return user;
+
+            var additionalData = user.AdditionalData;
+            _ = additionalData.TryGetValue(_userExtensionAccessModel.Document, out var document);
+            _ = additionalData.TryGetValue(_userExtensionAccessModel.Phone, out var phone);
+            _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
+            _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
+            var roles = user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
+            return new UserGraphAccessModel(
+                user.Id!,
+                user.DisplayName!,
+                user.Identities.First(x => x.SignInType == _userExtensionAccessModel.EmailCode).IssuerAssignedId,
+                user.GivenName!,
+                user.Surname,
+                document?.ToString(),
+                phone?.ToString(),
+                Enum.Parse<Country>(user.Country),
+                secondName?.ToString(),
+                secondLastname?.ToString(),
+                roles
+            );
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 }

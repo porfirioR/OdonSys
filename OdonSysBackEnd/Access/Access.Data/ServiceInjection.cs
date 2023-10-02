@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.ClientProcedures;
 using Access.Contract.Clients;
 using Access.Contract.Files;
@@ -37,6 +38,9 @@ namespace Access.Data
             services.AddTransient<IRoleDataAccessBuilder, RoleDataAccessBuilder>();
             services.AddTransient<IToothDataAccessBuilder, ToothDataAccessBuilder>();
             services.AddTransient<IUserDataAccessBuilder, UserDataAccessBuilder>();
+
+            services.AddTransient<IGraphService, GraphService>();
+            services.AddTransient<IAzureAdB2CUserDataAccess, AzureAdB2CUserDataAccess>();
 
             services.AddHttpContextAccessor();
         }

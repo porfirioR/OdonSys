@@ -50,7 +50,7 @@ namespace Host.Api.Controllers.Authentication
         [HttpGet("profile/{userId}")]
         public async Task<DoctorModel> GetUserProfile([FromRoute] string userId)
         {
-            var model = await _userManager.GetByIdAsync(userId);
+            var model = await _userManager.GetUserFromGraphApiByIdAsync(userId);
             return model;
         }
 

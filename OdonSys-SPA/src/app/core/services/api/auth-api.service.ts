@@ -9,6 +9,7 @@ import { RegisterUserRequest } from '../../models/users/api/register-user-reques
 import { LogoutApiModel } from '../../models/users/api/logout-api-model';
 import { UserInfoService } from '../shared/user-info.service';
 import { RoleApiService } from './role-api.service';
+import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,8 +54,8 @@ export class AuthApiService {
     return this.http.post<AuthApiModel>(`${this.baseUrl}/register-user`, request)
   }
 
-  public getProfile = () => {
-    return this.http.get(`https://graph.microsoft.com/v1.0/me`)
+  public getProfile = (userId: string): Observable<DoctorApiModel> => {
+    return this.http.get<DoctorApiModel>(`${this.baseUrl}/profile/${userId}`)
   }
 
 

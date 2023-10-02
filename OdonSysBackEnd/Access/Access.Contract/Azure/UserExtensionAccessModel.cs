@@ -8,17 +8,17 @@ namespace Access.Contract.Azure
         {
 
             AadAppB2CId = aadAppB2CId.RemoveDash();
-
-            Document = $"extension_{aadAppB2CId}_Document";
-            Phone = $"extension_{aadAppB2CId}_Phone";
-            SecondName = $"extension_{aadAppB2CId}_SecondName";
-            SecondLastname = $"extension_{aadAppB2CId}_SecondLastname";
+            Document = $"extension_{AadAppB2CId}_Document";
+            Phone = $"extension_{AadAppB2CId}_Phone";
+            SecondName = $"extension_{AadAppB2CId}_SecondName";
+            SecondSurname = $"extension_{AadAppB2CId}_SecondSurname";
         }
 
         public string AadAppB2CId { get; }
         public string Document { get; }
         public string Phone { get; }
         public string SecondName { get; }
-        public string SecondLastname { get; }
+        public string SecondSurname { get; }
+        public string EmailCode { get; } = "emailAddress";
     }
 }

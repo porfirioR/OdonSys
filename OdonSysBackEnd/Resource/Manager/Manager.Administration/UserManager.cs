@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
@@ -12,12 +13,19 @@ namespace Manager.Administration
         private readonly IUserDataAccess _userDataAccess;
         private readonly IAuthenticationAccess _authenticationDataAccess;
         private readonly IUserManagerBuilder _userManagerBuilder;
+        private readonly IAzureAdB2CUserDataAccess _azureAdB2CUserDataAccess;
 
-        public UserManager(IUserDataAccess userDataAccess, IAuthenticationAccess authenticationDataAccess, IUserManagerBuilder userManagerBuilder)
+        public UserManager(
+            IUserDataAccess userDataAccess,
+            IAuthenticationAccess authenticationDataAccess,
+            IUserManagerBuilder userManagerBuilder,
+            IAzureAdB2CUserDataAccess azureAdB2CUserDataAccess
+        )
         {
             _userDataAccess = userDataAccess;
             _authenticationDataAccess = authenticationDataAccess;
             _userManagerBuilder = userManagerBuilder;
+            _azureAdB2CUserDataAccess = azureAdB2CUserDataAccess;
         }
 
         public async Task<AuthenticationModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
@@ -107,5 +115,20 @@ namespace Manager.Administration
             var sameUserData = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
             return sameUserData.Any();
         }
+
+        public async Task<IEnumerable<DoctorModel>> GetAllUsersByAzureAsync()
+        {
+            var accessModelList = await _azureAdB2CUserDataAccess.GetUsersAsync();
+            var response = accessModelList.Select(_userManagerBuilder.MapDoctorDataAccessModelToDoctorModel);
+            return response;
+        }
+
+        public async Task<DoctorModel> GetUserFromGraphApiByIdAsync(string id)
+        {
+            var accessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(id);
+            var model = _userManagerBuilder.MapDoctorDataAccessModelToDoctorModel(accessModel);
+            return model;
+        }
+
     }
 }

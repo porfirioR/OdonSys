@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -15,6 +14,7 @@ namespace Host.Api
         private const string _policyName = "AzureAdB2C_OR_JwtBearer";
         public void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
         {
+            //services.AddMicrosoftIdentityWebApiAuthentication(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C);
             services.AddAuthentication(_policyName)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
                 {
@@ -27,14 +27,25 @@ namespace Host.Api
                         RoleClaimType = Claims.UserRoles
                     };
                 })
-                .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options));
-
-            services
-                .AddAuthentication(Constants.AzureAdB2C)
+                .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options))
                 .AddMicrosoftIdentityWebApi(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
-                .EnableTokenAcquisitionToCallDownstreamApi()
-                .AddInMemoryTokenCaches();
 
+                ;
+            //services
+            //    .AddAuthentication(Constants.AzureAdB2C)
+            //    .AddMicrosoftIdentityWebApi(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
+            //    //.EnableTokenAcquisitionToCallDownstreamApi()
+            //    //.AddInMemoryTokenCaches()
+            //    ;
+
+            services.Configure<JwtBearerOptions>(Constants.AzureAdB2C, options =>
+            {
+                //options.TokenValidationParameters.RoleClaimType = Claims.UserRoles;
+                options.TokenValidationParameters.ValidAudiences = new[]
+                {
+                    MainConfiguration.Authentication.AzureAdB2C.ApiApplicationId
+                };
+            });
             //services.AddInMemoryTokenCaches();
         }
 

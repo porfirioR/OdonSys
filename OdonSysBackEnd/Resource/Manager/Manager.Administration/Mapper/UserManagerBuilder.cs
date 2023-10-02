@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
@@ -28,6 +29,22 @@ namespace Manager.Administration.Mapper
             doctorDataAccessModel.Active,
             doctorDataAccessModel.Approved,
             doctorDataAccessModel.Roles
+        );
+
+        public DoctorModel MapDoctorDataAccessModelToDoctorModel(UserGraphAccessModel userGraphDataAccessModel) => new(
+            userGraphDataAccessModel.Id,
+            userGraphDataAccessModel.Name,
+            userGraphDataAccessModel.SecondName,
+            userGraphDataAccessModel.Surname,
+            userGraphDataAccessModel.SecondLastname,
+            userGraphDataAccessModel.Document,
+            userGraphDataAccessModel.Country,
+            userGraphDataAccessModel.Email,
+            userGraphDataAccessModel.Phone,
+            userGraphDataAccessModel.Username,
+            true,
+            true,
+            userGraphDataAccessModel.Roles
         );
 
         public UserDataAccessRequest MapRegisterUserRequestToUserDataAccessRequest(RegisterUserRequest registerUserRequest) => new(

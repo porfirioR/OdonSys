@@ -14,5 +14,6 @@
         public string ResetPasswordPolicyId { get; set; }
         public string ADApplicationB2CId { get; set; }
         public string Scopes { get; set; }
+        public string ApiApplicationId { get; set; }
     }
 }

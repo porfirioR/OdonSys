@@ -14,6 +14,7 @@ import { Country } from '../../enums/country.enum';
 })
 export class PrincipalPageComponent implements OnInit {
   public userData: any = {}
+  protected loaded = false
 
   constructor(
     private msalBroadcastService: MsalBroadcastService,
@@ -40,7 +41,7 @@ export class PrincipalPageComponent implements OnInit {
     )
     account.pipe(
       switchMap(accountInfo => {
-        return this.authApiService.getProfile()
+        return this.authApiService.getProfile(accountInfo!.localAccountId)
         // const isNewUser = accountInfo?.idTokenClaims?.[environment.newUserKey] as boolean;
 
         // if (isNewUser) {
@@ -65,7 +66,7 @@ export class PrincipalPageComponent implements OnInit {
       }
     )).subscribe({
       next: (accountInfo) => {
-        
+        this.loaded = true
         console.log(accountInfo)
         // this.userData.id = accountInfo?.localAccountId;
         // this.userData.name = accountInfo?.name;
@@ -73,6 +74,7 @@ export class PrincipalPageComponent implements OnInit {
         // this.loaded = true;
       },
       error: (e) => {
+        // this.loaded = true
         throw e
       }
     })

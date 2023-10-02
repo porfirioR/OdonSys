@@ -70,9 +70,8 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     interactionType: InteractionType.Redirect,
     protectedResourceMap: new Map([
       [ environment.apiUrl, [environment.resourceScope] ],
-      [ environment.graphApi, [environment.graphApiScope] ]
     ])
-  };
+  }
 }
 
 @NgModule({
