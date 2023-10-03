@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Utilities.Enums;
 
 namespace AcceptanceTest.Host.Api
 {
@@ -14,9 +15,10 @@ namespace AcceptanceTest.Host.Api
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            Environment.SetEnvironmentVariable("Environment", OdonSysEnvironment.Local.ToString().ToLowerInvariant());
             builder.ConfigureServices(services =>
             {
-                var dbDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
+                var dbDescriptor = services.SingleOrDefault(x => x.ServiceType == typeof(DbContextOptions<DataContext>));
                 if (dbDescriptor != null)
                 {
                     services.Remove(dbDescriptor);

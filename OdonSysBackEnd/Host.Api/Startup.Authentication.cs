@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Utilities;
 using Utilities.Configurations;
+using Utilities.Enums;
 
 namespace Host.Api
 {
@@ -14,39 +16,39 @@ namespace Host.Api
         private const string _policyName = "AzureAdB2C_OR_JwtBearer";
         public void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddMicrosoftIdentityWebApiAuthentication(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C);
-            services.AddAuthentication(_policyName)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
-                {
-                    opt.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(MainConfiguration.SystemSettings.TokenKey)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        RoleClaimType = Claims.UserRoles
-                    };
-                })
-                .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options))
-                .AddMicrosoftIdentityWebApi(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
-
-                ;
-            //services
-            //    .AddAuthentication(Constants.AzureAdB2C)
-            //    .AddMicrosoftIdentityWebApi(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
-            //    //.EnableTokenAcquisitionToCallDownstreamApi()
-            //    //.AddInMemoryTokenCaches()
-            //    ;
-
-            services.Configure<JwtBearerOptions>(Constants.AzureAdB2C, options =>
+            var environment = Environment.GetEnvironmentVariable("Environment");
+            if (string.Equals(environment, OdonSysEnvironment.Test.ToString(), StringComparison.OrdinalIgnoreCase))
             {
-                //options.TokenValidationParameters.RoleClaimType = Claims.UserRoles;
-                options.TokenValidationParameters.ValidAudiences = new[]
+                services.AddAuthentication(_policyName)
+                    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>
+                    {
+                        opt.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(MainConfiguration.SystemSettings.TokenKey)),
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                            RoleClaimType = Claims.UserRoles
+                        };
+                    })
+                    .AddPolicyScheme(_policyName, _policyName, options => PolicySchemeOptions(options));
+            }
+            else
+            {
+                services.AddMicrosoftIdentityWebApiAuthentication(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
+                .EnableTokenAcquisitionToCallDownstreamApi()
+                .AddInMemoryTokenCaches();
+
+                services.Configure<JwtBearerOptions>(Constants.AzureAdB2C, options =>
                 {
+                    options.TokenValidationParameters.RoleClaimType = Claims.UserRoles;
+                    options.TokenValidationParameters.ValidAudiences = new[]
+                    {
                     MainConfiguration.Authentication.AzureAdB2C.ApiApplicationId
-                };
-            });
-            //services.AddInMemoryTokenCaches();
+                    };
+                });
+                services.AddInMemoryTokenCaches();
+            }
         }
 
         private void PolicySchemeOptions(PolicySchemeOptions options)
