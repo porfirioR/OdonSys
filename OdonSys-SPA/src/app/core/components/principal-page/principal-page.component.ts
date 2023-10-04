@@ -41,28 +41,10 @@ export class PrincipalPageComponent implements OnInit {
     )
     account.pipe(
       switchMap(accountInfo => {
-        return this.authApiService.getProfile(accountInfo!.localAccountId)
-        // const isNewUser = accountInfo?.idTokenClaims?.[environment.newUserKey] as boolean;
-
-        // if (isNewUser) {
-        //   const newUser = new RegisterUserRequest(
-        //     accountInfo!.idTokenClaims?.['given_name'] as string,
-        //     accountInfo!.idTokenClaims?.['family_name'] as string,
-        //     accountInfo!.idTokenClaims?.['extension_Document'] as string,
-        //     '',
-        //     accountInfo!.idTokenClaims?.['extension_Phone'] as string,
-        //     accountInfo!.username,
-        //     accountInfo!.idTokenClaims?.['country'] as Country,
-        //     accountInfo!.idTokenClaims?.['extension_Document'] as string,
-        //     accountInfo!.idTokenClaims?.['extension_SecondName'] as string,
-        //     accountInfo!.localAccountId,
-        //     accountInfo!.name
-        //   )
-        //   return this.authApiService.registerAadB2C(newUser)
-        //   //TODO Go Backend and load data
-        //   // msalService.logout().subscribe()
-        // }
-        // return of()
+        const isNewUser = accountInfo?.idTokenClaims?.[environment.newUserKey] as boolean;
+        return isNewUser ? 
+          this.authApiService.registerAadB2C() :
+          this.authApiService.getProfile(accountInfo!.localAccountId)
       }
     )).subscribe({
       next: (accountInfo) => {

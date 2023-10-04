@@ -68,6 +68,11 @@ namespace Access.Data.Access
             return authAccessModel;
         }
 
+        public Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);

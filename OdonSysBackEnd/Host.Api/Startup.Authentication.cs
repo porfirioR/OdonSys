@@ -35,7 +35,7 @@ namespace Host.Api
             }
             else
             {
-                services.AddMicrosoftIdentityWebApiAuthentication(configuration, AzureB2CSettings.ConfigSection, Constants.AzureAdB2C)
+                services.AddMicrosoftIdentityWebApiAuthentication(configuration, AzureB2CSettings.ConfigSection)
                 .EnableTokenAcquisitionToCallDownstreamApi()
                 .AddInMemoryTokenCaches();
 
@@ -44,7 +44,7 @@ namespace Host.Api
                     options.TokenValidationParameters.RoleClaimType = Claims.UserRoles;
                     options.TokenValidationParameters.ValidAudiences = new[]
                     {
-                    MainConfiguration.Authentication.AzureAdB2C.ApiApplicationId
+                        MainConfiguration.Authentication.AzureAdB2C.ApiApplicationId
                     };
                 });
                 services.AddInMemoryTokenCaches();

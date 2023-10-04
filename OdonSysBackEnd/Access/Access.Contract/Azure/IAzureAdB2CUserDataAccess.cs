@@ -1,10 +1,9 @@
-﻿using Microsoft.Graph.Models;
-
-namespace Access.Contract.Azure
+﻿namespace Access.Contract.Azure
 {
     public interface IAzureAdB2CUserDataAccess
     {
         Task<IEnumerable<UserGraphAccessModel>> GetUsersAsync();
-        Task<UserGraphAccessModel> GetUserByIdAsync(string id);
+        Task<UserGraphAccessModel> GetUserByIdAsync(string userId);
+        Task<string> SetRoleToUserAsync(string userId);
     }
 }

@@ -67,11 +67,11 @@ namespace Access.Data.Access
             return userAccessModels;
         }
 
-        public async Task<UserGraphAccessModel> GetUserByIdAsync(string id)
+        public async Task<UserGraphAccessModel> GetUserByIdAsync(string userId)
         {
             try
             {
-            var user = await _azureGraphServiceClient.Users[id].GetAsync((requestConfiguration) =>
+            var user = await _azureGraphServiceClient.Users[userId].GetAsync((requestConfiguration) =>
             {
                 requestConfiguration.QueryParameters.Select = new string[]
                 {
@@ -115,6 +115,11 @@ namespace Access.Data.Access
                 Console.WriteLine(ex);
                 throw;
             }
+        }
+
+        public Task<string> SetRoleToUserAsync(string userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

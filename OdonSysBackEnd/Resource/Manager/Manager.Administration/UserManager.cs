@@ -130,5 +130,10 @@ namespace Manager.Administration
             return model;
         }
 
+        public async Task<DoctorModel> RegisterUserAsync(string userId)
+        {
+            var accessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(userId);
+            throw new NotImplementedException();
+        }
     }
 }

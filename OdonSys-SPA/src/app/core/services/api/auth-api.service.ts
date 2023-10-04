@@ -50,15 +50,13 @@ export class AuthApiService {
     return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request)
   }
 
-  public registerAadB2C = (request: RegisterUserRequest): Observable<AuthApiModel> => {
-    return this.http.post<AuthApiModel>(`${this.baseUrl}/register-user`, request)
+  public registerAadB2C = (): Observable<AuthApiModel> => {
+    return this.http.post<AuthApiModel>(`${this.baseUrl}/register-user`, null)
   }
 
   public getProfile = (userId: string): Observable<DoctorApiModel> => {
     return this.http.get<DoctorApiModel>(`${this.baseUrl}/profile/${userId}`)
   }
-
-
 
   public logout = (): Observable<LogoutApiModel> => {
     return this.http.get<LogoutApiModel>(`${this.baseUrl}/logout`)

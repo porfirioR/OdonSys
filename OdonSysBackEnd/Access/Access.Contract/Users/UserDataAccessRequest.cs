@@ -15,5 +15,8 @@ namespace Access.Contract.Users
         string Email,
         Country Country,
         bool Active
-    );
+    )
+    {
+        public string ExternalUserId { get; set; }
+    };
 }
