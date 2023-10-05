@@ -16,5 +16,8 @@ namespace Contract.Administration.Users
         bool Active,
         bool Approved,
         IEnumerable<string> Roles
-    );
+    )
+    {
+        public string ExternalUserId { get; set; }
+    };
 }

@@ -31,12 +31,12 @@ namespace Manager.Administration.Mapper
             doctorDataAccessModel.Roles
         );
 
-        public DoctorModel MapDoctorDataAccessModelToDoctorModel(UserGraphAccessModel userGraphDataAccessModel) => new(
+        public DoctorModel MapUserGraphAccessModelToDoctorModel(UserGraphAccessModel userGraphDataAccessModel) => new(
             userGraphDataAccessModel.Id,
             userGraphDataAccessModel.Name,
-            userGraphDataAccessModel.SecondName,
+            userGraphDataAccessModel.MiddleName,
             userGraphDataAccessModel.Surname,
-            userGraphDataAccessModel.SecondLastname,
+            userGraphDataAccessModel.SecondSurname,
             userGraphDataAccessModel.Document,
             userGraphDataAccessModel.Country,
             userGraphDataAccessModel.Email,
@@ -82,5 +82,27 @@ namespace Manager.Administration.Mapper
             userDataAccessModel.Approved,
             userDataAccessModel.Roles
         );
+
+        public UserDataAccessRequest MapUserGraphAccessModelToRegisterUserRequest(UserGraphAccessModel userGraphAccessModel)
+        {
+            var registerUserRequest = new UserDataAccessRequest(
+                string.Empty,
+                userGraphAccessModel.Name,
+                userGraphAccessModel.MiddleName,
+                userGraphAccessModel.Surname,
+                userGraphAccessModel.SecondSurname,
+                userGraphAccessModel.Document,
+                string.Empty,
+                userGraphAccessModel.Phone,
+                userGraphAccessModel.Email,
+                userGraphAccessModel.Country,
+                true
+            )
+            {
+                ExternalUserId = userGraphAccessModel.Id,
+                Username = userGraphAccessModel.Username
+            };
+            return registerUserRequest;
+        }
     }
 }

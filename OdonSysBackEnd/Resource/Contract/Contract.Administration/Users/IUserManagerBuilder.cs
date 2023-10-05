@@ -12,6 +12,7 @@ namespace Contract.Administration.Users
         UserDataAccessRequest MapUpdateDoctorRequestToUserDataAccessRequest(UpdateDoctorRequest updateDoctorRequest);
         UserModel MapUserDataAccessModelToUserModel(UserDataAccessModel userDataAccessModel);
         DoctorModel MapDoctorDataAccessModelToDoctorModel(DoctorDataAccessModel doctorDataAccessModel);
-        DoctorModel MapDoctorDataAccessModelToDoctorModel(UserGraphAccessModel doctorDataAccessModel);
+        DoctorModel MapUserGraphAccessModelToDoctorModel(UserGraphAccessModel userGraphAccessModel);
+        UserDataAccessRequest MapUserGraphAccessModelToRegisterUserRequest(UserGraphAccessModel userGraphAccessModel);
     }
 }

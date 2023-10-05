@@ -11,24 +11,25 @@ namespace Access.Data.Mapper
             userClient.UserId
         );
 
-        public User MapUserDataAccessRequestToUser(UserDataAccessRequest request, User user = null)
+        public User MapUserDataAccessRequestToUser(UserDataAccessRequest request, User entity = null)
         {
-            user ??= new User();
-            user.Email = string.IsNullOrEmpty(request.Email) ? user.Email : request.Email;
+            entity ??= new User();
+            entity.Email = string.IsNullOrEmpty(request.Email) ? entity.Email : request.Email;
             if (!string.IsNullOrEmpty(request.Id))
             {
-                user.Id = new Guid(request.Id);
+                entity.Id = new Guid(request.Id);
             }
-            user.Name = request.Name;
-            user.MiddleName = request.MiddleName;
-            user.Surname = request.Surname;
-            user.SecondSurname = request.SecondSurname;
-            user.Document = request.Document;
-            user.Country = request.Country;
-            user.Email = user.Email;
-            user.Phone = request.Phone;
-            user.Active = request.Active;
-            return user;
+            entity.Name = request.Name;
+            entity.MiddleName = request.MiddleName;
+            entity.Surname = request.Surname;
+            entity.SecondSurname = request.SecondSurname;
+            entity.Document = request.Document;
+            entity.Country = request.Country;
+            entity.Email = entity.Email;
+            entity.Phone = request.Phone;
+            entity.Active = request.Active;
+            entity.ExternalUserId = request.ExternalUserId;
+            return entity;
         }
 
         public DoctorDataAccessModel MapUserToDoctorDataAccessModel(User user) => new(

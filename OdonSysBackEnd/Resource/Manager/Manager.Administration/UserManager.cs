@@ -34,8 +34,8 @@ namespace Manager.Administration
             {
                 throw new AggregateException("Ya existe un usuario con ese mismo documento o correo.");
             }
-            var dataAccess = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
-            var accessModel = await _authenticationDataAccess.RegisterUserAsync(dataAccess);
+            var accessRequest = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
+            var accessModel = await _authenticationDataAccess.RegisterUserAsync(accessRequest);
             var response = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return response;
         }
@@ -119,21 +119,24 @@ namespace Manager.Administration
         public async Task<IEnumerable<DoctorModel>> GetAllUsersByAzureAsync()
         {
             var accessModelList = await _azureAdB2CUserDataAccess.GetUsersAsync();
-            var response = accessModelList.Select(_userManagerBuilder.MapDoctorDataAccessModelToDoctorModel);
-            return response;
+            var modelList = accessModelList.Select(_userManagerBuilder.MapUserGraphAccessModelToDoctorModel);
+            return modelList;
         }
 
         public async Task<DoctorModel> GetUserFromGraphApiByIdAsync(string id)
         {
             var accessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(id);
-            var model = _userManagerBuilder.MapDoctorDataAccessModelToDoctorModel(accessModel);
+            var model = _userManagerBuilder.MapUserGraphAccessModelToDoctorModel(accessModel);
             return model;
         }
 
-        public async Task<DoctorModel> RegisterUserAsync(string userId)
+        public async Task<UserModel> RegisterUserAsync(string userId)
         {
-            var accessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(userId);
-            throw new NotImplementedException();
+            var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(userId);
+            var accessRequest = _userManagerBuilder.MapUserGraphAccessModelToRegisterUserRequest(userGraphAccessModel);
+            var acceassModel = await _authenticationDataAccess.RegisterAzureAdB2CUserAsync(accessRequest);
+            var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(acceassModel);
+            return model;
         }
     }
 }

@@ -68,9 +68,36 @@ namespace Access.Data.Access
             return authAccessModel;
         }
 
-        public Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
+        public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
         {
-            throw new NotImplementedException();
+            var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
+            var entity = await _context.Users
+                .FirstOrDefaultAsync(x => x.Document == request.Document && string.IsNullOrEmpty(x.ExternalUserId));
+            if (entity != null)
+            {
+                entity.ExternalUserId = request.ExternalUserId;
+                _context.Users.Update(entity);
+            }
+            else
+            {
+                var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
+                entity = request;
+                request.UserRoles = new List<UserRole>
+                {
+                    new UserRole
+                    {
+                        User = entity,
+                        Role = role
+                    }
+                };
+                await _context.AddAsync(entity);
+
+            }
+            await _context.SaveChangesAsync();
+            var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
+            var roleCodes = await RoleCodesAsync(entity.Id);
+            userAccessModel.Roles = roleCodes;
+            return userAccessModel;
         }
 
         public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
@@ -87,8 +114,8 @@ namespace Access.Data.Access
             entity.IsDoctor = true;
             entity.Active = true;
             var existUser = await _context.Users
-                                    .AsNoTracking()
-                                    .AnyAsync();
+                .AsNoTracking()
+                .AnyAsync();
 
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
             if (!existUser)
@@ -114,8 +141,8 @@ namespace Access.Data.Access
             {
                 var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
                 var roleCodes = await RoleCodesAsync(entity.Id);
-                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
+                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 var userResponse = new AuthenticationAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
                 return userResponse;
             }

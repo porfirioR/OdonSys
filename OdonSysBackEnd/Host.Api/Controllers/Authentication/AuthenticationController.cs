@@ -39,7 +39,7 @@ namespace Host.Api.Controllers.Authentication
 
         [Authorize]
         [HttpPost("register-user")]
-        public async Task<DoctorModel> RegisterAzureAdB2C()
+        public async Task<UserModel> RegisterAzureAdB2C()
         {
             var userId = UserIdAadB2C;
             var userModel = await _userManager.RegisterUserAsync(userId);
@@ -50,8 +50,6 @@ namespace Host.Api.Controllers.Authentication
         [HttpGet("profile/{userId}")]
         public async Task<DoctorModel> GetUserProfile([FromRoute] string userId)
         {
-            var aux = HttpContext.User;
-            Console.Write(aux);
             var model = await _userManager.GetUserFromGraphApiByIdAsync(userId);
             return model;
         }

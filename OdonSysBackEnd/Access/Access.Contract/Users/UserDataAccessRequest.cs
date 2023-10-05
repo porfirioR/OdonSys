@@ -18,5 +18,6 @@ namespace Access.Contract.Users
     )
     {
         public string ExternalUserId { get; set; }
+        public string Username { get; set; }
     };
 }

@@ -43,7 +43,6 @@ namespace Access.Data.Access
             var persistRoles = currentRolesOfUser.Where(x => accessRequest.Roles.Contains(x.Code));
             var deleteRoleIds = currentRolesOfUser.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => x.Id);
 
-
             var newRoleCodes = accessRequest.Roles.Where(x => !roleCodes.Contains(x));
             var allRoles = await _context.Roles
                                 .AsNoTracking()

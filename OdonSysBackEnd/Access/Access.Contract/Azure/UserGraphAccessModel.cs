@@ -12,8 +12,8 @@ namespace Access.Contract.Azure
         string Document,
         string Phone,
         Country Country,
-        string SecondName,
-        string SecondLastname,
+        string MiddleName,
+        string SecondSurname,
         IEnumerable<string> Roles
     );
 }
