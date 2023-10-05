@@ -100,9 +100,17 @@ namespace Manager.Administration.Mapper
             )
             {
                 ExternalUserId = userGraphAccessModel.Id,
-                Username = userGraphAccessModel.Username
+                UserName = userGraphAccessModel.Username
             };
             return registerUserRequest;
         }
+
+        public UserModel MapUserGraphAccessModelToUserModel(UserGraphAccessModel userGraphAccessModel) => new(
+            userGraphAccessModel.Id,
+            userGraphAccessModel.Username,
+            userGraphAccessModel.Active,
+            userGraphAccessModel.Approved,
+            userGraphAccessModel.Roles
+        );
     }
 }

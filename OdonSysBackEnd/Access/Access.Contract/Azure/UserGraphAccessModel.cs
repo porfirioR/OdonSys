@@ -13,7 +13,11 @@ namespace Access.Contract.Azure
         string Phone,
         Country Country,
         string MiddleName,
-        string SecondSurname,
-        IEnumerable<string> Roles
-    );
+        string SecondSurname
+    )
+    {
+        public IEnumerable<string> Roles { get; set; }
+        public bool Active { get; set; }
+        public bool Approved { get; set; }
+    };
 }

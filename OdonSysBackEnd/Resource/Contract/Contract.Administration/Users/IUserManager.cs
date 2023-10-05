@@ -15,7 +15,7 @@ namespace Contract.Administration.Users
         Task<AuthenticationModel> RegisterUserAsync(RegisterUserRequest createUserRequest);
         Task<DoctorModel> UpdateAsync(UpdateDoctorRequest updateUserRequest);
         bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal);
-        Task<DoctorModel> GetUserFromGraphApiByIdAsync(string id);
+        Task<UserModel> GetUserFromGraphApiByIdAsync(string id);
         Task<IEnumerable<DoctorModel>> GetAllUsersByAzureAsync();
         Task<UserModel> RegisterUserAsync(string userId);
     }

@@ -1,5 +1,6 @@
 ﻿using Access.Contract.Authentication;
 using Access.Contract.Azure;
+using Access.Sql.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
 using Microsoft.IdentityModel.Tokens;
@@ -60,17 +61,17 @@ namespace Access.Data.Access
                     phone.ToString(),
                     Enum.Parse<Country>(user.Country),
                     secondName.ToString(),
-                    secondLastname.ToString(),
-                    roles
-                );
+                    secondLastname.ToString()
+                )
+                {
+                    Roles = roles
+                };
             });
             return userAccessModels;
         }
 
         public async Task<UserGraphAccessModel> GetUserByIdAsync(string userId)
         {
-            try
-            {
             var user = await _azureGraphServiceClient.Users[userId].GetAsync((requestConfiguration) =>
             {
                 requestConfiguration.QueryParameters.Select = new string[]
@@ -95,7 +96,7 @@ namespace Access.Data.Access
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
             var roles = user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
-            return new UserGraphAccessModel(
+            return new(
                 user.Id!,
                 user.DisplayName!,
                 user.Identities.First(x => x.SignInType == _userExtensionAccessModel.EmailCode).IssuerAssignedId,
@@ -105,16 +106,11 @@ namespace Access.Data.Access
                 phone?.ToString(),
                 Enum.Parse<Country>(user.Country),
                 secondName?.ToString(),
-                secondLastname?.ToString(),
-                roles
-            );
-
-            }
-            catch (Exception ex)
+                secondLastname?.ToString()
+            )
             {
-                Console.WriteLine(ex);
-                throw;
-            }
+                Roles = roles
+            };
         }
 
         public Task<string> SetRoleToUserAsync(string userId)

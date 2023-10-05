@@ -136,7 +136,7 @@ namespace Access.Data.Access
                             .Include(x => x.UserRoles)
                             .ThenInclude(x => x.Role)
                             .AsNoTracking()
-                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id) || x.ExternalUserId == id);
             return entity ?? throw new KeyNotFoundException($"id {id}");
         }
     }

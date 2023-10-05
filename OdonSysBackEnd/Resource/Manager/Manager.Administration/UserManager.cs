@@ -123,10 +123,14 @@ namespace Manager.Administration
             return modelList;
         }
 
-        public async Task<DoctorModel> GetUserFromGraphApiByIdAsync(string id)
+        public async Task<UserModel> GetUserFromGraphApiByIdAsync(string id)
         {
-            var accessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(id);
-            var model = _userManagerBuilder.MapUserGraphAccessModelToDoctorModel(accessModel);
+            var userDataAccess = await _userDataAccess.GetByIdAsync(id);
+            var adB2CUserAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(id);
+            adB2CUserAccessModel.Approved = userDataAccess.Approved;
+            adB2CUserAccessModel.Active = userDataAccess.Active;
+            adB2CUserAccessModel.Roles = userDataAccess.Roles;
+            var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(adB2CUserAccessModel);
             return model;
         }
 

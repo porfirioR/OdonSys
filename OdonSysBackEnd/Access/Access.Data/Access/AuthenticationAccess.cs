@@ -91,7 +91,6 @@ namespace Access.Data.Access
                     }
                 };
                 await _context.AddAsync(entity);
-
             }
             await _context.SaveChangesAsync();
             var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);

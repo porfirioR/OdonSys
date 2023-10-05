@@ -4,6 +4,8 @@ using Host.Api.Contract.Authorization;
 using Host.Api.Contract.MapBuilders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Utilities;
 
 namespace Host.Api.Controllers.Authentication
 {
@@ -43,14 +45,25 @@ namespace Host.Api.Controllers.Authentication
         {
             var userId = UserIdAadB2C;
             var userModel = await _userManager.RegisterUserAsync(userId);
+            foreach (var role in userModel.Roles)
+            {
+                var claim = new Claim(Claims.UserRoles, role);
+                _ = HttpContext.User.Claims.Append(claim);
+            }
             return userModel;
         }
 
         [Authorize]
-        [HttpGet("profile/{userId}")]
-        public async Task<DoctorModel> GetUserProfile([FromRoute] string userId)
+        [HttpGet("profile")]
+        public async Task<UserModel> GetUserProfile()
         {
+            var userId = UserIdAadB2C;
             var model = await _userManager.GetUserFromGraphApiByIdAsync(userId);
+            foreach (var role in model.Roles)
+            {
+                var claim = new Claim(Claims.UserRoles, role);
+                _ = HttpContext.User.Claims.Append(claim);
+            }
             return model;
         }
 
