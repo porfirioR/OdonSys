@@ -10,6 +10,7 @@ import { LogoutApiModel } from '../../models/users/api/logout-api-model';
 import { UserInfoService } from '../shared/user-info.service';
 import { RoleApiService } from './role-api.service';
 import { DoctorApiModel } from '../../models/api/doctor/doctor-api-model';
+import { UserApiModel } from '../../models/users/api/user-api-model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,12 +51,12 @@ export class AuthApiService {
     return this.http.post<AuthApiModel>(`${this.baseUrl}/register`, request)
   }
 
-  public registerAadB2C = (): Observable<AuthApiModel> => {
-    return this.http.post<AuthApiModel>(`${this.baseUrl}/register-user`, null)
+  public registerAadB2C = (): Observable<UserApiModel> => {
+    return this.http.post<UserApiModel>(`${this.baseUrl}/register-user`, null)
   }
 
-  public getProfile = (userId: string): Observable<DoctorApiModel> => {
-    return this.http.get<DoctorApiModel>(`${this.baseUrl}/profile/${userId}`)
+  public getProfile = (): Observable<DoctorApiModel> => {
+    return this.http.get<DoctorApiModel>(`${this.baseUrl}/profile`)
   }
 
   public logout = (): Observable<LogoutApiModel> => {

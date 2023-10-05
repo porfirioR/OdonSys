@@ -29,6 +29,10 @@ export class UserInfoService {
     this.localStorageService.setData(this.userKey, JSON.stringify(auth.user))
   }
 
+  public setUser = (user: UserApiModel): void => {
+    this.localStorageService.setData(this.userKey, JSON.stringify(user))
+  }
+
   public setRoles = (roles: string[]) => {
     const user = this.getUserData()
     user.roles = roles
