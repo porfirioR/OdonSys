@@ -1,6 +1,5 @@
 ﻿using Access.Contract.Authentication;
 using Access.Contract.Azure;
-using Access.Sql.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
 using Microsoft.IdentityModel.Tokens;
@@ -96,7 +95,6 @@ namespace Access.Data.Access
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
             var roles = !user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
-
             return new(
                 user.Id!,
                 user.DisplayName!,
@@ -114,9 +112,15 @@ namespace Access.Data.Access
             };
         }
 
-        public Task<string> SetRoleToUserAsync(string userId)
+        public async Task<string> UpdateUserAsync(string userId, string name, string surname)
         {
-            throw new NotImplementedException();
+            var displayName = @$"{name[..1].ToUpper()}{surname[0].ToString().ToLower()}{surname[1..]}";
+            var user = new Microsoft.Graph.Models.User
+            {
+                DisplayName = displayName
+            };
+            _ = await _azureGraphServiceClient.Users[userId].PatchAsync(user);
+            return displayName;
         }
     }
 }

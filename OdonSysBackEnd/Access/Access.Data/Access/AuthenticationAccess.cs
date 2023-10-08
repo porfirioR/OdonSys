@@ -95,8 +95,6 @@ namespace Access.Data.Access
             {
                 var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
                 entity = request;
-                var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
-                entity.UserName = userName;
                 request.Approved = true;
                 request.UserRoles = new List<UserRole>
                 {
@@ -116,13 +114,10 @@ namespace Access.Data.Access
         public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-            var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
-            userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
 
             entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
             entity.PasswordSalt = hmac.Key;
-            entity.UserName = userName;
             entity.Approved = false;
             entity.IsDoctor = true;
             entity.Active = true;

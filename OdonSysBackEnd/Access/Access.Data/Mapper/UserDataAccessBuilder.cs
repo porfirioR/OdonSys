@@ -1,5 +1,6 @@
 ﻿using Access.Contract.Users;
 using Access.Sql.Entities;
+using Utilities;
 
 namespace Access.Data.Mapper
 {
@@ -29,6 +30,7 @@ namespace Access.Data.Mapper
             entity.Phone = request.Phone;
             entity.Active = request.Active;
             entity.ExternalUserId = request.ExternalUserId;
+            entity.UserName = Helper.GetUsername(entity.Name, entity.Surname);
             return entity;
         }
 

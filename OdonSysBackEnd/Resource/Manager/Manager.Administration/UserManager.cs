@@ -132,9 +132,6 @@ namespace Manager.Administration
             adB2CUserAccessModel.Approved = userDataAccess.Approved;
             adB2CUserAccessModel.Active = userDataAccess.Active;
             adB2CUserAccessModel.Roles = userDataAccess.Roles;
-
-            var userName = @$"{userDataAccess.Name[..1].ToUpper()}{userDataAccess.Surname}";
-
             var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(adB2CUserAccessModel);
             return model;
         }
@@ -142,6 +139,7 @@ namespace Manager.Administration
         public async Task<UserModel> RegisterUserAsync(string externalUserId)
         {
             var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
+            var userName = await _azureAdB2CUserDataAccess.UpdateUserAsync(externalUserId, userGraphAccessModel.Name, userGraphAccessModel.Surname);
             var accessRequest = _userManagerBuilder.MapUserGraphAccessModelToRegisterUserRequest(userGraphAccessModel);
             var acceassModel = await _authenticationDataAccess.RegisterAzureAdB2CUserAsync(accessRequest);
             var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(acceassModel);

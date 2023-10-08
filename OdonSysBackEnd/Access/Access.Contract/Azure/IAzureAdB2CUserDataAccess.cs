@@ -4,6 +4,6 @@
     {
         Task<IEnumerable<UserGraphAccessModel>> GetUsersAsync();
         Task<UserGraphAccessModel> GetUserByIdAsync(string userId);
-        Task<string> SetRoleToUserAsync(string userId);
+        Task<string> UpdateUserAsync(string userId, string name, string surname);
     }
 }
