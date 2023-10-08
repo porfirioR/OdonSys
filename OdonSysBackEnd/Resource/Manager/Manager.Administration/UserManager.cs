@@ -3,8 +3,10 @@ using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
+using Microsoft.Graph.Models;
 using System.Security.Claims;
 using System.Text;
+using Utilities;
 
 namespace Manager.Administration
 {
@@ -130,13 +132,16 @@ namespace Manager.Administration
             adB2CUserAccessModel.Approved = userDataAccess.Approved;
             adB2CUserAccessModel.Active = userDataAccess.Active;
             adB2CUserAccessModel.Roles = userDataAccess.Roles;
+
+            var userName = @$"{userDataAccess.Name[..1].ToUpper()}{userDataAccess.Surname}";
+
             var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(adB2CUserAccessModel);
             return model;
         }
 
-        public async Task<UserModel> RegisterUserAsync(string userId)
+        public async Task<UserModel> RegisterUserAsync(string externalUserId)
         {
-            var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(userId);
+            var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
             var accessRequest = _userManagerBuilder.MapUserGraphAccessModelToRegisterUserRequest(userGraphAccessModel);
             var acceassModel = await _authenticationDataAccess.RegisterAzureAdB2CUserAsync(accessRequest);
             var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(acceassModel);

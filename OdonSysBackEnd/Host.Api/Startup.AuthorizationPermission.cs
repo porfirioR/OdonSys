@@ -10,7 +10,7 @@ namespace Host.Api
         {
             services.AddScoped<IAuthorizationHandler, CheckAuthorizationPermissions>();
             var environment = Environment.GetEnvironmentVariable("Environment");
-            if (string.Equals(environment, OdonSysEnvironment.Test.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(environment, OdonSysEnvironment.Development.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
             }

@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Roles;
+using Access.Contract.Users;
 using Contract.Administration.Roles;
 using Utilities.Enums;
 
@@ -8,11 +9,17 @@ namespace Manager.Administration
     {
         private readonly IRoleAccess _roleAccess;
         private readonly IRoleManagerBuilder _roleManagerBuilder;
+        private readonly IUserDataAccess _userDataAccess;
 
-        public RoleManager(IRoleAccess roleAccess, IRoleManagerBuilder roleManagerBuilder)
+        public RoleManager(
+            IRoleAccess roleAccess,
+            IRoleManagerBuilder roleManagerBuilder,
+            IUserDataAccess userDataAccess
+        )
         {
             _roleAccess = roleAccess;
             _roleManagerBuilder = roleManagerBuilder;
+            _userDataAccess = userDataAccess;
         }
 
         public async Task<RoleModel> CreateAsync(CreateRoleRequest request)
@@ -73,9 +80,15 @@ namespace Manager.Administration
             };
         }
 
-        public async Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId)
+        public async Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId, string externalUserId)
         {
-            var roles = (await _roleAccess.GetRolesByUserIdAsync(userId)).Select(x => x.Code);
+            var currentUserId = string.Empty;
+            if (string.IsNullOrEmpty(userId))
+            {
+                var user = await _userDataAccess.GetByIdAsync(externalUserId);
+                currentUserId = user.Id;
+            }
+            var roles = (await _roleAccess.GetRolesByUserIdAsync(currentUserId)).Select(x => x.Code);
             var allPermissions = (await GetAllAsync()).Where(x => roles.Contains(x.Code)).SelectMany(x => x.RolePermissions);
             return allPermissions.Distinct();
         }

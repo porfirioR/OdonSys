@@ -71,17 +71,33 @@ namespace Access.Data.Access
         public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
         {
             var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-            var entity = await _context.Users
-                .FirstOrDefaultAsync(x => x.Document == request.Document && string.IsNullOrEmpty(x.ExternalUserId));
+            var query = _context.Users.AsQueryable();
+            var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
             if (entity != null)
             {
-                entity.ExternalUserId = request.ExternalUserId;
-                _context.Users.Update(entity);
+                return await GetUserModelAsync(entity);
+            }
+            entity = await query
+                .FirstOrDefaultAsync(x => x.Document == request.Document);
+
+            if (entity != null)
+            {
+                if (string.IsNullOrEmpty(entity.ExternalUserId))
+                {
+                    entity.ExternalUserId = request.ExternalUserId;
+                    _context.Users.Update(entity);
+                }
+                else if(entity.ExternalUserId != dataAccess.ExternalUserId) {
+                    throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
+                }
             }
             else
             {
                 var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
                 entity = request;
+                var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
+                entity.UserName = userName;
+                request.Approved = true;
                 request.UserRoles = new List<UserRole>
                 {
                     new UserRole
@@ -93,9 +109,7 @@ namespace Access.Data.Access
                 await _context.AddAsync(entity);
             }
             await _context.SaveChangesAsync();
-            var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
-            var roleCodes = await RoleCodesAsync(entity.Id);
-            userAccessModel.Roles = roleCodes;
+            var userAccessModel = await GetUserModelAsync(entity);
             return userAccessModel;
         }
 
@@ -189,6 +203,14 @@ namespace Access.Data.Access
                                 .Select(x => x.Role.Code)
                                 .ToListAsync();
             return codes;
+        }
+
+        private async Task<UserDataAccessModel> GetUserModelAsync(User entity)
+        {
+            var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
+            var roleCodes = await RoleCodesAsync(entity.Id);
+            userAccessModel.Roles = roleCodes;
+            return userAccessModel;
         }
     }
 }

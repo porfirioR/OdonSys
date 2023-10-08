@@ -15,7 +15,7 @@ namespace AcceptanceTest.Host.Api
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            Environment.SetEnvironmentVariable("Environment", OdonSysEnvironment.Local.ToString().ToLowerInvariant());
+            Environment.SetEnvironmentVariable("Environment", OdonSysEnvironment.Development.ToString().ToLowerInvariant());
             builder.ConfigureServices(services =>
             {
                 var dbDescriptor = services.SingleOrDefault(x => x.ServiceType == typeof(DbContextOptions<DataContext>));

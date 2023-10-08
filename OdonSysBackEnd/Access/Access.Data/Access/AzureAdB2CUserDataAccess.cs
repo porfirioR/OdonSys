@@ -95,7 +95,8 @@ namespace Access.Data.Access
             _ = additionalData.TryGetValue(_userExtensionAccessModel.Phone, out var phone);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
-            var roles = user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
+            var roles = !user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
+
             return new(
                 user.Id!,
                 user.DisplayName!,

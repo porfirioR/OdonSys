@@ -90,8 +90,8 @@ namespace Access.Data.Access
         public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetUserByIdAsync(id);
-            var doctorDataAccessModelList = _userDataAccessBuilder.MapUserToDoctorDataAccessModel(entity);
-            return doctorDataAccessModelList;
+            var accessModel = _userDataAccessBuilder.MapUserToDoctorDataAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest)

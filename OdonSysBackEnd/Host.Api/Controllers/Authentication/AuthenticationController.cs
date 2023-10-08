@@ -1,4 +1,5 @@
-﻿using Contract.Administration.Authentication;
+﻿using Access.Contract.Users;
+using Contract.Administration.Authentication;
 using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.MapBuilders;
@@ -45,11 +46,6 @@ namespace Host.Api.Controllers.Authentication
         {
             var userId = UserIdAadB2C;
             var userModel = await _userManager.RegisterUserAsync(userId);
-            foreach (var role in userModel.Roles)
-            {
-                var claim = new Claim(Claims.UserRoles, role);
-                _ = HttpContext.User.Claims.Append(claim);
-            }
             return userModel;
         }
 
@@ -59,11 +55,6 @@ namespace Host.Api.Controllers.Authentication
         {
             var userId = UserIdAadB2C;
             var model = await _userManager.GetUserFromGraphApiByIdAsync(userId);
-            foreach (var role in model.Roles)
-            {
-                var claim = new Claim(Claims.UserRoles, role);
-                _ = HttpContext.User.Claims.Append(claim);
-            }
             return model;
         }
 

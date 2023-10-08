@@ -63,7 +63,8 @@ namespace Access.Sql
 
         private void SetUserAndDateTimeContext(IEnumerable<EntityEntry> entities)
         {
-            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(Claims.UserName)?.Value ?? "api";
+            var user = _httpContextAccessor?.HttpContext?.User;
+            var username = user.FindFirst(Claims.UserName)?.Value ?? user.FindFirst(Claims.UserNameAadB2C)?.Value ?? "api";
             foreach (var entity in entities)
             {
                 if (entity.State == EntityState.Added)

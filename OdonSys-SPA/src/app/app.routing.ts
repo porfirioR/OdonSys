@@ -27,16 +27,16 @@ export const AppRoutes: Routes = [
       { path: 'inicio', redirectTo: '' }
     ]
   },
-  { path: 'login',
-    component: AuthenticateComponent,
-    title: 'Autenticación',
-    canActivate: [PublicGuard]
-  },
-  { path: 'registrar',
-    component: RegisterUserComponent,
-    title: 'Registro',
-    canActivate: [PublicGuard]
-  },
+  // { path: 'login',
+  //   component: AuthenticateComponent,
+  //   title: 'Autenticación',
+  //   canActivate: [PublicGuard]
+  // },
+  // { path: 'registrar',
+  //   component: RegisterUserComponent,
+  //   title: 'Registro',
+  //   canActivate: [PublicGuard]
+  // },
   {
     path: 'página-no-encontrada',
     component: NotFoundComponent,

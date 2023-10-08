@@ -58,7 +58,7 @@ namespace Host.Api.Controllers.Administration
         [HttpGet("permissions-role")]
         public async Task<IEnumerable<string>> GetPermissionsByRoleCodes()
         {
-            var model = await _roleManager.GetPermissionsByUserIdAsync(UserId);
+            var model = await _roleManager.GetPermissionsByUserIdAsync(UserId, UserIdAadB2C);
             return model;
         }
 

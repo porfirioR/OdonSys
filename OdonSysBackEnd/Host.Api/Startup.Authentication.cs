@@ -17,7 +17,7 @@ namespace Host.Api
         public void ConfigureAuthentication(IServiceCollection services, IConfiguration configuration)
         {
             var environment = Environment.GetEnvironmentVariable("Environment");
-            if (string.Equals(environment, OdonSysEnvironment.Test.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(environment, OdonSysEnvironment.Development.ToString(), StringComparison.OrdinalIgnoreCase))
             {
                 services.AddAuthentication(_policyName)
                     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opt =>

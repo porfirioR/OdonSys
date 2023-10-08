@@ -17,6 +17,6 @@ namespace Contract.Administration.Users
         bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal);
         Task<UserModel> GetUserFromGraphApiByIdAsync(string id);
         Task<IEnumerable<DoctorModel>> GetAllUsersByAzureAsync();
-        Task<UserModel> RegisterUserAsync(string userId);
+        Task<UserModel> RegisterUserAsync(string externalUserId);
     }
 }
