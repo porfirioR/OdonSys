@@ -1,12 +1,9 @@
-﻿using Access.Contract.Users;
-using Contract.Administration.Authentication;
+﻿using Contract.Administration.Authentication;
 using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.MapBuilders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Utilities;
 
 namespace Host.Api.Controllers.Authentication
 {
