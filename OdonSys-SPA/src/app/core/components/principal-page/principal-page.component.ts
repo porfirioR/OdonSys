@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AccountInfo, EventMessage, EventType, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
-import { Observable, filter, map, of, switchMap } from 'rxjs';
+import { AccountInfo, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
+import { Observable, filter, map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthApiService } from '../../services/api/auth-api.service';
-import { RegisterUserRequest } from '../../models/users/api/register-user-request';
-import { Country } from '../../enums/country.enum';
 import { UserInfoService } from '../../services/shared/user-info.service';
 import { RoleApiService } from '../../services/api/role-api.service';
+import { UserApiModel } from '../../models/users/api/user-api-model';
 
 @Component({
   selector: 'app-principal-page',
@@ -23,12 +23,12 @@ export class PrincipalPageComponent implements OnInit {
     private msalService: MsalService,
     private authApiService: AuthApiService,
     private userInfoService: UserInfoService,
-    private readonly roleApiService: RoleApiService
+    private readonly roleApiService: RoleApiService,
+    private readonly router: Router
   ) { }
 
   ngOnInit() {
-    const accountInfo$: Observable<AccountInfo | null> =
-    this.msalBroadcastService.inProgress$.pipe(
+    const accountInfo$: Observable<AccountInfo | null> = this.msalBroadcastService.inProgress$.pipe(
       filter((status) => status == InteractionStatus.None),
       map(() => {
         const instance: IPublicClientApplication = this.msalService.instance;
@@ -52,11 +52,14 @@ export class PrincipalPageComponent implements OnInit {
           this.authApiService.registerAadB2C() :
           this.authApiService.getProfile()
       }
-    )).pipe(switchMap(x => {
+    )).pipe(switchMap((x: UserApiModel) => {
       this.userInfoService.setUser(x)
+      if (!x.approved) {
+        this.router.navigate(['sin-autorización'])
+      }
       return this.roleApiService.getMyPermissions()
     })).subscribe({
-      next: (permissions) => {
+      next: (permissions: string[]) => {
         this.userInfoService.setUserPermissions(permissions)
         this.loaded = true
       },

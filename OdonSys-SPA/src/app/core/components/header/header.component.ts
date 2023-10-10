@@ -1,14 +1,14 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 import { UserInfoService } from '../../services/shared/user-info.service';
 import { MenuService } from '../../services/shared/menu.service';
 import { SubscriptionService } from '../../services/shared/subscription.service';
+import { AuthApiService } from '../../services/api/auth-api.service';
+import { AlertService } from '../../services/shared/alert.service';
 import { Permission } from '../../enums/permission.enum';
 import { MenuItem } from '../../models/view/menu-item';
-import { AuthApiService } from '../../services/api/auth-api.service';
 import { LogoutApiModel } from '../../models/users/api/logout-api-model';
-import { AlertService } from '../../services/shared/alert.service';
-import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-header',

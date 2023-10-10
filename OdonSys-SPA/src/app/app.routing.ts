@@ -6,6 +6,7 @@ import { RegisterUserComponent } from './core/components/register-user/register-
 import { AuthGuard } from './core/guards/auth.guard';
 import { PublicGuard } from './core/guards/public.guard';
 import { MsalGuard } from '@azure/msal-angular';
+import { UnauthorizedComponent } from './core/components/unauthorized/unauthorized.component';
 
 export const AppRoutes: Routes = [
   {
@@ -40,7 +41,12 @@ export const AppRoutes: Routes = [
   {
     path: 'página-no-encontrada',
     component: NotFoundComponent,
-    title: 'página no encontrada'
+    title: 'Página no encontrada'
+  },
+  {
+    path: 'sin-autorización',
+    component: UnauthorizedComponent,
+    title: 'Sin-autorización'
   },
   {
     path: '**',
