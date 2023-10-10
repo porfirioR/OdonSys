@@ -44,7 +44,7 @@ namespace Access.Data
 
             // Azure
             services.AddTransient<IGraphService, GraphService>();
-            services.AddTransient<IAzureAdB2CRoleDataAccess, AzureAdB2CRoleDataAccess>();
+            //services.AddTransient<IAzureAdB2CRoleDataAccess, AzureAdB2CRoleDataAccess>();
             services.AddTransient<IAzureAdB2CUserDataAccess, AzureAdB2CUserDataAccess>();
 
             services.AddHttpContextAccessor();

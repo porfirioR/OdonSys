@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AccountInfo, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
+import { AccountInfo, EventType, IPublicClientApplication, InteractionStatus, RedirectRequest } from '@azure/msal-browser';
 import { Observable, filter, map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthApiService } from '../../services/api/auth-api.service';
@@ -28,6 +28,23 @@ export class PrincipalPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.msalBroadcastService.msalSubject$.pipe(filter(x => x.eventType === EventType.LOGIN_FAILURE || x.eventType === EventType.ACQUIRE_TOKEN_FAILURE)).subscribe({
+      next: (result) => {
+        // Checking for the forgot password error. Learn more about B2C error codes at
+            // https://learn.microsoft.com/azure/active-directory-b2c/error-codes
+          //   if (result.error && result.error.message.indexOf('AADB2C90118') > -1) {
+          //     let resetPasswordFlowRequest: RedirectRequest | PopupRequest = {
+          //         authority: b2cPolicies.authorities.resetPassword.authority,
+          //         scopes: [],
+          //     };
+
+          //     this.authApiService.login(resetPasswordFlowRequest);
+          // };
+      }, error: (e) => {
+        console.log(e)
+        throw e
+      }
+    })
     const accountInfo$: Observable<AccountInfo | null> = this.msalBroadcastService.inProgress$.pipe(
       filter((status) => status == InteractionStatus.None),
       map(() => {
