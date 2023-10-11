@@ -51,7 +51,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
         piiLoggingEnabled: false,
       },
     },
-  });
+  })
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
@@ -65,7 +65,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const aux = new Map([])
   return {
     interactionType: InteractionType.Redirect,
     protectedResourceMap: new Map([

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AccountInfo, EventType, IPublicClientApplication, InteractionStatus, RedirectRequest } from '@azure/msal-browser';
+import { AccountInfo, EventType, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
 import { Observable, filter, map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthApiService } from '../../services/api/auth-api.service';
@@ -86,4 +86,9 @@ export class PrincipalPageComponent implements OnInit {
     })
   }
 
+
+  protected resetPassword = () => {
+    const resetPasswordUrl = 'https://odonsystem.b2clogin.com/odonsystem.onmicrosoft.com/B2C_1_ResetPassword';
+    this.msalService.loginRedirect( {redirectUri: resetPasswordUrl, scopes: [],} )
+  }
 }

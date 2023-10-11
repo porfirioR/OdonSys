@@ -41,8 +41,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract.Administration", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager.Administration", "Resource\Manager\Manager.Administration\Manager.Administration.csproj", "{A21206FE-B73F-4BED-8E3D-C599FAEE7F3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.SignUpSignIn", "Host\Host.SignUpSignIn\Host.SignUpSignIn.csproj", "{52B2FC4E-472E-4774-A72C-8DC6C72D892D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,10 +99,6 @@ Global
 		{A21206FE-B73F-4BED-8E3D-C599FAEE7F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A21206FE-B73F-4BED-8E3D-C599FAEE7F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A21206FE-B73F-4BED-8E3D-C599FAEE7F3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52B2FC4E-472E-4774-A72C-8DC6C72D892D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52B2FC4E-472E-4774-A72C-8DC6C72D892D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52B2FC4E-472E-4774-A72C-8DC6C72D892D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52B2FC4E-472E-4774-A72C-8DC6C72D892D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,7 +118,6 @@ Global
 		{7A1C8EDD-DE9C-4BA3-ABF4-F559275B7853} = {38A706A6-4D3E-4C33-949B-B344C2164B2A}
 		{DC3B4F61-A479-4FD3-B73E-C8B8E94AC5EF} = {38A706A6-4D3E-4C33-949B-B344C2164B2A}
 		{A21206FE-B73F-4BED-8E3D-C599FAEE7F3F} = {7A1A1FFE-7921-4800-A953-20503B3559EE}
-		{52B2FC4E-472E-4774-A72C-8DC6C72D892D} = {2C388A67-BEF0-4504-BD41-7630B8D28249}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {843D313E-18CF-4719-89C6-3525B4DCAA42}
