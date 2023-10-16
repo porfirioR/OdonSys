@@ -18,9 +18,28 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { environment } from '../environments/environment';
 import { reducers, metaReducers } from './store';
 import { AgGridModule } from 'ag-grid-angular';
-import "./extensions/implement-extensions";
-import { BrowserCacheLocation, IPublicClientApplication, InteractionType, LogLevel, PublicClientApplication } from '@azure/msal-browser';
-import { MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuard, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
+import './extensions/implement-extensions';
+import {
+  AuthError,
+  AuthenticationResult,
+  BrowserCacheLocation,
+  IPublicClientApplication,
+  InteractionType,
+  LogLevel,
+  PublicClientApplication,
+} from '@azure/msal-browser';
+import {
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MSAL_INTERCEPTOR_CONFIG,
+  MsalBroadcastService,
+  MsalGuard,
+  MsalGuardConfiguration,
+  MsalInterceptor,
+  MsalInterceptorConfiguration,
+  MsalModule,
+  MsalService,
+} from '@azure/msal-angular';
 
 registerLocaleData(localEs, 'es')
 
@@ -33,10 +52,10 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     auth: {
       clientId: environment.clientId,
       authority: `https://${environment.hostName}/${environment.domainName}/${environment.signUpSignInPolicyName}`,
-      knownAuthorities: [ environment.hostName ],
+      knownAuthorities: [environment.hostName],
       redirectUri: environment.redirectUri,
       postLogoutRedirectUri: environment.logoutRedirectUri,
-      navigateToLoginRequestUrl: true
+      navigateToLoginRequestUrl: true,
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
@@ -68,15 +87,13 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   return {
     interactionType: InteractionType.Redirect,
     protectedResourceMap: new Map([
-      [ environment.apiUrl, [environment.resourceScope] ],
-    ])
+      [environment.apiUrl, [environment.resourceScope]],
+    ]),
   }
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     CoreModule,
     BrowserModule,
@@ -84,7 +101,10 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     RouterModule.forRoot(AppRoutes),
     NgbModule,
     NgbNavModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !environment.production }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !environment.production,
+    }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
@@ -94,28 +114,49 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
+      useFactory: MSALInstanceFactory,
     },
     {
       provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory
+      useFactory: MSALGuardConfigFactory,
     },
     {
       provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
+      useFactory: MSALInterceptorConfigFactory,
     },
     MsalService,
     MsalGuard,
-    MsalBroadcastService
+    MsalBroadcastService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
+
+// export class CustomPublicClientApplication extends PublicClientApplication implements IPublicClientApplication
+// {
+//   override async handleRedirectPromise(
+//     hash?: string
+//   ): Promise<AuthenticationResult | null> {
+//     let response = this.redirectResponse.get(hash || Constants.EMPTY_STRING);
+//     if (typeof response !== 'undefined') {
+//       response
+//         .then(() => {})
+//         .catch((error: { errorMessage: string | string[]; }) => {
+//           if (error instanceof AuthError) {
+//             if (error.errorMessage.indexOf('AADB2C90091') > -1) {
+//               this.redirectResponse.delete(hash);
+//             }
+//           }
+//         });
+//     }
+//     return super.handleRedirectPromise(hash);
+//   }
+// }

@@ -107,7 +107,7 @@ namespace Host.Api.Controllers.Administration
         {
             var id = UserId;
             var userName = Username;
-            var model = await _clientManager.GetClientsByUserIdAsync(id, userName);
+            var model = await _clientManager.GetClientsByUserIdAsync(id, userName, UserIdAadB2C);
             return model;
         }
 

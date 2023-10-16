@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
-import { AccountInfo, EventType, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
+import { AccountInfo, EventMessage, EventType, IPublicClientApplication, InteractionStatus } from '@azure/msal-browser';
 import { Observable, filter, map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { UserInfoService } from '../../services/shared/user-info.service';
 import { RoleApiService } from '../../services/api/role-api.service';
 import { UserApiModel } from '../../models/users/api/user-api-model';
+import { LoginRequest } from '../../models/users/api/login-request';
 
 @Component({
   selector: 'app-principal-page',
@@ -28,23 +29,32 @@ export class PrincipalPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.msalBroadcastService.msalSubject$.pipe(filter(x => x.eventType === EventType.LOGIN_FAILURE || x.eventType === EventType.ACQUIRE_TOKEN_FAILURE)).subscribe({
-      next: (result) => {
-        // Checking for the forgot password error. Learn more about B2C error codes at
-            // https://learn.microsoft.com/azure/active-directory-b2c/error-codes
-          //   if (result.error && result.error.message.indexOf('AADB2C90118') > -1) {
-          //     let resetPasswordFlowRequest: RedirectRequest | PopupRequest = {
-          //         authority: b2cPolicies.authorities.resetPassword.authority,
-          //         scopes: [],
-          //     };
+    // this.msalBroadcastService.msalSubject$.pipe(
+    //   filter(x => x.eventType === EventType.LOGIN_FAILURE || x.eventType === EventType.ACQUIRE_TOKEN_FAILURE)).subscribe({
+    //   next: (result) => {
+    //     // Checking for the forgot password error. Learn more about B2C error codes at
+    //     // https://learn.microsoft.com/azure/active-directory-b2c/error-codes
+    //     if (result.error && result.error.message.indexOf('AADB2C90118') > -1) {
+    //       const resetPasswordFlowRequest = {
+    //         authority: `https://${environment.hostName}/${environment.domainName}/${environment.resetPasswordPolicyName}`,
+    //         scopes: environment.endpointScopes,
+    //       }
 
-          //     this.authApiService.login(resetPasswordFlowRequest);
-          // };
-      }, error: (e) => {
-        console.log(e)
-        throw e
+    //       this.authApiService.login(resetPasswordFlowRequest as unknown as LoginRequest).subscribe()
+    //     }
+    //   }, error: (e) => {
+    //     console.log(e)
+    //     throw e
+    //   }
+    // })
+    this.msalBroadcastService.msalSubject$.subscribe((event: EventMessage) => {
+      if (event.eventType === EventType.LOGIN_FAILURE) {
+        if (event?.error?.message.includes('AADB2C90118')) {
+          console.log('El usuario canceló el inicio de sesión.');
+          // Aquí puedes realizar las acciones que consideres apropiadas cuando el usuario cancele el inicio de sesión.
+        }
       }
-    })
+    });
     const accountInfo$: Observable<AccountInfo | null> = this.msalBroadcastService.inProgress$.pipe(
       filter((status) => status == InteractionStatus.None),
       map(() => {
@@ -84,11 +94,5 @@ export class PrincipalPageComponent implements OnInit {
         throw e
       }
     })
-  }
-
-
-  protected resetPassword = () => {
-    const resetPasswordUrl = 'https://odonsystem.b2clogin.com/odonsystem.onmicrosoft.com/B2C_1_ResetPassword';
-    this.msalService.loginRedirect( {redirectUri: resetPasswordUrl, scopes: [],} )
   }
 }

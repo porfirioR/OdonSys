@@ -12,7 +12,7 @@ namespace Host.Api.Controllers.Workspace
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public sealed class DoctorsController : ControllerBase
+    public sealed class DoctorsController : OdonSysBaseController
     {
         private readonly IClientManager _clientManager;
         private readonly IUserManager _userManager;
@@ -33,7 +33,7 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanAssignClient)]
         public async Task<IEnumerable<ClientModel>> AssignClientToUser([FromBody] AssignClientApiRequest apiRequest)
         {
-            var request = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
+            var request = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId, UserIdAadB2C);
             var modelList = await _clientManager.AssignClientToUser(request);
             return modelList;
         }

@@ -61,16 +61,16 @@ namespace Manager.Administration
             return _clientManagerBuilder.MapClientAccessModelToClientModel(accessModel);
         }
 
-        public async Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName)
+        public async Task<IEnumerable<ClientModel>> GetClientsByUserIdAsync(string id, string userName, string externalId = "")
         {
+            id = string.IsNullOrEmpty(id) ? externalId : id;
             var accessModel = await _clientAccess.GetClientsByUserIdAsync(id, userName);
             return accessModel.Select(_clientManagerBuilder.MapClientAccessModelToClientModel);
         }
 
         public async Task<IEnumerable<ClientModel>> AssignClientToUser(AssignClientRequest request)
         {
-
-            var clients = await GetClientsByUserIdAsync(request.UserId, "");
+            var clients = await GetClientsByUserIdAsync(request.UserId, "", request.ExternalUserId);
             var accessModelList = clients.Any(x => x.Id == request.ClientId) ?
                 await _clientAccess.GetClientsByUserIdAsync(request.UserId, string.Empty) :
                 await _clientAccess.AssignClientToUserAsync(new AssignClientAccessRequest(request.UserId, request.ClientId));

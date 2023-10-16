@@ -2,6 +2,7 @@
 {
     public record AssignClientRequest(
         string UserId,
-        string ClientId
+        string ClientId,
+        string ExternalUserId = null
     );
 }
