@@ -52,10 +52,11 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string userId, string userName)
         {
+            var user = await _context.Users.FirstAsync(x => x.Id == new Guid(userId) || x.ExternalUserId == userId);
             var entities = await _context.Clients
                             .Include(x => x.UserClients)
                             .ThenInclude(x => x.User)
-                            .Where(x => x.UserClients.Any(y => y.UserId == new Guid(userId)) || x.UserCreated == userName).ToListAsync();
+                            .Where(x => x.UserClients.Any(y => y.UserId == user.Id) || x.UserCreated == userName).ToListAsync();
             var accessModel = entities.Select(_clientAccessDataBuilder.MapClientToClientAccessModel);
             return accessModel;
         }
