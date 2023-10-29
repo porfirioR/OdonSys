@@ -24,8 +24,8 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-procedure.component.scss']
 })
 export class AdminProcedureComponent implements OnInit {
-  public load: boolean = false
-  public gridOptions!: GridOptions
+  protected load: boolean = false
+  protected gridOptions!: GridOptions
   protected rowData$!: Observable<ProcedureModel[]>
   protected canCreate = false
   protected canEdit = false
@@ -42,7 +42,7 @@ export class AdminProcedureComponent implements OnInit {
     private readonly alertService: AlertService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateProcedures)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateProcedures)

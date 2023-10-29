@@ -16,8 +16,7 @@ export class UploadFileComponent implements OnInit {
     private readonly alertService: AlertService
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   protected onSelect = (event: NgxDropzoneChangeEvent): void => {
     if (event.addedFiles.length > 0) {

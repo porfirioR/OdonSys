@@ -114,24 +114,10 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-    },
-    {
-      provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory,
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory,
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: MsalInterceptor, multi: true },
+    { provide: MSAL_INSTANCE, useFactory: MSALInstanceFactory },
+    { provide: MSAL_GUARD_CONFIG, useFactory: MSALGuardConfigFactory },
+    { provide: MSAL_INTERCEPTOR_CONFIG, useFactory: MSALInterceptorConfigFactory },
     MsalService,
     MsalGuard,
     MsalBroadcastService,
@@ -139,24 +125,3 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-
-// export class CustomPublicClientApplication extends PublicClientApplication implements IPublicClientApplication
-// {
-//   override async handleRedirectPromise(
-//     hash?: string
-//   ): Promise<AuthenticationResult | null> {
-//     let response = this.redirectResponse.get(hash || Constants.EMPTY_STRING);
-//     if (typeof response !== 'undefined') {
-//       response
-//         .then(() => {})
-//         .catch((error: { errorMessage: string | string[]; }) => {
-//           if (error instanceof AuthError) {
-//             if (error.errorMessage.indexOf('AADB2C90091') > -1) {
-//               this.redirectResponse.delete(hash);
-//             }
-//           }
-//         });
-//     }
-//     return super.handleRedirectPromise(hash);
-//   }
-// }

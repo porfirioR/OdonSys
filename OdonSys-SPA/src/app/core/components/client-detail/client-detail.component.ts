@@ -49,7 +49,6 @@ export class ClientDetailComponent implements OnInit {
     private readonly paymentApiService: PaymentApiService,
     private domSanitizer: DomSanitizer,
     private store: Store
-
   ) { }
 
   ngOnInit() {
@@ -141,9 +140,6 @@ export class ClientDetailComponent implements OnInit {
         detailClientModel.payments = paymentList
         detailClientModel.hasPayments = paymentList.length > 0
         detailClientModel.hasData = true
-      }, error: (e) => {
-        
-        throw e
       }
     })
   }

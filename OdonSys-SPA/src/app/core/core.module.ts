@@ -18,8 +18,8 @@ import { TextNumberComponent } from './components/inputs/text-number-input/text-
 import { CheckInputComponent } from './components/inputs/check-input/check-input.component';
 import { GridActionsComponent } from './components/grid-actions/grid-actions.component';
 import { SelectInputComponent } from './components/inputs/select-input/select-input.component';
-import { AuthenticateComponent } from './components/authenticate/authenticate.component';
-import { RegisterUserComponent } from './components/register-user/register-user.component';
+// import { AuthenticateComponent } from './components/authenticate/authenticate.component';
+// import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { ClientsComponent } from './components/my-clients/my-clients.component';
 import { UpsertClientComponent } from './components/upsert-client/upsert-client.component';
 import { GridBadgeComponent } from './components/grid-badge/grid-badge.component';
@@ -73,8 +73,8 @@ import { ClientReportComponent } from './components/client-report/client-report.
     CheckInputComponent,
     SelectInputComponent,
     GridActionsComponent,
-    AuthenticateComponent,
-    RegisterUserComponent,
+    // AuthenticateComponent,
+    // RegisterUserComponent,
     ClientsComponent,
     UpsertClientComponent,
     GridBadgeComponent,
@@ -99,13 +99,13 @@ import { ClientReportComponent } from './components/client-report/client-report.
     CheckInputComponent,
     SelectInputComponent,
     GridActionsComponent,
-    AuthenticateComponent,
+    // AuthenticateComponent,
     ClientsComponent,
     UpsertClientComponent,
     UploadFileComponent,
     ClientReportComponent
   ],
-  providers:[
+  providers: [
     provideEnvironmentNgxMask()
   ]
 })

@@ -26,12 +26,12 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-clients.component.scss']
 })
 export class AdminClientsComponent implements OnInit {
-  public load: boolean = false
-  public gridOptions!: GridOptions
-  private attributeActive!: string
+  protected load: boolean = false
+  protected gridOptions!: GridOptions
   protected rowData$!: Observable<ClientModel[]>
   protected canCreate = false
   private canEdit = false
+  private attributeActive!: string
   // private canDelete = false
   private canDeactivate = false
   private canRestore = false
@@ -45,7 +45,7 @@ export class AdminClientsComponent implements OnInit {
     private userInfoService: UserInfoService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
