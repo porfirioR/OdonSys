@@ -12,6 +12,6 @@ export class RegisterUserRequest {
     public secondSurname?: string,
     public middleName?: string,
     public userId?: string,
-    public userName?: string,
+    public userName?: string
   ) {}
 }

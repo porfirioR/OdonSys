@@ -2,7 +2,6 @@
 using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph.Models;
 
 namespace Access.Data.Access
 {

@@ -25,13 +25,13 @@ export class ClientsComponent implements OnInit {
   protected canCreate: boolean = false
   private attributeActive!: string
   private canEdit = false
-  private canShowReport = false;
+  private canShowReport = false
 
   constructor(
     private readonly clientApiService: ClientApiService,
     private readonly agGridService: AgGridService,
     private readonly router: Router,
-    private userInfoService: UserInfoService,
+    private userInfoService: UserInfoService
   ) { }
 
   ngOnInit() {
