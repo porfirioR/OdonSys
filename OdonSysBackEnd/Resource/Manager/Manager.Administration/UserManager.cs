@@ -3,10 +3,8 @@ using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
-using Microsoft.Graph.Models;
 using System.Security.Claims;
 using System.Text;
-using Utilities;
 
 namespace Manager.Administration
 {
@@ -125,25 +123,30 @@ namespace Manager.Administration
             return modelList;
         }
 
-        public async Task<UserModel> GetUserFromGraphApiByIdAsync(string id)
+        public async Task<UserModel> GetUserFromGraphApiByIdAsync(string externalUserId)
         {
-            var userDataAccess = await _userDataAccess.GetByIdAsync(id);
-            var adB2CUserAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(id);
+            var userDataAccess = await _userDataAccess.GetByIdAsync(externalUserId);
+            var adB2CUserAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
             adB2CUserAccessModel.Approved = userDataAccess.Approved;
             adB2CUserAccessModel.Active = userDataAccess.Active;
             adB2CUserAccessModel.Roles = userDataAccess.Roles;
-            var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(adB2CUserAccessModel);
+            var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(userDataAccess.Id, adB2CUserAccessModel);
             return model;
         }
 
         public async Task<UserModel> RegisterUserAsync(string externalUserId)
         {
             var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
-            var userName = await _azureAdB2CUserDataAccess.UpdateUserAsync(externalUserId, userGraphAccessModel.Name, userGraphAccessModel.Surname);
+            _ = await _azureAdB2CUserDataAccess.UpdateUserAsync(externalUserId, userGraphAccessModel.Name, userGraphAccessModel.Surname);
             var accessRequest = _userManagerBuilder.MapUserGraphAccessModelToRegisterUserRequest(userGraphAccessModel);
             var acceassModel = await _authenticationDataAccess.RegisterAzureAdB2CUserAsync(accessRequest);
             var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(acceassModel);
             return model;
+        }
+
+        public async Task<string> GetInternalUserIdByExternalUserIdAsync(string externalId)
+        {
+            return await _userDataAccess.GetInternalUserIdByExternalIdAsync(externalId);
         }
     }
 }

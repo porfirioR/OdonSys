@@ -105,8 +105,8 @@ namespace Manager.Administration.Mapper
             return registerUserRequest;
         }
 
-        public UserModel MapUserGraphAccessModelToUserModel(UserGraphAccessModel userGraphAccessModel) => new(
-            userGraphAccessModel.Id,
+        public UserModel MapUserGraphAccessModelToUserModel(string id, UserGraphAccessModel userGraphAccessModel) => new(
+            id,
             userGraphAccessModel.Username,
             userGraphAccessModel.Active,
             userGraphAccessModel.Approved,

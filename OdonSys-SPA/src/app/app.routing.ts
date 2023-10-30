@@ -4,7 +4,7 @@ import { NotFoundComponent } from './core/components/not-found/not-found.compone
 import { PrincipalPageComponent } from './core/components/principal-page/principal-page.component';
 import { UnauthorizedComponent } from './core/components/unauthorized/unauthorized.component';
 
-export const AppRoutes: Routes = [
+export const appRoutes: Routes = [
   {
     path: '',
     component: PrincipalPageComponent,

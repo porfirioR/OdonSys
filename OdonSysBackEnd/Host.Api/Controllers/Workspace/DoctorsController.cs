@@ -33,7 +33,7 @@ namespace Host.Api.Controllers.Workspace
         [Authorize(Policy = Policy.CanAssignClient)]
         public async Task<IEnumerable<ClientModel>> AssignClientToUser([FromBody] AssignClientApiRequest apiRequest)
         {
-            var request = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId, UserIdAadB2C);
+            var request = new AssignClientRequest(apiRequest.UserId, apiRequest.ClientId);
             var modelList = await _clientManager.AssignClientToUser(request);
             return modelList;
         }

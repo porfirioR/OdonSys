@@ -7,8 +7,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./check-input.component.scss']
 })
 export class CheckInputComponent implements ControlValueAccessor {
-  @Input() label: string = '';
-  @Input() colClass: string = 'col-lg-6';
+  @Input() label: string = ''
+  @Input() colClass: string = 'col-lg-6'
+  @Input() id: string
 
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this;

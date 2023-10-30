@@ -1,5 +1,6 @@
 ﻿using Access.Contract.Users;
 using Access.Sql.Entities;
+using System.Data;
 using Utilities;
 
 namespace Access.Data.Mapper
@@ -29,7 +30,7 @@ namespace Access.Data.Mapper
             entity.Email = entity.Email;
             entity.Phone = request.Phone;
             entity.Active = request.Active;
-            entity.ExternalUserId = request.ExternalUserId;
+            entity.ExternalUserId = string.IsNullOrEmpty(entity.ExternalUserId) ? request.ExternalUserId : entity.ExternalUserId;
             entity.UserName = Helper.GetUsername(entity.Name, entity.Surname);
             return entity;
         }
@@ -54,8 +55,7 @@ namespace Access.Data.Mapper
             user.Id.ToString(),
             user.UserName,
             user.Active,
-            user.Approved,
-            user.UserRoles != null && user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>()
-        );
+            user.Approved
+        ) { Roles = user.UserRoles != null && user.UserRoles.Any() ? user.UserRoles.Select(x => x.Role.Code) : new List<string>() };
     }
 }

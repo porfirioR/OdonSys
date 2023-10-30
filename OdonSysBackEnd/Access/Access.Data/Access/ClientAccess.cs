@@ -2,6 +2,7 @@
 using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph.Models;
 
 namespace Access.Data.Access
 {
@@ -52,7 +53,7 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<ClientAccessModel>> GetClientsByUserIdAsync(string userId, string userName)
         {
-            var user = await _context.Users.FirstAsync(x => x.Id == new Guid(userId) || x.ExternalUserId == userId);
+            var user = await _context.Users.FirstAsync(x => x.Id == new Guid(userId));
             var entities = await _context.Clients
                             .Include(x => x.UserClients)
                             .ThenInclude(x => x.User)
@@ -81,6 +82,7 @@ namespace Access.Data.Access
 
         public async Task<IEnumerable<ClientAccessModel>> AssignClientToUserAsync(AssignClientAccessRequest accessRequest)
         {
+            var user = await _context.Users.FirstAsync(x => x.Id == new Guid(accessRequest.UserId) || x.ExternalUserId == accessRequest.UserId);
             var entity = _clientAccessDataBuilder.MapAssignClientAccessRequestToUserClient(accessRequest);
             _context.Entry(entity).State = EntityState.Added;
             await _context.SaveChangesAsync();

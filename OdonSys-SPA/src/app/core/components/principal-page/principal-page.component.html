@@ -1,2 +1,5 @@
-<app-header *ngIf="loaded"></app-header>
-<router-outlet></router-outlet>
+<app-progress *ngIf="!loaded; else load"></app-progress>
+<ng-template #load>
+  <app-header></app-header>
+  <router-outlet></router-outlet>
+</ng-template>

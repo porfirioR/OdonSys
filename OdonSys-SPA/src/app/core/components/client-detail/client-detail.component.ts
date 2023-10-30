@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, of, switchMap, tap } from 'rxjs';
+import { NgbAccordionDirective } from '@ng-bootstrap/ng-bootstrap';
+import { combineLatest, debounceTime, map, of, switchMap, tap } from 'rxjs';
 import { DoctorApiService } from '../../services/api/doctor-api.service';
 import { InvoiceApiService } from '../../../workspace/services/invoice-api.service';
 import { PaymentApiService } from '../../../workspace/services/payment-api.service';
+import { UserInfoService } from '../../services/shared/user-info.service';
 import { InvoiceApiModel } from '../../../workspace/models/invoices/api/invoice-api-model';
 import { DetailClientModel } from '../../models/view/detail-client-model';
 import { InvoiceDetailModel } from '../../models/view/invoice-detail-model';
@@ -14,6 +16,7 @@ import { PaymentModel } from '../../../workspace/models/payments/payment-model';
 import { FileModel } from '../../models/view/file-model';
 import { InvoiceStatus } from '../../enums/invoice-status.enum';
 import { Country } from '../../enums/country.enum';
+import { Permission } from '../../enums/permission.enum';
 
 import  * as fromTeethActions from '../../../core/store/teeth/tooth.actions';
 import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
@@ -27,6 +30,7 @@ import  * as fromClientsActions from '../../../core/store/clients/client.actions
   styleUrls: ['./client-detail.component.scss']
 })
 export class ClientDetailComponent implements OnInit {
+  @ViewChild("accordion") accordion: NgbAccordionDirective
   protected load: boolean
   protected clientFormGroup = new FormGroup({
     name: new FormControl({ value: '', disabled: true }),
@@ -40,6 +44,7 @@ export class ClientDetailComponent implements OnInit {
   protected invoiceStatus = InvoiceStatus
   protected invoicesSummary: InvoiceApiModel[] = []
   protected teeth: ToothModel[]
+  private canShowReport = false
 
   constructor(
     private readonly activeRoute: ActivatedRoute,
@@ -48,7 +53,8 @@ export class ClientDetailComponent implements OnInit {
     private readonly invoiceApiService: InvoiceApiService,
     private readonly paymentApiService: PaymentApiService,
     private domSanitizer: DomSanitizer,
-    private store: Store
+    private store: Store,
+    private userInfoService: UserInfoService,
   ) { }
 
   ngOnInit() {
@@ -68,17 +74,19 @@ export class ClientDetailComponent implements OnInit {
       }
     }))
     const invoicesSummary$ = this.invoiceApiService.getInvoicesSummaryByClientId(clientId)
-    combineLatest([clientRowData$, invoicesSummary$, toothRowData$])
+    combineLatest([clientRowData$, invoicesSummary$, toothRowData$]).pipe(debounceTime(100))
     .subscribe({
       next: ([clients, invoicesSummary, teeth]) => {
         this.teeth = teeth
         const client = clients.find(x => x.id === clientId)!
-        this.clientFormGroup.controls.name.setValue(`${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`)
-        this.clientFormGroup.controls.email.setValue(client.email)
-        this.clientFormGroup.controls.document.setValue(client.document)
-        this.clientFormGroup.controls.ruc.setValue(client.ruc)
-        this.clientFormGroup.controls.country.setValue(client.country)
-        this.clientFormGroup.controls.phone.setValue(client.phone)
+        this.clientFormGroup.patchValue({
+          name: `${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`,
+          email: client.email,
+          document: client.document,
+          ruc: client.ruc,
+          country: client.country,
+          phone: client.phone
+        })
         this.invoicesSummary = invoicesSummary
         this.invoicesSummary.forEach(x => this.clientDetails.set(x.id, new DetailClientModel()))
         this.load = true
@@ -91,13 +99,17 @@ export class ClientDetailComponent implements OnInit {
 
   protected getDetails = (invoiceId: string) => {
     const detailClientModel = this.clientDetails.get(invoiceId)!
-    if (detailClientModel.hasData) {
+    this.canShowReport = this.userInfoService.havePermission(Permission.AccessInvoices) || this.userInfoService.havePermission(Permission.AccessMyInvoices)
+    if (!this.canShowReport && this.accordion) {
+      this.accordion.collapseAll()
+    }
+    if (detailClientModel.hasData || !this.canShowReport) {
       return
     }
     combineLatest([
-    this.invoiceApiService.getInvoiceById(invoiceId),
-    this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
-    this.invoiceApiService.previewInvoiceFile(invoiceId)
+      this.invoiceApiService.getInvoiceById(invoiceId),
+      this.paymentApiService.getPaymentsByInvoiceId(invoiceId),
+      this.invoiceApiService.previewInvoiceFile(invoiceId)
     ]).pipe(switchMap(([fullInvoice, paymentList, invoiceFiles]) => {
       const invoiceImageFiles = invoiceFiles.filter(x => x.format !== 'pdf')
       if (invoiceImageFiles.length > 0) {

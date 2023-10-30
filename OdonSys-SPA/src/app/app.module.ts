@@ -11,7 +11,7 @@ import { NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { AppRoutes } from './app.routing';
+import { appRoutes } from './app.routing';
 import { AppComponent } from './app.component';
 import { CustomErrorHandler } from './core/helpers/custom-error-handler';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
@@ -76,7 +76,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   return {
     interactionType: InteractionType.Redirect,
-    // loginFailedRoute: '/login-failed',
+    loginFailedRoute: '/login-failed',
     authRequest: {
       scopes: environment.endpointScopes,
     },
@@ -98,7 +98,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     CoreModule,
     BrowserModule,
     HttpClientModule,
-    RouterModule.forRoot(AppRoutes),
+    RouterModule.forRoot(appRoutes),
     NgbModule,
     NgbNavModule,
     StoreDevtoolsModule.instrument({

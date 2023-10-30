@@ -19,12 +19,13 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./my-clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
-  public loading: boolean = false
-  public ready: boolean = false
-  public gridOptions!: GridOptions
+  protected loading: boolean = false
+  protected ready: boolean = false
+  protected gridOptions!: GridOptions
+  protected canCreate: boolean = false
   private attributeActive!: string
   private canEdit = false
-  protected canCreate: boolean = false
+  private canShowReport = false;
 
   constructor(
     private readonly clientApiService: ClientApiService,
@@ -37,6 +38,7 @@ export class ClientsComponent implements OnInit {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
+    this.canShowReport = this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.setupAgGrid()
     this.ready = true
     this.getList()
@@ -68,16 +70,17 @@ export class ClientsComponent implements OnInit {
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-    const buttonsToShow: ButtonGridActionType[] = [
-      ButtonGridActionType.Ver
-    ]
+    const buttonsToShow: ButtonGridActionType[] = []
+    if (this.canShowReport) {
+      buttonsToShow.push(ButtonGridActionType.Ver)
+    }
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
-      customButton:  new CustomGridButtonShow(' Reporte', 'fa-file-lines')
+      customButton:  this.canShowReport ? new CustomGridButtonShow(' Reporte', 'fa-file-lines') : undefined
     }
     columnAction.cellRendererParams = params
   }

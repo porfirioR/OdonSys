@@ -80,15 +80,9 @@ namespace Manager.Administration
             };
         }
 
-        public async Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId, string externalUserId)
+        public async Task<IEnumerable<string>> GetPermissionsByUserIdAsync(string userId)
         {
-            var currentUserId = string.Empty;
-            if (string.IsNullOrEmpty(userId))
-            {
-                var user = await _userDataAccess.GetByIdAsync(externalUserId);
-                currentUserId = user.Id;
-            }
-            var roles = (await _roleAccess.GetRolesByUserIdAsync(currentUserId)).Select(x => x.Code);
+            var roles = (await _roleAccess.GetRolesByUserIdAsync(userId)).Select(x => x.Code);
             var allPermissions = (await GetAllAsync()).Where(x => roles.Contains(x.Code)).SelectMany(x => x.RolePermissions);
             return allPermissions.Distinct();
         }

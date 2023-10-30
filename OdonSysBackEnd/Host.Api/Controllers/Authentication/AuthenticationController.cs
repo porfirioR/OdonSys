@@ -50,8 +50,7 @@ namespace Host.Api.Controllers.Authentication
         [HttpGet("profile")]
         public async Task<UserModel> GetUserProfile()
         {
-            var userId = UserIdAadB2C;
-            var model = await _userManager.GetUserFromGraphApiByIdAsync(userId);
+            var model = await _userManager.GetUserFromGraphApiByIdAsync(UserIdAadB2C);
             return model;
         }
 

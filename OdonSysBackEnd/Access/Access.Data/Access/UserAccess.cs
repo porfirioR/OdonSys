@@ -132,12 +132,24 @@ namespace Access.Data.Access
 
         private async Task<User> GetUserByIdAsync(string id)
         {
-            var entity = await _context.Set<User>()
+            var query = _context.Set<User>()
                             .Include(x => x.UserRoles)
-                            .ThenInclude(x => x.Role)
+                            .ThenInclude(x => x.Role);
+            var entity = await query
                             .AsNoTracking()
-                            .SingleOrDefaultAsync(x => x.Id == new Guid(id) || x.ExternalUserId == id);
+                            .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            entity ??= await query
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.ExternalUserId == id);
             return entity ?? throw new KeyNotFoundException($"id {id}");
+        }
+
+        public async Task<string> GetInternalUserIdByExternalIdAsync(string externalId)
+        {
+            var user = await _context.Set<User>()
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.ExternalUserId == externalId);
+            return user.Id.ToString();
         }
     }
 }
