@@ -1,4 +1,5 @@
 ﻿using Contract.Administration.Roles;
+using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.MapBuilders;
 using Host.Api.Contract.Roles;
@@ -14,11 +15,13 @@ namespace Host.Api.Controllers.Administration
     {
         private readonly IRoleManager _roleManager;
         private readonly IRoleHostBuilder _roleHostBuilder;
+        private readonly IUserManager _userManager;
 
-        public RolesController(IRoleManager roleManager, IRoleHostBuilder roleHostBuilder)
+        public RolesController(IRoleManager roleManager, IRoleHostBuilder roleHostBuilder, IUserManager userManager)
         {
             _roleManager = roleManager;
             _roleHostBuilder = roleHostBuilder;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -58,7 +61,8 @@ namespace Host.Api.Controllers.Administration
         [HttpGet("permissions-role")]
         public async Task<IEnumerable<string>> GetPermissionsByRoleCodes()
         {
-            var model = await _roleManager.GetPermissionsByUserIdAsync(UserId);
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
+            var model = await _roleManager.GetPermissionsByUserIdAsync(id);
             return model;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
@@ -12,12 +13,19 @@ namespace Manager.Administration
         private readonly IUserDataAccess _userDataAccess;
         private readonly IAuthenticationAccess _authenticationDataAccess;
         private readonly IUserManagerBuilder _userManagerBuilder;
+        private readonly IAzureAdB2CUserDataAccess _azureAdB2CUserDataAccess;
 
-        public UserManager(IUserDataAccess userDataAccess, IAuthenticationAccess authenticationDataAccess, IUserManagerBuilder userManagerBuilder)
+        public UserManager(
+            IUserDataAccess userDataAccess,
+            IAuthenticationAccess authenticationDataAccess,
+            IUserManagerBuilder userManagerBuilder,
+            IAzureAdB2CUserDataAccess azureAdB2CUserDataAccess
+        )
         {
             _userDataAccess = userDataAccess;
             _authenticationDataAccess = authenticationDataAccess;
             _userManagerBuilder = userManagerBuilder;
+            _azureAdB2CUserDataAccess = azureAdB2CUserDataAccess;
         }
 
         public async Task<AuthenticationModel> RegisterUserAsync(RegisterUserRequest createUserRequest)
@@ -26,8 +34,8 @@ namespace Manager.Administration
             {
                 throw new AggregateException("Ya existe un usuario con ese mismo documento o correo.");
             }
-            var dataAccess = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
-            var accessModel = await _authenticationDataAccess.RegisterUserAsync(dataAccess);
+            var accessRequest = _userManagerBuilder.MapRegisterUserRequestToUserDataAccessRequest(createUserRequest);
+            var accessModel = await _authenticationDataAccess.RegisterUserAsync(accessRequest);
             var response = _userManagerBuilder.MapAuthenticationAccessModelToAuthenticationModel(accessModel);
             return response;
         }
@@ -106,6 +114,39 @@ namespace Manager.Administration
             var users = await _userDataAccess.GetAllAsync();
             var sameUserData = users.Where(x => x.Document == createUser.Document || x.Email == createUser.Email);
             return sameUserData.Any();
+        }
+
+        public async Task<IEnumerable<DoctorModel>> GetAllUsersByAzureAsync()
+        {
+            var accessModelList = await _azureAdB2CUserDataAccess.GetUsersAsync();
+            var modelList = accessModelList.Select(_userManagerBuilder.MapUserGraphAccessModelToDoctorModel);
+            return modelList;
+        }
+
+        public async Task<UserModel> GetUserFromGraphApiByIdAsync(string externalUserId)
+        {
+            var userDataAccess = await _userDataAccess.GetByIdAsync(externalUserId);
+            var adB2CUserAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
+            adB2CUserAccessModel.Approved = userDataAccess.Approved;
+            adB2CUserAccessModel.Active = userDataAccess.Active;
+            adB2CUserAccessModel.Roles = userDataAccess.Roles;
+            var model = _userManagerBuilder.MapUserGraphAccessModelToUserModel(userDataAccess.Id, adB2CUserAccessModel);
+            return model;
+        }
+
+        public async Task<UserModel> RegisterUserAsync(string externalUserId)
+        {
+            var userGraphAccessModel = await _azureAdB2CUserDataAccess.GetUserByIdAsync(externalUserId);
+            _ = await _azureAdB2CUserDataAccess.UpdateUserAsync(externalUserId, userGraphAccessModel.Name, userGraphAccessModel.Surname);
+            var accessRequest = _userManagerBuilder.MapUserGraphAccessModelToRegisterUserRequest(userGraphAccessModel);
+            var acceassModel = await _authenticationDataAccess.RegisterAzureAdB2CUserAsync(accessRequest);
+            var model = _userManagerBuilder.MapUserDataAccessModelToUserModel(acceassModel);
+            return model;
+        }
+
+        public async Task<string> GetInternalUserIdByExternalUserIdAsync(string externalId)
+        {
+            return await _userDataAccess.GetInternalUserIdByExternalIdAsync(externalId);
         }
     }
 }

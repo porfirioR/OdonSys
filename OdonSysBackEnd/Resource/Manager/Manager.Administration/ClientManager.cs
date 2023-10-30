@@ -69,7 +69,6 @@ namespace Manager.Administration
 
         public async Task<IEnumerable<ClientModel>> AssignClientToUser(AssignClientRequest request)
         {
-
             var clients = await GetClientsByUserIdAsync(request.UserId, "");
             var accessModelList = clients.Any(x => x.Id == request.ClientId) ?
                 await _clientAccess.GetClientsByUserIdAsync(request.UserId, string.Empty) :

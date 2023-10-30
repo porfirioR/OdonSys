@@ -29,8 +29,8 @@ import { savingSelector } from '../../../core/store/saving/saving.selector';
   styleUrls: ['./doctors.component.scss']
 })
 export class DoctorsComponent implements OnInit {
-  public saving$: Observable<boolean> = of(true)
-  public gridOptions!: GridOptions
+  protected saving$: Observable<boolean> = of(true)
+  protected gridOptions!: GridOptions
   protected rowData$!: Observable<DoctorModel[]>
   private attributeActive!: string
   private attributeId!: string

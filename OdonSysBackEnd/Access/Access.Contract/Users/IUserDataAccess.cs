@@ -5,6 +5,7 @@
         Task<IEnumerable<DoctorDataAccessModel>> GetAllAsync();
         Task<IEnumerable<UserDataAccessModel>> GetAllUserAsync();
         Task<DoctorDataAccessModel> GetByIdAsync(string id);
+        Task<string> GetInternalUserIdByExternalIdAsync(string externalId);
         Task<UserDataAccessModel> ApproveNewUserAsync(string id);
         Task<DoctorDataAccessModel> UpdateAsync(UserDataAccessRequest dataAccess);
         Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest);

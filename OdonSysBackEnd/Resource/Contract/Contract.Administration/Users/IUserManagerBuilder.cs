@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 
@@ -11,5 +12,8 @@ namespace Contract.Administration.Users
         UserDataAccessRequest MapUpdateDoctorRequestToUserDataAccessRequest(UpdateDoctorRequest updateDoctorRequest);
         UserModel MapUserDataAccessModelToUserModel(UserDataAccessModel userDataAccessModel);
         DoctorModel MapDoctorDataAccessModelToDoctorModel(DoctorDataAccessModel doctorDataAccessModel);
+        DoctorModel MapUserGraphAccessModelToDoctorModel(UserGraphAccessModel userGraphAccessModel);
+        UserModel MapUserGraphAccessModelToUserModel(string id, UserGraphAccessModel userGraphAccessModel);
+        UserDataAccessRequest MapUserGraphAccessModelToRegisterUserRequest(UserGraphAccessModel userGraphAccessModel);
     }
 }

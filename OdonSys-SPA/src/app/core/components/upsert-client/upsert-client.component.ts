@@ -57,7 +57,7 @@ export class UpsertClientComponent implements OnInit {
     this.countries = EnumHandler.getCountries()
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.saving$ = this.store.select(savingSelector)
     this.subscriptionService.onErrorInSave.subscribe({ next: () => {
       this.saving = false
@@ -67,7 +67,7 @@ export class UpsertClientComponent implements OnInit {
     this.loadValues()
   }
 
-  protected close = () => {
+  protected close = (): void => {
     this.router.navigate([`${this.redirectUrl()}`])
   }
 
@@ -78,7 +78,7 @@ export class UpsertClientComponent implements OnInit {
     this.id ? this.update() : this.create()
   }
 
-  private loadValues = () => {
+  private loadValues = (): void => {
     this.id = this.activatedRoute.snapshot.params['id']
     const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'
     const client$ = this.store.pipe(
@@ -93,16 +93,18 @@ export class UpsertClientComponent implements OnInit {
         this.formGroupValueChanges()
         if (this.id && data) {
           this.title = 'Actualizar '
-          this.formGroup.controls.name.setValue(data.name)
-          this.formGroup.controls.middleName.setValue(data.middleName)
-          this.formGroup.controls.surname.setValue(data.surname)
-          this.formGroup.controls.secondSurname.setValue(data.secondSurname)
-          this.formGroup.controls.document.setValue(data.document)
-          this.formGroup.controls.ruc.setValue(data.ruc)
-          this.formGroup.controls.country.setValue(data.country)
-          this.formGroup.controls.phone.setValue(data.phone)
-          this.formGroup.controls.email.setValue(data.email)
-          this.formGroup.controls.active.setValue(data.active)
+          this.formGroup.patchValue({
+            name: data.name,
+            middleName: data.middleName,
+            surname: data.surname,
+            secondSurname: data.secondSurname,
+            document: data.document,
+            ruc: data.ruc,
+            country: data.country,
+            phone: data.phone,
+            email: data.email,
+            active: data.active
+          })
           this.formGroup.controls.ruc.disable()
           if (!this.fullFieldEdit) {
             this.formGroup.controls.document.disable()
@@ -115,7 +117,7 @@ export class UpsertClientComponent implements OnInit {
     })
   }
 
-  private formGroupValueChanges = () => {
+  private formGroupValueChanges = (): void => {
     this.formGroup.controls.document.valueChanges.pipe(
       debounceTime(500),
     ).subscribe({
@@ -127,7 +129,7 @@ export class UpsertClientComponent implements OnInit {
     this.formGroup.controls.country.valueChanges.subscribe(() => this.formGroup.controls.document.updateValueAndValidity())
   }
 
-  private create = () => {
+  private create = (): void => {
     const newClient = new CreateClientRequest(
       this.formGroup.value.name!,
       this.formGroup.value.middleName!,
@@ -142,7 +144,7 @@ export class UpsertClientComponent implements OnInit {
     this.store.dispatch(fromClientsActions.addClient({ client: newClient, redirectUrl: this.redirectUrl() }))
   }
 
-  private update = () => {
+  private update = (): void => {
     const updateClient = new UpdateClientRequest(
       this.id,
       this.formGroup.value.name!,
@@ -158,7 +160,7 @@ export class UpsertClientComponent implements OnInit {
     this.store.dispatch(fromClientsActions.updateClient({ client: updateClient, redirectUrl: this.redirectUrl() }))
   }
 
-  private redirectUrl = () => {
+  private redirectUrl = (): string => {
     return this.router.url.startsWith(this.adminUrl) ? this.adminUrl : this.workspaceUrl
   }
 }

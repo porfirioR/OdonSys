@@ -63,22 +63,29 @@ namespace Access.Sql
 
         private void SetUserAndDateTimeContext(IEnumerable<EntityEntry> entities)
         {
-            var username = _httpContextAccessor?.HttpContext?.User?.FindFirst(Claims.UserName)?.Value ?? "api";
+            var user = _httpContextAccessor?.HttpContext?.User;
+            var userName = user.FindFirst(Claims.UserName)?.Value;
+            if (string.IsNullOrEmpty(userName))
+            {
+                userName = Helper.GetUsername(user.FindFirst(Claims.NameAadB2C)?.Value, user.FindFirst(Claims.SurnameAadB2C)?.Value);
+            }
+            var username = userName ?? "api";
             foreach (var entity in entities)
             {
+                var baseEntity = (BaseEntity)entity.Entity;
                 if (entity.State == EntityState.Added)
                 {
-                    ((BaseEntity)entity.Entity).UserCreated = username;
+                    baseEntity.UserCreated = username;
                 }
                 if (entity.State == EntityState.Modified)
                 {
                     // Explicitly set UserCreated and DateCreated to Modified false in case something else in the flow sets this.
-                    Entry((BaseEntity)entity.Entity).Property(p => p.UserCreated).IsModified = false;
-                    Entry((BaseEntity)entity.Entity).Property(p => p.DateCreated).IsModified = false;
+                    Entry(baseEntity).Property(x => x.UserCreated).IsModified = false;
+                    Entry(baseEntity).Property(x => x.DateCreated).IsModified = false;
                 }
 
-                ((BaseEntity)entity.Entity).UserUpdated = username;
-                ((BaseEntity)entity.Entity).DateModified = DateTime.Now;
+                baseEntity.UserUpdated = username;
+                baseEntity.DateModified = DateTime.Now;
             }
         }
     }

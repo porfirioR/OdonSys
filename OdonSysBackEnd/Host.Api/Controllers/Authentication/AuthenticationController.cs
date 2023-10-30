@@ -38,6 +38,23 @@ namespace Host.Api.Controllers.Authentication
         }
 
         [Authorize]
+        [HttpPost("register-user")]
+        public async Task<UserModel> RegisterAzureAdB2C()
+        {
+            var userId = UserIdAadB2C;
+            var userModel = await _userManager.RegisterUserAsync(userId);
+            return userModel;
+        }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<UserModel> GetUserProfile()
+        {
+            var model = await _userManager.GetUserFromGraphApiByIdAsync(UserIdAadB2C);
+            return model;
+        }
+
+        [Authorize]
         [HttpGet("logout")]
         public LogoutModel Logout()
         {

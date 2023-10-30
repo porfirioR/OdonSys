@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.ClientProcedures;
 using Access.Contract.Clients;
 using Access.Contract.Files;
@@ -18,6 +19,7 @@ namespace Access.Data
     {
         public static void ConfigureServices(IServiceCollection services)
         {
+            // Access
             services.AddTransient<IAuthenticationAccess, AuthenticationAccess>();
             services.AddTransient<IClientAccess, ClientAccess>();
             services.AddTransient<IClientProcedureAccess, ClientProcedureAccess>();
@@ -28,7 +30,9 @@ namespace Access.Data
             services.AddTransient<IRoleAccess, RoleAccess>();
             services.AddTransient<IToothAccess, ToothAccess>();
             services.AddTransient<IUserDataAccess, UserAccess>();
+            services.AddTransient<IUserDataAccess, UserAccess>();
 
+            // Builders
             services.AddTransient<IClientDataAccessBuilder, ClientDataAccessBuilder>();
             services.AddTransient<IClientProcedureDataAccessBuilder, ClientProcedureDataAccessBuilder>();
             services.AddTransient<IInvoiceDataAccessBuilder, InvoiceDataAccessBuilder>();
@@ -37,6 +41,11 @@ namespace Access.Data
             services.AddTransient<IRoleDataAccessBuilder, RoleDataAccessBuilder>();
             services.AddTransient<IToothDataAccessBuilder, ToothDataAccessBuilder>();
             services.AddTransient<IUserDataAccessBuilder, UserDataAccessBuilder>();
+
+            // Azure
+            services.AddTransient<IGraphService, GraphService>();
+            //services.AddTransient<IAzureAdB2CRoleDataAccess, AzureAdB2CRoleDataAccess>();
+            services.AddTransient<IAzureAdB2CUserDataAccess, AzureAdB2CUserDataAccess>();
 
             services.AddHttpContextAccessor();
         }

@@ -1,6 +1,7 @@
 ﻿using Contract.Administration.Clients;
 using Contract.Administration.Reports;
 using Contract.Administration.Roles;
+using Contract.Administration.Users;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Clients;
 using Host.Api.Contract.Error;
@@ -22,12 +23,14 @@ namespace Host.Api.Controllers.Administration
         private readonly IClientManager _clientManager;
         private readonly IRoleManager _roleManager;
         private readonly IClientHostBuilder _clientHostBuilder;
+        private readonly IUserManager _userManager;
 
-        public ClientsController(IClientManager clientManager, IRoleManager roleManager, IClientHostBuilder clientHostBuilder)
+        public ClientsController(IClientManager clientManager, IRoleManager roleManager, IClientHostBuilder clientHostBuilder, IUserManager userManager)
         {
             _clientManager = clientManager;
             _roleManager = roleManager;
             _clientHostBuilder = clientHostBuilder;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -35,7 +38,7 @@ namespace Host.Api.Controllers.Administration
         public async Task<ClientModel> Create([FromBody] CreateClientApiRequest apiRequest)
         {
             var request = _clientHostBuilder.MapCreateClientApiRequestToCreateClientRequest(apiRequest);
-            request.UserId = UserId;
+            request.UserId = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
             var model = await _clientManager.CreateAsync(request);
             return model;
         }
@@ -44,7 +47,8 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanManageClient)]
         public async Task<ClientModel> Update([FromBody] UpdateClientApiRequest apiRequest)
         {
-            var permissions = await _roleManager.GetPermissionsByUserIdAsync(UserId);
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
+            var permissions = await _roleManager.GetPermissionsByUserIdAsync(id);
             var canFullEdit = permissions.Any(x => x == PermissionName.FullFieldUpdateClients.GetDescription());
             var request = _clientHostBuilder.MapUpdateClientApiRequestToUpdateClientRequest(apiRequest, canFullEdit);
             var model = await _clientManager.UpdateAsync(request);
@@ -105,7 +109,7 @@ namespace Host.Api.Controllers.Administration
         [Authorize(Policy = Policy.CanAccessClient)]
         public async Task<IEnumerable<ClientModel>> GetClientsByUserId()
         {
-            var id = UserId;
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
             var userName = Username;
             var model = await _clientManager.GetClientsByUserIdAsync(id, userName);
             return model;

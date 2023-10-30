@@ -4,7 +4,7 @@ using Access.Sql;
 using Access.Sql.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Utilities;
+using Utilities.Configurations;
 
 namespace Access.Data.Access
 {
@@ -23,13 +24,14 @@ namespace Access.Data.Access
         private readonly string _doctorRoleCode;
         private readonly string _adminRoleCode;
 
-        public AuthenticationAccess(IConfiguration configuration, DataContext context, IUserDataAccessBuilder userDataBuilder)
+        public AuthenticationAccess(IOptions<SystemSettings> systemSettingsOptions, DataContext context, IUserDataAccessBuilder userDataBuilder)
         {
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
+            var systemSettings = systemSettingsOptions.Value;
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(systemSettings.TokenKey));
             _context = context;
             _userDataBuilder = userDataBuilder;
-            _doctorRoleCode = configuration["DoctorRole"];
-            _adminRoleCode = configuration["AdminRole"];
+            _doctorRoleCode = systemSettings.DoctorRole;
+            _adminRoleCode = systemSettings.AdminRole;
         }
 
         public async Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess)
@@ -66,22 +68,62 @@ namespace Access.Data.Access
             return authAccessModel;
         }
 
+        public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
+        {
+            var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
+            var query = _context.Users.AsQueryable();
+            var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
+            if (entity != null)
+            {
+                return await GetUserModelAsync(entity);
+            }
+            entity = await query
+                .FirstOrDefaultAsync(x => x.Document == request.Document);
+
+            if (entity != null)
+            {
+                if (string.IsNullOrEmpty(entity.ExternalUserId))
+                {
+                    entity.ExternalUserId = request.ExternalUserId;
+                    _context.Users.Update(entity);
+                }
+                else if(entity.ExternalUserId != dataAccess.ExternalUserId) {
+                    throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
+                }
+            }
+            else
+            {
+                var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
+                entity = request;
+                request.Approved = true;
+                request.UserRoles = new List<UserRole>
+                {
+                    new UserRole
+                    {
+                        User = entity,
+                        Role = role
+                    }
+                };
+                await _context.AddAsync(entity);
+            }
+            await _context.SaveChangesAsync();
+            var userAccessModel = await GetUserModelAsync(entity);
+            return userAccessModel;
+        }
+
         public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
         {
             var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-            var userName = @$"{entity.Name[..1].ToUpper()}{entity.Surname}";
-            userName = userName.Length > 20 ? userName[..20] : userName;
             using var hmac = new HMACSHA512();
 
             entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
             entity.PasswordSalt = hmac.Key;
-            entity.UserName = userName;
             entity.Approved = false;
             entity.IsDoctor = true;
             entity.Active = true;
             var existUser = await _context.Users
-                                    .AsNoTracking()
-                                    .AnyAsync();
+                .AsNoTracking()
+                .AnyAsync();
 
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
             if (!existUser)
@@ -107,8 +149,8 @@ namespace Access.Data.Access
             {
                 var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
                 var roleCodes = await RoleCodesAsync(entity.Id);
-                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 userAccessModel.Roles = roleCodes;
+                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
                 var userResponse = new AuthenticationAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
                 return userResponse;
             }
@@ -156,6 +198,14 @@ namespace Access.Data.Access
                                 .Select(x => x.Role.Code)
                                 .ToListAsync();
             return codes;
+        }
+
+        private async Task<UserDataAccessModel> GetUserModelAsync(User entity)
+        {
+            var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
+            var roleCodes = await RoleCodesAsync(entity.Id);
+            userAccessModel.Roles = roleCodes;
+            return userAccessModel;
         }
     }
 }

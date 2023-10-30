@@ -2,7 +2,7 @@
 
 namespace Utilities.Extensions
 {
-    public static class EnumExtensions
+    public static class EnumExtension
     {
         public static string GetDescription(this Enum value)
         {

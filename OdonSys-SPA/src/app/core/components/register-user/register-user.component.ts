@@ -58,18 +58,18 @@ export class RegisterUserComponent implements OnInit {
       this.formGroup.value.middleName ?? undefined
     )
     this.formGroup.disable()
-    this.authApiService.register(request).subscribe({
-      next: () => {
-        this.formGroup.enable()
-        this.alertService.showSuccess('Usuario registrado con éxito.')
-        this.router.navigate(['login'])
-      },
-      error: (error) => {
-        this.formGroup.enable()
-        this.saving = false
-        throw error
-      }
-    })
+    // this.authApiService.register(request).subscribe({
+    //   next: () => {
+    //     this.formGroup.enable()
+    //     this.alertService.showSuccess('Usuario registrado con éxito.')
+    //     this.router.navigate(['login'])
+    //   },
+    //   error: (error) => {
+    //     this.formGroup.enable()
+    //     this.saving = false
+    //     throw error
+    //   }
+    // })
   }
 
   protected close = (): void => {

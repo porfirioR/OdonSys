@@ -24,9 +24,7 @@ namespace Host.Api.Controllers
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             var (statusCode, title) = GetExceptionDetails(context);
-
             var message = string.IsNullOrEmpty(title) ? context.Error.Message : title;
-
             return Problem(
                 detail: context.Error.StackTrace,
                 title: message,
@@ -41,7 +39,6 @@ namespace Host.Api.Controllers
 
             var exception = exceptionDetails?.Error;
             var innerException = exception?.InnerException;
-
             if (innerException != null)
             {
                 if (innerException is SqlException)
@@ -54,6 +51,15 @@ namespace Host.Api.Controllers
                     {
                         var duplicateKey = GetDuplicateKeyFromSqlErrorMessage(innerException.Message);
                         title = string.IsNullOrEmpty(duplicateKey) ? string.Empty : $"No es posible crear el recurso '{duplicateKey}' debido a que ya existe.";
+                        statusCode = (int)HttpStatusCode.Conflict;
+                    }
+                    else if (sqlException.Number == 2628)
+                    {
+                        //String or binary data would be truncated in table 'Table', column 'Column'. Truncated value: 'value'.\r\nThe statement has been terminated.
+                        var message = sqlException.Message;
+                        var column = message[message.LastIndexOf("column '")..message.IndexOf(". Truncated value: '")];
+                        var value = message[message.LastIndexOf("value: '")..message.IndexOf(".\r\n")];
+                        title = $"Error in {column} with {value}";
                         statusCode = (int)HttpStatusCode.Conflict;
                     }
                 }

@@ -1,4 +1,5 @@
-﻿using Contract.Workspace.ClientProcedures;
+﻿using Contract.Administration.Users;
+using Contract.Workspace.ClientProcedures;
 using Contract.Workspace.Procedures;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.ClientProcedures;
@@ -13,17 +14,20 @@ namespace Host.Api.Controllers.Procedure
     public sealed class ClientProcedureController : OdonSysBaseController
     {
         private readonly IProcedureManager _procedureManager;
+        private readonly IUserManager _userManager;
 
-        public ClientProcedureController(IProcedureManager procedureManager)
+        public ClientProcedureController(IProcedureManager procedureManager, IUserManager userManager)
         {
             _procedureManager = procedureManager;
+            _userManager = userManager;
         }
 
         [HttpPost]
         [Authorize(Policy = Policy.CanCreateClientProcedure)]
         public async Task<ClientProcedureModel> Create([FromBody] CreateClientProcedureApiRequest apiRequest)
         {
-            var request = new CreateClientProcedureRequest(UserId, apiRequest.ClientId, apiRequest.ProcedureId);
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
+            var request = new CreateClientProcedureRequest(id, apiRequest.ClientId, apiRequest.ProcedureId);
             var response = await _procedureManager.CreateClientProcedureAsync(request);
             return response;
         }
@@ -47,7 +51,8 @@ namespace Host.Api.Controllers.Procedure
         [HttpGet("my-procedures")]
         public async Task<IEnumerable<ProcedureModel>> GetProceduresByUser()
         {
-            var response = await _procedureManager.GetProceduresByUserIdAsync(UserId);
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
+            var response = await _procedureManager.GetProceduresByUserIdAsync(id);
             return response;
         }
 

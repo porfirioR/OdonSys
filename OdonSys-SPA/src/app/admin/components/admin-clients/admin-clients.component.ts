@@ -26,15 +26,16 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-clients.component.scss']
 })
 export class AdminClientsComponent implements OnInit {
-  public load: boolean = false
-  public gridOptions!: GridOptions
-  private attributeActive!: string
+  protected load: boolean = false
+  protected gridOptions!: GridOptions
   protected rowData$!: Observable<ClientModel[]>
   protected canCreate = false
   private canEdit = false
+  private attributeActive!: string
   // private canDelete = false
   private canDeactivate = false
   private canRestore = false
+  private canShowReport = false
   // private canAssignToDoctor = false
 
   constructor(
@@ -45,13 +46,14 @@ export class AdminClientsComponent implements OnInit {
     private userInfoService: UserInfoService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
     // this.canDelete = this.userInfoService.havePermission(Permission.DeleteClients)
     this.canDeactivate = this.userInfoService.havePermission(Permission.DeactivateClients)
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreClients)
+    this.canShowReport = this.userInfoService.havePermission(Permission.AccessInvoices)
     // this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
     this.setupAgGrid()
     let loading = true
@@ -75,9 +77,10 @@ export class AdminClientsComponent implements OnInit {
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     columnAction.minWidth = 360
     const conditionalButtons = []
-    const buttonsToShow: ButtonGridActionType[] = [
-      ButtonGridActionType.Ver
-    ]
+    const buttonsToShow: ButtonGridActionType[] = []
+    if (this.canShowReport) {
+      buttonsToShow.push(ButtonGridActionType.Ver)
+    }
     if (this.canDeactivate) {
       conditionalButtons.push(new ConditionalGridButtonShow(this.attributeActive, true.toString(), ButtonGridActionType.Desactivar))
     }
@@ -99,7 +102,7 @@ export class AdminClientsComponent implements OnInit {
       clicked: this.actionColumnClicked,
       conditionalButtons: conditionalButtons.length > 0 ? conditionalButtons : undefined,
       // customButton:  this.canAssignToDoctor ? new CustomGridButtonShow(' Doctores', 'fa-stethoscope') : undefined
-      customButton:  new CustomGridButtonShow(' Reporte', 'fa-file-lines')
+      customButton: this.canShowReport ? new CustomGridButtonShow(' Reporte', 'fa-file-lines') : undefined
     }
     columnAction.cellRendererParams = params
   }

@@ -12,7 +12,7 @@ namespace Host.Api.Controllers.Workspace
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public sealed class DoctorsController : ControllerBase
+    public sealed class DoctorsController : OdonSysBaseController
     {
         private readonly IClientManager _clientManager;
         private readonly IUserManager _userManager;

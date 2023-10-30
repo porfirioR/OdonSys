@@ -2,15 +2,19 @@
 <div class="container p-b-10" *ngIf="!loading">
   <span class="d-print-none">
     <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
-      <h3 class="d-print-none">Ficha de Paciente</h3>
+      <h3 class="d-print-none">Ficha del Paciente</h3>
       <button class="btn btn-outline-primary m-r-12" (click)="printReport()">
         <i class="fa fa-print" aria-hidden="true"></i> Imprimir
       </button>
     </div>
   </span>
-  <h4 class="card-title d-none d-print-block">Ficha del Paciente</h4>
+  <div class="card-title d-none d-print-block" id="print-header">
+    <img src="../../../../assets/img/logo.png" alt="Logo" class="text-start">
+    <h4>Ficha del Paciente</h4>
+    <h4>Tel: (0983) 836-364</h4>
+  </div>
   <section class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
-    <main class="row w-100">
+    <div class="row w-100">
       <section class="p-r-0 p-b-10">
         <main class="card">
           <article class="card-body">
@@ -39,7 +43,6 @@
                   <strong>Total: </strong>{{total | number:'' : 'es'}}
                 </span>
               </div>
-
             </section>
             <section class="d-print-none">
               <h4 class="card-title">Datos Personales</h4>
@@ -47,12 +50,15 @@
                 <div class="row col-lg-12 col-md-6">
                   <div class="col-lg-6">
                     <strong class="col-3">Nombre: </strong>
-                    <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+                    <label class="col" id="name">
+                      {{clientFormGroup.value.name}}
+                    </label>
                   </div>
                   <div class="col-lg-6">
                     <strong class="col-3">Documento: </strong>
-                    <label class="col"
-                      id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+                    <label class="col" id="document">
+                      {{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}
+                    </label>
                   </div>
                 </div>
                 <div class="row col-lg-12 col-md-6">
@@ -114,6 +120,6 @@
           </main>
         </footer>
       </section>
-    </main>
+    </div>
   </section>
 </div>
