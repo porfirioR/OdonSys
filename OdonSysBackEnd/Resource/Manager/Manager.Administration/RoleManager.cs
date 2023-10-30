@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Roles;
+using Access.Contract.Users;
 using Contract.Administration.Roles;
 using Utilities.Enums;
 
@@ -8,11 +9,17 @@ namespace Manager.Administration
     {
         private readonly IRoleAccess _roleAccess;
         private readonly IRoleManagerBuilder _roleManagerBuilder;
+        private readonly IUserDataAccess _userDataAccess;
 
-        public RoleManager(IRoleAccess roleAccess, IRoleManagerBuilder roleManagerBuilder)
+        public RoleManager(
+            IRoleAccess roleAccess,
+            IRoleManagerBuilder roleManagerBuilder,
+            IUserDataAccess userDataAccess
+        )
         {
             _roleAccess = roleAccess;
             _roleManagerBuilder = roleManagerBuilder;
+            _userDataAccess = userDataAccess;
         }
 
         public async Task<RoleModel> CreateAsync(CreateRoleRequest request)

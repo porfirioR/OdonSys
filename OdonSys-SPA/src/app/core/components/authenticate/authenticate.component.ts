@@ -17,10 +17,10 @@ export class AuthenticateComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
     type: new FormControl<boolean>(false, { nonNullable: true })
   })
-  public typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
-  public currentType = this.typeValue.password
-  public currentMessage = this.typeValue.passwordMessage
-  public load = false
+  protected typeValue = { text: 'text', password: 'password', textMessage: 'Ocultar contraseña', passwordMessage: 'Mostrar contraseña' };
+  protected currentType = this.typeValue.password
+  protected currentMessage = this.typeValue.passwordMessage
+  protected load = false
 
   constructor(
     private readonly router: Router,
@@ -40,7 +40,7 @@ export class AuthenticateComponent implements OnInit {
     })
   }
 
-  public login = (): void => {
+  protected login = (): void => {
     if (this.formGroup.invalid) { return }
     this.load = false
     const request = new LoginRequest(this.formGroup.value.email!, this.formGroup.value.password!)

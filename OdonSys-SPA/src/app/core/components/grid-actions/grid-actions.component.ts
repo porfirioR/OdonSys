@@ -13,15 +13,15 @@ import { ColorType } from '../../constants/color-type';
   styleUrls: ['./grid-actions.component.scss']
 })
 export class GridActionsComponent implements ICellRendererAngularComp {
-  public params!: GridActionModel
-  public canApprove = false
-  public canShowView = false
-  public canRestore = false
-  public canShowEdit = false
-  public canShowDelete = false
-  public canShowDeactivate = false
-  public canShowDownload = false
-  public canShowCustomButton = false
+  protected params!: GridActionModel
+  protected canApprove = false
+  protected canShowView = false
+  protected canRestore = false
+  protected canShowEdit = false
+  protected canShowDelete = false
+  protected canShowDeactivate = false
+  protected canShowDownload = false
+  protected canShowCustomButton = false
   protected customColorButton: string = 'btn-outline-'
   private customColor: ColorType = 'info'
 
@@ -29,21 +29,21 @@ export class GridActionsComponent implements ICellRendererAngularComp {
     this.configureCellRenderComponent(params)
   }
 
-  public approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar)
+  protected approveItem = () => this.params.clicked(ButtonGridActionType.Aprobar)
 
-  public viewItem = () => this.params.clicked(ButtonGridActionType.Ver)
+  protected viewItem = () => this.params.clicked(ButtonGridActionType.Ver)
 
-  public editItem = () => this.params.clicked(ButtonGridActionType.Editar)
+  protected editItem = () => this.params.clicked(ButtonGridActionType.Editar)
 
-  public deleteItem = () => this.params.clicked(ButtonGridActionType.Borrar)
+  protected deleteItem = () => this.params.clicked(ButtonGridActionType.Borrar)
 
-  public deactivateItem = () => this.params.clicked(ButtonGridActionType.Desactivar)
+  protected deactivateItem = () => this.params.clicked(ButtonGridActionType.Desactivar)
 
-  public downloadItem = () => this.params.clicked(ButtonGridActionType.Descargar)
+  protected downloadItem = () => this.params.clicked(ButtonGridActionType.Descargar)
 
-  public restoreItem = () => this.params.clicked(ButtonGridActionType.Restaurar)
+  protected restoreItem = () => this.params.clicked(ButtonGridActionType.Restaurar)
 
-  public customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
+  protected customItem = () => this.params.clicked(ButtonGridActionType.CustomButton)
 
   public refresh(params: ICellRendererParams<any, any, any> & GridActionModel): boolean {
     this.resetAllValues()

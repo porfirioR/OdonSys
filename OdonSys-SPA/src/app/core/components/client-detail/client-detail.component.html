@@ -45,7 +45,7 @@
         <main class="card">
           <article class="card-body">
             <h4 class="card-title">Facturas</h4>
-            <div ngbAccordion>
+            <section ngbAccordion #accordion="ngbAccordion">
               <div ngbAccordionItem *ngFor="let summary of invoicesSummary">
                 <h2 ngbAccordionHeader>
                   <button ngbAccordionButton (click)="getDetails(summary.id)">
@@ -216,7 +216,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
           </article>
         </main>
       </section>

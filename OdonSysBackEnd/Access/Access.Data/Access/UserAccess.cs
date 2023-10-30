@@ -43,7 +43,6 @@ namespace Access.Data.Access
             var persistRoles = currentRolesOfUser.Where(x => accessRequest.Roles.Contains(x.Code));
             var deleteRoleIds = currentRolesOfUser.Where(x => !accessRequest.Roles.Contains(x.Code)).Select(x => x.Id);
 
-
             var newRoleCodes = accessRequest.Roles.Where(x => !roleCodes.Contains(x));
             var allRoles = await _context.Roles
                                 .AsNoTracking()
@@ -91,8 +90,8 @@ namespace Access.Data.Access
         public async Task<DoctorDataAccessModel> GetByIdAsync(string id)
         {
             var entity = await GetUserByIdAsync(id);
-            var doctorDataAccessModelList = _userDataAccessBuilder.MapUserToDoctorDataAccessModel(entity);
-            return doctorDataAccessModelList;
+            var accessModel = _userDataAccessBuilder.MapUserToDoctorDataAccessModel(entity);
+            return accessModel;
         }
 
         public async Task<UserClientAccessModel> GetUserClientAsync(UserClientAccessRequest accessRequest)
@@ -133,12 +132,24 @@ namespace Access.Data.Access
 
         private async Task<User> GetUserByIdAsync(string id)
         {
-            var entity = await _context.Set<User>()
+            var query = _context.Set<User>()
                             .Include(x => x.UserRoles)
-                            .ThenInclude(x => x.Role)
+                            .ThenInclude(x => x.Role);
+            var entity = await query
                             .AsNoTracking()
                             .SingleOrDefaultAsync(x => x.Id == new Guid(id));
+            entity ??= await query
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.ExternalUserId == id);
             return entity ?? throw new KeyNotFoundException($"id {id}");
+        }
+
+        public async Task<string> GetInternalUserIdByExternalIdAsync(string externalId)
+        {
+            var user = await _context.Set<User>()
+                            .AsNoTracking()
+                            .SingleOrDefaultAsync(x => x.ExternalUserId == externalId);
+            return user.Id.ToString();
         }
     }
 }

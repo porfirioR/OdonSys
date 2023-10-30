@@ -1,4 +1,5 @@
 ﻿using Access.Contract.Authentication;
+using Access.Contract.Azure;
 using Access.Contract.Users;
 using Contract.Administration.Authentication;
 using Contract.Administration.Users;
@@ -28,6 +29,22 @@ namespace Manager.Administration.Mapper
             doctorDataAccessModel.Active,
             doctorDataAccessModel.Approved,
             doctorDataAccessModel.Roles
+        );
+
+        public DoctorModel MapUserGraphAccessModelToDoctorModel(UserGraphAccessModel userGraphDataAccessModel) => new(
+            userGraphDataAccessModel.Id,
+            userGraphDataAccessModel.Name,
+            userGraphDataAccessModel.MiddleName,
+            userGraphDataAccessModel.Surname,
+            userGraphDataAccessModel.SecondSurname,
+            userGraphDataAccessModel.Document,
+            userGraphDataAccessModel.Country,
+            userGraphDataAccessModel.Email,
+            userGraphDataAccessModel.Phone,
+            userGraphDataAccessModel.Username,
+            true,
+            true,
+            userGraphDataAccessModel.Roles
         );
 
         public UserDataAccessRequest MapRegisterUserRequestToUserDataAccessRequest(RegisterUserRequest registerUserRequest) => new(
@@ -64,6 +81,36 @@ namespace Manager.Administration.Mapper
             userDataAccessModel.Active,
             userDataAccessModel.Approved,
             userDataAccessModel.Roles
+        );
+
+        public UserDataAccessRequest MapUserGraphAccessModelToRegisterUserRequest(UserGraphAccessModel userGraphAccessModel)
+        {
+            var registerUserRequest = new UserDataAccessRequest(
+                string.Empty,
+                userGraphAccessModel.Name,
+                userGraphAccessModel.MiddleName,
+                userGraphAccessModel.Surname,
+                userGraphAccessModel.SecondSurname,
+                userGraphAccessModel.Document,
+                string.Empty,
+                userGraphAccessModel.Phone,
+                userGraphAccessModel.Email,
+                userGraphAccessModel.Country,
+                true
+            )
+            {
+                ExternalUserId = userGraphAccessModel.Id,
+                UserName = userGraphAccessModel.Username
+            };
+            return registerUserRequest;
+        }
+
+        public UserModel MapUserGraphAccessModelToUserModel(string id, UserGraphAccessModel userGraphAccessModel) => new(
+            id,
+            userGraphAccessModel.Username,
+            userGraphAccessModel.Active,
+            userGraphAccessModel.Approved,
+            userGraphAccessModel.Roles
         );
     }
 }

@@ -7,6 +7,7 @@ namespace Access.Contract.Authentication
     {
         Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess);
         Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess);
+        Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess);
         bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal);
     }
 }

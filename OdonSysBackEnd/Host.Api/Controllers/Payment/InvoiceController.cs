@@ -1,4 +1,5 @@
-﻿using Contract.Payment.Invoices;
+﻿using Contract.Administration.Users;
+using Contract.Payment.Invoices;
 using Contract.Workspace.Files;
 using Host.Api.Contract.Authorization;
 using Host.Api.Contract.Error;
@@ -19,11 +20,13 @@ namespace Host.Api.Controllers.Payment
     {
         private readonly IInvoiceManager _invoiceManager;
         private readonly IFileManager _fileManager;
+        private readonly IUserManager _userManager;
 
-        public InvoiceController(IInvoiceManager invoiceManager, IFileManager fileManager)
+        public InvoiceController(IInvoiceManager invoiceManager, IFileManager fileManager, IUserManager userManager)
         {
             _invoiceManager = invoiceManager;
             _fileManager = fileManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -121,7 +124,8 @@ namespace Host.Api.Controllers.Payment
         [Authorize(Policy = Policy.CanCreateInvoice)]
         public async Task<IEnumerable<string>> UploadInvoiceFilesAsync([FromForm] UploadFileApiRequest apiRequest)
         {
-            var request = new UploadFileRequest(apiRequest.Id, apiRequest.Files, UserId);
+            var id = string.IsNullOrEmpty(UserId) ? await _userManager.GetInternalUserIdByExternalUserIdAsync(UserIdAadB2C) : UserId;
+            var request = new UploadFileRequest(apiRequest.Id, apiRequest.Files, id);
             var modelList = await _fileManager.UploadFileAsync(request);
             return modelList;
         }

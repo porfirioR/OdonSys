@@ -604,6 +604,9 @@ namespace Access.Sql.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ExternalUserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDoctor")
                         .HasColumnType("bit");
 

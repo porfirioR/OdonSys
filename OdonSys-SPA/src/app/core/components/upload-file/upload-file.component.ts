@@ -16,8 +16,7 @@ export class UploadFileComponent implements OnInit {
     private readonly alertService: AlertService
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit(): void { }
 
   protected onSelect = (event: NgxDropzoneChangeEvent): void => {
     if (event.addedFiles.length > 0) {
@@ -42,6 +41,6 @@ export class UploadFileComponent implements OnInit {
   }
 
   protected onRemove = (file: File): void => {
-    this.files.splice(this.files.indexOf(file), 1);
+    this.files.splice(this.files.indexOf(file), 1)
   }
 }

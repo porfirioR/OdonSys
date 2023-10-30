@@ -85,25 +85,27 @@ export class MyConfigurationComponent implements OnInit {
         user$,
         this.roleApiService.getPermissions()
       ]).subscribe({
-        next: ([user, allPermissions]) => {
+        next: ([userDetails, allPermissions]) => {
           const rolePermissions = this.userInfoService.getPermissions()
           const permissions = allPermissions.filter(x => rolePermissions.includes(x.code))
           MethodHandler.setSubGroupPermissions(permissions, rolePermissions, this.formGroup.controls.subGroupPermissions)
-          this.formGroup.controls.id.setValue(user!.id)
-          this.formGroup.controls.name.setValue(user!.name)
-          this.formGroup.controls.middleName.setValue(user!.middleName)
-          this.formGroup.controls.surname.setValue(user!.surname)
-          this.formGroup.controls.secondSurname.setValue(user!.secondSurname)
-          this.formGroup.controls.document.setValue(user!.document)
-          this.formGroup.controls.phone.setValue(user!.phone)
-          this.formGroup.controls.email.setValue(user!.email)
-          this.formGroup.controls.country.setValue(user!.country)
-          this.formGroup.controls.active.setValue(user!.active)
-          this.formGroup.controls.ruc.setValue(MethodHandler.calculateCheckDigit(user!.document, user!.country))
+          this.formGroup.patchValue({
+            id: userDetails!.id,
+            name: userDetails!.name,
+            middleName: userDetails!.middleName,
+            surname: userDetails!.surname,
+            secondSurname: userDetails!.secondSurname,
+            document: userDetails!.document,
+            phone: userDetails!.phone,
+            email: userDetails!.email,
+            country: userDetails!.country,
+            active: userDetails!.active,
+            ruc: MethodHandler.calculateCheckDigit(userDetails!.document, userDetails!.country)
+          })
           this.load = true
         }
       })
-    }, 1)
+    }, 100)
   }
 
   private getDoctorRequest = (): UpdateUserRequest => {

@@ -24,9 +24,9 @@ export class ClientReportComponent implements OnInit {
     email: new FormControl({ value: '', disabled: true })
   })
   protected loading = true
-  private id: string
   protected invoiceDetailReportApiModelList: InvoiceDetailReportApiModel[] = []
   protected total: number
+  private id: string
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
