@@ -50,13 +50,13 @@
                 <div class="row col-lg-12 col-md-6">
                   <div class="col-lg-6">
                     <strong class="col-3">Nombre: </strong>
-                    <label class="col" id="name">
+                    <label for="name" class="col" id="name">
                       {{clientFormGroup.value.name}}
                     </label>
                   </div>
                   <div class="col-lg-6">
                     <strong class="col-3">Documento: </strong>
-                    <label class="col" id="document">
+                    <label for="document" class="col" id="document">
                       {{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}
                     </label>
                   </div>
@@ -64,21 +64,21 @@
                 <div class="row col-lg-12 col-md-6">
                   <div class="col-lg-6">
                     <strong class="col-3">N° de teléfono: </strong>
-                    <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+                    <label for="phone" class="col" id="phone">{{clientFormGroup.value.phone}}</label>
                   </div>
                   <div class="col-lg-6">
                     <strong class="col-3">País: </strong>
-                    <label class="col" id="country">{{clientFormGroup.value.country}}</label>
+                    <label for="country" class="col" id="country">{{clientFormGroup.value.country}}</label>
                   </div>
                 </div>
                 <div class="row col-lg-12 col-md-6">
                   <div class="col-lg-6">
                     <b>Correo: </b>
-                    <label id="email">{{clientFormGroup.value.email}}</label>
+                    <label for="email" id="email">{{clientFormGroup.value.email}}</label>
                   </div>
                   <div class="col-lg-6">
                     <strong class="col-3">Total: </strong>
-                    <label class="col" id="total">{{total | number:'' : 'es'}}</label>
+                    <label for="total" class="col" id="total">{{total | number:'' : 'es'}}</label>
                   </div>
                 </div>
               </form>

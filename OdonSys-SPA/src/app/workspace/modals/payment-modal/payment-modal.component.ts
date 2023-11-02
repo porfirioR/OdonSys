@@ -41,9 +41,11 @@ export class PaymentModalComponent implements OnInit {
 
   ngOnInit() {
     this.paymentApiService.getPaymentsByInvoiceId(this.invoice.id).pipe(switchMap((payments: PaymentApiModel[]) => {
-      this.formGroup.controls.total.setValue(this.invoice.total)
       const remainingDebt = this.invoice.total - payments.reduce((a, b) => a + b.amount, 0)
-      this.formGroup.controls.remainingDebt.setValue(remainingDebt)
+      this.formGroup.patchValue({
+        total: this.invoice.total,
+        remainingDebt: remainingDebt
+      })
       this.formGroup.controls.amount.addValidators(Validators.max(remainingDebt))
       this.hasPayments = payments.length > 0
       const userPayments = [... new Set(payments.map(x => x.userId))]

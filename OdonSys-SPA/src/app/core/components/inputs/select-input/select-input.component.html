@@ -1,6 +1,7 @@
 <div class="form-group" [ngClass]="colClass">
-  <label class="col-form-label">{{label}}</label>
+  <label [for]="id" class="col-form-label">{{label}}</label>
   <select class="form-select"
+    [id]="id"
     [class.is-invalid]="ngControl.touched && ngControl.invalid"
     [formControl]="$any(ngControl).control">
     <option [value]="''" disabled>Selecione una opción</option>
