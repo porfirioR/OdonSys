@@ -76,11 +76,13 @@ export class UpsertProcedureComponent implements OnInit {
         }
         if (data) {
           this.title = 'Actualizar'
-          this.formGroup.controls.name!.setValue(data.name)
-          this.formGroup.controls.description.setValue(data.description)
-          this.formGroup.controls.price.setValue(data.price)
-          this.formGroup.controls.active.setValue(data.active)
-          this.formGroup.controls.xRays.setValue(data.xRays)
+          this.formGroup.patchValue({
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            active: data.active,
+            xRays: data.xRays
+          })
           this.canRestore = this.userInfoService.havePermission(Permission.DeleteProcedures) && !data.active
           this.formGroup.controls.name.disable()
         }

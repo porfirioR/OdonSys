@@ -78,7 +78,7 @@ namespace Access.Data.Access
                 return await GetUserModelAsync(entity);
             }
             entity = await query
-                .FirstOrDefaultAsync(x => x.Document == request.Document);
+                .FirstOrDefaultAsync(x => x.Document == request.Document || x.Email == dataAccess.Email);
 
             if (entity != null)
             {
@@ -87,7 +87,8 @@ namespace Access.Data.Access
                     entity.ExternalUserId = request.ExternalUserId;
                     _context.Users.Update(entity);
                 }
-                else if(entity.ExternalUserId != dataAccess.ExternalUserId) {
+                else if (entity.ExternalUserId != dataAccess.ExternalUserId)
+                {
                     throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
                 }
             }
@@ -97,13 +98,13 @@ namespace Access.Data.Access
                 entity = request;
                 request.Approved = true;
                 request.UserRoles = new List<UserRole>
+            {
+                new UserRole
                 {
-                    new UserRole
-                    {
-                        User = entity,
-                        Role = role
-                    }
-                };
+                    User = entity,
+                    Role = role
+                }
+            };
                 await _context.AddAsync(entity);
             }
             await _context.SaveChangesAsync();

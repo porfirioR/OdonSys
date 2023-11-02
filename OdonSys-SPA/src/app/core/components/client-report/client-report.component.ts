@@ -50,12 +50,14 @@ export class ClientReportComponent implements OnInit {
     ]).pipe(debounceTime(500))
     .subscribe({
       next: ([report, teeth]) => {
-        this.clientFormGroup.controls.name.setValue(`${report.clientModel.name} ${report.clientModel.middleName} ${report.clientModel.surname} ${report.clientModel.secondSurname}`)
-        this.clientFormGroup.controls.email.setValue(report.clientModel.email)
-        this.clientFormGroup.controls.document.setValue(report.clientModel.document)
-        this.clientFormGroup.controls.ruc.setValue(report.clientModel.ruc)
-        this.clientFormGroup.controls.country.setValue(report.clientModel.country)
-        this.clientFormGroup.controls.phone.setValue(report.clientModel.phone)
+        this.clientFormGroup.patchValue({
+          name: `${report.clientModel.name} ${report.clientModel.middleName} ${report.clientModel.surname} ${report.clientModel.secondSurname}`,
+          email: report.clientModel.email,
+          document: report.clientModel.document,
+          ruc: report.clientModel.ruc,
+          country: report.clientModel.country,
+          phone: report.clientModel.phone,
+        })
         this.invoiceDetailReportApiModelList = report.invoiceModels.flatMap(x => x.invoiceDetails)
         this.invoiceDetailReportApiModelList.forEach(x => x.displayTeeth = x.toothIds && x.toothIds.length > 0 ?
           x.toothIds?.map(x => teeth.find(y => y.id === x)!.number).sort().join(', ') :

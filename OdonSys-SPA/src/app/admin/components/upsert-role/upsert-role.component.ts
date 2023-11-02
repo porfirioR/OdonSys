@@ -56,8 +56,10 @@ export class UpsertRoleComponent implements OnInit {
         }
         if (role) {
           this.title = 'Modificar'
-          this.formGroup.controls.code.setValue(role.code)
-          this.formGroup.controls.name.setValue(role.name)
+          this.formGroup.patchValue({
+            code: role.code,
+            name: role.name
+          })
           this.formGroup.controls.code.disable()
         }
         this.preparePermissions(permissions, role?.rolePermissions ?? [])
