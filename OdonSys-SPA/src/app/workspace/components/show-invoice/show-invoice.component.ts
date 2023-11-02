@@ -192,8 +192,10 @@ export class ShowInvoiceComponent implements OnInit {
       subTotal += x.value.price!
       total += x.value.finalPrice!
     })
-    this.formGroup.controls.subTotal.setValue(subTotal)
-    this.formGroup.controls.total.setValue(total)
+    this.formGroup.patchValue({
+      subTotal: subTotal,
+      total: total
+    })
   }
 
   private setClient = (client: ClientModel) => {

@@ -77,21 +77,23 @@ export class UpdateInvoiceComponent implements OnInit {
     combineLatest([clientRowData$, teethRowData$, invoice$]).subscribe({
       next: ([clients, teeth, invoice]) => {
         const client = clients.find(x => x.id === invoice.clientId)!
-        this.clientFormGroup.controls.name.setValue(`${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`)
-        this.clientFormGroup.controls.email.setValue(client.email)
-        this.clientFormGroup.controls.document.setValue(client.document)
-        this.clientFormGroup.controls.ruc.setValue(client.ruc)
-        this.clientFormGroup.controls.country.setValue(client.country)
-        this.clientFormGroup.controls.phone.setValue(client.phone)
-
-        this.invoiceFormGroup.controls.id.setValue(invoice.id)
-        this.invoiceFormGroup.controls.iva10.setValue(invoice.iva10)
-        this.invoiceFormGroup.controls.totalIva.setValue(invoice.totalIva)
-        this.invoiceFormGroup.controls.subTotal.setValue(invoice.subTotal)
-        this.invoiceFormGroup.controls.total.setValue(invoice.total)
+        this.clientFormGroup.patchValue({
+          name: `${client.name} ${client.middleName} ${client.surname} ${client.secondSurname}`,
+          email: client.email,
+          document: client.document,
+          ruc: client.ruc,
+          country: client.country,
+          phone: client.phone
+        })
+        this.invoiceFormGroup.patchValue({
+          id: invoice.id,
+          iva10: invoice.iva10,
+          totalIva: invoice.totalIva,
+          subTotal: invoice.subTotal,
+          total: invoice.total,
+          paymentAmount: invoice.paymentAmount
+        })
         this.invoiceFormGroup.controls.total.addValidators(Validators.min(invoice.paymentAmount))
-
-        this.invoiceFormGroup.controls.paymentAmount.setValue(invoice.paymentAmount)
         const invoiceDetails = new FormArray(invoice.invoiceDetails.map(x => {
           const formGroup = new FormGroup<InvoiceDetailFormGroup>({
             id: new FormControl(x.id, [Validators.required]),
@@ -169,8 +171,10 @@ export class UpdateInvoiceComponent implements OnInit {
       subTotal += x.value.procedurePrice!
       total += x.value.finalPrice!
     })
-    this.invoiceFormGroup.controls.subTotal.setValue(subTotal)
-    this.invoiceFormGroup.controls.total.setValue(total)
+    this.invoiceFormGroup.patchValue({
+      subTotal: subTotal,
+      total: total
+    })
     this.invoiceFormGroup.controls.total.updateValueAndValidity()
   }
 }
