@@ -9,27 +9,27 @@
         <div class="row col-lg-12 col-md-6">
           <article class="col-lg-6">
             <strong class="col-3">Nombre: </strong>
-            <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+            <label for="name" class="col" id="name">{{clientFormGroup.value.name}}</label>
           </article>
           <article class="col-lg-6">
             <strong class="col-3">Documento: </strong>
-            <label class="col" id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+            <label for="document" class="col" id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
           </article>
         </div>
         <div class="row col-lg-12 col-md-6">
           <article class="col-lg-6">
             <strong class="col-3">N° de teléfono: </strong>
-            <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+            <label for="phone" class="col" id="phone">{{clientFormGroup.value.phone}}</label>
           </article>
           <article class="col-lg-6">
             <strong class="col-3">País: </strong>
-            <label class="col" id="country">{{clientFormGroup.value.country}} </label>
+            <label for="country" class="col" id="country">{{clientFormGroup.value.country}} </label>
           </article>
         </div>
         <div class="row col-lg-12 col-md-6">
           <article class="col-lg-6">
             <b>Correo: </b>
-            <label id="email">{{clientFormGroup.value.email}}</label>
+            <label for="email" id="email">{{clientFormGroup.value.email}}</label>
           </article>
         </div>
       </form>
@@ -43,7 +43,7 @@
             <h4 class="card-title">
               Procedimientos
             </h4>
-            <label>
+            <label for="paymentAmount">
               <strong>Monto abonado:</strong> &nbsp; Gs. {{invoiceFormGroup.controls.paymentAmount.value | number:'' : 'es' }}
             </label>
           </div>
@@ -69,15 +69,15 @@
               <main class="row p-t-b-5 p-l-10" [id]="i" [formGroup]="invoiceDetail"
                 *ngFor="let invoiceDetail of invoiceFormGroup.controls.invoiceDetails!.controls; let i = index">
                 <article class="col-md-4">
-                  <label class="form-label">{{invoiceDetail.value.procedure}}</label>
+                  <label for="procedure" class="form-label">{{invoiceDetail.value.procedure}}</label>
                 </article>
                 <article class="col-md-2">
-                  <label class="form-label"> Gs. {{invoiceDetail.value.procedurePrice | number:'' : 'es' }}</label>
+                  <label for="procedurePrice" class="form-label"> Gs. {{invoiceDetail.value.procedurePrice | number:'' : 'es' }}</label>
                 </article>
                 <article class="col-md-2">
                   <div class="input-group">
                     <span class="input-group-text">Gs.</span>
-                    <input type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
+                    <input id="finalPrice" type="text" class="form-control text-end" formControlName="finalPrice" placeholder="Precio"
                       thousandSeparator="." [mask]="'separator.0'">
                   </div>
                   <!-- <small class="invalid-feedback-check-box f-s-12" *ngIf="procedure?.hasError('invalidFinalPrice')">
@@ -87,12 +87,12 @@
                 <article class="col-md-2">
                   <ng-container
                     *ngIf="invoiceDetail.value.toothIds && invoiceDetail.value.toothIds.length !== 0; else noTeeth">
-                    <label class="form-label">
+                    <label for="teethSelected" class="form-label">
                       {{invoiceDetail.value.teethSelected}}
                     </label>
                   </ng-container>
                   <ng-template #noTeeth>
-                    <label class="form-label">Sin seleccionar</label>
+                    <label for="noTeeth" class="form-label">Sin seleccionar</label>
                   </ng-template>
                 </article>
                 <article class="col-md-2">
@@ -123,12 +123,12 @@
       <footer class="card-body p-t-b-5">
         <main class="row justify-content-end">
           <article class="col-md-3 p-b-0 p-t-0">
-            <label class="col-form-label m-b-0" for="subTotal">
+            <label for="subTotal" class="col-form-label m-b-0">
               <strong>Sub Total:</strong> Gs. {{invoiceFormGroup.controls.subTotal.value | number:'' : 'es' }}
             </label>
           </article>
           <article class="col-md-5">
-            <label class="col-form-label m-b-0" for="montoTotal">
+            <label for="montoTotal" class="col-form-label m-b-0">
               <strong>Monto Total:</strong> Gs. {{invoiceFormGroup.controls.total.value | number:'' : 'es' }}
             </label>
           </article>

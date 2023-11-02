@@ -1,4 +1,4 @@
 <article class="form-check" [ngClass]="colClass">
-  <label class="form-check-label col-lg-12" [for]="id">{{label}}</label>
+  <label [for]="id" class="form-check-label col-lg-12">{{label}}</label>
   <input [id]="id" class="form-check-input" type="checkbox" [formControl]="$any(ngControl).control">
 </article>

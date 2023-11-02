@@ -7,10 +7,10 @@
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row m-l-12">
         <div class="col-6">
-          <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
+          <app-text-number-input [id]="'name'" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
         </div>
         <div class="col-6">
-          <app-text-number-input id="code" [label]="'Código'" formControlName="code"></app-text-number-input>
+          <app-text-number-input [id]="'code'" [label]="'Código'" formControlName="code"></app-text-number-input>
         </div>
       </div>
       <div class="col-12 row m-t-16 m-b-12 m-l-12">
@@ -20,8 +20,8 @@
             <h5 class="offset-3">{{subGroupPermissions.value.subGroup}}</h5>
             <ng-container>
               <div class="col-lg-6 m-l-30" *ngFor="let permissions of subGroupPermissions.controls.permissions.controls">
-                <input class="form-check-input" type="checkbox" [formControl]="permissions.controls.value" [id]="permissions.controls.code.value">
-                <label class="form-check-label m-r-2" [for]="permissions.controls.code.value">{{permissions.controls.name.value}}</label>
+                <input [id]="permissions.controls.code.value" class="form-check-input" type="checkbox" [formControl]="permissions.controls.value">
+                <label [for]="permissions.controls.code.value" class="form-check-label m-r-2">{{permissions.controls.name.value}}</label>
               </div>
             </ng-container>
           </div>

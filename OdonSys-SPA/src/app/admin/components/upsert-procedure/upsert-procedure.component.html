@@ -7,13 +7,13 @@
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <main class="row">
         <div class="col-lg-6">
-          <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
+          <app-text-number-input [id]="'name'" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input id="description" formControlName="description" [label]="'Descripción'"></app-text-number-input>
+          <app-text-number-input [id]="'description'" formControlName="description" [label]="'Descripción'"></app-text-number-input>
         </div>
         <div class="col-lg-6">
-          <app-text-number-input id="price" formControlName="price" [label]="'Precio'" [type]="'number'" [numberWithSeparator]="true"></app-text-number-input>
+          <app-text-number-input [id]="'price'" formControlName="price" [label]="'Precio'" [type]="'number'" [numberWithSeparator]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6 m-t-18" *ngIf="canRestore">
           <app-check-input [id]="'active'" formControlName="active" [label]="'Activo'"></app-check-input>

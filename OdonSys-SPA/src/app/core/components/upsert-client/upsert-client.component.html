@@ -7,31 +7,31 @@
     <form [formGroup]="formGroup" (ngSubmit)="save()">
       <div class="row m-l-12 m-r-12">
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="name" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
+          <app-text-number-input [id]="'name'" formControlName="name" [label]="'Nombre'" [autofocus]="true"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="middleName" formControlName="middleName" [label]="'Segundo Nombre'"></app-text-number-input>
+          <app-text-number-input [id]="'middleName'" formControlName="middleName" [label]="'Segundo Nombre'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="surname" formControlName="surname" [label]="'Apellido'"></app-text-number-input>
+          <app-text-number-input [id]="'surname'" formControlName="surname" [label]="'Apellido'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="secondSurname" formControlName="secondSurname" [label]="'Segundo Apellido'"></app-text-number-input>
+          <app-text-number-input [id]="'secondSurname'" formControlName="secondSurname" [label]="'Segundo Apellido'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="phone" formControlName="phone" [label]="'N° de teléfono'"></app-text-number-input>
+          <app-text-number-input [id]="'phone'" formControlName="phone" [label]="'N° de teléfono'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-select-input id="country" formControlName="country" [label]="'País'" [options]="countries"></app-select-input>
+          <app-select-input [id]="'country'" formControlName="country" [label]="'País'" [options]="countries"></app-select-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="document" formControlName="document" [label]="'Documento'" [type]="'number'"></app-text-number-input>
+          <app-text-number-input [id]="'document'" formControlName="document" [label]="'Documento'" [type]="'number'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="ruc" formControlName="ruc" [label]="'Ruc'" [type]="'number'"></app-text-number-input>
+          <app-text-number-input [id]="'ruc'" formControlName="ruc" [label]="'Ruc'" [type]="'number'"></app-text-number-input>
         </div>
         <div class="col-lg-6 col-md-6">
-          <app-text-number-input id="email" formControlName="email" [label]="'Correo'" [type]="'email'"></app-text-number-input>
+          <app-text-number-input [id]="'email'" formControlName="email" [label]="'Correo'" [type]="'email'"></app-text-number-input>
         </div>
       </div>
       <div class="form-group text-center btn-footer m-t-16">

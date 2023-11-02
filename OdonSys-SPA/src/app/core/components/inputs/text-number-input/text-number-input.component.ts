@@ -11,6 +11,7 @@ export class TextNumberComponent implements ControlValueAccessor {
   @ViewChild("numberInput") numberInput?: ElementRef
   @ViewChild("principalTextNumberInput") principalTextNumberInput?: ElementRef
   @Input() label: string = ''
+  @Input() id: string = ''
   @Input() type: InputType = 'text'
   @Input() colClass: string = 'col-lg-8'
   @Input() numberWithSeparator: boolean = false

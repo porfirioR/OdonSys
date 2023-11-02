@@ -13,28 +13,29 @@
               <div class="row col-lg-12 col-md-6">
                 <div class="col-lg-6">
                   <strong class="col-3">Nombre: </strong>
-                  <label class="col" id="name">{{clientFormGroup.value.name}}</label>
+                  <label for="name" class="col">{{clientFormGroup.value.name}}</label>
                 </div>
                 <div class="col-lg-6">
                   <strong class="col-3">Documento: </strong>
-                  <label class="col"
-                    id="document">{{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}</label>
+                  <label for="document" class="col">
+                    {{clientFormGroup.value.document}}-{{clientFormGroup.value.ruc}}
+                  </label>
                 </div>
               </div>
               <div class="row col-lg-12 col-md-6">
                 <div class="col-lg-6">
                   <strong class="col-3">N° de teléfono: </strong>
-                  <label class="col" id="phone">{{clientFormGroup.value.phone}}</label>
+                  <label for="phone" class="col">{{clientFormGroup.value.phone}}</label>
                 </div>
                 <div class="col-lg-6">
                   <strong class="col-3">País: </strong>
-                  <label class="col" id="country">{{clientFormGroup.value.country}} </label>
+                  <label for="country" class="col">{{clientFormGroup.value.country}} </label>
                 </div>
               </div>
               <div class="row col-lg-12 col-md-6">
                 <div class="col-lg-6">
                   <b>Correo: </b>
-                  <label id="email">{{clientFormGroup.value.email}}</label>
+                  <label for="email">{{clientFormGroup.value.email}}</label>
                 </div>
               </div>
             </form>
@@ -76,27 +77,27 @@
                           <h5 class="card-title">Procedimientos</h5>
                           <main class="p-l-10">
                             <header class="row">
-                              <label id="name" class="col-md-3 fw-bold">Nombre</label>
-                              <label id="teethNumber" class="col-md-2 fw-bold text-start p-l-6">N° Dientes</label>
-                              <label id="userCreated" class="col-md-2 fw-bold text-end">Quien Registró</label>
-                              <label id="date" class="col-md-2 fw-bold text-end p-r-6">Fecha</label>
-                              <label id="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
+                              <label for="name" class="col-md-3 fw-bold">Nombre</label>
+                              <label for="teethNumber" class="col-md-2 fw-bold text-start p-l-6">N° Dientes</label>
+                              <label for="userCreated" class="col-md-2 fw-bold text-end">Quien Registró</label>
+                              <label for="date" class="col-md-2 fw-bold text-end p-r-6">Fecha</label>
+                              <label for="price" class="col-md-3 fw-bold text-end">Precio (Gs.)</label>
                             </header>
                             <section class="row align-center">
                               <article class="p-b-6" *ngFor="let invoiceDetail of clientDetails.get(summary.id)?.procedures">
-                                <label class="col-md-3">
+                                <label for="procedure" class="col-md-3">
                                   {{invoiceDetail?.procedure}}
                                 </label>
-                                <label class="col-md-2 text-start p-r-12">
+                                <label for="teeth" class="col-md-2 text-start p-r-12">
                                   {{invoiceDetail?.teeth}}
                                 </label>
-                                <label class="col-md-2 text-end p-r-12">
+                                <label for="userCreated" class="col-md-2 text-end p-r-12">
                                   {{invoiceDetail?.userCreated}}
                                 </label>
-                                <label class="col-md-2 text-end">
+                                <label for="dateCreated" class="col-md-2 text-end">
                                   {{invoiceDetail?.dateCreated | date: 'dd/MM/yyyy': '': 'es' }}
                                 </label>
-                                <label class="col-md-3 text-end">
+                                <label for="finalPrice" class="col-md-3 text-end">
                                   {{invoiceDetail?.finalPrice | number:'' : 'es' }}
                                 </label>
                               </article>
@@ -122,10 +123,10 @@
                               </header>
                               <section id="paid-items">
                                 <article class="row paid-content-row" *ngFor="let payment of clientDetails.get(summary.id)!.payments">
-                                  <label class="col-md-5">{{payment.user}}</label>
-                                  <label class="col-md-2 text-end">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
-                                  <label class="col-md-2 text-end p-r-0">{{payment.amount | number: '': 'es'}}</label>
-                                  <label class="col-md-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
+                                  <label for="user" class="col-md-5">{{payment.user}}</label>
+                                  <label for="dateCreated" class="col-md-2 text-end">{{payment.dateCreated | date: 'dd/MM/yyyy': '': 'es'}}</label>
+                                  <label for="amount" class="col-md-2 text-end p-r-0">{{payment.amount | number: '': 'es'}}</label>
+                                  <label for="totalDebt" class="col-md-3 text-end">{{payment.totalDebt | number: '': 'es'}}</label>
                                 </article>
                               </section>
                             </main>

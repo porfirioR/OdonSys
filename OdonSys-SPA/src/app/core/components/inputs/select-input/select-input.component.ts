@@ -9,8 +9,10 @@ import { SelectModel } from '../../../../core/models/view/select-model';
 })
 export class SelectInputComponent implements ControlValueAccessor {
   @Input() label: string = ''
+  @Input() id: string = ''
   @Input() colClass: string = 'col-lg-8'
   @Input() options: SelectModel[] = []
+
   constructor(@Self() public ngControl: NgControl) {
     this.ngControl.valueAccessor = this
   }
