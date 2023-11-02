@@ -18,6 +18,7 @@ namespace Access.Data.Access
         {
             var entity = new FileStorage
             {
+                FileName = accessRequest.Name,
                 ReferenceId = accessRequest.ReferenceId,
                 Url = accessRequest.Url,
                 Format = accessRequest.Format

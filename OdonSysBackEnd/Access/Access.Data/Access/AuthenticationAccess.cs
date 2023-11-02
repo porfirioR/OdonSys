@@ -70,55 +70,46 @@ namespace Access.Data.Access
 
         public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
         {
-            try
+            var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
+            var query = _context.Users.AsQueryable();
+            var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
+            if (entity != null)
             {
-
-                var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-                var query = _context.Users.AsQueryable();
-                var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
-                if (entity != null)
-                {
-                    return await GetUserModelAsync(entity);
-                }
-                entity = await query
-                    .FirstOrDefaultAsync(x => x.Document == request.Document || x.Email == dataAccess.Email);
-
-                if (entity != null)
-                {
-                    if (string.IsNullOrEmpty(entity.ExternalUserId))
-                    {
-                        entity.ExternalUserId = request.ExternalUserId;
-                        _context.Users.Update(entity);
-                    }
-                    else if (entity.ExternalUserId != dataAccess.ExternalUserId)
-                    {
-                        throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
-                    }
-                }
-                else
-                {
-                    var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
-                    entity = request;
-                    request.Approved = true;
-                    request.UserRoles = new List<UserRole>
-                {
-                    new UserRole
-                    {
-                        User = entity,
-                        Role = role
-                    }
-                };
-                    await _context.AddAsync(entity);
-                }
-                await _context.SaveChangesAsync();
-                var userAccessModel = await GetUserModelAsync(entity);
-                return userAccessModel;
+                return await GetUserModelAsync(entity);
             }
-            catch (Exception ex)
+            entity = await query
+                .FirstOrDefaultAsync(x => x.Document == request.Document || x.Email == dataAccess.Email);
+
+            if (entity != null)
             {
-                Console.WriteLine(ex);
-                throw;
+                if (string.IsNullOrEmpty(entity.ExternalUserId))
+                {
+                    entity.ExternalUserId = request.ExternalUserId;
+                    _context.Users.Update(entity);
+                }
+                else if (entity.ExternalUserId != dataAccess.ExternalUserId)
+                {
+                    throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
+                }
             }
+            else
+            {
+                var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
+                entity = request;
+                request.Approved = true;
+                request.UserRoles = new List<UserRole>
+            {
+                new UserRole
+                {
+                    User = entity,
+                    Role = role
+                }
+            };
+                await _context.AddAsync(entity);
+            }
+            await _context.SaveChangesAsync();
+            var userAccessModel = await GetUserModelAsync(entity);
+            return userAccessModel;
         }
 
         public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
