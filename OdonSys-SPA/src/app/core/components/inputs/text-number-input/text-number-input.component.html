@@ -1,5 +1,7 @@
 <div class="form-group" [ngClass]="colClass">
-  <label class="col-form-label" *ngIf="!!label && showLabel">{{label}}</label>
+  <label [for]="id" class="col-form-label" *ngIf="!!label && showLabel">
+    {{label}}
+  </label>
   <ng-container *ngIf="!numberWithSeparator; else inputNumberSeparator">
     <input class="form-control"
       #principalTextNumberInput
@@ -8,6 +10,7 @@
       [formControl]="$any(ngControl).control"
       placeholder={{label}}
       [autocomplete]="type === 'password' ? 'on': 'off'"
+      [id]="id"
     >
   </ng-container>
 
@@ -18,10 +21,14 @@
       [formControl]="$any(ngControl).control"
       placeholder={{label}}
       [mask]="'separator.0'"
-      thousandSeparator=".">
+      thousandSeparator="."
+      [id]="id"
+    >
   </ng-template>
 
-  <div *ngIf="ngControl.control?.errors?.['required']" class="invalid-feedback">Favor ingresar {{label}}</div>
+  <div *ngIf="ngControl.control?.errors?.['required']" class="invalid-feedback">
+    Favor ingresar {{label}}
+  </div>
   <div *ngIf="ngControl.control?.errors?.['minlength']" class="invalid-feedback">
     {{label}} debe tener como mínimo {{ngControl.control?.errors?.['minlength']?.requiredLength}} dígitos y/o letras
   </div>
