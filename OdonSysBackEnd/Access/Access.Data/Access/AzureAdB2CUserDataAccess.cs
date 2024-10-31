@@ -2,7 +2,6 @@
 using Access.Contract.Azure;
 using Microsoft.Extensions.Options;
 using Microsoft.Graph;
-using Microsoft.IdentityModel.Tokens;
 using Utilities.Configurations;
 using Utilities.Enums;
 
@@ -26,7 +25,7 @@ namespace Access.Data.Access
             var usersCollectionResponse = await _azureGraphServiceClient.Users.GetAsync(requestConfiguration =>
                 {
                     requestConfiguration.QueryParameters.Top = 999;
-                    requestConfiguration.QueryParameters.Select = new string[] {
+                    requestConfiguration.QueryParameters.Select = [
                         "id",
                         "displayName", // username
                         "mail",
@@ -38,7 +37,7 @@ namespace Access.Data.Access
                         _userExtensionAccessModel.SecondName,
                         _userExtensionAccessModel.SecondSurname,
                         "identities"
-                    };
+                    ];
                 }
             );
             var users = usersCollectionResponse!.Value!.ToList();
@@ -73,8 +72,8 @@ namespace Access.Data.Access
         {
             var user = await _azureGraphServiceClient.Users[userId].GetAsync((requestConfiguration) =>
             {
-                requestConfiguration.QueryParameters.Select = new string[]
-                {
+                requestConfiguration.QueryParameters.Select =
+                [
                     "id",
                     "displayName", // username
                     "email",
@@ -86,7 +85,7 @@ namespace Access.Data.Access
                     _userExtensionAccessModel.SecondName,
                     _userExtensionAccessModel.SecondSurname,
                     "identities"
-                };
+                ];
             });
 
             var additionalData = user.AdditionalData;
@@ -94,7 +93,7 @@ namespace Access.Data.Access
             _ = additionalData.TryGetValue(_userExtensionAccessModel.Phone, out var phone);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondName, out var secondName);
             _ = additionalData.TryGetValue(_userExtensionAccessModel.SecondSurname, out var secondLastname);
-            var roles = !user.AppRoleAssignments.IsNullOrEmpty() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : new List<string>();
+            var roles = user.AppRoleAssignments != null && user.AppRoleAssignments.Any() ? user.AppRoleAssignments?.Select(x => x.PrincipalDisplayName) : [];
             return new(
                 user.Id!,
                 user.DisplayName!,
