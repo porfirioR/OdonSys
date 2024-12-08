@@ -81,7 +81,7 @@ namespace AcceptanceTest.Host.Api.Procedures
             Assert.Multiple(() =>
             {
                 Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                CollectionAssert.IsNotEmpty(model);
+                Assert.That(model, Is.Not.Empty);
             });
         }
 
@@ -102,7 +102,7 @@ namespace AcceptanceTest.Host.Api.Procedures
                 Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
                 Assert.That(createModel.Id, Is.EqualTo(model.Id));
                 Assert.That(createModel.Description, Is.EqualTo(model.Description));
-                Assert.AreNotEqual(createModel.Active, Is.EqualTo(model.Active));
+                Assert.That(createModel.Active, Is.Not.EqualTo(model.Active));
             });
         }
 
@@ -125,7 +125,7 @@ namespace AcceptanceTest.Host.Api.Procedures
                 Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
                 Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
                 Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
-                Assert.AreNotEqual(deleteModel.Active, model.Active);
+                Assert.That(deleteModel.Active, Is.Not.EqualTo(model.Active));
             });
         }
     }
