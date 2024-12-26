@@ -126,13 +126,18 @@ export class AgGridService {
 
   public getGridOptions(): GridOptions {
     const gridOptions: GridOptions = {
-      rowSelection: 'single',
-      defaultColDef: { sortable: true, filter: true },
+      rowSelection: {
+        mode: 'singleRow'
+      },
+      defaultColDef: {
+        sortable: true,
+        filter: true,
+        enableCellChangeFlash: true
+      },
       overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Por favor espere mientras cargan las filas.</span>',
       overlayNoRowsTemplate:
         '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow;">Sin filas que mostrar.</span>',
       paginationAutoPageSize: true,
-      enableCellChangeFlash: true,
       columnDefs: this.columnDef,
       pagination: true,
       localeText: agGridLocaleEs,
@@ -214,8 +219,7 @@ export class AgGridService {
     return grid
   }
 
-  public getCurrentRowNode = (gridOptions: GridOptions): IRowNode<any> => {
-    const gridApi = gridOptions.api as GridApi
+  public getCurrentRowNode = (gridApi: GridApi): IRowNode<any> => {
     const selectedColumnIndex = gridApi.getFocusedCell()?.rowIndex as number
     const renderSelectedColumnIndex = selectedColumnIndex > gridApi.getRenderedNodes().length ?
                                       selectedColumnIndex - gridApi.getFirstDisplayedRow() : selectedColumnIndex

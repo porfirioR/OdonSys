@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { FieldId } from '../../enums/field-id.enum';
@@ -26,6 +26,7 @@ export class ClientsComponent implements OnInit {
   private attributeActive!: string
   private canEdit = false
   private canShowReport = false
+  private gridApi!: GridApi
 
   constructor(
     private readonly clientApiService: ClientApiService,
@@ -48,14 +49,14 @@ export class ClientsComponent implements OnInit {
     this.loading = true;
     this.clientApiService.getDoctorPatients().subscribe({
       next: (response: ClientApiModel[]) => {
-        this.gridOptions.api?.setRowData(response)
-        this.gridOptions.api?.sizeColumnsToFit()
+        this.gridOptions.rowData = response
+        this.gridApi?.sizeColumnsToFit()
         if (response.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay()
+          this.gridApi?.showNoRowsOverlay()
         }
         this.loading = false
       }, error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay()
+        this.gridApi?.showNoRowsOverlay()
         this.loading = false
         throw e
       }
@@ -64,11 +65,14 @@ export class ClientsComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
+    this.gridOptions.onGridReady = (x) => setTimeout(() => {
+      this.gridApi = x.api
+    }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const buttonsToShow: ButtonGridActionType[] = []
     if (this.canShowReport) {
@@ -86,7 +90,7 @@ export class ClientsComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])

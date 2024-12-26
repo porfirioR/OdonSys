@@ -8,7 +8,7 @@ namespace AcceptanceTest.Host.Api
         public void BaseReturnOk()
         {
             // Just for run test base and insert script sql
-            Assert.IsTrue(true);
+            Assert.That(true, Is.True);
         }
     }
 }

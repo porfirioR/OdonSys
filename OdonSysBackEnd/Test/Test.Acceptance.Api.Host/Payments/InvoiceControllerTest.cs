@@ -25,12 +25,12 @@ namespace AcceptanceTest.Host.Api.Payments
             var procedureRequest = CreateProcedureApiRequest;
             var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
             var procedureActual = JsonConvert.DeserializeObject<ProcedureModel>(await procedureResponse.Content.ReadAsStringAsync());
-            Assert.IsNotNull(procedureActual);
+            Assert.That(procedureActual, Is.Not.Null);
 
             var clientRequet = CreateClientApiRequest;
             var clientResponse = await _client.PostAsJsonAsync(_clientUri, clientRequet);
             var clientActual = JsonConvert.DeserializeObject<ClientModel>(await procedureResponse.Content.ReadAsStringAsync());
-            Assert.IsNotNull(clientActual);
+            Assert.That(clientActual, Is.Not.Null);
 
             var clientProcedureRequet = new CreateClientProcedureApiRequest
             {
@@ -39,7 +39,7 @@ namespace AcceptanceTest.Host.Api.Payments
             };
             var clientProcedureResponse = await _client.PostAsJsonAsync(_clientProcedureUri, clientProcedureRequet);
             var clientProcedureActual = JsonConvert.DeserializeObject<ClientProcedureModel>(await clientProcedureResponse.Content.ReadAsStringAsync());
-            Assert.IsNotNull(clientProcedureActual);
+            Assert.That(clientProcedureActual, Is.Not.Null);
 
             var request = CreateInvoiceApiRequest(clientActual.Id, clientProcedureActual.Id);
             var response = await _client.PostAsJsonAsync(_uri, request);
@@ -70,13 +70,13 @@ namespace AcceptanceTest.Host.Api.Payments
             var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
             var procedureContent = await procedureResponse.Content.ReadAsStringAsync();
             var procedureActual = JsonConvert.DeserializeObject<ProcedureModel>(procedureContent);
-            Assert.IsNotNull(procedureActual);
+            Assert.That(procedureActual, Is.Not.Null);
 
             var clientRequet = CreateClientApiRequest;
             var clientResponse = await _client.PostAsJsonAsync(_clientUri, clientRequet);
             var content = await clientResponse.Content.ReadAsStringAsync();
             var clientActual = JsonConvert.DeserializeObject<ClientModel>(content);
-            Assert.IsNotNull(clientActual);
+            Assert.That(clientActual, Is.Not.Null);
 
             var clientProcedureRequet = new CreateClientProcedureApiRequest
             {
@@ -86,18 +86,18 @@ namespace AcceptanceTest.Host.Api.Payments
             var clientProcedureResponse = await _client.PostAsJsonAsync(_clientProcedureUri, clientProcedureRequet);
             var clientProcedureContent = await clientProcedureResponse.Content.ReadAsStringAsync();
             var clientProcedureActual = JsonConvert.DeserializeObject<ClientProcedureModel>(clientProcedureContent);
-            Assert.IsNotNull(clientProcedureActual);
+            Assert.That(clientProcedureActual, Is.Not.Null);
 
             var invoiceRequest = CreateInvoiceApiRequest(clientActual.Id, clientProcedureActual.Id);
             var invoiceResponse = await _client.PostAsJsonAsync(_uri, invoiceRequest);
             var invoiceContent = await invoiceResponse.Content.ReadAsStringAsync();
             var invoiceActual = JsonConvert.DeserializeObject<InvoiceModel>(invoiceContent);
-            Assert.IsNotNull(invoiceActual);
+            Assert.That(invoiceActual, Is.Not.Null);
 
             var request = InvoiceFormData(invoiceActual.Id.ToString());
             var response = await _client.PostAsync($"{_uri}/upload-invoice-files", request);
             var actual = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(!string.IsNullOrEmpty(actual));
+            Assert.That(!string.IsNullOrEmpty(actual), Is.True);
         }
 
         [Test]
@@ -108,13 +108,13 @@ namespace AcceptanceTest.Host.Api.Payments
             var procedureResponse = await _client.PostAsJsonAsync(_procedureUri, procedureRequest);
             var procedureContent = await procedureResponse.Content.ReadAsStringAsync();
             var procedureActual = JsonConvert.DeserializeObject<ProcedureModel>(procedureContent);
-            Assert.IsNotNull(procedureActual);
+            Assert.That(procedureActual, Is.Not.Null);
 
             var clientRequet = CreateClientApiRequest;
             var clientResponse = await _client.PostAsJsonAsync(_clientUri, clientRequet);
             var content = await clientResponse.Content.ReadAsStringAsync();
             var clientActual = JsonConvert.DeserializeObject<ClientModel>(content);
-            Assert.IsNotNull(clientActual);
+            Assert.That(clientActual, Is.Not.Null);
 
             var clientProcedureRequet = new CreateClientProcedureApiRequest
             {
@@ -124,24 +124,24 @@ namespace AcceptanceTest.Host.Api.Payments
             var clientProcedureResponse = await _client.PostAsJsonAsync(_clientProcedureUri, clientProcedureRequet);
             var clientProcedureContent = await clientProcedureResponse.Content.ReadAsStringAsync();
             var clientProcedureActual = JsonConvert.DeserializeObject<ClientProcedureModel>(clientProcedureContent);
-            Assert.IsNotNull(clientProcedureActual);
+            Assert.That(clientProcedureActual, Is.Not.Null);
 
             var invoiceRequest = CreateInvoiceApiRequest(clientActual.Id, clientProcedureActual.Id);
             var invoiceResponse = await _client.PostAsJsonAsync(_uri, invoiceRequest);
             var invoiceContent = await invoiceResponse.Content.ReadAsStringAsync();
             var invoiceActual = JsonConvert.DeserializeObject<InvoiceModel>(invoiceContent);
-            Assert.IsNotNull(invoiceActual);
+            Assert.That(invoiceActual, Is.Not.Null);
 
             var request = InvoiceFormDataWithPdf(invoiceActual.Id.ToString());
             var fileResponse = await _client.PostAsync($"{_uri}/upload-invoice-files", request);
             var fileContent = await fileResponse.Content.ReadAsStringAsync();
             var fileActual = JsonConvert.DeserializeObject<IEnumerable<string>>(fileContent);
-            CollectionAssert.IsNotEmpty(fileActual);
+            Assert.That(fileActual, Is.Not.Empty);
 
             var response = await _client.GetAsync($"{_uri}/preview-invoice-files/{invoiceActual.Id}");
             var previewContent = await response.Content.ReadAsStringAsync();
             var actual = JsonConvert.DeserializeObject<IEnumerable<FileModel>>(previewContent);
-            CollectionAssert.IsNotEmpty(actual);
+            Assert.That(actual, Is.Not.Empty);
         }
     }
 }
