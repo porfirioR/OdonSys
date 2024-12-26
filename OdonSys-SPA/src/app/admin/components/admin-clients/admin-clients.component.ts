@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { FieldId } from '../../../core/enums/field-id.enum';
 import { Permission } from '../../../core/enums/permission.enum';
@@ -37,6 +37,7 @@ export class AdminClientsComponent implements OnInit {
   private canRestore = false
   private canShowReport = false
   // private canAssignToDoctor = false
+  private gridApi!: GridApi
 
   constructor(
     private readonly router: Router,
@@ -62,18 +63,21 @@ export class AdminClientsComponent implements OnInit {
         this.store.dispatch(fromClientsActions.loadClients()) 
         loading = false
       }
-      this.gridOptions.api?.sizeColumnsToFit()
+      this.gridApi?.sizeColumnsToFit()
     }))
     this.load = true
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getAdminClientGridOptions()
+    this.gridOptions.onGridReady = (x) => setTimeout(() => {
+      this.gridApi = x.api
+    }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     columnAction.minWidth = 360
     const conditionalButtons = []
@@ -108,7 +112,7 @@ export class AdminClientsComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Aprobar:
       case ButtonGridActionType.Desactivar:
