@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { FieldId } from '../../enums/field-id.enum';
@@ -19,6 +19,7 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./my-clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
+
   protected loading: boolean = false
   protected ready: boolean = false
   protected gridOptions!: GridOptions
@@ -42,15 +43,20 @@ export class ClientsComponent implements OnInit {
     this.canShowReport = this.userInfoService.havePermission(Permission.AccessMyInvoices)
     this.setupAgGrid()
     this.ready = true
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
     this.getList()
   }
 
-  private getList = () => {
+  private getList = (): void => {
     this.loading = true;
     this.clientApiService.getDoctorPatients().subscribe({
       next: (response: ClientApiModel[]) => {
-        this.gridOptions.rowData = response
+        // this.gridOptions.rowData = response
         this.gridApi?.sizeColumnsToFit()
+        this.gridApi?.setGridOption('rowData', response)
         if (response.length === 0) {
           this.gridApi?.showNoRowsOverlay()
         }
@@ -70,9 +76,6 @@ export class ClientsComponent implements OnInit {
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getClientGridOptions()
-    this.gridOptions.onGridReady = (x) => setTimeout(() => {
-      this.gridApi = x.api
-    }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const buttonsToShow: ButtonGridActionType[] = []
     if (this.canShowReport) {

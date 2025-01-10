@@ -7,8 +7,9 @@
     <ng-container *ngIf="gridOptions">
       <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
         [gridOptions]="gridOptions"
-        [rowData]="rowData$ | async">
-      </ag-grid-angular>
+        [rowData]="rowData$ | async"
+        (gridReady)="prepareGrid($event)"
+      />
     </ng-container>
   </div>
 </div>

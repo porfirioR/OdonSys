@@ -9,7 +9,7 @@ namespace AcceptanceTest.Host.Api
         public DataContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<DataContext>()
-                            .UseSqlServer($"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False");
+                            .UseSqlServer($"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False;TrustServerCertificate=True;");
 
             return new DataContext(optionsBuilder.Options, null);
         }

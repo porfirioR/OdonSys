@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Observable, of, tap } from 'rxjs';
@@ -60,12 +60,16 @@ export class DoctorsComponent implements OnInit {
     this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
     this.store.dispatch(fromDoctorsActions.loadDoctors())
-    this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridApi?.sizeColumnsToFit()))
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
     this.gridApi?.sizeColumnsToFit()
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
+    this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridApi?.sizeColumnsToFit()))
   }
 
   private setupAgGrid = (): void => {
