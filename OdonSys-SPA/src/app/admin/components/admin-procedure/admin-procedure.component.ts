@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { ColDef, GridApi, GridOptions, IRowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
@@ -67,12 +67,13 @@ export class AdminProcedureComponent implements OnInit {
     this.gridApi?.sizeColumnsToFit()
   }
 
+  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
+    this.gridApi = event.api
+    this.gridApi?.sizeColumnsToFit()
+  }
+
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getProcedureGridOptions()
-    this.gridOptions.onGridReady = (x) => setTimeout(() => {
-      this.gridApi = x.api
-      this.gridApi?.sizeColumnsToFit()
-    }, 1000)
     const columnAction: ColDef = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action')!
     if (!(this.canEdit || this.canDelete)) {
       columnAction.hide = true

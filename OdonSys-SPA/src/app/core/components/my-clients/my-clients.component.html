@@ -10,8 +10,9 @@
   <div class="m-t-16">
     <ng-container *ngIf="gridOptions">
       <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
-        [gridOptions]="gridOptions">
-      </ag-grid-angular>
+        [gridOptions]="gridOptions"
+        (gridReady)="prepareGrid($event)"
+      />
     </ng-container>
   </div>
 </div>

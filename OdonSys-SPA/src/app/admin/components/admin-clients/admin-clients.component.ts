@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { FieldId } from '../../../core/enums/field-id.enum';
 import { Permission } from '../../../core/enums/permission.enum';
@@ -73,11 +73,12 @@ export class AdminClientsComponent implements OnInit {
     this.gridApi?.sizeColumnsToFit()
   }
 
+  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
+    this.gridApi = event.api
+  }
+
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getAdminClientGridOptions()
-    this.gridOptions.onGridReady = (x) => setTimeout(() => {
-      this.gridApi = x.api
-    }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     columnAction.minWidth = 360
     const conditionalButtons = []

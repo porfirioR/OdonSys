@@ -11,7 +11,7 @@ namespace AcceptanceTest.Host.Api
     public class HostApiFactory : WebApplicationFactory<Startup>
     {
 
-        private readonly string _connectionString = $"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False";
+        private readonly string _connectionString = $"Server=(local);Database=OdonSys;Integrated Security=True;MultipleActiveResultSets=False;TrustServerCertificate=True;";
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

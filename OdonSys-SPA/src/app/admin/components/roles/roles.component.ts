@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { Observable, tap } from 'rxjs';
 import { RoleModel } from '../../../core/models/view/role-model';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
@@ -51,12 +51,13 @@ export class RolesComponent implements OnInit {
   private getScreenSize(event?: any) {
     this.gridApi?.sizeColumnsToFit()
   }
+  
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
+  }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getRoleGridOptions()
-    this.gridOptions.onGridReady = (x) => setTimeout(() => {
-      this.gridApi = x.api
-    }, 1000)
     const columnAction: ColDef = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action')!
     if (!this.canEdit) {
       columnAction.hide = true
