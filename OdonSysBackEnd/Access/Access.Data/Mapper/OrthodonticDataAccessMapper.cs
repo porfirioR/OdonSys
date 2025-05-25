@@ -1,10 +1,21 @@
-﻿using Access.Contract.Payments;
+﻿using Access.Contract.Orthodontics;
+using Access.Contract.Payments;
 using Access.Sql.Entities;
 
 namespace Access.Data.Mapper;
 
-internal class PaymentDataAccessBuilder : IPaymentDataAccessBuilder
+internal class OrthodonticDataAccessMapper : IOrthodonticDataAccessMapper
 {
+    public Orthodontic MapAccessRequestToEntity(OrthodonticAccessRequest request)
+    {
+        throw new NotImplementedException();
+    }
+
+    public OrthodonticAccessModel MapEntityToAccessModel(Orthodontic payment)
+    {
+        throw new NotImplementedException();
+    }
+
     public Payment MapPaymentAccessRequestToPayment(PaymentAccessRequest request)
     {
         var payment = new Payment()

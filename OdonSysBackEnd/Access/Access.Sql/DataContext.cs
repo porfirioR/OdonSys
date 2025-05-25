@@ -29,6 +29,7 @@ namespace Access.Sql
         public DbSet<InvoiceDetailTooth> InvoiceDetailTeeth { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<FileStorage> FileStorages { get; set; }
+        public DbSet<Orthodontic> Orthodontics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,7 @@ namespace Access.Sql
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceDetailToothConfiguration());
+            modelBuilder.ApplyConfiguration(new OrthodonticConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
             modelBuilder.ApplyConfiguration(new ProcedureConfiguration());

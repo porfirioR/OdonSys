@@ -17,5 +17,6 @@ namespace Access.Sql.Entities
 
         public virtual IEnumerable<UserClient> UserClients { get; set; }
         public virtual IEnumerable<Invoice> Invoices { get; set; }
+        public virtual IEnumerable<Orthodontic> Orthodontics { get; set; }
     }
 }
