@@ -43,6 +43,7 @@ public class ServiceInjection
         services.AddTransient<IRoleDataAccessBuilder, RoleDataAccessBuilder>();
         services.AddTransient<IToothDataAccessBuilder, ToothDataAccessBuilder>();
         services.AddTransient<IUserDataAccessBuilder, UserDataAccessBuilder>();
+        services.AddTransient<IOrthodonticDataAccessBuilder, OrthodonticDataAccessBuilder>();
 
         // Azure
         services.AddTransient<IGraphService, GraphService>();

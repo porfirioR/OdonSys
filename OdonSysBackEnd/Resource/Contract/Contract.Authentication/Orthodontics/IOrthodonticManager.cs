@@ -1,7 +1,10 @@
-﻿namespace Access.Contract.Orthodontics;
+﻿using Access.Contract.Orthodontics;
 
-public interface IOrthodonticAccess
+namespace Contract.Workspace.Orthodontics;
+
+public interface IOrthodonticManager
 {
+
     Task<OrthodonticAccessModel> GetByIdAsync(string id);
     Task<IEnumerable<OrthodonticAccessModel>> GetAllByClientIdAsync(string clientId);
     Task<IEnumerable<OrthodonticAccessModel>> GetAllAsync();

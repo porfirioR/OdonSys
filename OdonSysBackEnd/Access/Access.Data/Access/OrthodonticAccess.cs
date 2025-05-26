@@ -1,38 +1,72 @@
-﻿using Access.Contract.Orthodontics;
+﻿using Access.Contract.Clients;
+using Access.Contract.Orthodontics;
 using Access.Sql;
+using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access
 {
     internal class OrthodonticAccess : IOrthodonticAccess
     {
         private readonly DataContext _context;
-        private readonly IOrthodonticDataAccessMapper _orthodonticDataAccessBuilder;
+        private readonly IOrthodonticDataAccessBuilder _orthodonticDataAccessBuilder;
+        private readonly IClientDataAccessBuilder _clientDataAccessBuilder;
 
-        public OrthodonticAccess(DataContext context, IOrthodonticDataAccessMapper orthodonticDataAccessBuilder)
+        public OrthodonticAccess(DataContext context, IOrthodonticDataAccessBuilder orthodonticDataAccessBuilder, IClientDataAccessBuilder clientDataAccessBuilder)
         {
             _context = context;
             _orthodonticDataAccessBuilder = orthodonticDataAccessBuilder;
-
+            _clientDataAccessBuilder = clientDataAccessBuilder;
         }
 
-        public Task<IEnumerable<OrthodonticAccessModel>> GetAllAsync()
+        public async Task<IEnumerable<OrthodonticAccessModel>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var entities = _context.Orthodontics
+                .Include(x => x.Client)
+                .AsNoTrackingWithIdentityResolution()
+                .OrderByDescending(x => x.DateCreated);
+
+            var accessModels = entities.Select(x => _orthodonticDataAccessBuilder.MapEntityToAccessModel(x, _clientDataAccessBuilder.MapClientToClientAccessModel(x.Client)));
+            return await accessModels.ToListAsync();
         }
 
-        public Task<OrthodonticAccessModel> GetAllByClientIdAsync(string clientId)
+        public async Task<IEnumerable<OrthodonticAccessModel>> GetAllByClientIdAsync(string clientId)
         {
-            throw new NotImplementedException();
+            var entities = _context.Orthodontics
+                .Include(x => x.Client)
+                .AsNoTrackingWithIdentityResolution()
+                .OrderByDescending(x => x.DateCreated)
+                .Where(x => x.Id == new Guid(clientId));
+
+            var accessModels = entities.Select(x => _orthodonticDataAccessBuilder.MapEntityToAccessModel(x, _clientDataAccessBuilder.MapClientToClientAccessModel(x.Client)));
+            return await accessModels.ToListAsync();
         }
 
-        public Task<IEnumerable<OrthodonticAccessModel>> GetByIdAsync(string id)
+        public async Task<OrthodonticAccessModel> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var entity = await _context.Orthodontics
+                .Include(x => x.Client)
+                .AsNoTrackingWithIdentityResolution()
+                .OrderByDescending(x => x.DateCreated)
+                .FirstAsync(x => x.Id == new Guid(id));
+
+            var accessModel = _orthodonticDataAccessBuilder.MapEntityToAccessModel(entity, _clientDataAccessBuilder.MapClientToClientAccessModel(entity.Client));
+            return accessModel;
         }
 
-        public Task<OrthodonticAccessModel> UpsertOrthodontic(OrthodonticAccessRequest accessRequest)
+        public async Task<OrthodonticAccessModel> UpsertOrthodontic(OrthodonticAccessRequest accessRequest)
         {
-            throw new NotImplementedException();
+            var entity = _orthodonticDataAccessBuilder.MapAccessRequestToEntity(accessRequest);
+            if (accessRequest.Id is not null)
+            {
+                _context.Orthodontics.Update(entity);
+            }
+            else
+            {
+                _context.Orthodontics.Add(entity);
+            }
+            await _context.SaveChangesAsync();
+            var accessModel = await GetByIdAsync(entity.Id.ToString());
+            return accessModel;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Utilities.Enums;
-
-namespace Access.Sql.Entities
+﻿namespace Access.Sql.Entities
 {
     public class Orthodontic : BaseEntity
     {

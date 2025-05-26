@@ -1,8 +1,12 @@
-﻿namespace Access.Contract.Orthodontics;
+﻿using Access.Contract.Clients;
+
+namespace Access.Contract.Orthodontics;
 
 public record OrthodonticAccessModel(
-    Guid ClientId,
+    Guid Id,
     DateTime Date,
     string Description,
-    string Id = null
+    DateTime DateCreated,
+    DateTime DateModified,
+    ClientAccessModel Client
 );
