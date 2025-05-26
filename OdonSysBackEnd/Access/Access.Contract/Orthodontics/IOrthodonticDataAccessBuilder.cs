@@ -5,6 +5,6 @@ namespace Access.Contract.Orthodontics;
 
 public interface IOrthodonticDataAccessBuilder
 {
-    Orthodontic MapAccessRequestToEntity(OrthodonticAccessRequest request);
+    Orthodontic MapAccessRequestToEntity(OrthodonticAccessRequest accessRequest);
     OrthodonticAccessModel MapEntityToAccessModel(Orthodontic entity, ClientAccessModel clientAccessModel);
 }

@@ -14,10 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Access\Access.Contract\Access.Contract.csproj" />
     <ProjectReference Include="..\..\..\Utilities\Utilities.csproj" />
     <ProjectReference Include="..\Contract.Administration\Contract.Administration.csproj" />

@@ -8,7 +8,7 @@ internal class OrthodonticDataAccessBuilder : IOrthodonticDataAccessBuilder
 {
     public Orthodontic MapAccessRequestToEntity(OrthodonticAccessRequest accessRequest)
     {
-        var payment = new Orthodontic()
+        var orthodontic = new Orthodontic()
         {
             Date = accessRequest.Date,
             Description = accessRequest.Description,
@@ -16,10 +16,10 @@ internal class OrthodonticDataAccessBuilder : IOrthodonticDataAccessBuilder
         };
         if (!string.IsNullOrEmpty(accessRequest.Id))
         {
-            Active = true,
-            payment.Id = new Guid(accessRequest.Id);
+            orthodontic.Active = true;
+            orthodontic.Id = new Guid(accessRequest.Id);
         }
-        return payment;
+        return orthodontic;
     }
 
     public OrthodonticAccessModel MapEntityToAccessModel(Orthodontic entity, ClientAccessModel clientAccessModel) => new (
