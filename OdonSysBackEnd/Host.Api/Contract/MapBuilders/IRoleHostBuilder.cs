@@ -1,11 +1,10 @@
 ﻿using Contract.Administration.Roles;
 using Host.Api.Contract.Roles;
 
-namespace Host.Api.Contract.MapBuilders
+namespace Host.Api.Contract.MapBuilders;
+
+public interface IRoleHostBuilder
 {
-    public interface IRoleHostBuilder
-    {
-        CreateRoleRequest MapCreateRoleApiRequestToCreateRoleRequest(CreateRoleApiRequest createRoleApiRequest);
-        UpdateRoleRequest MapUpdateRoleApiRequestToUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest);
-    }
+    CreateRoleRequest MapCreateRoleApiRequestToCreateRoleRequest(CreateRoleApiRequest createRoleApiRequest);
+    UpdateRoleRequest MapUpdateRoleApiRequestToUpdateRoleRequest(UpdateRoleApiRequest updateRoleApiRequest);
 }

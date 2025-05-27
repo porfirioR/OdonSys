@@ -1,8 +1,7 @@
-﻿namespace Access.Contract.Users
-{
-    public record UserClientAccessModel(
-        Guid Id,
-        Guid ClientId,
-        Guid UserId
-    );
-}
+﻿namespace Access.Contract.Users;
+
+public record UserClientAccessModel(
+    Guid Id,
+    Guid ClientId,
+    Guid UserId
+);

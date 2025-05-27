@@ -56,7 +56,15 @@
 
         #region Payments
         AccessPayments,
-        RegisterPayments
+        RegisterPayments,
+        #endregion
+
+        #region Orthodontics
+        AccessOrthodontics,
+        AccessAllOrthodontics,
+        CreateOrthodontics,
+        UpdateOrthodontics,
+        DeleteOrthodontics,
         #endregion
     }
 }

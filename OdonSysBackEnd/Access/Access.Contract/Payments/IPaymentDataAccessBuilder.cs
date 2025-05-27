@@ -1,10 +1,9 @@
 ﻿using Access.Sql.Entities;
 
-namespace Access.Contract.Payments
+namespace Access.Contract.Payments;
+
+public interface IPaymentDataAccessBuilder
 {
-    public interface IPaymentDataAccessBuilder
-    {
-        Payment MapPaymentAccessRequestToPayment(PaymentAccessRequest request);
-        PaymentAccessModel MapPaymentToPaymentAccessModel(Payment payment);
-    }
+    Payment MapPaymentAccessRequestToPayment(PaymentAccessRequest request);
+    PaymentAccessModel MapPaymentToPaymentAccessModel(Payment payment);
 }

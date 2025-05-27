@@ -4,7 +4,7 @@ using Access.Sql.Entities;
 
 namespace Access.Data.Mapper;
 
-internal class OrthodonticDataAccessBuilder : IOrthodonticDataAccessBuilder
+internal sealed class OrthodonticDataAccessBuilder : IOrthodonticDataAccessBuilder
 {
     public Orthodontic MapAccessRequestToEntity(OrthodonticAccessRequest accessRequest)
     {
@@ -22,7 +22,7 @@ internal class OrthodonticDataAccessBuilder : IOrthodonticDataAccessBuilder
         return orthodontic;
     }
 
-    public OrthodonticAccessModel MapEntityToAccessModel(Orthodontic entity, ClientAccessModel clientAccessModel) => new (
+    public OrthodonticAccessModel MapEntityToAccessModel(Orthodontic entity, ClientAccessModel clientAccessModel) => new(
         entity.Id,
         entity.Date,
         entity.Description,

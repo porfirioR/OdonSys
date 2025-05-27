@@ -2,76 +2,75 @@ using Host.Api.Middleware;
 using Newtonsoft.Json.Converters;
 using Utilities.Configurations;
 
-namespace Host.Api
+namespace Host.Api;
+
+public partial class Startup
 {
-    public partial class Startup
+    public IConfiguration Configuration { get; }
+    public MainConfiguration MainConfiguration { get; set; }
+
+    public Startup(IConfiguration configuration)
     {
-        public IConfiguration Configuration { get; }
-        public MainConfiguration MainConfiguration { get; set; }
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers().AddNewtonsoftJson(options =>
         {
-            Configuration = configuration;
-        }
+            options.SerializerSettings.Converters.Add(new StringEnumConverter());
+        });
 
-        public void ConfigureServices(IServiceCollection services)
+        AddConfigurations(services);
+
+        services.AddSwaggerGen();
+
+        services.AddCors(options =>
         {
-            services.AddControllers().AddNewtonsoftJson(options =>
-            {
-                options.SerializerSettings.Converters.Add(new StringEnumConverter());
-            });
+            options.AddDefaultPolicy(builder =>
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
+        });
 
-            AddConfigurations(services);
+        // partial startup
+        InjectServices(services);
 
-            services.AddSwaggerGen();
+        ConfigureAuthentication(services, Configuration);
 
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                    builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                );
-            });
+        ConfigureAuthorization(services);
+        // Configura all Authorization Handlers
+        ConfigureAuthorizationHandlers(services);
 
-            // partial startup
-            InjectServices(services);
+    }
 
-            ConfigureAuthentication(services, Configuration);
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
+    {
+        application.UseMiddleware<ExceptionMiddleware>();
 
-            ConfigureAuthorization(services);
-            // Configura all Authorization Handlers
-            ConfigureAuthorizationHandlers(services);
+        application.UseSwagger();
 
-        }
+        application.UseSwaggerUI();
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
+        application.UseExceptionHandler("/error");
+        application.UseHsts();
+
+        application.UseRouting();
+
+        application.UseCors();
+
+        application.UseHttpsRedirection();
+
+        application.UseAuthentication();
+
+        application.UseAuthorization();
+
+        application.UseEndpoints(endpoints =>
         {
-            application.UseMiddleware<ExceptionMiddleware>();
-
-            application.UseSwagger();
-
-            application.UseSwaggerUI();
-
-            application.UseExceptionHandler("/error");
-            application.UseHsts();
-
-            application.UseRouting();
-
-            application.UseCors();
-
-            application.UseHttpsRedirection();
-
-            application.UseAuthentication();
-
-            application.UseAuthorization();
-
-            application.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            endpoints.MapControllers();
+        });
     }
 }

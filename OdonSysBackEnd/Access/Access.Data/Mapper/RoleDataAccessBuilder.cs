@@ -4,63 +4,62 @@ using Access.Sql.Entities;
 using Utilities.Enums;
 using Utilities.Extensions;
 
-namespace Access.Data.Mapper
+namespace Access.Data.Mapper;
+
+internal sealed class RoleDataAccessBuilder : IRoleDataAccessBuilder
 {
-    internal class RoleDataAccessBuilder : IRoleDataAccessBuilder
+    public Role MapCreateRoleAccessRequestToRole(CreateRoleAccessRequest createRoleAccessRequest)
     {
-        public Role MapCreateRoleAccessRequestToRole(CreateRoleAccessRequest createRoleAccessRequest)
+        var role = new Role()
         {
-            var role = new Role()
-            {
-                Active = true,
-                Code = createRoleAccessRequest.Code,
-                Name = createRoleAccessRequest.Name
-            };
-            return role;
-        }
+            Active = true,
+            Code = createRoleAccessRequest.Code,
+            Name = createRoleAccessRequest.Name
+        };
+        return role;
+    }
 
-        public IEnumerable<Permission> GetPermissions(IEnumerable<PermissionName> permissions, Role role)
-        {
-            return permissions.Select(x => new Permission { Id = Guid.NewGuid(), Name = x, Active = true, Role = role });
-        }
+    public IEnumerable<Permission> GetPermissions(IEnumerable<PermissionName> permissions, Role role)
+    {
+        return permissions.Select(x => new Permission { Id = Guid.NewGuid(), Name = x, Active = true, Role = role });
+    }
 
-        public RoleAccessModel MapRoleToRoleAccessModel(Role role, IEnumerable<Permission> rolePermissions = null)
-        {
-            var rolePermissionList = rolePermissions != null && rolePermissions.Any() ? rolePermissions.Select(x => x.Name.GetDescription()) : null;
-            rolePermissionList ??= role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
-            var roleAccessModel = new RoleAccessModel(
-                role.Name,
-                role.Code,
-                rolePermissionList,
-                new List<DoctorDataAccessModel>(),
-                role.DateCreated,
-                role.DateModified,
-                role.UserCreated,
-                role.UserUpdated
-            );
-            return roleAccessModel;
-        }
+    public RoleAccessModel MapRoleToRoleAccessModel(Role role, IEnumerable<Permission> rolePermissions = null)
+    {
+        var rolePermissionList = rolePermissions != null && rolePermissions.Any() ? rolePermissions.Select(x => x.Name.GetDescription()) : null;
+        rolePermissionList ??= role.RolePermissions != null && role.RolePermissions.Any() ? role.RolePermissions.Select(x => x.Name.GetDescription()) : new List<string>();
+        var roleAccessModel = new RoleAccessModel(
+            role.Name,
+            role.Code,
+            rolePermissionList,
+            new List<DoctorDataAccessModel>(),
+            role.DateCreated,
+            role.DateModified,
+            role.UserCreated,
+            role.UserUpdated
+        );
+        return roleAccessModel;
+    }
 
-        public Role MapUpdateRoleAccessRequestToRole(UpdateRoleAccessRequest updateRoleAccessRequest)
+    public Role MapUpdateRoleAccessRequestToRole(UpdateRoleAccessRequest updateRoleAccessRequest)
+    {
+        var role = new Role()
         {
-            var role = new Role()
-            {
-                Name = updateRoleAccessRequest.Name,
-                Code = updateRoleAccessRequest.Code,
-            };
-            return role;
-        }
+            Name = updateRoleAccessRequest.Name,
+            Code = updateRoleAccessRequest.Code,
+        };
+        return role;
+    }
 
-        public DoctorDataAccessModel MapUserRoleToDoctorDataAccessModel(UserRole role)
-        {
-            throw new NotImplementedException();
-        }
+    public DoctorDataAccessModel MapUserRoleToDoctorDataAccessModel(UserRole role)
+    {
+        throw new NotImplementedException();
+    }
 
-        public Role MapUpdateRoleAccessRequestToRole(UpdateRoleAccessRequest updateRoleAccessRequest, Role role)
-        {
-            role.DateModified = DateTime.Now;
-            role.RolePermissions = updateRoleAccessRequest.Permissions != null ? updateRoleAccessRequest.Permissions.Select(x => new Permission { Name = x }) : new List<Permission>();
-            return role;
-        }
+    public Role MapUpdateRoleAccessRequestToRole(UpdateRoleAccessRequest updateRoleAccessRequest, Role role)
+    {
+        role.DateModified = DateTime.Now;
+        role.RolePermissions = updateRoleAccessRequest.Permissions != null ? updateRoleAccessRequest.Permissions.Select(x => new Permission { Name = x }) : new List<Permission>();
+        return role;
     }
 }

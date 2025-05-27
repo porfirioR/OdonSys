@@ -8,5 +8,6 @@
         Role,
         Invoice,
         Payment,
+        Orthodontic,
     }
 }

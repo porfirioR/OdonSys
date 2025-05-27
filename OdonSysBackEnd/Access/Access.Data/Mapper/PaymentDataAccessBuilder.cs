@@ -3,7 +3,7 @@ using Access.Sql.Entities;
 
 namespace Access.Data.Mapper;
 
-internal class PaymentDataAccessBuilder : IPaymentDataAccessBuilder
+internal sealed class PaymentDataAccessBuilder : IPaymentDataAccessBuilder
 {
     public Payment MapPaymentAccessRequestToPayment(PaymentAccessRequest request)
     {

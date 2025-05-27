@@ -31,6 +31,12 @@
         public const string CanAssignDoctorRoles = "can_assign_doctor_roles";
         public const string CanModifyVisibilityDoctor = "can_modify_visibility_doctor";
 
+        public const string CanAccessOrthodontic = "can_access_orthodontic";
+        public const string CanCreateOrthodontic = "can_create_orthodontic";
+        public const string CanUpdateOrthodontic = "can_update_orthodontic";
+        public const string CanDeleteOrthodontic = "can_delete_orthodontic";
+        public const string CanAccessAllOrthodontics = "can_access_all_orthodontics";
+
         public const string CanCreateClientProcedure = "can_create_client_procedure";
         public const string CanUpdateClientProcedure = "can_update_client_procedure";
 

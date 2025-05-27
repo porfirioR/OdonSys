@@ -1,9 +1,8 @@
 ﻿using Microsoft.Graph;
 
-namespace Access.Contract.Authentication
+namespace Access.Contract.Authentication;
+
+public interface IGraphService
 {
-    public interface IGraphService
-    {
-        GraphServiceClient GetGraphServiceClient(string tenantId, string clientId, string clientSecret);
-    }
+    GraphServiceClient GetGraphServiceClient(string tenantId, string clientId, string clientSecret);
 }
