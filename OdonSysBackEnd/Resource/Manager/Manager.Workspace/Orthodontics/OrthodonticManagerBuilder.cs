@@ -4,7 +4,7 @@ using Contract.Workspace.Orthodontics;
 
 namespace Manager.Workspace.Orthodontics;
 
-internal class OrthodonticManagerBuilder(IClientManagerBuilder clientManagerBuilder) : IOrthodonticManagerBuilder
+internal sealed class OrthodonticManagerBuilder(IClientManagerBuilder clientManagerBuilder) : IOrthodonticManagerBuilder
 {
     public IClientManagerBuilder _clientManagerBuilder { get; } = clientManagerBuilder;
 

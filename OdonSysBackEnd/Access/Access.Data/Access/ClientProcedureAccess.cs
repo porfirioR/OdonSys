@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Access.Data.Access;
 
-public sealed class ClientProcedureAccess : IClientProcedureAccess
+internal sealed class ClientProcedureAccess : IClientProcedureAccess
 {
     private readonly DataContext _context;
     private readonly IClientProcedureDataAccessBuilder _clientProcedureDataAccessBuilder;

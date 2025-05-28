@@ -1,0 +1,25 @@
+<app-progress *ngIf="!ready || loading"></app-progress>
+<div *ngIf="ready" class="container">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+    <h3>{{title}}</h3>
+    <span id="header-top-buttons">
+      <button type="button" class="btn btn-outline-primary m-r-8" routerLink="../mis-facturas" *ngIf="canAccessMyInvoices">
+        <i class="fas fa-file-invoice-dollar"></i>
+        Mis Facturas
+      </button>
+      <button type="button" class="btn btn-outline-primary" routerLink="registrar" *ngIf="canRegisterInvoice">
+        <i class="fas fa-file-invoice"></i>
+        Registrar
+      </button>
+    </span>
+  </div>
+  <div class="m-t-16">
+    <ng-container *ngIf="gridOptions">
+      <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
+        [gridOptions]="gridOptions"
+        (gridSizeChanged)="onGridSizeChanged()"
+        (gridReady)="prepareGrid($event)"
+      />
+    </ng-container>
+  </div>
+</div>

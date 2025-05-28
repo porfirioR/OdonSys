@@ -1,8 +1,7 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum OdonSysEnvironment
 {
-    public enum OdonSysEnvironment
-    {
-        Development,
-        Production
-    }
+    Development,
+    Production
 }

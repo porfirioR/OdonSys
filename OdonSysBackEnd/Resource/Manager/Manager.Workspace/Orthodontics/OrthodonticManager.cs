@@ -4,11 +4,10 @@ using Contract.Workspace.Orthodontics;
 
 namespace Manager.Workspace.Orthodontics;
 
-internal class OrthodonticManager : IOrthodonticManager
+internal sealed class OrthodonticManager : IOrthodonticManager
 {
     private readonly IOrthodonticAccess _orthodonticAccess;
     private readonly IOrthodonticManagerBuilder _orthodonticManagerBuilder;
-    private readonly IClientDataAccessBuilder _clientDataAccessBuilder;
 
     public OrthodonticManager(IOrthodonticAccess orthodonticAccess, IOrthodonticManagerBuilder orthodonticManagerBuilder)
     {

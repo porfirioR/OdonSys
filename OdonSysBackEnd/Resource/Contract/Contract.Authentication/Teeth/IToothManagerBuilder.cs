@@ -1,9 +1,8 @@
 ﻿using Access.Contract.Teeth;
 
-namespace Contract.Workspace.Teeth
+namespace Contract.Workspace.Teeth;
+
+public interface IToothManagerBuilder
 {
-    public interface IToothManagerBuilder
-    {
-        ToothModel MapToothAccessModelToToothModel(ToothAccessModel accessModel);
-    }
+    ToothModel MapToothAccessModelToToothModel(ToothAccessModel accessModel);
 }

@@ -5,7 +5,7 @@ using Utilities.Extensions;
 
 namespace Access.Sql.Configurations;
 
-public class ClientConfiguration : BaseEntityTypeConfiguration<Client>
+internal sealed class ClientConfiguration : BaseEntityTypeConfiguration<Client>
 {
     public override void Configure(EntityTypeBuilder<Client> builder)
     {

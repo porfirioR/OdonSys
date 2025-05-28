@@ -1,8 +1,7 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum Jaw
 {
-    public enum Jaw
-    {
-        Upper = 1,
-        Lower = 2
-    }
+    Upper = 1,
+    Lower = 2
 }

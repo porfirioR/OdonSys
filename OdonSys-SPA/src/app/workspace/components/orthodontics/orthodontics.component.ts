@@ -1,31 +1,30 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
-import { Observable } from 'rxjs';
-import { GridActionModel } from '../../../core/models/view/grid-action-model';
-import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
-import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
-import { CustomGridButtonShow } from '../../../core/models/view/custom-grid-button-show';
-import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
-import { GridHideColumnModel } from '../../../core/models/view/grid-hide-column-model';
-import { PaymentApiModel } from '../../models/payments/payment-api-model';
-import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { Permission } from '../../../core/enums/permission.enum';
-import { InvoiceStatus } from '../../../core/enums/invoice-status.enum';
-import { OperationType } from '../../../core/enums/operation-type.enum';
+import { GridHideColumnModel } from '../../../core/models/view/grid-hide-column-model';
 import { AgGridService } from '../../../core/services/shared/ag-grid.service';
 import { InvoiceApiService } from '../../services/invoice-api.service';
 import { UserInfoService } from '../../../core/services/shared/user-info.service';
 import { AlertService } from '../../../core/services/shared/alert.service';
+import { ConditionalGridButtonShow } from 'src/app/core/models/view/conditional-grid-button-show';
+import { ButtonGridActionType } from 'src/app/core/enums/button-grid-action-type.enum';
+import { InvoiceStatus } from 'src/app/core/enums/invoice-status.enum';
+import { GridActionModel } from 'src/app/core/models/view/grid-action-model';
+import { CustomGridButtonShow } from 'src/app/core/models/view/custom-grid-button-show';
+import { InvoicePatchRequest } from '../../models/invoices/api/invoice-patch-request';
 import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.component';
+import { PaymentApiModel } from '../../models/payments/payment-api-model';
+import { OperationType } from 'src/app/core/enums/operation-type.enum';
+import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 
 @Component({
-  selector: 'app-invoices',
-  templateUrl: './invoices.component.html',
-  styleUrls: ['./invoices.component.scss']
+  selector: 'app-orthodontics',
+  templateUrl: './orthodontics.component.html',
+  styleUrls: ['./orthodontics.component.scss']
 })
-export class InvoicesComponent implements OnInit {
+export class OrthodonticsComponent implements OnInit {
   protected gridOptions!: GridOptions
   protected ready: boolean = false
   protected loading: boolean = false
@@ -35,18 +34,17 @@ export class InvoicesComponent implements OnInit {
   private canRegisterPayments: boolean = false
   private canDeactivateInvoice: boolean = false
   private canUpdateInvoice: boolean = false
-  private isMyPermission: boolean = false
-  private invoices$!: Observable<InvoiceApiModel[]>
   private gridApi!: GridApi
+  private isMyPermission: boolean = false
 
   constructor(
-    private readonly agGridService: AgGridService,
-    private readonly router: Router,
-    private readonly invoiceApiService: InvoiceApiService,
-    private readonly userInfoService: UserInfoService,
-    private modalService: NgbModal,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly alertService: AlertService
+      private readonly agGridService: AgGridService,
+      private readonly router: Router,
+      private readonly invoiceApiService: InvoiceApiService,
+      private readonly userInfoService: UserInfoService,
+      private modalService: NgbModal,
+      private readonly activatedRoute: ActivatedRoute,
+      private readonly alertService: AlertService
   ) { }
 
   ngOnInit() {
@@ -62,19 +60,7 @@ export class InvoicesComponent implements OnInit {
     this.loading = true
   }
 
-  @HostListener('window:resize', ['$event'])
-  private getScreenSize(event: any) {
-    this.gridApi?.sizeColumnsToFit()
-  }
-
-  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
-    this.gridApi = event.api
-    this.getList()
-    this.gridApi?.sizeColumnsToFit()
-    this.onGridSizeChanged()
-  }
-
-  protected onGridSizeChanged = () => {
+  protected onGridSizeChanged = (): void => {
     const screenWidth = window.innerWidth;
     const invoiceColumns = [
       'userCreated',
@@ -109,6 +95,31 @@ export class InvoicesComponent implements OnInit {
     if (this.isMyPermission) {
       this.gridApi?.setColumnsVisible(['userCreated'], false)
     }
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
+    this.gridApi = event.api
+    this.getList()
+    this.gridApi?.sizeColumnsToFit()
+    this.onGridSizeChanged()
+  }
+  
+  private getList = (): void => {
+    const invoices$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
+    invoices$.subscribe({
+      next: (response: InvoiceApiModel[]) => {
+        this.gridApi?.setGridOption('rowData', response)
+        this.gridApi?.sizeColumnsToFit()
+        if (response.length === 0) {
+          this.gridApi?.showNoRowsOverlay()
+        }
+        this.loading = false
+      }, error: (e) => {
+        this.gridApi?.showNoRowsOverlay()
+        this.loading = false
+        throw e
+      }
+    })
   }
 
   private setupAgGrid = (): void => {
@@ -195,23 +206,5 @@ export class InvoicesComponent implements OnInit {
       default:
         break
     }
-  }
-
-  private getList = (): void => {
-    const invoices$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
-    invoices$.subscribe({
-      next: (response: InvoiceApiModel[]) => {
-        this.gridApi?.setGridOption('rowData', response)
-        this.gridApi?.sizeColumnsToFit()
-        if (response.length === 0) {
-          this.gridApi?.showNoRowsOverlay()
-        }
-        this.loading = false
-      }, error: (e) => {
-        this.gridApi?.showNoRowsOverlay()
-        this.loading = false
-        throw e
-      }
-    })
   }
 }

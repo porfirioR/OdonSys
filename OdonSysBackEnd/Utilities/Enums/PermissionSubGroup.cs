@@ -1,13 +1,12 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum PermissionSubGroup
 {
-    public enum PermissionSubGroup
-    {
-        Client,
-        Doctor,
-        Procedure,
-        Role,
-        Invoice,
-        Payment,
-        Orthodontic,
-    }
+    Client,
+    Doctor,
+    Procedure,
+    Role,
+    Invoice,
+    Payment,
+    Orthodontic,
 }
