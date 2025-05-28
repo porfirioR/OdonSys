@@ -26,7 +26,7 @@ export class ClientEffects {
     return this.actions$.pipe(
       ofType(clientActions.loadClients),
       withLatestFrom(this.store.select(selectClients)),
-      switchMap(([action, clients]) => clients.length > 0 ?
+      switchMap(([_, clients]) => clients.length > 0 ?
       of(clientActions.allClientsLoaded({ clients: clients })) :
         this.clientApiService.getAll().pipe(
           map(data => clientActions.allClientsLoaded({ clients: data.map(this.getModel) })),

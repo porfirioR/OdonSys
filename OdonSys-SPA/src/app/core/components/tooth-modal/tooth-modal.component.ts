@@ -9,7 +9,6 @@ import { selectTeeth } from '../../../core/store/teeth/tooth.selectors';
 import { Jaw } from '../../enums/jaw.enum';
 import { Quadrant } from '../../enums/quadrant.enum';
 import { ToothModalModel } from '../../models/view/tooth-modal-model';
-import { ProcedureToothModalModel } from '../../models/view/procedure-tooth-modal-model';
 
 @Component({
   selector: 'app-tooth-modal',

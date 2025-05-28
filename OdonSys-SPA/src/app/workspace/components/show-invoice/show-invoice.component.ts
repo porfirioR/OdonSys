@@ -33,8 +33,8 @@ import { ToothModel } from 'src/app/core/models/tooth/tooth-model';
   styleUrls: ['./show-invoice.component.scss']
 })
 export class ShowInvoiceComponent implements OnInit {
-  protected load: boolean = false
-  protected saving: boolean = false
+  protected load = false
+  protected saving = false
   protected invoice!: InvoiceApiModel
   protected proceduresValues: SelectModel[] = []
   protected clientsValues: Map<string, string> = new Map<string, string>()
@@ -74,7 +74,7 @@ export class ShowInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const invoiceId: string = this.activeRoute.snapshot.params['id']
+    const invoiceId = this.activeRoute.snapshot.params['id']
     let loadingClient = true
     const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {

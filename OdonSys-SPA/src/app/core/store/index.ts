@@ -1,10 +1,6 @@
 import {
-  ActionReducer,
   ActionReducerMap,
-  createFeatureSelector,
-  createSelector,
-  MetaReducer
-} from '@ngrx/store'
+  createFeatureSelector} from '@ngrx/store'
 import * as fromRoles from './roles/roles.reducer'
 import * as fromSaving from './saving/saving.reducer';
 import * as fromProcedure from './procedures/procedure.reducer';

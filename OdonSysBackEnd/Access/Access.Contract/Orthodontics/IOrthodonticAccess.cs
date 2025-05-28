@@ -6,4 +6,5 @@ public interface IOrthodonticAccess
     Task<IEnumerable<OrthodonticAccessModel>> GetAllByClientIdAsync(string clientId);
     Task<IEnumerable<OrthodonticAccessModel>> GetAllAsync();
     Task<OrthodonticAccessModel> UpsertOrthodontic(OrthodonticAccessRequest accessRequest);
+    Task<OrthodonticAccessModel> DeleteAsync(string id);
 }

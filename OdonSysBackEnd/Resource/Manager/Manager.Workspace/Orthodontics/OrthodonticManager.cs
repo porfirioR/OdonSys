@@ -15,6 +15,12 @@ internal sealed class OrthodonticManager : IOrthodonticManager
         _orthodonticManagerBuilder = orthodonticManagerBuilder;
     }
 
+    public async Task<OrthodonticModel> DeleteAsync(string id)
+    {
+        var accessModel = await _orthodonticAccess.DeleteAsync(id);
+        return _orthodonticManagerBuilder.MapAccessModelToModel(accessModel);
+    }
+
     public async Task<IEnumerable<OrthodonticModel>> GetAllAsync()
     {
         var accessModels = await _orthodonticAccess.GetAllAsync();

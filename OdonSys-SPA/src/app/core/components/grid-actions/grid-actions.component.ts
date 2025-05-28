@@ -22,7 +22,7 @@ export class GridActionsComponent implements ICellRendererAngularComp {
   protected canShowDeactivate = false
   protected canShowDownload = false
   protected canShowCustomButton = false
-  protected customColorButton: string = 'btn-outline-'
+  protected customColorButton = 'btn-outline-'
   private customColor: ColorType = 'info'
 
   public agInit(params: ICellRendererParams<any, any, any> & GridActionModel): void {

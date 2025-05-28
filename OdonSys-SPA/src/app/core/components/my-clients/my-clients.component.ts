@@ -20,10 +20,10 @@ import { UserInfoService } from '../../services/shared/user-info.service';
 })
 export class ClientsComponent implements OnInit {
 
-  protected loading: boolean = false
-  protected ready: boolean = false
+  protected loading = false
+  protected ready = false
   protected gridOptions!: GridOptions
-  protected canCreate: boolean = false
+  protected canCreate = false
   private attributeActive!: string
   private canEdit = false
   private canShowReport = false

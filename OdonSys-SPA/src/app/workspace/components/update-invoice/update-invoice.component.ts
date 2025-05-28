@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -26,8 +26,8 @@ import { UpdateInvoiceRequest } from '../../models/invoices/api/update-invoice-r
   styleUrls: ['./update-invoice.component.scss']
 })
 export class UpdateInvoiceComponent implements OnInit {
-  protected load: boolean = false
-  public saving: boolean = false
+  protected load = false
+  public saving = false
 
   protected clientFormGroup = new FormGroup({
     name: new FormControl({ value: '', disabled: true }),
@@ -58,7 +58,7 @@ export class UpdateInvoiceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const invoiceId: string = this.activeRoute.snapshot.params['id']
+    const invoiceId = this.activeRoute.snapshot.params['id']
     let loadingClient = true
     const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {

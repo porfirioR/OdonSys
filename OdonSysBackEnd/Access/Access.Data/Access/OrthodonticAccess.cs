@@ -18,6 +18,16 @@ internal sealed class OrthodonticAccess : IOrthodonticAccess
         _clientDataAccessBuilder = clientDataAccessBuilder;
     }
 
+    public async Task<OrthodonticAccessModel> DeleteAsync(string id)
+    {
+        var entity = await _context.Orthodontics
+            .Include(x => x.Client)
+            .FirstAsync(x => x.Id == new Guid(id));
+        _context.Orthodontics.Remove(entity);
+        await _context.SaveChangesAsync();
+        return _orthodonticDataAccessBuilder.MapEntityToAccessModel(entity, _clientDataAccessBuilder.MapClientToClientAccessModel(entity.Client));
+    }
+
     public async Task<IEnumerable<OrthodonticAccessModel>> GetAllAsync()
     {
         var entities = _context.Orthodontics

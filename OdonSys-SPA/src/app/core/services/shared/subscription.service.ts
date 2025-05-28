@@ -17,7 +17,7 @@ export class SubscriptionService {
     this.onCheckMenuSubject.next(model)
   }
 
-  public emitErrorInSave = (model: boolean = true) => {
+  public emitErrorInSave = (model = true) => {
     this.onErrorInSaveSubject.next(model)
   }
 }

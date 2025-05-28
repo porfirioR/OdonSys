@@ -116,6 +116,7 @@ export class DoctorsComponent implements OnInit {
         this.changeSelectedDoctorVisibility(currentRowNode)
         break
       case ButtonGridActionType.CustomButton:
+      {
         const modalRef = this.modalService.open(UserRoleComponent)
         modalRef.componentInstance.userId = currentRowNode.data.id
         modalRef.componentInstance.name = currentRowNode.data.name
@@ -126,6 +127,7 @@ export class DoctorsComponent implements OnInit {
           }
         }, () => {})
         break
+      }
       default:
         break
     }

@@ -37,9 +37,9 @@ export class UpsertClientComponent implements OnInit {
     email: new FormControl('', [Validators.maxLength(20), Validators.email]),
     active: new FormControl(true)
   })
-  public saving: boolean = false
-  public ignorePreventUnsavedChanges: boolean = false
-  protected title: string = 'Registrar '
+  public saving = false
+  public ignorePreventUnsavedChanges = false
+  protected title = 'Registrar '
   protected saving$: Observable<boolean> = of(false)
   protected countries: SelectModel[] = []
   private id = ''
@@ -75,7 +75,11 @@ export class UpsertClientComponent implements OnInit {
     if (this.formGroup.invalid) { return }
     this.saving = true
     this.ignorePreventUnsavedChanges = true
-    this.id ? this.update() : this.create()
+    if (this.id) {
+      this.update()
+    } else {
+      this.create()
+    }
   }
 
   private loadValues = (): void => {

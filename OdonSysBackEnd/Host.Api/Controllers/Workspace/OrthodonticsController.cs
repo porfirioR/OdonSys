@@ -21,20 +21,20 @@ public sealed class OrthodonticsController : OdonSysBaseController
         _orthodonticHostBuilder = orthodonticHostBuilder;
     }
 
-    [HttpPut("{id}")]
-    [Authorize(Policy = Policy.CanUpdateOrthodontic)]
-    public async Task<OrthodonticModel> Update([FromRoute] string id, [FromBody] OrthodonticApiRequest apiRequest)
-    {
-        var request = _orthodonticHostBuilder.MapOrthodonticApiRequestToOrthodonticRequest(apiRequest, id);
-        var model = await _orthodonticManager.UpsertOrthodontic(request);
-        return model;
-    }
-
     [HttpPost]
     [Authorize(Policy = Policy.CanCreateOrthodontic)]
     public async Task<OrthodonticModel> Create([FromBody] OrthodonticApiRequest apiRequest)
     {
         var request = _orthodonticHostBuilder.MapOrthodonticApiRequestToOrthodonticRequest(apiRequest, null);
+        var model = await _orthodonticManager.UpsertOrthodontic(request);
+        return model;
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Policy = Policy.CanUpdateOrthodontic)]
+    public async Task<OrthodonticModel> Update([FromRoute] string id, [FromBody] OrthodonticApiRequest apiRequest)
+    {
+        var request = _orthodonticHostBuilder.MapOrthodonticApiRequestToOrthodonticRequest(apiRequest, id);
         var model = await _orthodonticManager.UpsertOrthodontic(request);
         return model;
     }
@@ -53,5 +53,13 @@ public sealed class OrthodonticsController : OdonSysBaseController
     {
         var models = await _orthodonticManager.GetAllByClientIdAsync(clientId);
         return models;
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Policy = Policy.CanAccessOrthodontic)]
+    public async Task<OrthodonticModel> Delete([FromRoute] string id)
+    {
+        var model = await _orthodonticManager.DeleteAsync(id);
+        return model;
     }
 }

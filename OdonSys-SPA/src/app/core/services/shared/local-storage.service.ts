@@ -13,12 +13,12 @@ export class LocalStorageService {
     localStorage.setItem(key, isString ? value : JSON.stringify(value))
   }
 
-  public getByKey = (key: string, isObject: boolean = true): any => {
+  public getByKey = (key: string, isObject = true): any => {
     const value = localStorage.getItem(key) as any
     return isObject ? JSON.parse(value) : value
   }
 
-  public getArrayByKey = (key: string): Array<any> => {
+  public getArrayByKey = (key: string): any[] => {
     return JSON.parse(localStorage.getItem(key) || '[]')
   }
 

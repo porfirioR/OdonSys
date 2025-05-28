@@ -84,7 +84,7 @@ export class DoctorEffects {
         this.userApiService.approve(action.doctorId).pipe(
           map((data: UserApiModel) => {
             this.alertService.showSuccess(`El doctor ha sido habilitado para ingresar al sistema.`)
-            let doctor = {...doctors.find(x => x.id.compareString(data.id))!}
+            const doctor = {...doctors.find(x => x.id.compareString(data.id))!}
             doctor.approved = data.approved
             return doctorActions.approveDoctorSuccess({ doctor: this.getModel(doctor) })
           }),
@@ -99,7 +99,7 @@ export class DoctorEffects {
       ofType(doctorActions.updateDoctorRoles),
       switchMap((action) => 
         this.roleApiService.getMyPermissions().pipe(map(permissions => {
-          let doctor = {...action.doctor}
+          const doctor = {...action.doctor}
           if (action.doctorRoles) {
             doctor.roles = action.doctorRoles
           }

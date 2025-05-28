@@ -56,7 +56,7 @@ import { ToothModalComponent } from '../../../core/components/tooth-modal/tooth-
 export class RegisterInvoiceComponent implements OnInit {
   @ViewChild(UploadFileComponent) uploadFileComponentRef!: UploadFileComponent
 
-  protected load: boolean = false
+  protected load = false
   protected clients!: ClientModel[]
   protected countries: SelectModel[] = []
   protected proceduresValues: SelectModel[] = []
@@ -83,7 +83,7 @@ export class RegisterInvoiceComponent implements OnInit {
     '275px',
     'm-b-0'
   )
-  public saving: boolean = false
+  public saving = false
   public formGroup = new FormGroup({
     client: this.clientFormGroup,
     procedure: new FormControl(''),
@@ -320,7 +320,7 @@ export class RegisterInvoiceComponent implements OnInit {
       if (selectedClient.doctors.find(x => x.id.compareString(userId))) {
         return this.createInvoice(clientId)
       }
-      return this.doctorApiService.assignClientToUser(new AssignClientRequest(userId, clientId)).pipe(switchMap(x => this.createInvoice(clientId)))
+      return this.doctorApiService.assignClientToUser(new AssignClientRequest(userId, clientId)).pipe(switchMap(() => this.createInvoice(clientId)))
     }
     // Create Client
     return this.clientApiService.createClient(

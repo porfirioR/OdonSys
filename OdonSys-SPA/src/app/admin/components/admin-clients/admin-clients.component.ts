@@ -26,7 +26,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-clients.component.scss']
 })
 export class AdminClientsComponent implements OnInit {
-  protected load: boolean = false
+  protected load = false
   protected gridOptions!: GridOptions
   protected rowData$!: Observable<ClientModel[]>
   protected canCreate = false
@@ -122,10 +122,10 @@ export class AdminClientsComponent implements OnInit {
       case ButtonGridActionType.CustomButton:
         this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
         break
-      case ButtonGridActionType.Aprobar:
-        this.alertService.showInfo('No implementado.')
-        // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
-        break
+      // case ButtonGridActionType.Aprobar:
+      //   this.alertService.showInfo('No implementado.')
+      //   // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+      //   break
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
         break

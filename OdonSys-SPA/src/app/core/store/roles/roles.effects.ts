@@ -29,7 +29,7 @@ export class RolesEffects {
     return this.actions$.pipe(
       ofType(roleActions.loadRoles),
       withLatestFrom(this.store.select(selectRoles)),
-      switchMap(([action, roles]) => roles.length > 0 ?
+      switchMap(([_, roles]) => roles.length > 0 ?
         of(roleActions.allRolesLoaded({ roles: roles })) :
         this.roleApiService.getAll().pipe(
           map(response => roleActions.allRolesLoaded({

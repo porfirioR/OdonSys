@@ -26,16 +26,16 @@ import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
 })
 export class OrthodonticsComponent implements OnInit {
   protected gridOptions!: GridOptions
-  protected ready: boolean = false
-  protected loading: boolean = false
-  protected canRegisterInvoice: boolean = false
-  protected canAccessMyInvoices: boolean = false
-  protected title: string = ''
-  private canRegisterPayments: boolean = false
-  private canDeactivateInvoice: boolean = false
-  private canUpdateInvoice: boolean = false
+  protected ready = false
+  protected loading = false
+  protected canRegisterInvoice = false
+  protected canAccessMyInvoices = false
+  protected title = ''
+  private canRegisterPayments = false
+  private canDeactivateInvoice = false
+  private canUpdateInvoice = false
   private gridApi!: GridApi
-  private isMyPermission: boolean = false
+  private isMyPermission = false
 
   constructor(
       private readonly agGridService: AgGridService,
@@ -185,23 +185,25 @@ export class OrthodonticsComponent implements OnInit {
         })
         break
       case ButtonGridActionType.CustomButton:
-        const modalRef = this.modalService.open(PaymentModalComponent, {
-          size: 'xl',
-          backdrop: 'static',
-          keyboard: false
-        })
-        modalRef.componentInstance.invoice = currentRowNode.data
-        modalRef.result.then((payment: PaymentApiModel | undefined) => {
-          if (!!payment) {
-            currentRowNode.setDataValue('status', payment.status)
-            currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
-            const columnToRefresh = ['status', 'paymentAmount']
-            if (payment.status == InvoiceStatus.Completado) {
-              columnToRefresh.push('action')
+        {
+          const modalRef = this.modalService.open(PaymentModalComponent, {
+            size: 'xl',
+            backdrop: 'static',
+            keyboard: false
+          })
+          modalRef.componentInstance.invoice = currentRowNode.data
+          modalRef.result.then((payment: PaymentApiModel | undefined) => {
+            if (!!payment) {
+              currentRowNode.setDataValue('status', payment.status)
+              currentRowNode.setDataValue('paymentAmount', currentRowNode.data.paymentAmount += payment.amount)
+              const columnToRefresh = ['status', 'paymentAmount']
+              if (payment.status == InvoiceStatus.Completado) {
+                columnToRefresh.push('action')
+              }
+              this.gridApi?.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
             }
-            this.gridApi?.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
-          }
-        }, () => {})
+          }, () => {})
+        }
         break
       default:
         break

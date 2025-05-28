@@ -65,7 +65,7 @@ export class ClientDetailComponent implements OnInit {
         loadingTooth = false
       }
     }))
-    const clientId: string = this.activeRoute.snapshot.params['id']!
+    const clientId = this.activeRoute.snapshot.params['id']!
     let loadingClient = true
     const clientRowData$ = this.store.select(selectClients).pipe(tap(x => {
       if(loadingClient && x.length === 0) {

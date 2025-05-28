@@ -20,8 +20,6 @@ import { reducers, metaReducers } from './store';
 import { AgGridModule } from 'ag-grid-angular';
 import './extensions/implement-extensions';
 import {
-  AuthError,
-  AuthenticationResult,
   BrowserCacheLocation,
   IPublicClientApplication,
   InteractionType,
