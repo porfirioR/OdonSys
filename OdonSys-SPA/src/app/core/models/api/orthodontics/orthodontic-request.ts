@@ -1,4 +1,4 @@
-export class OrthodonticClientRequest {
+export class OrthodonticRequest {
   constructor(
     protected clientId: string,
     protected description: string,

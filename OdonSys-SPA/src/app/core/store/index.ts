@@ -6,7 +6,8 @@ import * as fromSaving from './saving/saving.reducer';
 import * as fromProcedure from './procedures/procedure.reducer';
 import * as fromClient from './clients/client.reducer';
 import * as fromDoctor from './doctors/doctor.reducer';
-import * as fromTooth from './teeth/tooth.reducer'
+import * as fromTooth from './teeth/tooth.reducer';
+import * as fromOrthodontic from './orthodontics/orthodontic.reducer'
 
 export const coreFeatureKey = 'core'
 
@@ -17,6 +18,8 @@ export interface CoreState {
   [fromClient.clientsFeatureKey]: fromClient.ClientState,
   [fromDoctor.doctorsFeatureKey]: fromDoctor.DoctorState;
   [fromTooth.teethFeatureKey]: fromTooth.ToothState;
+  [fromOrthodontic.orthodonticsFeatureKey]: fromOrthodontic.OrthodonticState;
+
 }
 
 export const reducers: ActionReducerMap<CoreState> = {
@@ -26,6 +29,7 @@ export const reducers: ActionReducerMap<CoreState> = {
   [fromClient.clientsFeatureKey]: fromClient.reducer,
   [fromDoctor.doctorsFeatureKey]: fromDoctor.reducer,
   [fromTooth.teethFeatureKey]: fromTooth.reducer,
+  [fromOrthodontic.orthodonticsFeatureKey]: fromOrthodontic.reducer,
 }
 
 export const selectCoreFeature = createFeatureSelector<CoreState>(coreFeatureKey)
