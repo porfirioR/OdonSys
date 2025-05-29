@@ -13,32 +13,20 @@ export const initialState: OrthodonticState = adapter.getInitialState({ });
 
 export const reducer = createReducer(
   initialState,
-  on(OrthodonticActions.addOrthodontic,
-    (state, action) => adapter.addOne(action.orthodontic, state)
+  on(OrthodonticActions.addOrthodontics,
+    (state, action) => adapter.setAll(action.orthodontics, state)
   ),
-  on(OrthodonticActions.upsertOrthodontic,
-    (state, action) => adapter.upsertOne(action.orthodontic, state)
+  on(OrthodonticActions.addOrthodonticSuccess,
+    (state, action) => adapter.addOne(action.orthodontic, state)
   ),
   on(OrthodonticActions.addOrthodontics,
     (state, action) => adapter.addMany(action.orthodontics, state)
   ),
-  on(OrthodonticActions.upsertOrthodontics,
-    (state, action) => adapter.upsertMany(action.orthodontics, state)
+  on(OrthodonticActions.updateOrthodonticSuccess,
+    (state, action) => adapter.upsertOne(action.orthodontic, state)
   ),
-  on(OrthodonticActions.updateOrthodontic,
-    (state, action) => adapter.updateOne(action.orthodontic, state)
-  ),
-  on(OrthodonticActions.updateOrthodontics,
-    (state, action) => adapter.updateMany(action.orthodontics, state)
-  ),
-  on(OrthodonticActions.deleteOrthodontic,
+  on(OrthodonticActions.deleteOrthodonticSuccess,
     (state, action) => adapter.removeOne(action.id, state)
-  ),
-  on(OrthodonticActions.deleteOrthodontics,
-    (state, action) => adapter.removeMany(action.ids, state)
-  ),
-  on(OrthodonticActions.loadOrthodontics,
-    (state, action) => adapter.setAll(action.orthodontics, state)
   ),
   on(OrthodonticActions.clearOrthodontics,
     state => adapter.removeAll(state)

@@ -38,20 +38,6 @@ export class OrthodonticEffects {
     )
   })
 
-  getPatientAllOrthodontic$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(OrthodonticActions.loadClientOrthodontics),
-      withLatestFrom(this.store.select(selectOrthodontics)),
-      switchMap(([orthodontic, orthodontics]) => orthodontics.length > 0 ?
-      of(OrthodonticActions.addOrthodontics({ orthodontics: orthodontics })) :
-        this.orthodonticApiService.getPatientOrthodonticsById(orthodontic.id).pipe(
-          map(data => OrthodonticActions.addOrthodontics({ orthodontics: data.map(this.getModel) })),
-          catchError(error => of(OrthodonticActions.failure({ error })))
-        )
-      )
-    )
-  })
-
   create$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(OrthodonticActions.addOrthodontic),
@@ -83,7 +69,7 @@ export class OrthodonticEffects {
       )
     )
   })
-  
+
   delete$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(OrthodonticActions.deleteOrthodontic),
