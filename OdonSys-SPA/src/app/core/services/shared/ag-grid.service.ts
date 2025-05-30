@@ -222,6 +222,13 @@ export class AgGridService {
     return grid
   }
 
+  public getOrthodonticGridOptions = (): GridOptions => {
+    const grid = this.getGridOptions()
+    grid.columnDefs = this.columnDef.concat(this.orthodonticColumnDef) as ColDef[]
+    (grid.columnDefs.find((x: ColDef) => x.field === 'id')! as ColDef).hide = true
+    return grid
+  }
+
   public getInvoiceGridOptions = (): GridOptions => {
     const grid = this.getGridOptions()
     grid.columnDefs = this.columnDef.concat(this.invoiceColumnDef) as ColDef[]

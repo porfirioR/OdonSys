@@ -11,6 +11,7 @@ import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
 import { ClientReportComponent } from '../core/components/client-report/client-report.component';
+import { OrthodonticsComponent } from './components/orthodontics/orthodontics.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -115,6 +116,20 @@ export const WorkspaceRoutes: Routes = [
         component: UpdateInvoiceComponent,
         title: 'Actualizar factura',
         data: { permissions: [ Permission.UpdateInvoices ] }
+      },
+      {
+        path: 'ortodoncias',
+        canActivate: [PermissionGuard],
+        component: OrthodonticsComponent,
+        title: 'Ortodoncias',
+        data: { permissions: [ Permission.AccessAllOrthodontics ] }
+      },
+      {
+        path: 'mis-ortodoncias/:id',
+        canActivate: [PermissionGuard],
+        component: OrthodonticsComponent,
+        title: 'Mis Ortodoncias',
+        data: { permissions: [ Permission.AccessOrthodontics ] }
       }
     ]
   }

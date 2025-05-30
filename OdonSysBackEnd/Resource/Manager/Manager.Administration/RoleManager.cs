@@ -74,7 +74,7 @@ internal sealed class RoleManager : IRoleManager
             new("Ingresar", PermissionName.AccessPayments, PermissionGroup.Work, PermissionSubGroup.Payment),
             new("Registrar Pago", PermissionName.RegisterPayments, PermissionGroup.Work, PermissionSubGroup.Payment),
 
-            new("Ingresar", PermissionName.AccessOrthodontics, PermissionGroup.Work, PermissionSubGroup.Orthodontic),
+            new("Ingresar al del Paciente", PermissionName.AccessOrthodontics, PermissionGroup.Work, PermissionSubGroup.Orthodontic),
             new("Ingresar a todos", PermissionName.AccessAllOrthodontics, PermissionGroup.Work, PermissionSubGroup.Orthodontic),
             new("Crear", PermissionName.CreateOrthodontics, PermissionGroup.Work, PermissionSubGroup.Orthodontic),
             new("Borrar", PermissionName.DeleteOrthodontics, PermissionGroup.Work, PermissionSubGroup.Orthodontic),
