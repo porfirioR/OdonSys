@@ -78,7 +78,7 @@ export class OrthodonticsComponent implements OnInit {
   }
 
   private setupAgGrid = (): void => {
-    this.gridOptions = this.agGridService.getClientGridOptions()
+    this.gridOptions = this.agGridService.getOrthodonticGridOptions()
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const buttonsToShow: ButtonGridActionType[] = []
     if (this.canDelete) {

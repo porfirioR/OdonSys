@@ -13,11 +13,13 @@ import { OrthodonticFormGroup } from '../../../core/forms/orthodontic-form-group
 import { OrthodonticRequest } from '../../../core/models/api/orthodontics/orthodontic-request';
 import { selectClients } from '../../../core/store/clients/client.selectors';
 import  * as fromClientsActions from '../../../core/store/clients/client.actions';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-upsert-orthodontic',
   templateUrl: './upsert-orthodontic.component.html',
-  styleUrls: ['./upsert-orthodontic.component.scss']
+  styleUrls: ['./upsert-orthodontic.component.scss'],
+  providers: [DatePipe]
 })
 export class UpsertOrthodonticComponent implements OnInit {
   public formGroup = new FormGroup<OrthodonticFormGroup>({
@@ -38,7 +40,8 @@ export class UpsertOrthodonticComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private store: Store,
-    private readonly subscriptionService: SubscriptionService
+    private readonly subscriptionService: SubscriptionService,
+    private datePipe: DatePipe,
   ) { }
 
   ngOnInit(): void {
@@ -85,10 +88,11 @@ export class UpsertOrthodonticComponent implements OnInit {
         }
         if (this.id && orthodontic) {
           this.title = 'Actualizar '
+          const date = this.datePipe.transform(orthodontic.date, 'yyyy-MM-dd') as unknown as Date
           this.formGroup.patchValue({
             clientId: orthodontic.client.id,
             description: orthodontic.description,
-            date: orthodontic.date
+            date: date
           })
         }
       }

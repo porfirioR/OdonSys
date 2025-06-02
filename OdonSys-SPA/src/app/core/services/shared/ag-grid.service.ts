@@ -124,9 +124,9 @@ export class AgGridService {
 
   private orthodonticColumnDef: ColDef[] = [
     { headerName: 'Fecha', field: 'date', type: 'dateColumn', minWidth: 105, maxWidth: 150, resizable: true },
-    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Nombre', field: 'client:Name', filter: 'agTextColumnFilter', resizable: true },
-    { headerName: 'Apellido', field: 'client:Surname', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Descripción', field: 'description', filter: 'agTextColumnFilter', minWidth: 300, resizable: true },
+    { headerName: 'Nombre', field: 'client.name', filter: 'agTextColumnFilter', minWidth: 100, resizable: true },
+    { headerName: 'Apellido', field: 'client.surname', filter: 'agTextColumnFilter', minWidth: 100, resizable: true },
     { headerName: 'Acciones', field: 'action', sortable: false, filter: false, resizable: true,
       autoHeight: true, cellClass: 'long-text-cell-ag-grid', cellRenderer: GridActionsComponent 
     }
