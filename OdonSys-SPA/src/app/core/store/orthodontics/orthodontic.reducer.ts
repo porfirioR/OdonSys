@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { OrthodonticActions } from './orthodontic.actions';
 import { OrthodonticModel } from '../../models/view/orthodontic-model';

@@ -12,6 +12,7 @@ import { ClientDetailComponent } from '../core/components/client-detail/client-d
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
 import { ClientReportComponent } from '../core/components/client-report/client-report.component';
 import { OrthodonticsComponent } from './components/orthodontics/orthodontics.component';
+import { UpsertOrthodonticComponent } from './components/upsert-orthodontic/upsert-orthodontic.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -125,12 +126,40 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.AccessAllOrthodontics ] }
       },
       {
+        path: 'ortodoncias/registrar',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Registrar Ortodoncia',
+        data: { permissions: [ Permission.CreateOrthodontics ] }
+      },
+      {
+        path: 'ortodoncias/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Registrar Ortodoncia',
+        data: { permissions: [ Permission.UpdateOrthodontics ] }
+      },
+      {
         path: 'mis-ortodoncias/:id',
         canActivate: [PermissionGuard],
         component: OrthodonticsComponent,
         title: 'Mis Ortodoncias',
         data: { permissions: [ Permission.AccessOrthodontics ] }
-      }
+      },
+      {
+        path: 'mis-ortodoncias/:id/registrar',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Registrar Ortodoncia',
+        data: { permissions: [ Permission.CreateOrthodontics ] }
+      },
+      {
+        path: 'mis-ortodoncias/:id/actualizar',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Registrar Ortodoncia',
+        data: { permissions: [ Permission.UpdateOrthodontics ] }
+      },
     ]
   }
 ]

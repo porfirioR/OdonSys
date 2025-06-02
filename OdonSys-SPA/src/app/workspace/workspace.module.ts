@@ -11,6 +11,7 @@ import { ShowInvoiceComponent } from './components/show-invoice/show-invoice.com
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
 import { OrthodonticsComponent } from './components/orthodontics/orthodontics.component';
+import { UpsertOrthodonticComponent } from './components/upsert-orthodontic/upsert-orthodontic.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import { OrthodonticsComponent } from './components/orthodontics/orthodontics.co
     PaymentModalComponent,
     ShowInvoiceComponent,
     UpdateInvoiceComponent,
-    OrthodonticsComponent
+    OrthodonticsComponent,
+    UpsertOrthodonticComponent
   ]
 })
 export class WorkspaceModule { }

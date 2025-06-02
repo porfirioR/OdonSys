@@ -1,0 +1,45 @@
+<app-progress *ngIf="saving"></app-progress>
+<div class="container">
+  <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
+    <h3>{{title}} Paciente</h3>
+  </div>
+  <div class="m-l-0 m-p-0 m-t-16 p-16 bg-body rounded shadow-sm">
+    <form [formGroup]="formGroup" (ngSubmit)="save()">
+      <div class="row m-l-12 m-r-12">
+        <div class="col-lg-6 col-md-6">
+          <div class="form-group">
+            <label for="date" class="col-form-label">
+              Fecha
+            </label>
+            <input
+              type="date"
+              class="form-control"
+              name="date"
+              id="date"
+              aria-describedby="Fecha"
+              placeholder="Fecha"
+              formControlName="date" 
+            />
+            <div *ngIf="formGroup.controls.date?.errors?.['required']" class="invalid-feedback">
+              Favor ingresar Fecha
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <app-select-input [id]="'clientId'" formControlName="clientId" [label]="'Pacientes'" [options]="clientValues" [colClass]="'col-lg-12'"></app-select-input>
+        </div>
+        <div class="col-lg-12 col-md-12">
+          <app-text-number-input [id]="'description'" formControlName="description" [label]="'Descripción'" [autofocus]="true" [colClass]="'col-lg-12'"></app-text-number-input>
+        </div>
+      </div>
+      <div class="form-group text-center btn-footer m-t-16">
+        <button class="btn btn-outline-primary m-r-8" type="button" name="cancel" [disabled]="saving" (click)="close()">
+          Cancelar
+        </button>
+        <button class="btn btn-outline-primary" type="submit" name="save" [disabled]="!formGroup.valid || saving" (keydown.enter)="save()">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
