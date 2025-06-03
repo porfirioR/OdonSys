@@ -140,21 +140,21 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.UpdateOrthodontics ] }
       },
       {
-        path: 'mis-ortodoncias/:id',
+        path: 'mis-pacientes/mis-ortodoncias/:id',
         canActivate: [PermissionGuard],
         component: OrthodonticsComponent,
         title: 'Mis Ortodoncias',
         data: { permissions: [ Permission.AccessOrthodontics ] }
       },
       {
-        path: 'mis-ortodoncias/:id/registrar',
+        path: 'mis-pacientes/mis-ortodoncias/:clientId/registrar',
         canActivate: [PermissionGuard],
         component: UpsertOrthodonticComponent,
         title: 'Registrar Ortodoncia',
         data: { permissions: [ Permission.CreateOrthodontics ] }
       },
       {
-        path: 'mis-ortodoncias/:id/actualizar',
+        path: 'mis-pacientes/mis-ortodoncias/:clientId/actualizar/:id',
         canActivate: [PermissionGuard],
         component: UpsertOrthodonticComponent,
         title: 'Registrar Ortodoncia',

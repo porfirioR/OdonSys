@@ -27,10 +27,10 @@ export class OrthodonticsComponent implements OnInit {
   protected canEdit = false
   protected canCreate = false
   protected rowData$!: Observable<OrthodonticModel[]>
+  protected id = ''
   private canDelete = false
   private gridApi!: GridApi
   private isSpecificClientOrthodontic = false
-  private id = ''
 
   constructor(
     private readonly agGridService: AgGridService,
@@ -48,7 +48,7 @@ export class OrthodonticsComponent implements OnInit {
     this.canCreate = this.userInfoService.havePermission(Permission.CreateOrthodontics)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateOrthodontics)
     this.canDelete = this.userInfoService.havePermission(Permission.DeleteOrthodontics)
-    this.title = this.isSpecificClientOrthodontic ? 'Ortodoncias de' : 'Todas las Ortodoncias'
+    this.title = this.isSpecificClientOrthodontic ? 'Ortodoncias de ' : 'Todas las Ortodoncias'
     this.setupAgGrid()
     this.id = this.activatedRoute.snapshot.params['id']
     if (this.id) {

@@ -76,8 +76,8 @@ export class OrthodonticEffects {
       switchMap((x) =>
         this.orthodonticApiService.delete(x.id).pipe(
           map(data => {
-          this.alertService.showSuccess(`Ortodoncia actualizado con éxito.`)
-          return OrthodonticActions.deleteOrthodontic({ id: data.id})
+          this.alertService.showSuccess(`Ortodoncia borrada con éxito.`)
+          return OrthodonticActions.deleteOrthodonticSuccess({ id: data.id})
         }),
         catchError(error => of(OrthodonticActions.failure({ error }))))
       )

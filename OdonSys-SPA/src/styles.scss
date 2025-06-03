@@ -75,3 +75,7 @@ body {
 .text-bg-info, .text-bg-warning {
   color: $white !important;
 }
+
+.container {
+  max-width: unset !important;
+}

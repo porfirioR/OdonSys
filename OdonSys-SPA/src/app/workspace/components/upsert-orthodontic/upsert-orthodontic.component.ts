@@ -33,6 +33,7 @@ export class UpsertOrthodonticComponent implements OnInit {
   protected saving$: Observable<boolean> = of(false)
   protected clientValues: SelectModel[] = []
   private id = ''
+  private clientId = ''
   private allOrthodonticsUrl = '/trabajo/ortodoncias'
   private myOrthodonticsUrlUrl = '/trabajo/mis-ortodoncias'
 
@@ -68,6 +69,7 @@ export class UpsertOrthodonticComponent implements OnInit {
 
   private loadValues = (): void => {
     this.id = this.activatedRoute.snapshot.params['id']
+    this.clientId = this.activatedRoute.snapshot.params['clientId']
     const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'
     let loading = true
     const clients$ = this.store.select(selectClients).pipe(tap(x => {
@@ -93,6 +95,11 @@ export class UpsertOrthodonticComponent implements OnInit {
             clientId: orthodontic.client.id,
             description: orthodontic.description,
             date: date
+          })
+        }
+        if (this.clientId) {
+          this.formGroup.patchValue({
+            clientId: this.clientId
           })
         }
       }

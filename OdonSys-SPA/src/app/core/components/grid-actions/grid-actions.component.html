@@ -1,40 +1,45 @@
-<span class="btn btn-sm m-r-8" (click)="customItem()" *ngIf="canShowCustomButton"  [ngClass]="[customColorButton]">
+<button class="btn btn-sm m-r-8" (click)="customItem()" *ngIf="canShowCustomButton"  [ngClass]="[customColorButton]">
   <span class="d-flex-center m-r-2">
     <i class="fas" [ngClass]="params.customButton ? params.customButton.icon : 'fa-id-card' "></i>{{params.customButton?.title}}
   </span>
-</span>
-<span class="btn btn-sm btn-outline-warning m-r-8" *ngIf="canApprove">
-  <span class=" d-flex-center" (click)="approveItem()">
+</button>
+<button class="btn btn-sm btn-outline-warning m-r-8" *ngIf="canApprove" (click)="approveItem()">
+  <span class=" d-flex-center">
     <i class="fas fa-check m-r-2"></i>Aprobar
   </span>
-</span>
-<span class="btn btn-sm btn-outline-primary m-r-8" *ngIf="canShowView">
-  <span class="d-flex-center" (click)="viewItem()">
+</button>
+<button class="btn btn-sm btn-outline-primary m-r-8" *ngIf="canShowView" (click)="viewItem()">
+  <span class="d-flex-center">
     <i class="fas fa-eye m-r-2"></i>Ver
   </span>
-</span>
-<span class="btn btn-sm btn-outline-success m-r-8 m-t-b-5" *ngIf="canShowEdit">
-  <span class="d-flex-center" (click)="editItem()">
+</button>
+<button class="btn btn-sm btn-outline-success m-r-8 m-t-b-5" *ngIf="canShowEdit" (click)="editItem()">
+  <span class="d-flex-center">
     <i class="fas fa-pen m-r-2"></i>Editar
   </span>
-</span>
-<span class="btn btn-sm btn-outline-danger m-r-8" (click)="deleteItem()" *ngIf="canShowDelete">
+</button>
+<button class="btn btn-sm btn-outline-danger m-r-8" (click)="deleteItem()" *ngIf="canShowDelete">
   <span class="d-flex-center">
     <i class="fas fa-trash m-r-2"></i>Borrar
   </span>
-</span>
-<span class="btn btn-sm btn-outline-success m-r-8" *ngIf="canRestore">
-  <span class="d-flex-center" (click)="restoreItem()">
+</button>
+<button class="btn btn-sm btn-outline-success m-r-8" *ngIf="canRestore" (click)="restoreItem()">
+  <span class="d-flex-center">
     <i class="fas fa-recycle m-r-2"></i>Restaurar
   </span>
-</span>
-<span class="btn btn-sm btn-outline-danger m-r-8 m-t-b-5" (click)="deactivateItem()" *ngIf="canShowDeactivate">
+</button>
+<button class="btn btn-sm btn-outline-danger m-r-8 m-t-b-5" (click)="deactivateItem()" *ngIf="canShowDeactivate">
   <span class="d-flex-center">
     <i class="fas fa-power-off m-r-2"></i>Desactivar
   </span>
-</span>
-<span class="btn btn-sm btn-outline-primary" (click)="downloadItem()" *ngIf="canShowDownload">
+</button>
+<button class="btn btn-sm btn-outline-primary" (click)="downloadItem()" *ngIf="canShowDownload">
   <span class="d-flex-center">
     <i class="fas fa-download"></i>Download
   </span>
-</span>
+</button>
+<button class="btn btn-sm btn-outline-primary" (click)="myOrthodonticItem()" *ngIf="canShowMyOrthodontic">
+  <span class="d-flex-center">
+    <i class="fas fa-download"></i>Mis Ortodoncias
+  </span>
+</button>

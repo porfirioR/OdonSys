@@ -103,7 +103,7 @@ export class AgGridService {
     { headerName: 'Fecha', field: 'dateCreated', type: 'dateColumn', minWidth: 100, maxWidth: 110, resizable: true },
     { headerName: 'Total', field: 'total', type: 'moneyColumn', filter: 'agNumberColumnFilter',  maxWidth: 200, resizable: true },
     { headerName: 'Monto Pagado', field: 'paymentAmount', type: 'moneyColumn',  resizable: true },
-    { headerName: 'Acciones', field: 'action', sortable: false, filter: false,  resizable: true, maxWidth: 300, initialWidth: 200,
+    { headerName: 'Acciones', field: 'action', sortable: false, filter: false,  resizable: true, initialWidth: 200,
       wrapText: true, autoHeight: true, cellClass: 'long-text-cell-ag-grid', cellRenderer: GridActionsComponent
     }
   ]
