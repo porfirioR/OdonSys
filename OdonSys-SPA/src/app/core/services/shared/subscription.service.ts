@@ -11,6 +11,9 @@ export class SubscriptionService {
   private onErrorInSaveSubject = new Subject<boolean>()
   public onErrorInSave: Observable<boolean> = this.onErrorInSaveSubject
 
+  private onDeleteSubject = new Subject<string>()
+  public onDeleteId: Observable<string> = this.onDeleteSubject
+
   constructor() { }
 
   public emitCheckMenu = (model: boolean) => {
@@ -19,5 +22,9 @@ export class SubscriptionService {
 
   public emitErrorInSave = (model = true) => {
     this.onErrorInSaveSubject.next(model)
+  }
+
+  public emitDeleteId = (id: string) => {
+    this.onDeleteSubject.next(id)
   }
 }

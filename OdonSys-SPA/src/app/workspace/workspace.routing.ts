@@ -12,7 +12,7 @@ import { ClientDetailComponent } from '../core/components/client-detail/client-d
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
 import { ClientReportComponent } from '../core/components/client-report/client-report.component';
 import { OrthodonticsComponent } from './components/orthodontics/orthodontics.component';
-import { UpsertOrthodonticComponent } from './components/upsert-orthodontic/upsert-orthodontic.component';
+import { UpsertOrthodonticComponent } from '../core/components/upsert-orthodontic/upsert-orthodontic.component';
 
 export const WorkspaceRoutes: Routes = [
   { 
@@ -140,25 +140,25 @@ export const WorkspaceRoutes: Routes = [
         data: { permissions: [ Permission.UpdateOrthodontics ] }
       },
       {
-        path: 'mis-pacientes/mis-ortodoncias/:id',
+        path: 'mis-pacientes/mis-ortodoncias/:clientId',
         canActivate: [PermissionGuard],
         component: OrthodonticsComponent,
         title: 'Mis Ortodoncias',
-        data: { permissions: [ Permission.AccessOrthodontics ] }
+        data: { permissions: [ Permission.AccessOrthodontics, Permission.AccessMyClients ] }
       },
       {
         path: 'mis-pacientes/mis-ortodoncias/:clientId/registrar',
         canActivate: [PermissionGuard],
         component: UpsertOrthodonticComponent,
         title: 'Registrar Ortodoncia',
-        data: { permissions: [ Permission.CreateOrthodontics ] }
+        data: { permissions: [ Permission.CreateOrthodontics, Permission.AccessMyClients, Permission.AccessOrthodontics ] }
       },
       {
         path: 'mis-pacientes/mis-ortodoncias/:clientId/actualizar/:id',
         canActivate: [PermissionGuard],
         component: UpsertOrthodonticComponent,
-        title: 'Registrar Ortodoncia',
-        data: { permissions: [ Permission.UpdateOrthodontics ] }
+        title: 'Actualizar Ortodoncia',
+        data: { permissions: [ Permission.UpdateOrthodontics, Permission.AccessMyClients, Permission.AccessOrthodontics ] }
       },
     ]
   }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
-import { forkJoin, Observable, of, switchMap, tap } from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Permission } from '../../../core/enums/permission.enum';
 import { ButtonGridActionType } from '../../../core/enums/button-grid-action-type.enum';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
@@ -14,6 +14,7 @@ import { OrthodonticApiService } from '../../../core/services/api/orthodontic-ap
 import { ClientApiService } from '../../../core/services/api/client-api.service';
 import { OrthodonticActions } from '../../../core/store/orthodontics/orthodontic.actions';
 import { selectOrthodontics } from '../../../core/store/orthodontics/orthodontic.selectors';
+import { SubscriptionService } from '../../../core/services/shared/subscription.service';
 
 @Component({
   selector: 'app-orthodontics',
@@ -27,7 +28,7 @@ export class OrthodonticsComponent implements OnInit {
   protected canEdit = false
   protected canCreate = false
   protected rowData$!: Observable<OrthodonticModel[]>
-  protected id = ''
+  protected clientId = ''
   private canDelete = false
   private gridApi!: GridApi
   private isSpecificClientOrthodontic = false
@@ -41,24 +42,30 @@ export class OrthodonticsComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly alertService: AlertService,
     private store: Store,
+    private readonly subscriptionService: SubscriptionService,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.isSpecificClientOrthodontic = this.activatedRoute.snapshot.data['permissions'].some((x: Permission) => x === Permission.AccessOrthodontics)
     this.canCreate = this.userInfoService.havePermission(Permission.CreateOrthodontics)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateOrthodontics)
     this.canDelete = this.userInfoService.havePermission(Permission.DeleteOrthodontics)
     this.title = this.isSpecificClientOrthodontic ? 'Ortodoncias de ' : 'Todas las Ortodoncias'
     this.setupAgGrid()
-    this.id = this.activatedRoute.snapshot.params['id']
-    if (this.id) {
-      this.rowData$ = forkJoin([this.clientApiService.getById(this.id), this.orthodonticApiService.getPatientOrthodonticsById(this.id)]).pipe(
+    this.clientId = this.activatedRoute.snapshot.params['clientId']
+    if (this.clientId) {
+      this.rowData$ = forkJoin([this.clientApiService.getById(this.clientId), this.orthodonticApiService.getPatientOrthodonticsById(this.clientId)]).pipe(
         switchMap(([client, orthodontics]) => {
           this.title += `${client.name} ${client.surname}`
           return of(orthodontics)
         }
       ))
       this.load = true
+      this.subscriptionService.onDeleteId.subscribe({
+        next: (id) => {
+          this.rowData$ = this.rowData$.pipe(map(x => x.filter(x => x.id !== id)))
+        }
+      })
     } else {
       let loading = true
       this.rowData$ = this.store.select(selectOrthodontics).pipe(tap(x => {

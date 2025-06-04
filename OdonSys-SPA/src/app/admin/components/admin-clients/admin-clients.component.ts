@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -38,6 +40,7 @@ export class AdminClientsComponent implements OnInit {
   private canShowReport = false
   // private canAssignToDoctor = false
   private gridApi!: GridApi
+  private canShowMyOrthodontic = false
 
   constructor(
     private readonly router: Router,
@@ -56,6 +59,7 @@ export class AdminClientsComponent implements OnInit {
     this.canRestore = this.userInfoService.havePermission(Permission.RestoreClients)
     this.canShowReport = this.userInfoService.havePermission(Permission.AccessInvoices)
     // this.canAssignToDoctor = this.userInfoService.havePermission(Permission.AssignClients)
+    this.canShowMyOrthodontic = this.userInfoService.havePermission(Permission.AccessOrthodontics)
     this.setupAgGrid()
     let loading = true
     this.rowData$ = this.store.select(selectClients).pipe(tap(x => {
@@ -98,6 +102,9 @@ export class AdminClientsComponent implements OnInit {
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
+    if (this.canShowMyOrthodontic) {
+      buttonsToShow.push(ButtonGridActionType.Ortodoncias)
+    }
     const buttons = buttonsToShow.length + conditionalButtons.length
     if (buttons > 4) {
       columnAction.minWidth = 463
@@ -114,26 +121,31 @@ export class AdminClientsComponent implements OnInit {
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
+    const url = this.router.url
+    const id = currentRowNode.data.id
     switch (action) {
       case ButtonGridActionType.Aprobar:
       case ButtonGridActionType.Desactivar:
         this.changeSelectedClientVisibility(currentRowNode.data)
         break
       case ButtonGridActionType.CustomButton:
-        this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/reporte/${id}`])
         break
       // case ButtonGridActionType.Aprobar:
       //   this.alertService.showInfo('No implementado.')
-      //   // this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+      //   // this.router.navigate([`${url}/ver/${id}`])
       //   break
       case ButtonGridActionType.Ver:
-        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/ver/${id}`])
         break
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/actualizar/${id}`])
         break
       case ButtonGridActionType.Borrar:
         this.alertService.showInfo('No implementado.')
+        break
+      case ButtonGridActionType.Ortodoncias:
+        this.router.navigate([`${url}/ortodoncias/${id}`])
         break
       default:
         break

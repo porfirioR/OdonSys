@@ -109,7 +109,7 @@ export class AgGridService {
   ]
 
   private adminClientColumnDef: ColDef[] = [
-    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true },
+    { headerName: 'Nombre', field: 'name', filter: 'agTextColumnFilter', resizable: true, minWidth: 300 },
     { headerName: 'Apellido', field: 'surname', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Teléfono', field: 'phone', filter: 'agTextColumnFilter', resizable: true },
     { headerName: 'Documento', field: 'document', type: 'numberColumn', resizable: true },

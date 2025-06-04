@@ -45,7 +45,7 @@ internal sealed class OrthodonticAccess : IOrthodonticAccess
             .Include(x => x.Client)
             .AsNoTrackingWithIdentityResolution()
             .OrderByDescending(x => x.DateCreated)
-            .Where(x => x.Id == new Guid(clientId));
+            .Where(x => x.Client.Id == new Guid(clientId));
 
         var accessModels = entities.Select(x => _orthodonticDataAccessBuilder.MapEntityToAccessModel(x, _clientDataAccessBuilder.MapClientToClientAccessModel(x.Client)));
         return await accessModels.ToListAsync();

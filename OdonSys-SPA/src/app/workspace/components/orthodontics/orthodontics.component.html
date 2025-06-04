@@ -3,7 +3,7 @@
   <div class="header-top my-2 p-3 bg-body rounded shadow-sm">
     <h3>{{title}}</h3>
     <span id="header-top-buttons">
-      <button type="button" class="btn btn-outline-primary" [routerLink]=" ['registrar', id ? id: null]" param *ngIf="canCreate">
+      <button type="button" class="btn btn-outline-primary" [routerLink]="['registrar']" *ngIf="canCreate">
         <i class="fas fa-file-invoice"></i>
         Registrar
       </button>

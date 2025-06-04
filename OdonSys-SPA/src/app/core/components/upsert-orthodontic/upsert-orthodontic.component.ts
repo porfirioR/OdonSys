@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { SelectModel } from '../../../core/models/view/select-model';
-import { selectOrthodontics } from '../../../core/store/orthodontics/orthodontic.selectors';
-import { savingSelector } from '../../../core/store/saving/saving.selector';
-import { OrthodonticActions } from '../../../core/store/orthodontics/orthodontic.actions';
-import { SubscriptionService } from '../../../core/services/shared/subscription.service';
-import { OrthodonticFormGroup } from '../../../core/forms/orthodontic-form-group.form';
-import { OrthodonticRequest } from '../../../core/models/api/orthodontics/orthodontic-request';
-import { selectClients } from '../../../core/store/clients/client.selectors';
-import  * as fromClientsActions from '../../../core/store/clients/client.actions';
-import { DatePipe } from '@angular/common';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { SelectModel } from '../../models/view/select-model';
+import { selectOrthodontics } from '../../store/orthodontics/orthodontic.selectors';
+import { savingSelector } from '../../store/saving/saving.selector';
+import { OrthodonticActions } from '../../store/orthodontics/orthodontic.actions';
+import { SubscriptionService } from '../../services/shared/subscription.service';
+import { OrthodonticFormGroup } from '../../forms/orthodontic-form-group.form';
+import { OrthodonticRequest } from '../../models/api/orthodontics/orthodontic-request';
+import { selectClients } from '../../store/clients/client.selectors';
+import  * as fromClientsActions from '../../store/clients/client.actions';
 
 @Component({
   selector: 'app-upsert-orthodontic',
@@ -35,7 +35,8 @@ export class UpsertOrthodonticComponent implements OnInit {
   private id = ''
   private clientId = ''
   private allOrthodonticsUrl = '/trabajo/ortodoncias'
-  private myOrthodonticsUrlUrl = '/trabajo/mis-ortodoncias'
+  private myOrthodonticsUrl = '/trabajo/mis-pacientes/mis-ortodoncias'
+  private patientOrthodonticsUrl = '/admin/pacientes/ortodoncias'
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -71,15 +72,22 @@ export class UpsertOrthodonticComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.params['id']
     this.clientId = this.activatedRoute.snapshot.params['clientId']
     const isUpdateUrl = this.activatedRoute.snapshot.url[1].path === 'actualizar'
-    let loading = true
+    let clientLoading = true
     const clients$ = this.store.select(selectClients).pipe(tap(x => {
-      if(loading && x.length === 0) {
-        this.store.dispatch(fromClientsActions.loadClients()) 
-        loading = false
+      if(clientLoading && x.length === 0) {
+        this.store.dispatch(fromClientsActions.loadClients())
+        clientLoading = false
       }
     }))
-    const orthodontic$ = this.store.pipe(
-      select(selectOrthodontics),
+    let orthodonticLoading = true
+    const orthodontic$ = this.store.select(selectOrthodontics).pipe(
+      switchMap(x => {
+        if (orthodonticLoading && x.length === 0) {
+          this.store.dispatch(OrthodonticActions.loadOrthodontics())
+          orthodonticLoading = false
+        }
+        return of(x)
+      }),
       map(x => this.id ? x.find(y => y.id === this.id) ?? undefined : undefined)
     )
     combineLatest([clients$, orthodontic$]).subscribe({
@@ -129,6 +137,12 @@ export class UpsertOrthodonticComponent implements OnInit {
   }
 
   private redirectUrl = (): string => {
-    return this.router.url.startsWith(this.allOrthodonticsUrl) ? this.allOrthodonticsUrl : `${this.myOrthodonticsUrlUrl}/${this.id}`
+    if (this.router.url.startsWith(this.allOrthodonticsUrl)) {
+      return this.allOrthodonticsUrl
+    }
+    if (this.router.url.startsWith(this.myOrthodonticsUrl)) {
+      return `${this.myOrthodonticsUrl}/${this.clientId}`
+    }
+    return `${this.patientOrthodonticsUrl}/${this.clientId}`
   }
 }

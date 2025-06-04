@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
@@ -77,7 +78,8 @@ export class OrthodonticEffects {
         this.orthodonticApiService.delete(x.id).pipe(
           map(data => {
           this.alertService.showSuccess(`Ortodoncia borrada con éxito.`)
-          return OrthodonticActions.deleteOrthodonticSuccess({ id: data.id})
+          this.subscriptionService.emitDeleteId(data.id)
+          return OrthodonticActions.deleteOrthodonticSuccess({ id: data.id })
         }),
         catchError(error => of(OrthodonticActions.failure({ error }))))
       )
