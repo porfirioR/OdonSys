@@ -1,7 +1,6 @@
-﻿namespace Access.Contract.ClientProcedures
-{
-    public record UpdateClientProcedureAccessRequest(
-        string UserClientId,
-        string ProcedureId
-    );
-}
+﻿namespace Access.Contract.ClientProcedures;
+
+public record UpdateClientProcedureAccessRequest(
+    string UserClientId,
+    string ProcedureId
+);

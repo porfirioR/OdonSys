@@ -6,42 +6,41 @@ using Newtonsoft.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-namespace Host.Api.Helpers
+namespace Host.Api.Helpers;
+
+[ExcludeFromCodeCoverage]
+public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
 {
-    [ExcludeFromCodeCoverage]
-    public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
+    private readonly IAuthorizationMiddlewareResultHandler _defaultHandler;
+    private const string _problemPayloadType = "Error";
+
+    public CustomAuthorizationMiddlewareResultHandler()
     {
-        private readonly IAuthorizationMiddlewareResultHandler _defaultHandler;
-        private const string _problemPayloadType = "Error";
+        _defaultHandler = new AuthorizationMiddlewareResultHandler();
+    }
 
-        public CustomAuthorizationMiddlewareResultHandler()
+    public async Task HandleAsync(RequestDelegate requestDelegate, HttpContext httpContext, AuthorizationPolicy authorizationPolicy, PolicyAuthorizationResult policyAuthorizationResult)
+    {
+        if (policyAuthorizationResult.Challenged)
         {
-            _defaultHandler = new AuthorizationMiddlewareResultHandler();
+            httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            httpContext.Response.ContentType = "application/problem+json";
+            var serializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            var details = new ProblemDetails
+            {
+                Status = (int)HttpStatusCode.Unauthorized,
+                Title = "Credencial inválido",
+                Type = _problemPayloadType
+            };
+            var jsonResponse = JsonConvert.SerializeObject(details, serializerSettings);
+            await httpContext.Response.WriteAsync(jsonResponse);
+            return;
+        }
+        if (policyAuthorizationResult.Forbidden && policyAuthorizationResult.AuthorizationFailure != null)
+        {
+            throw new UnauthorizedAccessException(policyAuthorizationResult.AuthorizationFailure.FailureReasons.First().Message);
         }
 
-        public async Task HandleAsync(RequestDelegate requestDelegate, HttpContext httpContext, AuthorizationPolicy authorizationPolicy, PolicyAuthorizationResult policyAuthorizationResult)
-        {
-            if (policyAuthorizationResult.Challenged)
-            {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                httpContext.Response.ContentType = "application/problem+json";
-                var serializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-                var details = new ProblemDetails
-                {
-                    Status = (int)HttpStatusCode.Unauthorized,
-                    Title = "Credencial inválido",
-                    Type = _problemPayloadType
-                };
-                var jsonResponse = JsonConvert.SerializeObject(details, serializerSettings);
-                await httpContext.Response.WriteAsync(jsonResponse);
-                return;
-            }
-            if (policyAuthorizationResult.Forbidden && policyAuthorizationResult.AuthorizationFailure != null)
-            {
-                throw new UnauthorizedAccessException(policyAuthorizationResult.AuthorizationFailure.FailureReasons.First().Message);
-            }
-
-            await _defaultHandler.HandleAsync(requestDelegate, httpContext, authorizationPolicy, policyAuthorizationResult);
-        }
+        await _defaultHandler.HandleAsync(requestDelegate, httpContext, authorizationPolicy, policyAuthorizationResult);
     }
 }

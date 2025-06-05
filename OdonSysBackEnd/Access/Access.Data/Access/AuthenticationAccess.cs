@@ -14,199 +14,198 @@ using System.Text;
 using Utilities;
 using Utilities.Configurations;
 
-namespace Access.Data.Access
+namespace Access.Data.Access;
+
+internal sealed class AuthenticationAccess : IAuthenticationAccess
 {
-    internal sealed class AuthenticationAccess : IAuthenticationAccess
+    private readonly SymmetricSecurityKey _key;
+    private readonly DataContext _context;
+    private readonly IUserDataAccessBuilder _userDataBuilder;
+    private readonly string _doctorRoleCode;
+    private readonly string _adminRoleCode;
+
+    public AuthenticationAccess(IOptions<SystemSettings> systemSettingsOptions, DataContext context, IUserDataAccessBuilder userDataBuilder)
     {
-        private readonly SymmetricSecurityKey _key;
-        private readonly DataContext _context;
-        private readonly IUserDataAccessBuilder _userDataBuilder;
-        private readonly string _doctorRoleCode;
-        private readonly string _adminRoleCode;
+        var systemSettings = systemSettingsOptions.Value;
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(systemSettings.TokenKey));
+        _context = context;
+        _userDataBuilder = userDataBuilder;
+        _doctorRoleCode = systemSettings.DoctorRole;
+        _adminRoleCode = systemSettings.AdminRole;
+    }
 
-        public AuthenticationAccess(IOptions<SystemSettings> systemSettingsOptions, DataContext context, IUserDataAccessBuilder userDataBuilder)
+    public async Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess)
+    {
+        var user = await _context.Users
+                        .Include(x => x.UserRoles)
+                        .ThenInclude(x => x.Role)
+                        .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email) ??
+                        throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
+
+        if (!user.Approved)
         {
-            var systemSettings = systemSettingsOptions.Value;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(systemSettings.TokenKey));
-            _context = context;
-            _userDataBuilder = userDataBuilder;
-            _doctorRoleCode = systemSettings.DoctorRole;
-            _adminRoleCode = systemSettings.AdminRole;
+            throw new UnauthorizedAccessException("Cuenta aún no ha sido aprobada, contacte con el administrador e intente devuelta.");
         }
-
-        public async Task<AuthenticationAccessModel> LoginAsync(LoginDataAccess loginAccess)
+        if (!user.Active)
         {
-            var user = await _context.Users
-                            .Include(x => x.UserRoles)
-                            .ThenInclude(x => x.Role)
-                            .FirstOrDefaultAsync(x => x.Email == loginAccess.Email || x.UserName == loginAccess.Email) ??
-                            throw new KeyNotFoundException("correo y/o contraseña es incorrecta");
-
-            if (!user.Approved)
-            {
-                throw new UnauthorizedAccessException("Cuenta aún no ha sido aprobada, contacte con el administrador e intente devuelta.");
-            }
-            if (!user.Active)
-            {
-                throw new UnauthorizedAccessException("Su cuenta fue suspendida, contacte con el administrador del sistema.");
-            }
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginAccess.Password));
-
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i])
-                {
-                    throw new KeyNotFoundException("Correo o contraseña es incorrecta");
-                }
-            }
-            var userId = user.Id;
-            var roleCodes = await RoleCodesAsync(userId);
-            (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
-            var userDataAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(user);
-            var authAccessModel = new AuthenticationAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
-            return authAccessModel;
+            throw new UnauthorizedAccessException("Su cuenta fue suspendida, contacte con el administrador del sistema.");
         }
+        using var hmac = new HMACSHA512(user.PasswordSalt);
+        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginAccess.Password));
 
-        public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
+        for (int i = 0; i < computedHash.Length; i++)
         {
-            var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-            var query = _context.Users.AsQueryable();
-            var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
-            if (entity != null)
+            if (computedHash[i] != user.PasswordHash[i])
             {
-                return await GetUserModelAsync(entity);
+                throw new KeyNotFoundException("Correo o contraseña es incorrecta");
             }
-            entity = await query
-                .FirstOrDefaultAsync(x => x.Document == request.Document || x.Email == dataAccess.Email);
-
-            if (entity != null)
-            {
-                if (string.IsNullOrEmpty(entity.ExternalUserId))
-                {
-                    entity.ExternalUserId = request.ExternalUserId;
-                    _context.Users.Update(entity);
-                }
-                else if (entity.ExternalUserId != dataAccess.ExternalUserId)
-                {
-                    throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
-                }
-            }
-            else
-            {
-                var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
-                entity = request;
-                request.Approved = true;
-                request.UserRoles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    User = entity,
-                    Role = role
-                }
-            };
-                await _context.AddAsync(entity);
-            }
-            await _context.SaveChangesAsync();
-            var userAccessModel = await GetUserModelAsync(entity);
-            return userAccessModel;
         }
+        var userId = user.Id;
+        var roleCodes = await RoleCodesAsync(userId);
+        (string token, DateTime expirationDate) = CreateToken(user.UserName, userId.ToString(), roleCodes);
+        var userDataAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(user);
+        var authAccessModel = new AuthenticationAccessModel(userDataAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+        return authAccessModel;
+    }
 
-        public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
+    public async Task<UserDataAccessModel> RegisterAzureAdB2CUserAsync(UserDataAccessRequest dataAccess)
+    {
+        var request = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
+        var query = _context.Users.AsQueryable();
+        var entity = await query.FirstOrDefaultAsync(x => x.ExternalUserId == request.ExternalUserId);
+        if (entity != null)
         {
-            var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
-            using var hmac = new HMACSHA512();
+            return await GetUserModelAsync(entity);
+        }
+        entity = await query
+            .FirstOrDefaultAsync(x => x.Document == request.Document || x.Email == dataAccess.Email);
 
-            entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
-            entity.PasswordSalt = hmac.Key;
-            entity.Approved = false;
-            entity.IsDoctor = true;
-            entity.Active = true;
-            var existUser = await _context.Users
-                .AsNoTracking()
-                .AnyAsync();
-
+        if (entity != null)
+        {
+            if (string.IsNullOrEmpty(entity.ExternalUserId))
+            {
+                entity.ExternalUserId = request.ExternalUserId;
+                _context.Users.Update(entity);
+            }
+            else if (entity.ExternalUserId != dataAccess.ExternalUserId)
+            {
+                throw new ArgumentException($"El documento {dataAccess.Document} ingresado ya fue registrado con anteriridad.");
+            }
+        }
+        else
+        {
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
-            if (!existUser)
+            entity = request;
+            request.Approved = true;
+            request.UserRoles = new List<UserRole>
+        {
+            new UserRole
             {
-                entity.Approved = true;
-                role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode) ?? throw new Exception("No existe rol administrativo.");
+                User = entity,
+                Role = role
             }
-            if (role is null)
-            {
-                throw new Exception($"Rol: {CultureInfo.InvariantCulture.TextInfo.ToTitleCase(_doctorRoleCode)} no fue encontrado, favor contacte con soporte.");
-            }
-            entity.UserRoles = new List<UserRole>
-            {
-                new UserRole
-                {
-                    User = entity,
-                    Role = role
-                }
-            };
-
+        };
             await _context.AddAsync(entity);
-            if (await _context.SaveChangesAsync() > 0)
+        }
+        await _context.SaveChangesAsync();
+        var userAccessModel = await GetUserModelAsync(entity);
+        return userAccessModel;
+    }
+
+    public async Task<AuthenticationAccessModel> RegisterUserAsync(UserDataAccessRequest dataAccess)
+    {
+        var entity = _userDataBuilder.MapUserDataAccessRequestToUser(dataAccess);
+        using var hmac = new HMACSHA512();
+
+        entity.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dataAccess.Password));
+        entity.PasswordSalt = hmac.Key;
+        entity.Approved = false;
+        entity.IsDoctor = true;
+        entity.Active = true;
+        var existUser = await _context.Users
+            .AsNoTracking()
+            .AnyAsync();
+
+        var role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _doctorRoleCode);
+        if (!existUser)
+        {
+            entity.Approved = true;
+            role = await _context.Roles.FirstOrDefaultAsync(x => x.Code == _adminRoleCode) ?? throw new Exception("No existe rol administrativo.");
+        }
+        if (role is null)
+        {
+            throw new Exception($"Rol: {CultureInfo.InvariantCulture.TextInfo.ToTitleCase(_doctorRoleCode)} no fue encontrado, favor contacte con soporte.");
+        }
+        entity.UserRoles = new List<UserRole>
+        {
+            new UserRole
             {
-                var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
-                var roleCodes = await RoleCodesAsync(entity.Id);
-                userAccessModel.Roles = roleCodes;
-                (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
-                var userResponse = new AuthenticationAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
-                return userResponse;
+                User = entity,
+                Role = role
             }
-            throw new Exception("Error al intentar crear usuario.");
-        }
+        };
 
-        public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
-        {
-            var identity = claimsPrincipal.Identity as ClaimsIdentity;
-            identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserId));
-            identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserName));
-            return true;
-        }
-
-        private (string token, DateTime expirationDate) CreateToken(string userName, string userId, IEnumerable<string> userRoles)
-        {
-            var claims = new List<Claim>()
-            {
-                new Claim(Claims.UserName, userName),
-                new Claim(Claims.UserId, userId),
-            };
-            foreach (var userRole in userRoles)
-            {
-                claims.Add(new Claim(Claims.UserRoles, userRole));
-            }
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-            var expirationDate = DateTime.UtcNow.AddMinutes(120);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = expirationDate,
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return (tokenHandler.WriteToken(token), expirationDate);
-        }
-
-        private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)
-        {
-            var codes = await _context.UserRoles
-                                .Include(x => x.Role)
-                                .Where(x => x.UserId.Equals(userId))
-                                .Select(x => x.Role.Code)
-                                .ToListAsync();
-            return codes;
-        }
-
-        private async Task<UserDataAccessModel> GetUserModelAsync(User entity)
+        await _context.AddAsync(entity);
+        if (await _context.SaveChangesAsync() > 0)
         {
             var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
             var roleCodes = await RoleCodesAsync(entity.Id);
             userAccessModel.Roles = roleCodes;
-            return userAccessModel;
+            (string token, DateTime expirationDate) = CreateToken(userAccessModel.UserName, userAccessModel.Id, roleCodes);
+            var userResponse = new AuthenticationAccessModel(userAccessModel, token, expirationDate, JwtBearerDefaults.AuthenticationScheme);
+            return userResponse;
         }
+        throw new Exception("Error al intentar crear usuario.");
+    }
+
+    public bool RemoveAllClaims(ClaimsPrincipal claimsPrincipal)
+    {
+        var identity = claimsPrincipal.Identity as ClaimsIdentity;
+        identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserId));
+        identity.RemoveClaim(claimsPrincipal.FindFirst(Claims.UserName));
+        return true;
+    }
+
+    private (string token, DateTime expirationDate) CreateToken(string userName, string userId, IEnumerable<string> userRoles)
+    {
+        var claims = new List<Claim>()
+        {
+            new Claim(Claims.UserName, userName),
+            new Claim(Claims.UserId, userId),
+        };
+        foreach (var userRole in userRoles)
+        {
+            claims.Add(new Claim(Claims.UserRoles, userRole));
+        }
+        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+        var expirationDate = DateTime.UtcNow.AddMinutes(120);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = expirationDate,
+            SigningCredentials = creds
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return (tokenHandler.WriteToken(token), expirationDate);
+    }
+
+    private async Task<IEnumerable<string>> RoleCodesAsync(Guid userId)
+    {
+        var codes = await _context.UserRoles
+                            .Include(x => x.Role)
+                            .Where(x => x.UserId.Equals(userId))
+                            .Select(x => x.Role.Code)
+                            .ToListAsync();
+        return codes;
+    }
+
+    private async Task<UserDataAccessModel> GetUserModelAsync(User entity)
+    {
+        var userAccessModel = _userDataBuilder.MapUserToUserDataAccessModel(entity);
+        var roleCodes = await RoleCodesAsync(entity.Id);
+        userAccessModel.Roles = roleCodes;
+        return userAccessModel;
     }
 }

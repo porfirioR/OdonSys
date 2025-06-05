@@ -4,129 +4,128 @@ using NUnit.Framework;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace AcceptanceTest.Host.Api.Procedures
+namespace AcceptanceTest.Host.Api.Procedures;
+
+internal partial class ProcedureControllerTest : TestBase
 {
-    internal partial class ProcedureControllerTest : TestBase
+    private readonly string _uri = "api/procedure";
+
+    [Test]
+    [Order(1)]
+    public async Task CreateProcedureReturnOk()
     {
-        private readonly string _uri = "api/procedure";
+        var request = CreateProcedureApiRequest;
+        var response = await _client.PostAsJsonAsync(_uri, request);
 
-        [Test]
-        [Order(1)]
-        public async Task CreateProcedureReturnOk()
+        var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+        Assert.Multiple(() =>
         {
-            var request = CreateProcedureApiRequest;
-            var response = await _client.PostAsJsonAsync(_uri, request);
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+            Assert.That(request.Name, Is.EqualTo(actual.Name));
+            Assert.That(request.Description, Is.EqualTo(actual.Description));
+            Assert.That(request.Price, Is.EqualTo(actual.Price));
+            //Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
+        });
+    }
 
-            var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                Assert.That(request.Name, Is.EqualTo(actual.Name));
-                Assert.That(request.Description, Is.EqualTo(actual.Description));
-                Assert.That(request.Price, Is.EqualTo(actual.Price));
-                //Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
-            });
-        }
+    [Test]
+    [Order(2)]
+    public async Task UpdateProcedureReturnOk()
+    {
+        var createRequest = CreateProcedureApiRequest;
+        var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
+        var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
 
-        [Test]
-        [Order(2)]
-        public async Task UpdateProcedureReturnOk()
+        var request = UpdateProcedureApiRequest(createModel.Id);
+        var response = await _client.PutAsJsonAsync(_uri, request);
+
+        var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+        Assert.Multiple(() =>
         {
-            var createRequest = CreateProcedureApiRequest;
-            var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
-            var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+            Assert.That(request.Id, Is.EqualTo(actual.Id));
+            Assert.That(request.Description, Is.EqualTo(actual.Description));
+            Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
+        });
+    }
 
-            var request = UpdateProcedureApiRequest(createModel.Id);
-            var response = await _client.PutAsJsonAsync(_uri, request);
+    [Test]
+    [Order(3)]
+    public async Task GetProcedureByIdReturnOk()
+    {
+        var createRequest = CreateProcedureApiRequest;
+        var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
+        var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
 
-            var actual = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                Assert.That(request.Id, Is.EqualTo(actual.Id));
-                Assert.That(request.Description, Is.EqualTo(actual.Description));
-                Assert.That(request.ProcedureTeeth.Count(), Is.EqualTo(actual.ProcedureTeeth.Count()));
-            });
-        }
+        var response = await _client.GetAsync($"{_uri}/{createModel.Id}/{true}");
+        var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
 
-        [Test]
-        [Order(3)]
-        public async Task GetProcedureByIdReturnOk()
+        Assert.Multiple(() =>
         {
-            var createRequest = CreateProcedureApiRequest;
-            var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
-            var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+            Assert.That(createModel.Id, Is.EqualTo(model.Id));
+            Assert.That(createModel.Description, Is.EqualTo(model.Description));
+        });
+    }
 
-            var response = await _client.GetAsync($"{_uri}/{createModel.Id}/{true}");
-            var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+    [Test]
+    [Order(4)]
+    public async Task GetAllProcedureReturnOk()
+    {
+        var createRequest = CreateProcedureApiRequest;
+        await _client.PostAsJsonAsync(_uri, createRequest);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                Assert.That(createModel.Id, Is.EqualTo(model.Id));
-                Assert.That(createModel.Description, Is.EqualTo(model.Description));
-            });
-        }
+        var response = await _client.GetAsync(_uri);
+        var model = JsonConvert.DeserializeObject<IEnumerable<ProcedureModel>>(await response.Content.ReadAsStringAsync());
 
-        [Test]
-        [Order(4)]
-        public async Task GetAllProcedureReturnOk()
+        Assert.Multiple(() =>
         {
-            var createRequest = CreateProcedureApiRequest;
-            await _client.PostAsJsonAsync(_uri, createRequest);
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+            Assert.That(model, Is.Not.Empty);
+        });
+    }
 
-            var response = await _client.GetAsync(_uri);
-            var model = JsonConvert.DeserializeObject<IEnumerable<ProcedureModel>>(await response.Content.ReadAsStringAsync());
+    [Test]
+    [Order(5)]
+    public async Task DeleteProcedureReturnOk()
+    {
+        var createRequest = CreateProcedureApiRequest;
+        var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
+        var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                CollectionAssert.IsNotEmpty(model);
-            });
-        }
+        var response = await _client.DeleteAsync($"{_uri}/{createModel.Id}");
 
-        [Test]
-        [Order(5)]
-        public async Task DeleteProcedureReturnOk()
+        var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+
+        Assert.Multiple(() =>
         {
-            var createRequest = CreateProcedureApiRequest;
-            var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
-            var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
+            Assert.That(createModel.Id, Is.EqualTo(model.Id));
+            Assert.That(createModel.Description, Is.EqualTo(model.Description));
+            Assert.That(createModel.Active, Is.Not.EqualTo(model.Active));
+        });
+    }
 
-            var response = await _client.DeleteAsync($"{_uri}/{createModel.Id}");
+    [Test]
+    [Order(6)]
+    public async Task RestoreProcedureReturnOk()
+    {
+        var createRequest = CreateProcedureApiRequest;
+        var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
+        var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
 
-            var model = JsonConvert.DeserializeObject<ProcedureModel>(await response.Content.ReadAsStringAsync());
+        var deleteResponse = await _client.DeleteAsync($"{_uri}/{createModel.Id}");
+        var deleteModel = JsonConvert.DeserializeObject<ProcedureModel>(await deleteResponse.Content.ReadAsStringAsync());
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(response.StatusCode));
-                Assert.That(createModel.Id, Is.EqualTo(model.Id));
-                Assert.That(createModel.Description, Is.EqualTo(model.Description));
-                Assert.AreNotEqual(createModel.Active, Is.EqualTo(model.Active));
-            });
-        }
+        var restoreResponse = await _client.PostAsync($"{_uri}/restore/{deleteModel.Id}", null);
+        var model = JsonConvert.DeserializeObject<ProcedureModel>(await restoreResponse.Content.ReadAsStringAsync());
 
-        [Test]
-        [Order(6)]
-        public async Task RestoreProcedureReturnOk()
+        Assert.Multiple(() =>
         {
-            var createRequest = CreateProcedureApiRequest;
-            var createResponse = await _client.PostAsJsonAsync(_uri, createRequest);
-            var createModel = JsonConvert.DeserializeObject<ProcedureModel>(await createResponse.Content.ReadAsStringAsync());
-
-            var deleteResponse = await _client.DeleteAsync($"{_uri}/{createModel.Id}");
-            var deleteModel = JsonConvert.DeserializeObject<ProcedureModel>(await deleteResponse.Content.ReadAsStringAsync());
-
-            var restoreResponse = await _client.PostAsync($"{_uri}/restore/{deleteModel.Id}", null);
-            var model = JsonConvert.DeserializeObject<ProcedureModel>(await restoreResponse.Content.ReadAsStringAsync());
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
-                Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
-                Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
-                Assert.AreNotEqual(deleteModel.Active, model.Active);
-            });
-        }
+            Assert.That(HttpStatusCode.OK, Is.EqualTo(deleteResponse.StatusCode));
+            Assert.That(deleteModel.Id, Is.EqualTo(model.Id));
+            Assert.That(deleteModel.Description, Is.EqualTo(model.Description));
+            Assert.That(deleteModel.Active, Is.Not.EqualTo(model.Active));
+        });
     }
 }

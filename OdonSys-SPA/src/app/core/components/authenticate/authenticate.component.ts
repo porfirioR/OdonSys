@@ -33,7 +33,7 @@ export class AuthenticateComponent implements OnInit {
     // this.userInfoService.clearAll()
     this.load = true
     this.formGroup.controls.type.valueChanges.subscribe({
-      next: (x: Boolean) => {
+      next: (x: boolean) => {
         this.currentType = x ? this.typeValue.text : this.typeValue.password
         this.currentMessage = x ? this.typeValue.textMessage : this.typeValue.passwordMessage
       }
@@ -47,7 +47,7 @@ export class AuthenticateComponent implements OnInit {
     this.formGroup.disable()
     this.authApiService.login(request).subscribe({
       next: (response: AuthApiModel) => {
-      this.formGroup.enable()
+        this.formGroup.enable()
         this.alertService.showSuccess(`Bienvenido ${response.user.userName}`)
         this.zone.run(() => this.router.navigate(['']))
         this.load = true

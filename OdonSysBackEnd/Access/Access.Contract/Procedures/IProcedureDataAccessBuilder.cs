@@ -1,11 +1,10 @@
 ﻿using Access.Sql.Entities;
 
-namespace Access.Contract.Procedures
+namespace Access.Contract.Procedures;
+
+public interface IProcedureDataAccessBuilder
 {
-    public interface IProcedureDataAccessBuilder
-    {
-        Procedure MapCreateProcedureAccessRequestToProcedure(CreateProcedureAccessRequest createProcedureAccessRequest);
-        Procedure MapUpdateProcedureAccessRequestToProcedure(UpdateProcedureAccessRequest updateProcedureAccessRequest, Procedure procedure);
-        ProcedureAccessModel MapProcedureToProcedureAccessModel(Procedure procedure);
-    }
+    Procedure MapCreateProcedureAccessRequestToProcedure(CreateProcedureAccessRequest createProcedureAccessRequest);
+    Procedure MapUpdateProcedureAccessRequestToProcedure(UpdateProcedureAccessRequest updateProcedureAccessRequest, Procedure procedure);
+    ProcedureAccessModel MapProcedureToProcedureAccessModel(Procedure procedure);
 }

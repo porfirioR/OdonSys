@@ -1,13 +1,12 @@
 ﻿using Access.File.Contract;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Access.File
+namespace Access.File;
+
+public class ServiceInjection
 {
-    public class ServiceInjection
+    public static void ConfigureServices(IServiceCollection services)
     {
-        public static void ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<IUploadFileStorage, UploadFileStorage>();
-        }
+        services.AddTransient<IUploadFileStorage, UploadFileStorage>();
     }
 }

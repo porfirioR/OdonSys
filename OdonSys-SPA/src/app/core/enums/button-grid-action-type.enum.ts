@@ -6,5 +6,6 @@ export enum ButtonGridActionType {
     Descargar = 'Descargar',
     Desactivar = 'Desactivar',
     Restaurar = 'Restaurar',
-    CustomButton = 'Custom'
+    CustomButton = 'Custom',
+    Ortodoncias = 'Ortodoncias',
 }

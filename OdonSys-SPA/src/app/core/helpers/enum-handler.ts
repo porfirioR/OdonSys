@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Country } from '../enums/country.enum';
 import { SelectModel } from '../models/view/select-model';
 
@@ -21,9 +22,9 @@ export class EnumHandler {
    * @param searchKey enum key of which you want its value
    * @returns enum value
    */
-  public static getValueByKey = (enumType: Record<string, string | number>, searchKey: string) => {
-    const value = Object.entries(enumType).find(([enumKey, value]) => enumKey === searchKey)?.[1]!
-    return value
+  public static getValueByKey = (enumType: Record<string, string | number>, searchKey: string): string | number => {
+    const value = Object.entries(enumType).find(([enumKey, _]) => enumKey === searchKey)?.[1]
+    return value!
   }
 
   /**
@@ -33,8 +34,8 @@ export class EnumHandler {
    * @param searchValue enum value of which you want its key
    * @returns enum value
    */
-  public static getKeyByValue = (enumType: Record<string, string | number>, searchValue: string) => {
-    const key = Object.entries(enumType).find(([enumKey, value]) => value === searchValue)?.[0]!
-    return key
+  public static getKeyByValue = (enumType: Record<string, string | number>, searchValue: string): string => {
+    const key = Object.entries(enumType).find(([_, value]) => value === searchValue)?.[0]
+    return key!
   }
 }

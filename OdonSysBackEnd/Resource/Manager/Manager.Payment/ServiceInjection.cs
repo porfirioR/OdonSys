@@ -2,14 +2,13 @@
 using Contract.Payment.Payments;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Manager.Payment
+namespace Manager.Payment;
+
+public class ServiceInjection
 {
-    public class ServiceInjection
+    public static void ConfigureServices(IServiceCollection services)
     {
-        public static void ConfigureServices(IServiceCollection services)
-        {
-            services.AddTransient<IInvoiceManager, InvoiceManager>();
-            services.AddTransient<IPaymentManager, PaymentManager>();
-        }
+        services.AddTransient<IInvoiceManager, InvoiceManager>();
+        services.AddTransient<IPaymentManager, PaymentManager>();
     }
 }

@@ -16,7 +16,7 @@ import { MenuItem } from '../../models/view/menu-item';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  protected userName: string = ''
+  protected userName = ''
   protected canAccessData = false
   protected menuPermissions: MenuItem[] = []
   protected reloadHeader = false

@@ -11,6 +11,8 @@ import { PreventUnsavedChangesAdmin } from './guards/prevent-unsaved-changes-adm
 import { Permission } from '../core/enums/permission.enum';
 import { ClientDetailComponent } from '../core/components/client-detail/client-detail.component';
 import { ClientReportComponent } from '../core/components/client-report/client-report.component';
+import { OrthodonticsComponent } from '../workspace/components/orthodontics/orthodontics.component';
+import { UpsertOrthodonticComponent } from '../core/components/upsert-orthodontic/upsert-orthodontic.component';
 
 export const AdminRoutes: Routes = [
   { 
@@ -101,7 +103,28 @@ export const AdminRoutes: Routes = [
         canDeactivate: [PreventUnsavedChangesAdmin],
         title: 'Actualizar Roles',
         data: { permissions: [ Permission.ManageRoles ] }
-      }
+      },
+      {
+        path: 'pacientes/ortodoncias/:clientId',
+        canActivate: [PermissionGuard],
+        component: OrthodonticsComponent,
+        title: 'Mis Ortodoncias',
+        data: { permissions: [ Permission.AccessOrthodontics, Permission.AccessClients ] }
+      },
+      {
+        path: 'pacientes/ortodoncias/:clientId/registrar',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Registrar Ortodoncia',
+        data: { permissions: [ Permission.CreateOrthodontics, Permission.AccessClients ] }
+      },
+      {
+        path: 'pacientes/ortodoncias/:clientId/actualizar/:id',
+        canActivate: [PermissionGuard],
+        component: UpsertOrthodonticComponent,
+        title: 'Actualizar Ortodoncia',
+        data: { permissions: [ Permission.UpdateOrthodontics, Permission.AccessClients ] }
+      },
     ]
   }
 ]

@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { ColDef, GridOptions, IRowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngrx/store';
 import { Observable, of, tap } from 'rxjs';
@@ -39,6 +39,7 @@ export class DoctorsComponent implements OnInit {
   private canRestore = false
   private canApprove = false
   private canAddRoles = false
+  private gridApi!: GridApi
 
   constructor(
     private readonly alertService: AlertService,
@@ -59,12 +60,16 @@ export class DoctorsComponent implements OnInit {
     this.canAddRoles = this.userInfoService.havePermission(Permission.AssignDoctorRoles)
     this.setupAgGrid()
     this.store.dispatch(fromDoctorsActions.loadDoctors())
-    this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridOptions.api?.sizeColumnsToFit()))
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
+    this.rowData$ = this.store.select(selectDoctors).pipe(tap(() => this.gridApi?.sizeColumnsToFit()))
   }
 
   private setupAgGrid = (): void => {
@@ -101,7 +106,7 @@ export class DoctorsComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Aprobar:
         this.approveDoctor()
@@ -111,16 +116,18 @@ export class DoctorsComponent implements OnInit {
         this.changeSelectedDoctorVisibility(currentRowNode)
         break
       case ButtonGridActionType.CustomButton:
+      {
         const modalRef = this.modalService.open(UserRoleComponent)
         modalRef.componentInstance.userId = currentRowNode.data.id
         modalRef.componentInstance.name = currentRowNode.data.name
         modalRef.result.then((result: string[]) => {
           if(result) {
             this.store.dispatch(fromDoctorsActions.updateDoctorRoles({ doctor: currentRowNode.data, doctorRoles: result }))
-            setTimeout(() => this.gridOptions.api?.refreshCells({ rowNodes: [currentRowNode], force: true, columns: ['roles'] }))
+            setTimeout(() => this.gridApi?.refreshCells({ rowNodes: [currentRowNode], force: true, columns: ['roles'] }))
           }
         }, () => {})
         break
+      }
       default:
         break
     }
@@ -136,14 +143,14 @@ export class DoctorsComponent implements OnInit {
         const request = new PatchRequest(!doctor.active)
         this.store.dispatch(fromDoctorsActions.changeDoctorVisibility({ id: doctor.id, model: request }))
         const columnToRefresh = ['active', 'action']
-        setTimeout(() => this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true }))
+        setTimeout(() => this.gridApi!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true }))
       }
     })
   }
 
   private approveDoctor = (): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     this.store.dispatch(fromDoctorsActions.approveDoctor({ doctorId: currentRowNode.data.id }))
-    setTimeout(() => this.gridOptions.api?.refreshCells({ rowNodes: [currentRowNode], force: true, columns: ['approved'] }))
+    setTimeout(() => this.gridApi?.refreshCells({ rowNodes: [currentRowNode], force: true, columns: ['approved'] }))
   }
 }

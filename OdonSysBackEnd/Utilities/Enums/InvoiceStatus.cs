@@ -1,10 +1,9 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum InvoiceStatus
 {
-    public enum InvoiceStatus
-    {
-        Nuevo = 1,
-        Completado = 2,
-        Pendiente = 3,
-        Cancelado = 4
-    }
+    Nuevo = 1,
+    Completado = 2,
+    Pendiente = 3,
+    Cancelado = 4
 }

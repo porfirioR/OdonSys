@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { InvoiceApiModel } from '../../models/invoices/api/invoice-api-model';
@@ -27,16 +27,17 @@ import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.
 })
 export class InvoicesComponent implements OnInit {
   protected gridOptions!: GridOptions
-  protected ready: boolean = false
-  protected loading: boolean = false
-  protected canRegisterInvoice: boolean = false
-  protected canAccessMyInvoices: boolean = false
-  protected title: string = ''
-  private canRegisterPayments: boolean = false
-  private canDeactivateInvoice: boolean = false
-  private canUpdateInvoice: boolean = false
-  private isMyPermission: boolean = false
+  protected ready = false
+  protected loading = false
+  protected canRegisterInvoice = false
+  protected canAccessMyInvoices = false
+  protected title = ''
+  private canRegisterPayments = false
+  private canDeactivateInvoice = false
+  private canUpdateInvoice = false
+  private isMyPermission = false
   private invoices$!: Observable<InvoiceApiModel[]>
+  private gridApi!: GridApi
 
   constructor(
     private readonly agGridService: AgGridService,
@@ -55,35 +56,63 @@ export class InvoicesComponent implements OnInit {
     this.canDeactivateInvoice = this.userInfoService.havePermission(Permission.ChangeInvoiceStatus)
     this.canUpdateInvoice = this.userInfoService.havePermission(Permission.UpdateInvoices)
     this.canAccessMyInvoices = !this.isMyPermission && this.userInfoService.havePermission(Permission.AccessMyInvoices)
-    this.invoices$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
     this.title = this.isMyPermission ? 'Mis Facturas' : 'Todas las Facturas'
     this.setupAgGrid()
     this.ready = true
     this.loading = true
-    this.invoices$.subscribe({
-      next: (response: InvoiceApiModel[]) => {
-        this.gridOptions.api?.setRowData(response)
-        this.gridOptions.api?.sizeColumnsToFit()
-        if (response.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay()
-        }
-        this.loading = false
-      }, error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay()
-        this.loading = false
-        throw e
-      }
-    })
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
+    this.gridApi = event.api
+    this.getList()
+    this.gridApi?.sizeColumnsToFit()
+    this.onGridSizeChanged()
+  }
+
+  protected onGridSizeChanged = () => {
+    const screenWidth = window.innerWidth;
+    const invoiceColumns = [
+      'userCreated',
+      'clientFullName',
+      'status',
+      'total',
+      'moneyColumn',
+      'dateCreated',
+      'total'
+    ]
+
+    const agGridHideColumnList = [
+      new GridHideColumnModel(576, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(768, ['status', 'userCreated', 'total', 'dateCreated']),
+      new GridHideColumnModel(992, ['status', 'userCreated']),
+      new GridHideColumnModel(1200, ['status'])
+    ]
+    const agGridHideColumn = agGridHideColumnList.find(x => screenWidth <= x.screenWidth)
+    if (agGridHideColumn) {
+      this.gridApi?.setColumnsVisible(agGridHideColumn.columnsToHide, false)
+      const columnsToShow = invoiceColumns.filter(x => !agGridHideColumn.columnsToHide.includes(x))
+      this.gridApi?.setColumnsVisible(columnsToShow, true)
+    } else {
+      this.gridApi?.setColumnsVisible(invoiceColumns, true)
+      if (screenWidth <= 1300) {
+        const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
+        columnAction.maxWidth = 250
+        columnAction.initialWidth = 250
+        columnAction.resizable = false
+      }
+    }
+    if (this.isMyPermission) {
+      this.gridApi?.setColumnsVisible(['userCreated'], false)
+    }
   }
 
   private setupAgGrid = (): void => {
     this.gridOptions = this.agGridService.getInvoiceGridOptions()
-    this.gridOptions.onGridReady = () => setTimeout(() => { this.gridOptions.api?.sizeColumnsToFit() }, 1000)
     const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
     const conditionalButtons: ConditionalGridButtonShow[] = []
     if (this.canRegisterPayments) {
@@ -113,7 +142,7 @@ export class InvoicesComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Ver:
         this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
@@ -138,13 +167,14 @@ export class InvoicesComponent implements OnInit {
               next: () => {
                 currentRowNode.setDataValue('status', status)
                 const columnToRefresh = ['status', 'action']
-                this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+                this.gridApi?.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
               }
             })
           }
         })
         break
       case ButtonGridActionType.CustomButton:
+      {
         const modalRef = this.modalService.open(PaymentModalComponent, {
           size: 'xl',
           backdrop: 'static',
@@ -159,50 +189,31 @@ export class InvoicesComponent implements OnInit {
             if (payment.status == InvoiceStatus.Completado) {
               columnToRefresh.push('action')
             }
-            this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+            this.gridApi?.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
           }
         }, () => {})
         break
+      }
       default:
         break
     }
   }
 
-  protected onGridSizeChanged = () => {
-    const screenWidth = window.innerWidth;
-    const invoiceColumns = [
-      'userCreated',
-      'clientFullName',
-      'status',
-      'total',
-      'moneyColumn',
-      'dateCreated',
-      'total'
-    ]
-
-    const agGridHideColumnList = [
-      new GridHideColumnModel(576, ['status', 'userCreated', 'total', 'dateCreated']),
-      new GridHideColumnModel(768, ['status', 'userCreated', 'total', 'dateCreated']),
-      new GridHideColumnModel(992, ['status', 'userCreated']),
-      new GridHideColumnModel(1200, ['status'])
-    ]
-    const agGridHideColumn = agGridHideColumnList.find(x => screenWidth <= x.screenWidth)
-    if (agGridHideColumn) {
-      agGridHideColumn.columnsToHide.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, false))
-      const columnsToShow = invoiceColumns.filter(x => !agGridHideColumn.columnsToHide.includes(x))
-      columnsToShow.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
-    } else {
-      invoiceColumns.forEach((column) => this.gridOptions!.columnApi!.setColumnVisible(column, true))
-      
-      if (screenWidth <= 1300) {
-        const columnAction = this.gridOptions.columnDefs?.find((x: ColDef) => x.field === 'action') as ColDef
-        columnAction.maxWidth = 250
-        columnAction.initialWidth = 250
-        columnAction.resizable = false
+  private getList = (): void => {
+    const invoices$ = !this.isMyPermission ? this.invoiceApiService.getInvoices() : this.invoiceApiService.getMyInvoices()
+    invoices$.subscribe({
+      next: (response: InvoiceApiModel[]) => {
+        this.gridApi?.setGridOption('rowData', response)
+        this.gridApi?.sizeColumnsToFit()
+        if (response.length === 0) {
+          this.gridApi?.showNoRowsOverlay()
+        }
+        this.loading = false
+      }, error: (e) => {
+        this.gridApi?.showNoRowsOverlay()
+        this.loading = false
+        throw e
       }
-    }
-    if (this.isMyPermission) {
-      this.gridOptions!.columnApi!.setColumnVisible('userCreated', false)
-    }
+    })
   }
 }

@@ -319,3 +319,109 @@
 1077 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
 1119 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
 23053 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+1086 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1162 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+1164 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1204 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+23282 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+117923 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.DBTree  - DBTree: exporting list of DnD-type tree paths
+123483 [Objects-Adder] INFO  ca.sqlpower.architect.swingui.PlayPen  - AddObjectsTask starting on thread Objects-Adder
+123488 [Objects-Adder] INFO  ca.sqlpower.architect.swingui.PlayPen  - AddObjectsTask done
+129929 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table invoices (TABLE)
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Payments in playpen
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table files in playpen
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129932 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoices in playpen
+129933 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129935 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table theet (TABLE)
+129936 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129936 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129937 [AWT-EventQueue-0] ERROR ca.sqlpower.architect.swingui.PlayPen  - Unknown object dropped in PlayPen: PlayPen Database
+129940 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table users (TABLE)
+129941 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userRoles in playpen
+129942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userClients in playpen
+129942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Payments in playpen
+129942 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129945 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table clients (TABLE)
+129948 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoices in playpen
+129949 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129956 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userClients in playpen
+129956 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129961 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table procedure (TABLE)
+129963 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table clientProcedures in playpen
+129963 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129966 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table clientProcedures (TABLE)
+129967 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129967 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129967 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table clientProcedures in playpen
+129967 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129972 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table clientProcedures in playpen
+129972 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129974 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table userRoles (TABLE)
+129975 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userRoles in playpen
+129975 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129978 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userRoles in playpen
+129979 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129979 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table roles (TABLE)
+129979 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userRoles in playpen
+129981 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129983 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Permissions in playpen
+129983 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - NOT FOUND
+129984 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table invoiceDetails (TABLE)
+129984 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129984 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129986 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129986 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129987 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table invoiceDetails in playpen
+129987 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129990 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table Payments (TABLE)
+129990 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Payments in playpen
+129990 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+129992 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Payments in playpen
+129992 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+130007 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table userClients (TABLE)
+130008 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table clientProcedures in playpen
+130009 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+130011 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userClients in playpen
+130011 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+130015 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table userClients in playpen
+130015 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+130017 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table files (TABLE)
+130017 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table files in playpen
+130017 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+130019 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - adding table Permissions (TABLE)
+130019 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Looking for fk table Permissions in playpen
+130020 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - FOUND IT!
+5250781 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.DBTree  - DBTree: exporting list of DnD-type tree paths
+5254818 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Drop: I am over dtde=java.awt.dnd.DropTargetDropEvent[source=java.awt.dnd.DropTarget@41c55c67]
+5257737 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Drop: I am over dtde=java.awt.dnd.DropTargetDropEvent[source=java.awt.dnd.DropTarget@41c55c67]
+5271672 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271673 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271674 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271674 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271674 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271675 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5271675 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setLengths
+5275057 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Drop: I am over dtde=java.awt.dnd.DropTargetDropEvent[source=java.awt.dnd.DropTarget@41c55c67]
+6722771 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Drop: I am over dtde=java.awt.dnd.DropTargetDropEvent[source=java.awt.dnd.DropTarget@41c55c67]
+6724687 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.PlayPen  - Drop: I am over dtde=java.awt.dnd.DropTargetDropEvent[source=java.awt.dnd.DropTarget@41c55c67]
+6780765 [AWT-EventQueue-0] INFO  ca.sqlpower.architect.swingui.DBTree  - DBTree: exporting list of DnD-type tree paths
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+1048 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1123 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+1123 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+1159 [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+23481 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+0    [AWT-EventQueue-0] INFO  ca.sqlpower.architect.ArchitectUtils  - Log4J configured successfully
+823  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+898  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+898  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Beginning to read/merge new pl.ini data
+950  [AWT-EventQueue-0] INFO  ca.sqlpower.sql.PlDotIni  - Finished reading file.
+24216 [Thread-5] ERROR ca.sqlpower.architect.swingui.action.CheckForUpdateAction  - Fail to retrieve current version number!
+390327 [AWT-EventQueue-0] INFO  ca.sqlpower.object.undo.PropertyChangeEdit  - Found setter: setForegroundColor

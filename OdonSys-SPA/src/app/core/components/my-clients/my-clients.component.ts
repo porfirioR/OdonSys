@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { environment } from '../../../../environments/environment';
 import { ButtonGridActionType } from '../../enums/button-grid-action-type.enum';
 import { FieldId } from '../../enums/field-id.enum';
@@ -19,13 +19,16 @@ import { UserInfoService } from '../../services/shared/user-info.service';
   styleUrls: ['./my-clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
-  protected loading: boolean = false
-  protected ready: boolean = false
+
+  protected loading = false
+  protected ready = false
   protected gridOptions!: GridOptions
-  protected canCreate: boolean = false
+  protected canCreate = false
   private attributeActive!: string
   private canEdit = false
   private canShowReport = false
+  private gridApi!: GridApi
+  private canShowMyOrthodontic = false
 
   constructor(
     private readonly clientApiService: ClientApiService,
@@ -35,27 +38,34 @@ export class ClientsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
     this.canShowReport = this.userInfoService.havePermission(Permission.AccessMyInvoices)
+    this.canShowMyOrthodontic = this.userInfoService.havePermission(Permission.AccessOrthodontics)
     this.setupAgGrid()
     this.ready = true
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
     this.getList()
   }
 
-  private getList = () => {
+  private getList = (): void => {
     this.loading = true;
     this.clientApiService.getDoctorPatients().subscribe({
       next: (response: ClientApiModel[]) => {
-        this.gridOptions.api?.setRowData(response)
-        this.gridOptions.api?.sizeColumnsToFit()
+        // this.gridOptions.rowData = response
+        this.gridApi?.sizeColumnsToFit()
+        this.gridApi?.setGridOption('rowData', response)
         if (response.length === 0) {
-          this.gridOptions.api?.showNoRowsOverlay()
+          this.gridApi?.showNoRowsOverlay()
         }
         this.loading = false
       }, error: (e) => {
-        this.gridOptions.api?.showNoRowsOverlay()
+        this.gridApi?.showNoRowsOverlay()
         this.loading = false
         throw e
       }
@@ -63,8 +73,9 @@ export class ClientsComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
@@ -77,6 +88,9 @@ export class ClientsComponent implements OnInit {
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
+    if (this.canShowMyOrthodontic) {
+      buttonsToShow.push(ButtonGridActionType.Ortodoncias)
+    }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
@@ -86,16 +100,21 @@ export class ClientsComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
+    const url = this.router.url
+    const id = currentRowNode.data.id
     switch (action) {
       case ButtonGridActionType.Ver:
-        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/ver/${id}`])
         break
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/actualizar/${id}`])
         break
       case ButtonGridActionType.CustomButton:
-        this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/reporte/${id}`])
+        break
+      case ButtonGridActionType.Ortodoncias:
+        this.router.navigate([`${url}/mis-ortodoncias/${id}`])
         break
       default:
         break

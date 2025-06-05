@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -14,12 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\Access\Access.Contract\Access.Contract.csproj" />
-    <ProjectReference Include="..\..\..\Access\Access.Data\Access.Data.csproj" />
     <ProjectReference Include="..\..\..\Access\Access.File\Access.File.csproj" />
     <ProjectReference Include="..\..\Contract\Contract.Authentication\Contract.Workspace.csproj" />
   </ItemGroup>

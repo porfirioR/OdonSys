@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ColDef, GridOptions } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { Observable, tap } from 'rxjs';
 import { RoleModel } from '../../../core/models/view/role-model';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
@@ -18,11 +18,12 @@ import { Permission } from '../../../core/enums/permission.enum';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-  public load: boolean = false
+  public load = false
   public gridOptions!: GridOptions
   protected rowData$!: Observable<RoleModel[]>
   protected canCreate = false
   protected canEdit = false
+  private gridApi!: GridApi
 
   constructor(
     private readonly router: Router,
@@ -41,14 +42,18 @@ export class RolesComponent implements OnInit {
         this.store.dispatch(fromRolesActions.loadRoles())
         loading = false
       }
-      this.gridOptions.api?.sizeColumnsToFit()
+      this.gridApi?.sizeColumnsToFit()
     }))
     this.load = true
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
+  }
+  
+  protected prepareGrid = (event: GridReadyEvent<any, any>) => {
+    this.gridApi = event.api
   }
 
   private setupAgGrid = (): void => {
@@ -66,7 +71,7 @@ export class RolesComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.code}`])

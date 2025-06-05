@@ -9,8 +9,8 @@ import { GridBadgeModel } from '../../models/view/grid-badge-model';
   styleUrls: ['./grid-badge.component.scss']
 })
 export class GridBadgeComponent implements ICellRendererAngularComp {
-  protected badge: string = 'text-bg-primary'
-  protected title: string = ''
+  protected badge = 'text-bg-primary'
+  protected title = ''
 
   constructor() { }
 

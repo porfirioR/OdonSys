@@ -17,8 +17,9 @@
     <ng-container *ngIf="gridOptions">
       <ag-grid-angular class="ag-grid-angular ag-theme-alpine"
         [gridOptions]="gridOptions"
-        (gridSizeChanged)="onGridSizeChanged()">
-      </ag-grid-angular>
+        (gridSizeChanged)="onGridSizeChanged()"
+        (gridReady)="prepareGrid($event)"
+      />
     </ng-container>
   </div>
 </div>

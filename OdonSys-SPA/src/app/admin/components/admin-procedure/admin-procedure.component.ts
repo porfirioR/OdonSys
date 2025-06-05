@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { ColDef, GridOptions, IRowNode } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions, GridReadyEvent, IRowNode } from 'ag-grid-community';
 import { GridActionModel } from '../../../core/models/view/grid-action-model';
 import { ProcedureModel } from '../../../core/models/procedure/procedure-model';
 import { ConditionalGridButtonShow } from '../../../core/models/view/conditional-grid-button-show';
@@ -24,7 +24,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-procedure.component.scss']
 })
 export class AdminProcedureComponent implements OnInit {
-  protected load: boolean = false
+  protected load = false
   protected gridOptions!: GridOptions
   protected rowData$!: Observable<ProcedureModel[]>
   protected canCreate = false
@@ -33,6 +33,7 @@ export class AdminProcedureComponent implements OnInit {
   private canDeactivate = false
   private canRestore = false
   private attributeActive!: string
+  private gridApi!: GridApi
 
   constructor(
     private readonly router: Router,
@@ -56,14 +57,19 @@ export class AdminProcedureComponent implements OnInit {
         this.store.dispatch(fromProceduresActions.loadProcedures()) 
         loading = false
       }
-      this.gridOptions.api?.sizeColumnsToFit()
+      this.gridApi?.sizeColumnsToFit()
     }))
     this.load = true
   }
 
   @HostListener('window:resize', ['$event'])
   private getScreenSize(event?: any) {
-    this.gridOptions.api?.sizeColumnsToFit()
+    this.gridApi?.sizeColumnsToFit()
+  }
+
+  protected prepareGrid = (event: GridReadyEvent<any, any>): void => {
+    this.gridApi = event.api
+    this.gridApi?.sizeColumnsToFit()
   }
 
   private setupAgGrid = (): void => {
@@ -96,7 +102,7 @@ export class AdminProcedureComponent implements OnInit {
   }
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
-    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridOptions)
+    const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
     switch (action) {
       case ButtonGridActionType.Editar:
         this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
@@ -123,7 +129,7 @@ export class AdminProcedureComponent implements OnInit {
         const request = new PatchRequest(!procedure.active)
         this.store.dispatch(fromProceduresActions.changeProcedureVisibility({ id: procedure.id, model: request }))
         const columnToRefresh = ['active', 'action']
-        this.gridOptions.api!.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
+        this.gridApi?.refreshCells({ rowNodes: [currentRowNode], columns: columnToRefresh, force: true })
       }
     })
   }

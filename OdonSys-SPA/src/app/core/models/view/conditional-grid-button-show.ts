@@ -7,8 +7,8 @@ export class ConditionalGridButtonShow {
     public attributeValue: string,
     public buttonType: ButtonGridActionType,
     public operator: OperationType = OperationType.Equal,
-    public principalAttributeAffected: string = '',
-    public principalAttributeValue: string = '',
+    public principalAttributeAffected = '',
+    public principalAttributeValue = '',
     public principalOperator: OperationType = OperationType.NotEqual,
   ) { }
 }

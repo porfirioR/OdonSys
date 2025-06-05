@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, Self, ViewChild } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { AfterViewInit, Component, ElementRef, Input, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { InputType } from '../../../../core/constants/input-type';
 
@@ -7,16 +8,16 @@ import { InputType } from '../../../../core/constants/input-type';
   templateUrl: './text-number-input.component.html',
   styleUrls: ['./text-number-input.component.scss']
 })
-export class TextNumberComponent implements ControlValueAccessor {
+export class TextNumberComponent implements ControlValueAccessor, AfterViewInit {
   @ViewChild("numberInput") numberInput?: ElementRef
   @ViewChild("principalTextNumberInput") principalTextNumberInput?: ElementRef
-  @Input() label: string = ''
-  @Input() id: string = ''
+  @Input() label = ''
+  @Input() id = ''
   @Input() type: InputType = 'text'
-  @Input() colClass: string = 'col-lg-8'
-  @Input() numberWithSeparator: boolean = false
-  @Input() showLabel: boolean = true
-  @Input() autofocus: boolean = false
+  @Input() colClass = 'col-lg-8'
+  @Input() numberWithSeparator = false
+  @Input() showLabel = true
+  @Input() autofocus = false
 
   ngAfterViewInit() {
     if (this.autofocus) {
