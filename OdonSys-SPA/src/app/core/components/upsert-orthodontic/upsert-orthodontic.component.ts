@@ -68,6 +68,10 @@ export class UpsertOrthodonticComponent implements OnInit {
     this.upsert()
   }
 
+  protected preventTyping = (event: KeyboardEvent): void => {
+    event.preventDefault();
+  }
+
   private loadValues = (): void => {
     this.id = this.activatedRoute.snapshot.params['id']
     this.clientId = this.activatedRoute.snapshot.params['clientId']

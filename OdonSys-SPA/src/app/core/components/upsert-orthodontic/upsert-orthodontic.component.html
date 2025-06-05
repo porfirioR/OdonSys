@@ -12,6 +12,7 @@
               Fecha
             </label>
             <input
+              #dateInput
               type="date"
               class="form-control"
               name="date"
@@ -19,6 +20,8 @@
               aria-describedby="Fecha"
               placeholder="Fecha"
               formControlName="date" 
+              (keydown)="preventTyping($event)"
+              (click)="dateInput.showPicker()"
             />
             <div *ngIf="formGroup.controls.date?.errors?.['required']" class="invalid-feedback">
               Favor ingresar Fecha
