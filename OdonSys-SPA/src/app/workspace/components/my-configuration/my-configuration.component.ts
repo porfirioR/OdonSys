@@ -23,11 +23,11 @@ import  * as fromDoctorsActions from '../../../core/store/doctors/doctor.actions
   styleUrls: ['./my-configuration.component.scss'],
 })
 export class MyConfigurationComponent implements OnInit {
-  protected load: boolean = false
+  protected load = false
   protected canEdit = false
   protected id!: string
   protected countries: SelectModel[] = []
-  public saving: boolean = false
+  public saving = false
   public formGroup = new FormGroup({
     id: new FormControl({ value: '', disabled: true }),
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
@@ -42,7 +42,7 @@ export class MyConfigurationComponent implements OnInit {
     active: new FormControl(true, [Validators.required]),
     subGroupPermissions: new FormArray<FormGroup<SubGroupPermissions>>([])
   })
-  public ignorePreventUnsavedChanges: boolean = false
+  public ignorePreventUnsavedChanges = false
 
   constructor(
     private readonly router: Router,

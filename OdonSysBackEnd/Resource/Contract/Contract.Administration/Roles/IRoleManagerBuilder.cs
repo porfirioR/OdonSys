@@ -1,11 +1,10 @@
 ﻿using Access.Contract.Roles;
 
-namespace Contract.Administration.Roles
+namespace Contract.Administration.Roles;
+
+public interface IRoleManagerBuilder
 {
-    public interface IRoleManagerBuilder
-    {
-        CreateRoleAccessRequest MapCreateRoleRequestToCreateRoleAccessRequest(CreateRoleRequest createRoleRequest);
-        UpdateRoleAccessRequest MapUpdateRoleRequestToUpdateRoleAccessRequest(UpdateRoleRequest updateRoleRequest);
-        RoleModel MapRoleAccessModelToRoleModel(RoleAccessModel roleAccessModel);
-    }
+    CreateRoleAccessRequest MapCreateRoleRequestToCreateRoleAccessRequest(CreateRoleRequest createRoleRequest);
+    UpdateRoleAccessRequest MapUpdateRoleRequestToUpdateRoleAccessRequest(UpdateRoleRequest updateRoleRequest);
+    RoleModel MapRoleAccessModelToRoleModel(RoleAccessModel roleAccessModel);
 }

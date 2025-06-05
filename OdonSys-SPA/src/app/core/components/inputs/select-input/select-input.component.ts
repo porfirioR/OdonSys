@@ -8,9 +8,9 @@ import { SelectModel } from '../../../../core/models/view/select-model';
   styleUrls: ['./select-input.component.scss']
 })
 export class SelectInputComponent implements ControlValueAccessor {
-  @Input() label: string = ''
-  @Input() id: string = ''
-  @Input() colClass: string = 'col-lg-8'
+  @Input() label = ''
+  @Input() id = ''
+  @Input() colClass = 'col-lg-8'
   @Input() options: SelectModel[] = []
 
   constructor(@Self() public ngControl: NgControl) {

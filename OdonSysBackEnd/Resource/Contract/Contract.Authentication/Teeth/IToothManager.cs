@@ -1,8 +1,7 @@
-﻿namespace Contract.Workspace.Teeth
+﻿namespace Contract.Workspace.Teeth;
+
+public interface IToothManager
 {
-    public interface IToothManager
-    {
-        Task<IEnumerable<ToothModel>> GetAllAsync();
-        Task<IEnumerable<string>> GetInvalidTeethAsync(IEnumerable<string> teeth);
-    }
+    Task<IEnumerable<ToothModel>> GetAllAsync();
+    Task<IEnumerable<string>> GetInvalidTeethAsync(IEnumerable<string> teeth);
 }

@@ -1,7 +1,6 @@
-﻿namespace Contract.Workspace.ClientProcedures
-{
-    public record UpdateClientProcedureRequest(
-        string UserClientId,
-        string ProcedureId
-    );
-}
+﻿namespace Contract.Workspace.ClientProcedures;
+
+public record UpdateClientProcedureRequest(
+    string UserClientId,
+    string ProcedureId
+);

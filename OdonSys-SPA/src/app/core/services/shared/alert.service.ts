@@ -8,7 +8,7 @@ export class AlertService {
 
   constructor() { }
 
-  public showQuestionModal = async (title: string, text: string = '', icon: SweetAlertIcon = 'warning'): Promise<SweetAlertResult<any>> => {
+  public showQuestionModal = async (title: string, text = '', icon: SweetAlertIcon = 'warning'): Promise<SweetAlertResult<any>> => {
     const result = await Swal.fire({
       title,
       text,
@@ -28,7 +28,7 @@ export class AlertService {
   }
 
 
-  public showSuccess = (title: string = 'Operación éxitosa'): void => {
+  public showSuccess = (title = 'Operación éxitosa'): void => {
     Swal.mixin({
       title,
       toast: true,
@@ -44,7 +44,7 @@ export class AlertService {
     }).fire()
   }
 
-  public showError = (text: string = ''): void => {
+  public showError = (text = ''): void => {
     Swal.fire({
       title: 'Operación fallida',
       text,
@@ -57,7 +57,7 @@ export class AlertService {
     })
   }
 
-  public showInfo = (text: string = ''): void => {
+  public showInfo = (text = ''): void => {
     Swal.fire({
       title: 'Información',
       text,

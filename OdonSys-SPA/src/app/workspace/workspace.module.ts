@@ -10,6 +10,8 @@ import { RegisterInvoiceComponent } from './components/register-invoice/register
 import { ShowInvoiceComponent } from './components/show-invoice/show-invoice.component';
 import { PaymentModalComponent } from './modals/payment-modal/payment-modal.component';
 import { UpdateInvoiceComponent } from './components/update-invoice/update-invoice.component';
+import { OrthodonticsComponent } from './components/orthodontics/orthodontics.component';
+import { UpsertOrthodonticComponent } from '../core/components/upsert-orthodontic/upsert-orthodontic.component';
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import { UpdateInvoiceComponent } from './components/update-invoice/update-invoi
     RegisterInvoiceComponent,
     PaymentModalComponent,
     ShowInvoiceComponent,
-    UpdateInvoiceComponent
+    UpdateInvoiceComponent,
+    OrthodonticsComponent,
+    UpsertOrthodonticComponent
   ]
 })
 export class WorkspaceModule { }

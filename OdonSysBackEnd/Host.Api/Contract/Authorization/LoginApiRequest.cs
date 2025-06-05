@@ -2,33 +2,32 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Host.Api.Contract.Authorization
+namespace Host.Api.Contract.Authorization;
+
+public class LoginApiRequest : IValidatableObject
 {
-    public class LoginApiRequest : IValidatableObject
+    [Required]
+    [FromHeader]
+    public string Authorization { get; set; }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        [Required]
-        [FromHeader]
-        public string Authorization { get; set; }
+        var results = new List<ValidationResult>();
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        if (Authorization.StartsWith("basic ", StringComparison.OrdinalIgnoreCase))
         {
-            var results = new List<ValidationResult>();
-
-            if (Authorization.StartsWith("basic ", StringComparison.OrdinalIgnoreCase))
+            var encodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(Authorization["Basic ".Length..]));
+            var credentials = encodedCredentials.Split(":");
+            if (credentials.Length != 2)
             {
-                var encodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(Authorization["Basic ".Length..]));
-                var credentials = encodedCredentials.Split(":");
-                if (credentials.Length != 2)
-                {
-                    results.Add(new ValidationResult("Credenciales incorrectas."));
-                }
+                results.Add(new ValidationResult("Credenciales incorrectas."));
             }
-            else
-            {
-                throw new UnauthorizedAccessException();
-            }
-
-            return results;
         }
+        else
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        return results;
     }
 }

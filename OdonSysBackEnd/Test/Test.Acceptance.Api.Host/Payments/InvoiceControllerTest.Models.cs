@@ -3,60 +3,59 @@ using Host.Api.Contract.Invoices;
 using Host.Api.Contract.Procedures;
 using Utilities.Enums;
 
-namespace AcceptanceTest.Host.Api.Payments
+namespace AcceptanceTest.Host.Api.Payments;
+
+internal partial class InvoiceControllerTest
 {
-    internal partial class InvoiceControllerTest
+    internal static CreateProcedureApiRequest CreateProcedureApiRequest => new()
     {
-        internal static CreateProcedureApiRequest CreateProcedureApiRequest => new()
-        {
-            Name = Guid.NewGuid().ToString()[..30],
-            Description = Guid.NewGuid().ToString()[..30],
-            Price = 10,
-        };
+        Name = Guid.NewGuid().ToString()[..30],
+        Description = Guid.NewGuid().ToString()[..30],
+        Price = 10,
+    };
 
-        internal static CreateClientApiRequest CreateClientApiRequest => new()
-        {
-            Name = Guid.NewGuid().ToString()[..5],
-            Surname = Guid.NewGuid().ToString()[..5],
-            SecondSurname = Guid.NewGuid().ToString()[..5],
-            Document = Guid.NewGuid().ToString()[..7],
-            Country = Country.Argentina,
-            Phone = Guid.NewGuid().ToString()[..8],
-            Email = $"{Guid.NewGuid().ToString()[..6]}@{Guid.NewGuid().ToString()[..6]}.com"
-        };
+    internal static CreateClientApiRequest CreateClientApiRequest => new()
+    {
+        Name = Guid.NewGuid().ToString()[..5],
+        Surname = Guid.NewGuid().ToString()[..5],
+        SecondSurname = Guid.NewGuid().ToString()[..5],
+        Document = Guid.NewGuid().ToString()[..7],
+        Country = Country.Argentina,
+        Phone = Guid.NewGuid().ToString()[..8],
+        Email = $"{Guid.NewGuid().ToString()[..6]}@{Guid.NewGuid().ToString()[..6]}.com"
+    };
 
-        internal static CreateInvoiceApiRequest CreateInvoiceApiRequest(string clientId, string clientProcedureId) => new()
+    internal static CreateInvoiceApiRequest CreateInvoiceApiRequest(string clientId, string clientProcedureId) => new()
+    {
+        InvoiceNumber = Guid.NewGuid().ToString()[..3],
+        Iva10 = 1,
+        TotalIva = 1,
+        SubTotal = 10,
+        Total = 10,
+        Timbrado = "111",
+        Status = InvoiceStatus.Nuevo,
+        InvoiceDetails = new List<CreateInvoiceDetailApiRequest>()
         {
-            InvoiceNumber = Guid.NewGuid().ToString()[..3],
-            Iva10 = 1,
-            TotalIva = 1,
-            SubTotal = 10,
-            Total = 10,
-            Timbrado = "111",
-            Status = InvoiceStatus.Nuevo,
-            InvoiceDetails = new List<CreateInvoiceDetailApiRequest>()
+            new CreateInvoiceDetailApiRequest
             {
-                new CreateInvoiceDetailApiRequest
-                {
-                    ClientProcedureId = clientProcedureId,
-                    FinalPrice = 10,
-                    ProcedurePrice = 10
-                }
-            },
-            ClientId = clientId
-        };
+                ClientProcedureId = clientProcedureId,
+                FinalPrice = 10,
+                ProcedurePrice = 10
+            }
+        },
+        ClientId = clientId
+    };
 
-        internal static MultipartFormDataContent InvoiceFormData(string invoiceId) => new()
-        {
-            { new StringContent(invoiceId), "Id" },
-            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
-        };
+    internal static MultipartFormDataContent InvoiceFormData(string invoiceId) => new()
+    {
+        { new StringContent(invoiceId), "Id" },
+        { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
+    };
 
-        internal static MultipartFormDataContent InvoiceFormDataWithPdf(string invoiceId) => new()
-        {
-            { new StringContent(invoiceId), "Id" },
-            { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
-            { new ByteArrayContent(Properties.Resources.TestPdf), "Files", $"{ Guid.NewGuid().ToString()[..10] }.pdf" },
-        };
-    }
+    internal static MultipartFormDataContent InvoiceFormDataWithPdf(string invoiceId) => new()
+    {
+        { new StringContent(invoiceId), "Id" },
+        { new ByteArrayContent(Properties.Resources.ImageTest), "Files", $"{ Guid.NewGuid().ToString()[..10] }.png" },
+        { new ByteArrayContent(Properties.Resources.TestPdf), "Files", $"{ Guid.NewGuid().ToString()[..10] }.pdf" },
+    };
 }

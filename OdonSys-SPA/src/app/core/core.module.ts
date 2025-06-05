@@ -41,6 +41,8 @@ import { DoctorEffects } from './store/doctors/doctor.effects';
 import { ToothEffects } from './store/teeth/tooth.effects';
 import { environment } from '../../environments/environment';
 import { ClientReportComponent } from './components/client-report/client-report.component';
+import * as fromOrthodontic from './store/orthodontics/orthodontic.reducer';
+import { OrthodonticEffects } from './store/orthodontics/orthodontic.effects';
 
 @NgModule({
   imports: [
@@ -58,11 +60,12 @@ import { ClientReportComponent } from './components/client-report/client-report.
     StoreModule.forFeature(fromClient.clientsFeatureKey, fromClient.reducer),
     StoreModule.forFeature(fromDoctor.doctorsFeatureKey, fromDoctor.reducer),
     StoreModule.forFeature(fromTooth.teethFeatureKey, fromTooth.reducer),
-    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects, ToothEffects]),
+    EffectsModule.forFeature([RolesEffects, ProcedureEffects, ClientEffects, DoctorEffects, ToothEffects, OrthodonticEffects]),
     NgxDropzoneModule,
     NgxMaskDirective,
     NgxMaskPipe,
     NgbAccordionModule,
+    StoreModule.forFeature(fromOrthodontic.orthodonticsFeatureKey, fromOrthodontic.reducer),
   ],
   declarations: [
     HeaderComponent,

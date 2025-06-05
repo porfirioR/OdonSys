@@ -28,7 +28,6 @@ export enum Permission {
   ChangeInvoiceStatus = 'ChangeInvoiceStatus',
 
   // Payments
-
   AccessPayments = 'AccessPayments',
   RegisterPayments = 'RegisterPayments',
 
@@ -48,4 +47,11 @@ export enum Permission {
   AccessClientProcedures = 'AccessClientProcedures',
   CreateClientProcedures = 'CreateClientProcedures',
   UpdateClientProcedures = 'UpdateClientProcedures',
+
+  // Orthodontics
+  AccessOrthodontics = 'AccessOrthodontics',
+  AccessAllOrthodontics = 'AccessAllOrthodontics',
+  CreateOrthodontics = 'CreateOrthodontics',
+  UpdateOrthodontics = 'UpdateOrthodontics',
+  DeleteOrthodontics = 'DeleteOrthodontics',
 }

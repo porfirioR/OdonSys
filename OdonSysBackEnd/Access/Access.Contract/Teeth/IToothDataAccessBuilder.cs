@@ -1,9 +1,8 @@
 ﻿using Access.Sql.Entities;
 
-namespace Access.Contract.Teeth
+namespace Access.Contract.Teeth;
+
+public interface IToothDataAccessBuilder
 {
-    public interface IToothDataAccessBuilder
-    {
-        ToothAccessModel MapToothToToothAccessModel(Tooth tooth);
-    }
+    ToothAccessModel MapToothToToothAccessModel(Tooth tooth);
 }

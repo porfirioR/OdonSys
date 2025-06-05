@@ -29,7 +29,7 @@ export class UpsertProcedureComponent implements OnInit {
     xRays : new FormControl(false),
     price : new FormControl(1, [Validators.required, Validators.min(0)]),
   })
-  public ignorePreventUnsavedChanges: boolean = false
+  public ignorePreventUnsavedChanges = false
   protected saving$: Observable<boolean> = of(false)
   protected title = 'Crear'
   protected canRestore = false
@@ -55,7 +55,11 @@ export class UpsertProcedureComponent implements OnInit {
 
   protected save = () => {
     this.ignorePreventUnsavedChanges = true
-    this.id ? this.update() : this.create()
+    if (this.id) {
+      this.update()
+    } else {
+      this.create()
+    }
   }
 
   protected close = () => {

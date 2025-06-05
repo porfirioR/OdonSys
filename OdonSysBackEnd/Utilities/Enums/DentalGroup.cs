@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel;
 
-namespace Utilities.Enums
+namespace Utilities.Enums;
+
+public enum DentalGroup
 {
-    public enum DentalGroup
-    {
-        [Description("Incisivos")]
-        Incisors = 1,
-        [Description("Caninos")]
-        Canines = 2,
-        [Description("Premolares")]
-        Premolars = 3,
-        [Description("Molares")]
-        Molars = 4
-    }
+    [Description("Incisivos")]
+    Incisors = 1,
+    [Description("Caninos")]
+    Canines = 2,
+    [Description("Premolares")]
+    Premolars = 3,
+    [Description("Molares")]
+    Molars = 4
 }

@@ -1,8 +1,7 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum PermissionGroup
 {
-    public enum PermissionGroup
-    {
-        Admin,
-        Work
-    }
+    Admin,
+    Work
 }

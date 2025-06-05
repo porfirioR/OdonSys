@@ -1,11 +1,11 @@
-﻿namespace Access.Contract.Users
+﻿namespace Access.Contract.Users;
+
+public record UserDataAccessModel(
+    string Id,
+    string UserName,
+    bool Active,
+    bool Approved
+)
 {
-    public record UserDataAccessModel(
-        string Id,
-        string UserName,
-        bool Active,
-        bool Approved
-    ) {
-        public IEnumerable<string> Roles { get; set; }
-    };
-}
+    public IEnumerable<string> Roles { get; set; }
+};

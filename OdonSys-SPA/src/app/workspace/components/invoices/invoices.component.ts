@@ -27,15 +27,15 @@ import { PaymentModalComponent } from '../../modals/payment-modal/payment-modal.
 })
 export class InvoicesComponent implements OnInit {
   protected gridOptions!: GridOptions
-  protected ready: boolean = false
-  protected loading: boolean = false
-  protected canRegisterInvoice: boolean = false
-  protected canAccessMyInvoices: boolean = false
-  protected title: string = ''
-  private canRegisterPayments: boolean = false
-  private canDeactivateInvoice: boolean = false
-  private canUpdateInvoice: boolean = false
-  private isMyPermission: boolean = false
+  protected ready = false
+  protected loading = false
+  protected canRegisterInvoice = false
+  protected canAccessMyInvoices = false
+  protected title = ''
+  private canRegisterPayments = false
+  private canDeactivateInvoice = false
+  private canUpdateInvoice = false
+  private isMyPermission = false
   private invoices$!: Observable<InvoiceApiModel[]>
   private gridApi!: GridApi
 
@@ -174,6 +174,7 @@ export class InvoicesComponent implements OnInit {
         })
         break
       case ButtonGridActionType.CustomButton:
+      {
         const modalRef = this.modalService.open(PaymentModalComponent, {
           size: 'xl',
           backdrop: 'static',
@@ -192,6 +193,7 @@ export class InvoicesComponent implements OnInit {
           }
         }, () => {})
         break
+      }
       default:
         break
     }
@@ -213,6 +215,5 @@ export class InvoicesComponent implements OnInit {
         throw e
       }
     })
-
   }
 }

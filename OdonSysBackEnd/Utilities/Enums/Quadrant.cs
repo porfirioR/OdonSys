@@ -1,10 +1,9 @@
-﻿namespace Utilities.Enums
+﻿namespace Utilities.Enums;
+
+public enum Quadrant
 {
-    public enum Quadrant
-    {
-        First = 1,
-        Second = 2,
-        Third = 3,
-        Fourth = 4
-    }
+    First = 1,
+    Second = 2,
+    Third = 3,
+    Fourth = 4
 }

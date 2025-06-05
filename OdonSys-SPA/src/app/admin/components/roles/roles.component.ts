@@ -18,7 +18,7 @@ import { Permission } from '../../../core/enums/permission.enum';
   styleUrls: ['./roles.component.scss']
 })
 export class RolesComponent implements OnInit {
-  public load: boolean = false
+  public load = false
   public gridOptions!: GridOptions
   protected rowData$!: Observable<RoleModel[]>
   protected canCreate = false

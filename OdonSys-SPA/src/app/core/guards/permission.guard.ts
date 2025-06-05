@@ -4,6 +4,7 @@ import { UserInfoService } from '../services/shared/user-info.service';
 import { AlertService } from '../services/shared/alert.service';
 import { Permission } from '../enums/permission.enum';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const PermissionGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree => {
   const userInfoService = inject(UserInfoService)
   const alertService = inject(AlertService)

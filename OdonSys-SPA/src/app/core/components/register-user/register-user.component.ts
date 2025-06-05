@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../helpers/custom-validators';
 import { EnumHandler } from '../../helpers/enum-handler';
-import { RegisterUserRequest } from '../../models/users/api/register-user-request';
+// import { RegisterUserRequest } from '../../models/users/api/register-user-request';
 import { SelectModel } from '../../models/view/select-model';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { AlertService } from '../../services/shared/alert.service';
@@ -15,7 +15,7 @@ import { Country } from '../../enums/country.enum';
   styleUrls: ['./register-user.component.scss']
 })
 export class RegisterUserComponent implements OnInit {
-  protected saving: boolean = false;
+  protected saving = false;
   protected formGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(25)]),
     middleName: new FormControl<string | undefined | null>('', [Validators.maxLength(25)]),
@@ -44,20 +44,20 @@ export class RegisterUserComponent implements OnInit {
   }
 
   protected register = (): void => {
-    if (this.formGroup.invalid) { return }
-    this.saving = true
-    const request = new RegisterUserRequest(
-      this.formGroup.value.name!,
-      this.formGroup.value.surname!,
-      this.formGroup.value.document!,
-      this.formGroup.value.password!,
-      this.formGroup.value.phone!,
-      this.formGroup.value.email!,
-      this.formGroup.value.country!,
-      this.formGroup.value.secondSurname ?? undefined,
-      this.formGroup.value.middleName ?? undefined
-    )
-    this.formGroup.disable()
+    // if (this.formGroup.invalid) { return }
+    // this.saving = true
+    // const request = new RegisterUserRequest(
+    //   this.formGroup.value.name!,
+    //   this.formGroup.value.surname!,
+    //   this.formGroup.value.document!,
+    //   this.formGroup.value.password!,
+    //   this.formGroup.value.phone!,
+    //   this.formGroup.value.email!,
+    //   this.formGroup.value.country!,
+    //   this.formGroup.value.secondSurname ?? undefined,
+    //   this.formGroup.value.middleName ?? undefined
+    // )
+    // this.formGroup.disable()
     // this.authApiService.register(request).subscribe({
     //   next: () => {
     //     this.formGroup.enable()

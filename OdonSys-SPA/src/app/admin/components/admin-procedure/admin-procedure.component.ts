@@ -24,7 +24,7 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./admin-procedure.component.scss']
 })
 export class AdminProcedureComponent implements OnInit {
-  protected load: boolean = false
+  protected load = false
   protected gridOptions!: GridOptions
   protected rowData$!: Observable<ProcedureModel[]>
   protected canCreate = false

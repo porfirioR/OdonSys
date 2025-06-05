@@ -22,7 +22,8 @@ export class GridActionsComponent implements ICellRendererAngularComp {
   protected canShowDeactivate = false
   protected canShowDownload = false
   protected canShowCustomButton = false
-  protected customColorButton: string = 'btn-outline-'
+  protected canShowMyOrthodontic = false
+  protected customColorButton = 'btn-outline-'
   private customColor: ColorType = 'info'
 
   public agInit(params: ICellRendererParams<any, any, any> & GridActionModel): void {
@@ -40,6 +41,7 @@ export class GridActionsComponent implements ICellRendererAngularComp {
   protected deactivateItem = () => this.params.clicked(ButtonGridActionType.Desactivar)
 
   protected downloadItem = () => this.params.clicked(ButtonGridActionType.Descargar)
+  protected myOrthodonticItem = () => this.params.clicked(ButtonGridActionType.Ortodoncias)
 
   protected restoreItem = () => this.params.clicked(ButtonGridActionType.Restaurar)
 
@@ -85,6 +87,9 @@ export class GridActionsComponent implements ICellRendererAngularComp {
         break
       case ButtonGridActionType.CustomButton:
         this.canShowCustomButton = true
+        break
+      case ButtonGridActionType.Ortodoncias:
+        this.canShowMyOrthodontic = true
         break
       default:
         break

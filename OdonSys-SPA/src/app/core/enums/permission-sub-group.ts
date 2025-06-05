@@ -4,5 +4,6 @@ export enum PermissionSubGroup {
   Procedure = 'Procedimiento',
   Role = 'Rol',
   Invoice = 'Factura',
-  Payment = 'Pago'
+  Payment = 'Pago',
+  Orthodontic = 'Ortodoncia'
 }

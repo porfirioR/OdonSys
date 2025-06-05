@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 import { UploadFileModel } from '../../models/view/upload-file-model';
 import { AlertService } from '../../services/shared/alert.service';
@@ -8,15 +8,13 @@ import { AlertService } from '../../services/shared/alert.service';
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent implements OnInit {
+export class UploadFileComponent {
   @Input() uploadFileConfig!: UploadFileModel
 
-  public files: Array<File> = []
+  public files: File[] = []
   constructor(
     private readonly alertService: AlertService
   ) { }
-
-  ngOnInit(): void { }
 
   protected onSelect = (event: NgxDropzoneChangeEvent): void => {
     if (event.addedFiles.length > 0) {
@@ -27,7 +25,7 @@ export class UploadFileComponent implements OnInit {
     }
     if (event.rejectedFiles.length > 0) {
       let messageError = ''
-      event.rejectedFiles.forEach((file, i) => {
+      event.rejectedFiles.forEach((file) => {
         if (file['reason'] === 'type') {
           messageError = `${messageError} Archivo no válido "${file.name}" asegúrese de que su tipo de dato válido`
         } else if (file['reason'] === 'size') {

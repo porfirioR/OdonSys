@@ -20,14 +20,15 @@ import { UserInfoService } from '../../services/shared/user-info.service';
 })
 export class ClientsComponent implements OnInit {
 
-  protected loading: boolean = false
-  protected ready: boolean = false
+  protected loading = false
+  protected ready = false
   protected gridOptions!: GridOptions
-  protected canCreate: boolean = false
+  protected canCreate = false
   private attributeActive!: string
   private canEdit = false
   private canShowReport = false
   private gridApi!: GridApi
+  private canShowMyOrthodontic = false
 
   constructor(
     private readonly clientApiService: ClientApiService,
@@ -37,10 +38,12 @@ export class ClientsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
     this.attributeActive = (environment.systemAttributeModel as SystemAttributeModel[]).find(x => x.id === FieldId.Active)?.value!
     this.canCreate = this.userInfoService.havePermission(Permission.CreateClients)
     this.canEdit = this.userInfoService.havePermission(Permission.UpdateClients)
     this.canShowReport = this.userInfoService.havePermission(Permission.AccessMyInvoices)
+    this.canShowMyOrthodontic = this.userInfoService.havePermission(Permission.AccessOrthodontics)
     this.setupAgGrid()
     this.ready = true
   }
@@ -70,6 +73,7 @@ export class ClientsComponent implements OnInit {
   }
 
   @HostListener('window:resize', ['$event'])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private getScreenSize(event?: any) {
     this.gridApi?.sizeColumnsToFit()
   }
@@ -84,6 +88,9 @@ export class ClientsComponent implements OnInit {
     if (this.canEdit) {
       buttonsToShow.push(ButtonGridActionType.Editar)
     }
+    if (this.canShowMyOrthodontic) {
+      buttonsToShow.push(ButtonGridActionType.Ortodoncias)
+    }
     const params: GridActionModel = {
       buttonShow: buttonsToShow,
       clicked: this.actionColumnClicked,
@@ -94,15 +101,20 @@ export class ClientsComponent implements OnInit {
 
   private actionColumnClicked = (action: ButtonGridActionType): void => {
     const currentRowNode = this.agGridService.getCurrentRowNode(this.gridApi)
+    const url = this.router.url
+    const id = currentRowNode.data.id
     switch (action) {
       case ButtonGridActionType.Ver:
-        this.router.navigate([`${this.router.url}/ver/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/ver/${id}`])
         break
       case ButtonGridActionType.Editar:
-        this.router.navigate([`${this.router.url}/actualizar/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/actualizar/${id}`])
         break
       case ButtonGridActionType.CustomButton:
-        this.router.navigate([`${this.router.url}/reporte/${currentRowNode.data.id}`])
+        this.router.navigate([`${url}/reporte/${id}`])
+        break
+      case ButtonGridActionType.Ortodoncias:
+        this.router.navigate([`${url}/mis-ortodoncias/${id}`])
         break
       default:
         break

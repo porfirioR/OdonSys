@@ -1,11 +1,10 @@
-﻿namespace Access.Sql.Entities
-{
-    public class InvoiceDetailTooth : BaseEntity
-    {
-        public Guid ToothId { get; set; }
-        public Guid InvoiceDetailId { get; set; }
+﻿namespace Access.Sql.Entities;
 
-        public virtual Tooth Tooth { get; set; }
-        public virtual InvoiceDetail InvoiceDetail { get; set; }
-    }
+public class InvoiceDetailTooth : BaseEntity
+{
+    public Guid ToothId { get; set; }
+    public Guid InvoiceDetailId { get; set; }
+
+    public virtual Tooth Tooth { get; set; }
+    public virtual InvoiceDetail InvoiceDetail { get; set; }
 }
